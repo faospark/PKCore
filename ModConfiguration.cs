@@ -24,6 +24,10 @@ public sealed class ModConfiguration
     public ConfigEntry<bool> ForceControllerPrompts { get; private set; }
     public ConfigEntry<string> ControllerPromptType { get; private set; }
 
+    // Custom Texture Settings
+    public ConfigEntry<bool> EnableCustomTextures { get; private set; }
+    public ConfigEntry<bool> LogReplaceableTextures { get; private set; }
+
     public ModConfiguration(ConfigFile config)
     {
         _config = config;
@@ -96,6 +100,20 @@ public sealed class ModConfiguration
             "- PS5: 'PlayStation5', 'DualSense', 'PS5'\n" +
             "- Xbox/Generic/Switch: 'Xbox', 'PS', 'Generic', 'Switch'\n" +
             "Only applies if ForceControllerPrompts is enabled."
+        );
+
+        EnableCustomTextures = _config.Bind(
+            "Custom Textures",
+            "EnableCustomTextures",
+            false,
+            "Enable custom texture replacement. Place PNG files in BepInEx/plugins/PKextended/Textures/ with the same name as the game texture (e.g., hp_telepo_00.png)."
+        );
+
+        LogReplaceableTextures = _config.Bind(
+            "Custom Textures",
+            "LogReplaceableTextures",
+            false,
+            "Log all textures that could be replaced. Each texture name is logged only once. Useful for discovering which textures you can customize."
         );
     }
 }

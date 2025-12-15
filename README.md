@@ -1,7 +1,7 @@
 # PKextended - Project Kyaro Extended
 
 **By faospark**  
-**Current Version: 1.5**
+**Current Version: 1.5.1**
 
 A companion mod to **[Project Kyaro](https://www.nexusmods.com/suikoden1and2hdremaster/mods/6)** that adds sprite smoothing, anti-aliasing, performance scaling, and controller prompt customization for **Suikoden I & II HD Remaster**.
 
@@ -42,6 +42,27 @@ Designed for **Project Kyaro's upscaled sprites** - adds a more granular texture
 
 - **Resolution Scaling**: Lower internal resolution for better performance (0.5x - 2.0x)
 - **Borderless Window Mode**: Instant alt-tab and better multi-monitor support, Only use this if you dont want to use the in-game full screen option
+
+### Custom Texture Replacement (v1.5.1+)
+
+> **⚠️ IMPORTANT**: This feature has **PARTIAL COVERAGE** and works on certain sprites only, not all game textures.
+
+Replace game sprites/textures with custom PNG files:
+
+- **Works Best For**: Event backgrounds, some UI elements, static sprites
+- **Limited Support**: Animated UI sprites, character sprites, battle backgrounds  
+- **Recommended**: Use with [SpecialK](https://www.special-k.info/) for comprehensive texture replacement
+
+**Usage:**
+1. Enable `EnableCustomTextures = true` in config
+2. Place PNG files in `BepInEx/plugins/PKextended/Textures/`
+3. Name files exactly as the original texture (use `LogReplaceableTextures = true` to discover names)
+4. Supports subfolders for organization
+
+**Discovery Mode:**
+- Set `LogReplaceableTextures = true` to see which textures are detectable
+- Check BepInEx console for `[Replaceable Sprite]` and `[Replaceable UI Sprite]` messages
+- Each texture logged only once to avoid spam
 
 ## Installation
 
@@ -85,6 +106,13 @@ ForceControllerPrompts = false
 # - PS5: "PlayStation5", "DualSense", "PS5"
 # - Xbox/Generic: "Xbox", "Generic"
 ControllerPromptType = PlayStation
+
+[Custom Textures]
+# Enable custom texture replacement (true/false)
+EnableCustomTextures = false
+
+# Log all replaceable textures to help discover texture names (true/false)
+LogReplaceableTextures = false
 ```
 
 ## Quick Presets

@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace PKextended;
 
-[BepInPlugin("faospark.pkextended", "PKextended - Project Kyaro Extended", "1.0.0")]
+[BepInPlugin("faospark.pkextended", "PKextended - Project Kyaro Extended", "1.5.1")]
 [BepInDependency("d3xMachina.suikoden_fix", BepInDependency.DependencyFlags.SoftDependency)]
 public class Plugin : BasePlugin
 {
@@ -23,6 +23,9 @@ public class Plugin : BasePlugin
         Config = new ModConfiguration(base.Config);
         Config.Init();
 
+        // Suppress harmless Addressables warning after texture replacement
+        Application.SetStackTraceLogType(LogType.Error, StackTraceLogType.None);
+        
         ApplyPatches();
 
         Log.LogInfo("PKextended loaded successfully!");
@@ -67,6 +70,22 @@ public class Plugin : BasePlugin
         {
             Log.LogInfo($"Applying Global Controller Prompt patches (type: {Config.ControllerPromptType.Value})...");
             harmony.PatchAll(typeof(GlobalControllerPromptPatch));
+        }
+
+        // Custom Texture Replacement
+        if (Config.EnableCustomTextures.Value || Config.LogReplaceableTextures.Value)
+        {
+            if (Config.EnableCustomTextures.Value)
+            {
+                Log.LogInfo("Applying Custom Texture patches...");
+            }
+            else
+            {
+                Log.LogInfo("Applying Custom Texture patches (logging only)...");
+            }
+            
+            harmony.PatchAll(typeof(CustomTexturePatch));
+            CustomTexturePatch.Initialize();
         }
     }
 }

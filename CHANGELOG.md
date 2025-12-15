@@ -5,6 +5,41 @@ All notable changes to PKextended will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.1] - 2025-12-16
+
+### Added
+
+#### Custom Texture Replacement System
+- **PNG Texture Loading**: Replace game sprites/textures with custom PNG files
+  - Place custom textures in `BepInEx/plugins/PKextended/Textures/`
+  - Supports PNG, JPG, JPEG, and TGA formats
+  - Automatic subfolder scanning for organization
+- **Texture Logging**: Discovery mode to identify replaceable textures
+  - Enable `LogReplaceableTextures` to see all detectable sprites
+  - Each texture logged only once to avoid spam
+  - Helps identify which textures can be customized
+- **Scene-Based Detection**: Scans loaded scenes for sprites and UI elements
+  - Detects `SpriteRenderer` components (world sprites)
+  - Detects `Image` components (UI sprites)
+  - Detects `RawImage` components (UI textures)
+
+### Important Limitations
+> **⚠️ PARTIAL COVERAGE**: This feature currently works on **certain sprites only**, not all game textures.
+> - ✅ **Works**: Event backgrounds, some UI elements, static sprites
+> - ❌ **Limited**: Animated UI sprites, character sprites, battle backgrounds
+> - 💡 **Recommended**: Use with [SpecialK](https://www.special-k.info/) for comprehensive texture replacement
+
+### Changed
+- Suppressed harmless `Addressables.Release` warnings after texture replacement
+- Updated version to 1.5.1
+
+### Technical Details
+- **Harmony Patches**: Intercepts sprite/texture setters on multiple components
+- **Caching System**: Loaded textures cached for performance
+- **Index Building**: Maps texture names to file paths for fast lookup
+
+---
+
 ## [1.5.0] - 2025-12-11
 
 ### Added

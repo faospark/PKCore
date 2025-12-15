@@ -21,8 +21,6 @@ public class DisableSpritePostProcessingPatch
 
         // Move sprite to a layer that won't be affected by post-processing
         __instance.gameObject.layer = 31;
-        
-        Plugin.Log.LogInfo($"Moved sprite '{__instance.gameObject.name}' to non-post-processed layer");
     }
 
     // Alternative approach: Disable specific post-processing effects on sprite materials
@@ -72,8 +70,6 @@ public class DisableSpritePostProcessingPatch
 
         // Exclude sprite layer from post-processing volume triggers
         __instance.volumeLayer &= ~SpriteLayerMask;
-        
-        Plugin.Log.LogInfo($"Configured post-process layer to exclude sprite layer");
     }
 
     public static void Initialize()
