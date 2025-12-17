@@ -27,6 +27,7 @@ public sealed class ModConfiguration
     // Custom Texture Settings
     public ConfigEntry<bool> EnableCustomTextures { get; private set; }
     public ConfigEntry<bool> LogReplaceableTextures { get; private set; }
+    public ConfigEntry<bool> LogTexturePaths { get; private set; }
 
     public ModConfiguration(ConfigFile config)
     {
@@ -105,7 +106,7 @@ public sealed class ModConfiguration
         EnableCustomTextures = _config.Bind(
             "Custom Textures",
             "EnableCustomTextures",
-            false,
+            true,
             "Enable custom texture replacement. Place PNG files in BepInEx/plugins/PKextended/Textures/ with the same name as the game texture (e.g., hp_telepo_00.png)."
         );
 
@@ -114,6 +115,13 @@ public sealed class ModConfiguration
             "LogReplaceableTextures",
             false,
             "Log all textures that could be replaced. Each texture name is logged only once. Useful for discovering which textures you can customize."
+        );
+
+        LogTexturePaths = _config.Bind(
+            "Custom Textures",
+            "LogTexturePaths",
+            false,
+            "Include GameObject hierarchy paths in texture logs. Enable for detailed debugging to see exactly which UI elements use which textures."
         );
     }
 }
