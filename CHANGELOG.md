@@ -5,6 +5,12 @@ All notable changes to PKextended will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Fixed
+- **Bath Background In-Game Switcher**: Custom bath backgrounds now work with in-game switching
+  - **Known Limitation**: Visual update requires screen refresh (exit and re-enter bath scene when using the in game switcher) to display the new custom background immediately. The sprite is replaced in memory correctly, but Unity's render pipeline doesn't automatically redraw until triggered by a scene change or menu interaction.
+
 ## [1.5.1] - 2025-12-16
 
 ### Added

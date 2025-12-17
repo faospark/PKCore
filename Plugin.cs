@@ -11,11 +11,13 @@ namespace PKextended;
 [BepInDependency("d3xMachina.suikoden_fix", BepInDependency.DependencyFlags.SoftDependency)]
 public class Plugin : BasePlugin
 {
+    public static Plugin Instance { get; private set; }
     public static new ManualLogSource Log;
     public static new ModConfiguration Config;
 
     public override void Load()
     {
+        Instance = this;
         Log = base.Log;
 
         Log.LogInfo("Loading PKextended (Project Kyaro Extended) by faospark...");
