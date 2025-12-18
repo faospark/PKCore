@@ -513,6 +513,29 @@ public class CustomTexturePatch
         }
     }
 
+    /// <summary>
+    /// Intercept Sprite.texture getter to replace battle atlas textures
+    /// When GRSpriteRenderer accesses sprite.texture, we return the custom texture
+    /// </summary>
+    [HarmonyPatch(typeof(Sprite), nameof(Sprite.texture), MethodType.Getter)]
+    [HarmonyPostfix]
+    public static void Sprite_get_texture_Postfix(Sprite __instance, ref Texture2D __result)
+    {
+        if (!Plugin.Config.EnableCustomTextures.Value || __result == null)
+            return;
+
+        string textureName = __result.name;
+        
+        // Check if this is a battle atlas texture (starts with "sactx")
+        if (textureName.StartsWith("sactx") && texturePathIndex.ContainsKey(textureName))
+        {
+            Texture2D customTexture = LoadCustomTexture(textureName);
+            if (customTexture != null)
+            {
+                __result = customTexture;
+            }
+        }
+    }
 
     /// <summary>
     /// Intercept Material.mainTexture setter to replace textures
@@ -870,34 +893,15 @@ public class CustomTexturePatch
         {
             if (isBathSprite) Plugin.Log.LogInfo($"    [LoadCustomSprite] Cache hit for {spriteName}");
             
-            // Only validate cache for dynamic sprites (characters, portraits) that get destroyed
-            // Static sprites (backgrounds) can be trusted in cache
-            if (texturePathIndex.TryGetValue(spriteName, out string cachedPath))
+            // Validate that the cached sprite is still valid (not destroyed by Unity)
+            if (cachedSprite != null && cachedSprite && cachedSprite.texture != null)
             {
-                string lowerPath = cachedPath.ToLower();
-                bool isDynamic = lowerPath.Contains("characters") || 
-                                lowerPath.Contains("portraits") || 
-                                lowerPath.Contains("character") || 
-                                lowerPath.Contains("portrait");
-                
-                if (isDynamic)
-                {
-                    // Validate that the cached sprite is still valid (not destroyed by Unity)
-                    if (cachedSprite != null && cachedSprite && cachedSprite.texture != null)
-                        return cachedSprite;
-                    else
-                        customSpriteCache.Remove(spriteName); // Clean up invalid cache entry
-                }
-                else
-                {
-                    // Static sprite - trust the cache without validation for performance
-                    return cachedSprite;
-                }
+                return cachedSprite;
             }
             else
             {
-                // Fallback: trust cache if path not found
-                return cachedSprite;
+                // Sprite was destroyed (e.g., map change), remove from cache
+                customSpriteCache.Remove(spriteName);
             }
         }
 

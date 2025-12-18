@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace PKextended;
 
-[BepInPlugin("faospark.pkextended", "PKextended - Project Kyaro Extended", "1.5.1")]
+[BepInPlugin("faospark.pkextended", "PKCore", "1.5.1")]
 [BepInDependency("d3xMachina.suikoden_fix", BepInDependency.DependencyFlags.SoftDependency)]
 public class Plugin : BasePlugin
 {
