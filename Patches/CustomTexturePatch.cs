@@ -24,7 +24,93 @@ public class CustomTexturePatch
     private static int lastBathBGInstanceID = -1; // Track the last BathBG instance we replaced
     private static string customTexturesPath;
 
+    #region Helper Functions
 
+    /// <summary>
+    /// Log a replaceable texture/sprite (only once per texture)
+    /// </summary>
+    private static void LogReplaceableTexture(string textureName, string category, string context = null)
+    {
+        if (!Plugin.Config.LogReplaceableTextures.Value || loggedTextures.Contains(textureName))
+            return;
+
+        loggedTextures.Add(textureName);
+        string message = string.IsNullOrEmpty(context) 
+            ? $"[Replaceable {category}] {textureName}"
+            : $"[Replaceable {category}] {textureName} ({context})";
+        Plugin.Log.LogInfo(message);
+    }
+
+    /// <summary>
+    /// Check if we should skip logging for spam reduction (sactx and character textures)
+    /// </summary>
+    private static bool ShouldSkipSpamLog(string textureName)
+    {
+        if (textureName.StartsWith("sactx"))
+            return true;
+
+        if (texturePathIndex.TryGetValue(textureName, out string texPath))
+        {
+            if (texPath.ToLower().Contains("characters"))
+                return true;
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// Try to replace a texture with a custom version
+    /// Returns true if replacement was successful
+    /// </summary>
+    private static bool TryReplaceTexture(string textureName, ref Texture value, bool logReplacement = true)
+    {
+        if (!Plugin.Config.EnableCustomTextures.Value)
+            return false;
+
+        if (!texturePathIndex.ContainsKey(textureName))
+            return false;
+
+        Texture2D customTexture = LoadCustomTexture(textureName);
+        if (customTexture == null)
+            return false;
+
+        value = customTexture;
+
+        if (logReplacement && !ShouldSkipSpamLog(textureName))
+        {
+            Plugin.Log.LogInfo($"Replaced texture: {textureName}");
+        }
+
+        return true;
+    }
+
+    /// <summary>
+    /// Try to replace a sprite with a custom version
+    /// Returns true if replacement was successful
+    /// </summary>
+    private static bool TryReplaceSprite(string spriteName, ref Sprite value, Sprite original, bool logReplacement = true, string context = null)
+    {
+        if (!Plugin.Config.EnableCustomTextures.Value)
+            return false;
+
+        Sprite customSprite = LoadCustomSprite(spriteName, original);
+        if (customSprite == null)
+            return false;
+
+        value = customSprite;
+
+        if (logReplacement && !ShouldSkipSpamLog(spriteName))
+        {
+            string message = string.IsNullOrEmpty(context)
+                ? $"Replaced sprite: {spriteName}"
+                : $"Replaced sprite: {spriteName} ({context})";
+            Plugin.Log.LogInfo(message);
+        }
+
+        return true;
+    }
+
+    #endregion
     /// <summary>
     /// Intercept SpriteRenderer.sprite setter to replace with custom textures
     /// </summary>
@@ -127,7 +213,7 @@ public class CustomTexturePatch
 
     /// <summary>
     /// Intercept SpriteAtlas.GetSprite to catch sprites loaded from atlases
-    /// This catches background sprites and other atlas-based sprites
+    /// NOTE: Individual sprite names from atlases are NOT replaceable - only the atlas texture itself is
     /// </summary>
     [HarmonyPatch(typeof(SpriteAtlas), nameof(SpriteAtlas.GetSprite))]
     [HarmonyPostfix]
@@ -138,35 +224,35 @@ public class CustomTexturePatch
 
         string spriteName = __result.name;
         
-        // Remove (Clone) suffix if present to prevent duplicate logging
+        // Remove (Clone) suffix if present
         if (spriteName.EndsWith("(Clone)"))
             spriteName = spriteName.Substring(0, spriteName.Length - 7);
 
-        // Log if enabled and not already logged
-        if (Plugin.Config.LogReplaceableTextures.Value && !loggedTextures.Contains(spriteName))
-        {
-            loggedTextures.Add(spriteName);
-            Plugin.Log.LogInfo($"[Replaceable Sprite - Atlas] {spriteName}");
-        }
-
-        // Try to replace with custom sprite
+        // DO NOT log individual sprite names from atlases - they're not replaceable files
+        // Only the atlas texture itself (accessed via Sprite.texture) is replaceable
+        
+        // Try to replace with custom sprite (for non-atlas sprites only)
         if (Plugin.Config.EnableCustomTextures.Value)
         {
-            Sprite customSprite = LoadCustomSprite(spriteName, __result);
-            if (customSprite != null)
+            // Only attempt replacement if this sprite has a direct PNG file (not from atlas)
+            if (texturePathIndex.ContainsKey(spriteName))
             {
-                __result = customSprite;
-                
-                // Skip logging for sactx and character sprites to reduce spam
-                bool shouldSkipAtlasLog = spriteName.StartsWith("sactx");
-                if (!shouldSkipAtlasLog && texturePathIndex.TryGetValue(spriteName, out string atlasTexPath))
+                Sprite customSprite = LoadCustomSprite(spriteName, __result);
+                if (customSprite != null)
                 {
-                    shouldSkipAtlasLog = atlasTexPath.ToLower().Contains("characters");
-                }
-                
-                if (!shouldSkipAtlasLog)
-                {
-                    Plugin.Log.LogInfo($"Replaced atlas sprite: {spriteName}");
+                    __result = customSprite;
+                    
+                    // Skip logging for sactx and character sprites to reduce spam
+                    bool shouldSkipAtlasLog = spriteName.StartsWith("sactx");
+                    if (!shouldSkipAtlasLog && texturePathIndex.TryGetValue(spriteName, out string atlasTexPath))
+                    {
+                        shouldSkipAtlasLog = atlasTexPath.ToLower().Contains("characters");
+                    }
+                    
+                    if (!shouldSkipAtlasLog)
+                    {
+                        Plugin.Log.LogInfo($"Replaced sprite: {spriteName}");
+                    }
                 }
             }
         }
@@ -514,27 +600,52 @@ public class CustomTexturePatch
     }
 
     /// <summary>
-    /// Intercept Sprite.texture getter to replace battle atlas textures
-    /// When GRSpriteRenderer accesses sprite.texture, we return the custom texture
+    /// Intercept Sprite.texture getter to replace atlas textures
+    /// This is THE KEY PATCH for replacing atlas textures (including summon effects)
     /// </summary>
     [HarmonyPatch(typeof(Sprite), nameof(Sprite.texture), MethodType.Getter)]
     [HarmonyPostfix]
     public static void Sprite_get_texture_Postfix(Sprite __instance, ref Texture2D __result)
     {
-        if (!Plugin.Config.EnableCustomTextures.Value || __result == null)
+        if (__result == null)
             return;
 
         string textureName = __result.name;
+        LogReplaceableTexture(textureName, "Texture - Atlas");
         
-        // Check if this is a battle atlas texture (starts with "sactx")
-        if (textureName.StartsWith("sactx") && texturePathIndex.ContainsKey(textureName))
+        // Try to replace with custom texture
+        Texture tempTexture = __result;
+        if (TryReplaceTexture(textureName, ref tempTexture, logReplacement: true))
         {
-            Texture2D customTexture = LoadCustomTexture(textureName);
-            if (customTexture != null)
-            {
-                __result = customTexture;
-            }
+            __result = (Texture2D)tempTexture;
         }
+    }
+
+    /// <summary>
+    /// Intercept Material.SetTexture to catch textures set via name/ID (common for custom shaders/effects)
+    /// </summary>
+    [HarmonyPatch(typeof(Material), nameof(Material.SetTexture), new System.Type[] { typeof(string), typeof(Texture) })]
+    [HarmonyPrefix]
+    public static void Material_SetTexture_Prefix(Material __instance, string name, ref Texture value)
+    {
+        if (value == null || string.IsNullOrEmpty(name))
+            return;
+
+        string textureName = value.name;
+        LogReplaceableTexture(textureName, "Texture - SetTexture", $"property: {name}");
+        TryReplaceTexture(textureName, ref value, logReplacement: false); // Don't log - too spammy
+    }
+    
+    [HarmonyPatch(typeof(Material), nameof(Material.SetTexture), new System.Type[] { typeof(int), typeof(Texture) })]
+    [HarmonyPrefix]
+    public static void Material_SetTexture_ID_Prefix(Material __instance, int nameID, ref Texture value)
+    {
+        if (value == null)
+            return;
+
+        string textureName = value.name;
+        LogReplaceableTexture(textureName, "Texture - SetTexture", $"ID: {nameID}");
+        TryReplaceTexture(textureName, ref value, logReplacement: false); // Don't log - too spammy
     }
 
     /// <summary>
@@ -607,38 +718,18 @@ public class CustomTexturePatch
 
         string originalName = value.name;
         
-        // Log replaceable textures if enabled (only once per texture)
-        if (Plugin.Config.LogReplaceableTextures.Value && !loggedTextures.Contains(originalName))
+        // Log with optional path context
+        if (Plugin.Config.LogTexturePaths.Value)
         {
-            loggedTextures.Add(originalName);
-            if (Plugin.Config.LogTexturePaths.Value)
-            {
-                string gameObjectPath = GetGameObjectPath(__instance.gameObject);
-                Plugin.Log.LogInfo($"[Replaceable UI Sprite] {originalName}\n  Path: {gameObjectPath}");
-            }
-            else
-            {
-                Plugin.Log.LogInfo($"[Replaceable UI Sprite] {originalName}");
-            }
+            string gameObjectPath = GetGameObjectPath(__instance.gameObject);
+            LogReplaceableTexture(originalName, "UI Sprite", $"Path: {gameObjectPath}");
+        }
+        else
+        {
+            LogReplaceableTexture(originalName, "UI Sprite");
         }
         
-        // Try to load custom sprite replacement
-        Sprite customSprite = LoadCustomSprite(originalName, value);
-        if (customSprite != null)
-        {
-            // Skip logging for sactx and character sprites to reduce spam
-            bool shouldSkipUILog = originalName.StartsWith("sactx");
-            if (!shouldSkipUILog && texturePathIndex.TryGetValue(originalName, out string uiTexPath))
-            {
-                shouldSkipUILog = uiTexPath.ToLower().Contains("characters");
-            }
-            
-            if (!shouldSkipUILog)
-            {
-                Plugin.Log.LogInfo($"Replaced UI sprite: {originalName}");
-            }
-            value = customSprite;
-        }
+        TryReplaceSprite(originalName, ref value, value, logReplacement: true, context: "UI");
     }
 
 
@@ -654,38 +745,18 @@ public class CustomTexturePatch
 
         string originalName = value.name;
         
-        // Log replaceable textures if enabled (only once per texture)
-        if (Plugin.Config.LogReplaceableTextures.Value && !loggedTextures.Contains(originalName))
+        // Log with optional path context
+        if (Plugin.Config.LogTexturePaths.Value)
         {
-            loggedTextures.Add(originalName);
-            if (Plugin.Config.LogTexturePaths.Value)
-            {
-                string gameObjectPath = GetGameObjectPath(__instance.gameObject);
-                Plugin.Log.LogInfo($"[Replaceable UI Override Sprite] {originalName}\n  Path: {gameObjectPath}");
-            }
-            else
-            {
-                Plugin.Log.LogInfo($"[Replaceable UI Override Sprite] {originalName}");
-            }
+            string gameObjectPath = GetGameObjectPath(__instance.gameObject);
+            LogReplaceableTexture(originalName, "UI Override Sprite", $"Path: {gameObjectPath}");
+        }
+        else
+        {
+            LogReplaceableTexture(originalName, "UI Override Sprite");
         }
         
-        // Try to load custom sprite replacement
-        Sprite customSprite = LoadCustomSprite(originalName, value);
-        if (customSprite != null)
-        {
-            // Skip logging for sactx and character sprites to reduce spam
-            bool shouldSkipOverrideLog = originalName.StartsWith("sactx");
-            if (!shouldSkipOverrideLog && texturePathIndex.TryGetValue(originalName, out string overrideTexPath))
-            {
-                shouldSkipOverrideLog = overrideTexPath.ToLower().Contains("characters");
-            }
-            
-            if (!shouldSkipOverrideLog)
-            {
-                Plugin.Log.LogInfo($"Replaced UI override sprite: {originalName}");
-            }
-            value = customSprite;
-        }
+        TryReplaceSprite(originalName, ref value, value, logReplacement: true, context: "UI override");
     }
 
     /// <summary>
@@ -1241,6 +1312,26 @@ public class CustomTexturePatch
 
         // Build texture index (supports subfolders)
         BuildTextureIndex();
+        
+        // DIAGNOSTIC: Log summon/gate effect textures in index
+        var summonTextures = texturePathIndex.Where(kvp => 
+            kvp.Key.Contains("gat") || 
+            kvp.Key.Contains("summon") || 
+            kvp.Key.StartsWith("m_") ||
+            kvp.Key.Contains("sactx")).ToList();
+        
+        if (summonTextures.Count > 0)
+        {
+            Plugin.Log.LogInfo($"[DIAGNOSTIC] Found {summonTextures.Count} summon/gate texture(s) in index:");
+            foreach (var kvp in summonTextures)
+            {
+                Plugin.Log.LogInfo($"  [{kvp.Key}] -> {Path.GetFileName(kvp.Value)}");
+            }
+        }
+        else
+        {
+            Plugin.Log.LogWarning("[DIAGNOSTIC] No summon/gate textures found in index!");
+        }
         
         // Preload bath sprites for instant replacement
         PreloadBathSprites();
