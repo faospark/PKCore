@@ -116,8 +116,6 @@ If you have **PKextended.dll** installed from a previous version:
    - New config: `BepInEx/config/faospark.pkcore.cfg`
    - You can copy your old settings to the new file, or let it regenerate with defaults
 
-> **Note**: Custom texture folders (`PKextended/Textures/`) were never part of any Project Kyaro Nexus release, so most users won't need to migrate textures.
-
 ## Development
 
 This mod uses BepInEx 6 IL2CPP and Harmony for runtime patching.
