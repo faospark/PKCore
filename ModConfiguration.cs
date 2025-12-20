@@ -30,6 +30,10 @@ public sealed class ModConfiguration
     public ConfigEntry<bool> LogTexturePaths { get; private set; }
     public ConfigEntry<bool> DetailedTextureLog { get; private set; }
 
+    // Selective Texture Downscaling
+    public ConfigEntry<bool> EnableSelectiveDownscaling { get; private set; }
+    public ConfigEntry<float> GameContentScale { get; private set; }
+
     public ModConfiguration(ConfigFile config)
     {
         _config = config;
@@ -130,6 +134,23 @@ public sealed class ModConfiguration
             "DetailedTextureLog",
             false,
             "Enable detailed texture logging (replacement confirmations and full texture list on startup). Disable for silent operation (only errors will be logged)."
+        );
+
+        EnableSelectiveDownscaling = _config.Bind(
+            "Performance",
+            "EnableSelectiveDownscaling",
+            false,
+            "Enable selective texture downscaling for game content (sprites, backgrounds, characters) while keeping UI at native resolution. Improves performance with minimal visual impact."
+        );
+
+        GameContentScale = _config.Bind(
+            "Performance",
+            "GameContentScale",
+            0.7f,
+            new ConfigDescription(
+                "Scale factor for game content textures (0.5 = 50%, 0.7 = 70%, 1.0 = 100%). Lower values = better performance but slightly softer visuals. UI always stays at 100% for clarity. Recommended: 0.7 for good balance.",
+                new AcceptableValueRange<float>(0.5f, 1.0f)
+            )
         );
     }
 }

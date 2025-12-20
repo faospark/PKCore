@@ -3,86 +3,112 @@ using UnityEngine;
 
 namespace PKCore.Patches;
 
-/* EXPERIMENTAL - DISABLED
- * QualitySettings.renderScale is not available in this Unity version (pre-2022)
- * Uncomment and test if game is updated to Unity 2022+
- * 
- * This approach would scale game content while preserving UI at native resolution
- * for better performance without sacrificing UI quality.
- 
 /// <summary>
-/// EXPERIMENTAL: Selective resolution scaling using QualitySettings.renderScale
-/// This scales game content while preserving UI at native resolution
+/// Selective texture downscaling for performance
+/// Downscales game content (sprites, backgrounds) while preserving UI at native resolution
+/// This is a manual implementation since QualitySettings.renderScale is not available in this Unity version
 /// </summary>
 public class SelectiveRenderScalePatch
 {
     private static bool _enabled = false;
-    private static float _renderScale = 1.0f;
-    private static bool _hasApplied = false;
+    private static float _gameContentScale = 0.7f;
 
     /// <summary>
-    /// Apply resolution scaling using QualitySettings.renderScale
-    /// This scales 3D rendering and sprites while keeping UI at native resolution
+    /// Check if a texture is UI-related (should NOT be downscaled)
     /// </summary>
-    [HarmonyPatch(typeof(GSDTitleSelect), nameof(GSDTitleSelect.Main))]
+    private static bool IsUITexture(string textureName)
+    {
+        string lowerName = textureName.ToLower();
+        
+        // UI indicators in name
+        return lowerName.Contains("ui_") || 
+               lowerName.Contains("menu") || 
+               lowerName.Contains("button") ||
+               lowerName.Contains("icon") ||
+               lowerName.Contains("launcher") ||
+               lowerName.Contains("cursor") ||
+               lowerName.Contains("hud");
+    }
+
+    /// <summary>
+    /// Downscale a texture for performance while maintaining quality
+    /// </summary>
+    private static Texture2D DownscaleTexture(Texture2D original, float scale)
+    {
+        if (scale >= 1.0f) return original;
+        
+        int newWidth = Mathf.Max(1, (int)(original.width * scale));
+        int newHeight = Mathf.Max(1, (int)(original.height * scale));
+        
+        // Create new texture at scaled size
+        Texture2D scaled = new Texture2D(newWidth, newHeight, original.format, true);
+        scaled.filterMode = FilterMode.Bilinear;
+        scaled.wrapMode = original.wrapMode;
+        scaled.anisoLevel = original.anisoLevel;
+        
+        // Use RenderTexture for high-quality bilinear downscaling
+        RenderTexture rt = RenderTexture.GetTemporary(newWidth, newHeight);
+        rt.filterMode = FilterMode.Bilinear;
+        
+        RenderTexture.active = rt;
+        Graphics.Blit(original, rt);
+        
+        scaled.ReadPixels(new Rect(0, 0, newWidth, newHeight), 0, 0);
+        scaled.Apply(true, false);
+        
+        RenderTexture.active = null;
+        RenderTexture.ReleaseTemporary(rt);
+        
+        return scaled;
+    }
+
+    /// <summary>
+    /// Intercept Sprite.texture getter to downscale game sprites
+    /// UI sprites are detected and kept at native resolution
+    /// </summary>
+    [HarmonyPatch(typeof(Sprite), nameof(Sprite.texture), MethodType.Getter)]
     [HarmonyPostfix]
-    [HarmonyPriority(Priority.Last)]
-    static void OnTitleSelect(GSDTitleSelect __instance)
+    static void Sprite_get_texture_Postfix(Sprite __instance, ref Texture2D __result)
     {
-        if (!_enabled || _renderScale == 1.0f || _hasApplied) return;
+        if (!_enabled || __result == null) return;
+        if (_gameContentScale >= 1.0f) return;
 
-        // Apply after splash screens when sprite loading begins
-        if (__instance.step >= (int)GSDTitleSelect.State.WaitSpriteLoad)
+        // Check if this is a UI sprite (should not be downscaled)
+        string spriteName = __instance.name;
+        if (IsUITexture(spriteName)) return;
+
+        // Check if already downscaled (avoid re-downscaling)
+        if (__result.width < 100 && __result.height < 100) return; // Skip very small textures
+
+        // Downscale the texture
+        Texture2D original = __result;
+        __result = DownscaleTexture(original, _gameContentScale);
+        
+        if (Plugin.Config.DetailedTextureLog.Value && __result != original)
         {
-            ApplyRenderScale();
+            Plugin.Log.LogInfo($"Downscaled sprite texture: {spriteName} ({original.width}x{original.height} → {__result.width}x{__result.height})");
         }
     }
 
-    private static void ApplyRenderScale()
+    public static void Initialize()
     {
-        if (_hasApplied) return;
-        _hasApplied = true;
+        _enabled = Plugin.Config.EnableSelectiveDownscaling.Value;
+        _gameContentScale = Plugin.Config.GameContentScale.Value;
 
-        try
+        if (!_enabled)
         {
-            // Try QualitySettings.renderScale (Unity 2022+)
-            // This scales the rendering resolution while keeping UI at native resolution
-            QualitySettings.renderScale = _renderScale;
-            
-            Plugin.Log.LogInfo($"========================================");
-            Plugin.Log.LogInfo($"[EXPERIMENTAL] Selective Render Scale");
-            Plugin.Log.LogInfo($"✓ Applied QualitySettings.renderScale = {_renderScale}x");
-            Plugin.Log.LogInfo($"  Game content: Rendered at {_renderScale}x resolution");
-            Plugin.Log.LogInfo($"  UI: Preserved at native resolution");
-            Plugin.Log.LogInfo($"========================================");
+            Plugin.Log.LogInfo("Selective texture downscaling disabled");
+            return;
         }
-        catch (System.Exception ex)
-        {
-            Plugin.Log.LogError($"[EXPERIMENTAL] Failed to apply renderScale: {ex.Message}");
-            Plugin.Log.LogWarning("Your Unity version may not support QualitySettings.renderScale");
-            Plugin.Log.LogWarning("This is expected - the game may not support this feature");
-            Plugin.Log.LogWarning("Falling back to no scaling");
-        }
-    }
-
-    public static void Initialize(float renderScale)
-    {
-        _enabled = true;
-        _renderScale = renderScale;
 
         Plugin.Log.LogInfo($"========================================");
-        Plugin.Log.LogInfo($"[EXPERIMENTAL] Selective Render Scale Initialized");
-        Plugin.Log.LogInfo($"Render Scale: {_renderScale}x");
+        Plugin.Log.LogInfo($"Selective Texture Downscaling Enabled");
+        Plugin.Log.LogInfo($"Game Content Scale: {_gameContentScale * 100}%");
         Plugin.Log.LogInfo($"");
         Plugin.Log.LogInfo($"How it works:");
-        Plugin.Log.LogInfo($"  - Game content (sprites, 3D) renders at {_renderScale}x");
-        Plugin.Log.LogInfo($"  - UI (menus, text) stays at native resolution");
+        Plugin.Log.LogInfo($"  - Game content (sprites, backgrounds) scaled to {_gameContentScale * 100}%");
+        Plugin.Log.LogInfo($"  - UI (menus, text, buttons) stays at 100%");
         Plugin.Log.LogInfo($"  - Result: Better performance with crisp UI!");
-        Plugin.Log.LogInfo($"");
-        Plugin.Log.LogInfo($"Example at 1920x1080:");
-        Plugin.Log.LogInfo($"  Game: {(int)(1920 * _renderScale)}x{(int)(1080 * _renderScale)} ({_renderScale}x)");
-        Plugin.Log.LogInfo($"  UI: 1920x1080 (native)");
         Plugin.Log.LogInfo($"========================================");
     }
 }
-*/

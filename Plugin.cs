@@ -89,5 +89,13 @@ public class Plugin : BasePlugin
             harmony.PatchAll(typeof(CustomTexturePatch));
             CustomTexturePatch.Initialize();
         }
+
+        // Selective Texture Downscaling (Performance)
+        if (Config.EnableSelectiveDownscaling.Value)
+        {
+            Log.LogInfo("Applying Selective Texture Downscaling patches...");
+            harmony.PatchAll(typeof(SelectiveRenderScalePatch));
+            SelectiveRenderScalePatch.Initialize();
+        }
     }
 }
