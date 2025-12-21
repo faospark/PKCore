@@ -29,10 +29,11 @@ public sealed class ModConfiguration
     public ConfigEntry<bool> LogReplaceableTextures { get; private set; }
     public ConfigEntry<bool> LogTexturePaths { get; private set; }
     public ConfigEntry<bool> DetailedTextureLog { get; private set; }
+    public ConfigEntry<bool> LoadLauncherUITextures { get; private set; }
+    public ConfigEntry<bool> LoadBattleEffectTextures { get; private set; }
+    public ConfigEntry<bool> LoadCharacterTextures { get; private set; }
 
-    // Selective Texture Downscaling
-    public ConfigEntry<bool> EnableSelectiveDownscaling { get; private set; }
-    public ConfigEntry<float> GameContentScale { get; private set; }
+
 
     public ModConfiguration(ConfigFile config)
     {
@@ -136,21 +137,27 @@ public sealed class ModConfiguration
             "Enable detailed texture logging (replacement confirmations and full texture list on startup). Disable for silent operation (only errors will be logged)."
         );
 
-        EnableSelectiveDownscaling = _config.Bind(
-            "Performance",
-            "EnableSelectiveDownscaling",
-            false,
-            "Enable selective texture downscaling for game content (sprites, backgrounds, characters) while keeping UI at native resolution. Improves performance with minimal visual impact."
+        LoadLauncherUITextures = _config.Bind(
+            "Custom Textures",
+            "LoadLauncherUITextures",
+            true,
+            "Load custom textures from Textures/launcher folder. Set to false to use original launcher UI."
         );
 
-        GameContentScale = _config.Bind(
-            "Performance",
-            "GameContentScale",
-            0.7f,
-            new ConfigDescription(
-                "Scale factor for game content textures (0.5 = 50%, 0.7 = 70%, 1.0 = 100%). Lower values = better performance but slightly softer visuals. UI always stays at 100% for clarity. Recommended: 0.7 for good balance.",
-                new AcceptableValueRange<float>(0.5f, 1.0f)
-            )
+        LoadBattleEffectTextures = _config.Bind(
+            "Custom Textures",
+            "LoadBattleEffectTextures",
+            true,
+            "Load custom textures from Textures/battle folder. Set to false to use original battle effects."
         );
+
+        LoadCharacterTextures = _config.Bind(
+            "Custom Textures",
+            "LoadCharacterTextures",
+            true,
+            "Load custom textures from Textures/characters folder. Set to false to use original character graphics."
+        );
+
+
     }
 }

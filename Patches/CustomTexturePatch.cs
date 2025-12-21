@@ -24,6 +24,9 @@ public class CustomTexturePatch
     private static HashSet<string> replacedTextures = new HashSet<string>(); // Track replaced textures to prevent duplicate replacement logs
     private static Dictionary<string, Sprite> preloadedBathSprites = new Dictionary<string, Sprite>(); // Preloaded bath_1 to bath_5
     private static int lastBathBGInstanceID = -1; // Track the last BathBG instance we replaced
+    private static HashSet<int> processedTextureIds = new HashSet<int>(); // Track processed texture instances for in-place replacement
+    private static bool hasScannedParticleEffects = false; // Track if we've scanned for particle effects
+    private static float lastParticleScanTime = 0f; // Track last time we scanned for particle effects
     private static string customTexturesPath;
 
     #region Helper Functions
@@ -126,6 +129,84 @@ public class CustomTexturePatch
     }
 
     /// <summary>
+    /// Proactively scan and replace particle effect textures in HDeffects GameObject
+    /// This catches textures that were set before our patches were active
+    /// </summary>
+    private static void ScanAndReplaceParticleEffectTextures()
+    {
+        Plugin.Log.LogInfo("[Proactive Scan] Starting scan for particle effect textures...");
+
+        if (!Plugin.Config.EnableCustomTextures.Value)
+        {
+            Plugin.Log.LogInfo("[Proactive Scan] Custom textures disabled, skipping scan");
+            return;
+        }
+
+        // Find the HDeffects GameObject (created during summon effects)
+        var hdEffects = GameObject.Find("AppRoot/Field/Character/HDEffect");
+        if (hdEffects == null)
+        {
+            Plugin.Log.LogInfo("[Proactive Scan] HDEffect GameObject not found, skipping scan");
+            return;
+        }
+
+        Plugin.Log.LogInfo($"[Proactive Scan] Found HDEffect GameObject, scanning children...");
+
+        // Get all Renderer components in children (includes ParticleSystemRenderer)
+        var renderers = hdEffects.GetComponentsInChildren<Renderer>(true);
+        
+        Plugin.Log.LogInfo($"[Proactive Scan] Found {renderers.Length} renderer(s) in HDEffect");
+
+        int replacedCount = 0;
+        foreach (var renderer in renderers)
+        {
+            if (renderer == null || renderer.material == null)
+                continue;
+
+            Material mat = renderer.material;
+            Texture mainTex = mat.mainTexture;
+            
+            if (mainTex == null)
+                continue;
+
+            Texture2D texture2D = mainTex as Texture2D;
+            if (texture2D == null)
+                continue;
+
+            string textureName = texture2D.name;
+            
+            Plugin.Log.LogInfo($"[Proactive Scan] Checking texture: {textureName} (GameObject: {renderer.gameObject.name})");
+
+            // Check if we have a custom texture for this
+            if (texturePathIndex.ContainsKey(textureName))
+            {
+                int textureId = texture2D.GetInstanceID();
+                
+                // Only process each texture instance once
+                if (!processedTextureIds.Contains(textureId))
+                {
+                    processedTextureIds.Add(textureId);
+                    
+                    if (ReplaceTextureInPlace(texture2D, textureName))
+                    {
+                        replacedCount++;
+                        Plugin.Log.LogInfo($"[Proactive Scan] ✅ Replaced particle texture: {textureName} (GameObject: {renderer.gameObject.name})");
+                    }
+                }
+            }
+        }
+
+        if (replacedCount > 0)
+        {
+            Plugin.Log.LogInfo($"[Proactive Scan] ✅ Replaced {replacedCount} particle effect texture(s) in HDeffects");
+        }
+        else
+        {
+            Plugin.Log.LogInfo($"[Proactive Scan] No textures replaced (found {renderers.Length} renderers)");
+        }
+    }
+
+    /// <summary>
     /// Try to replace a texture with a custom version
     /// Returns true if replacement was successful
     /// </summary>
@@ -181,6 +262,51 @@ public class CustomTexturePatch
         }
 
         return true;
+    }
+
+    /// <summary>
+    /// Force replace a texture by name - finds all Texture2D objects with this name and replaces them
+    /// </summary>
+    private static void ForceReplaceTexture(string textureName)
+    {
+        if (!Plugin.Config.EnableCustomTextures.Value)
+            return;
+
+        // Check if we have a custom texture for this name
+        if (!texturePathIndex.ContainsKey(textureName))
+        {
+            Plugin.Log.LogInfo($"[Force Replace] No custom texture found for: {textureName}");
+            return;
+        }
+
+        // Find all Texture2D objects in the scene with this name
+        var allTextures = Resources.FindObjectsOfTypeAll<Texture2D>();
+        int replacedCount = 0;
+
+        foreach (var texture in allTextures)
+        {
+            if (texture.name == textureName)
+            {
+                int textureId = texture.GetInstanceID();
+                
+                // Only process each texture instance once
+                if (!processedTextureIds.Contains(textureId))
+                {
+                    processedTextureIds.Add(textureId);
+                    
+                    if (ReplaceTextureInPlace(texture, textureName))
+                    {
+                        replacedCount++;
+                        Plugin.Log.LogInfo($"[Force Replace] ✅ Replaced texture: {textureName} (ID: {textureId})");
+                    }
+                }
+            }
+        }
+
+        if (replacedCount == 0)
+        {
+            Plugin.Log.LogInfo($"[Force Replace] No instances of '{textureName}' found in scene");
+        }
     }
 
     #endregion
@@ -593,6 +719,32 @@ public class CustomTexturePatch
         bool isBathBackground = objectPath.Contains("BathBG");
         bool isBgManager = objectPath.Contains("bgManagerHD");
 
+        // Check if this is HDEffect or one of its children - trigger particle scan
+        // Also check for M_GATE summon effect objects
+        bool isHDEffect = __instance.name == "HDEffect" || __instance.transform.parent?.name == "HDEffect";
+        bool isSummonEffect = __instance.name.StartsWith("M_GATE");
+        
+        if (isHDEffect || isSummonEffect)
+        {
+            Plugin.Log.LogInfo($"[Summon Effect Activated] GameObject '{__instance.name}' activated, forcing particle texture replacements...");
+            
+            // Hardcoded replacements for known summon effect textures
+            // M_GATE1_00 - Gate Rune Level 1
+            ForceReplaceTexture("Eff_tex_Summon_01");
+            
+            // M_GATE2_00 - Gate Rune Level 2
+            ForceReplaceTexture("Eff_tex_Summon_11");
+            ForceReplaceTexture("Eff_tex_Summon_12");
+            ForceReplaceTexture("Eff_tex_Summon_13");
+            
+            // M_GATE3_00 - Gate Rune Level 3
+            ForceReplaceTexture("Eff_tex_Summon_10");
+            
+            // M_GATE4_00 - Gate Rune Level 4
+            ForceReplaceTexture("Eff_tex_Summon_07");
+            ForceReplaceTexture("Eff_tex_Summon_02_head_ren_01");
+        }
+
         // Special handling for BathBG activation
         if (__instance.name == "BathBG" && isBathBackground)
         {
@@ -601,7 +753,7 @@ public class CustomTexturePatch
             int currentInstanceID = __instance.GetInstanceID();
             if (currentInstanceID != lastBathBGInstanceID)
             {
-                Plugin.Log.LogInfo($"New BathBG instance detected via SetActive (ID: {currentInstanceID}, previous: {lastBathBGInstanceID})");
+            Plugin.Log.LogInfo($"New BathBG instance detected via SetActive (ID: {currentInstanceID}, previous: {lastBathBGInstanceID})");
                 lastBathBGInstanceID = currentInstanceID;
             }
         }
@@ -686,6 +838,21 @@ public class CustomTexturePatch
         string textureName = __result.name;
         LogReplaceableTexture(textureName, "Texture - Atlas");
         
+        // Trigger particle texture replacement when gate summon atlases are loaded
+        if (textureName.Contains("m_gat") && textureName.Contains("_atlas"))
+        {
+            Plugin.Log.LogInfo($"[Atlas Trigger] Gate summon atlas detected: {textureName}, forcing particle texture replacements...");
+            
+            // Force replace all known summon effect textures
+            ForceReplaceTexture("Eff_tex_Summon_01");
+            ForceReplaceTexture("Eff_tex_Summon_10");
+            ForceReplaceTexture("Eff_tex_Summon_11");
+            ForceReplaceTexture("Eff_tex_Summon_12");
+            ForceReplaceTexture("Eff_tex_Summon_13");
+            ForceReplaceTexture("Eff_tex_Summon_07");
+            ForceReplaceTexture("Eff_tex_Summon_02_head_ren_01");
+        }
+        
         // Try to replace with custom texture
         Texture tempTexture = __result;
         if (TryReplaceTexture(textureName, ref tempTexture, logReplacement: true))
@@ -723,6 +890,7 @@ public class CustomTexturePatch
 
     /// <summary>
     /// Intercept Material.mainTexture setter to replace textures
+    /// Uses in-place replacement to preserve references for particle systems and effects
     /// </summary>
     [HarmonyPatch(typeof(Material), nameof(Material.mainTexture), MethodType.Setter)]
     [HarmonyPrefix]
@@ -740,7 +908,19 @@ public class CustomTexturePatch
             Plugin.Log.LogInfo($"[Replaceable Texture] {originalName}");
         }
         
-        // Try to load custom texture replacement
+        // Try in-place replacement first (preserves all references - critical for summon effects!)
+        Texture2D originalTexture2D = value as Texture2D;
+        if (originalTexture2D != null)
+        {
+            if (ReplaceTextureInPlace(originalTexture2D, originalName))
+            {
+                // Success! Texture pixels were replaced in-place
+                // All references (materials, particle systems, etc.) automatically see the new texture
+                return; // Don't modify 'value' - we replaced the pixels in the existing object
+            }
+        }
+        
+        // Fallback: Try to load custom texture replacement (creates new texture object)
         Texture2D customTexture = LoadCustomTexture(originalName);
         if (customTexture != null)
         {
@@ -752,12 +932,11 @@ public class CustomTexturePatch
             }
             
             // Get original texture dimensions
-            Texture2D originalTexture = value as Texture2D;
-            if (originalTexture != null)
+            if (originalTexture2D != null)
             {
                 // Calculate scale factor
-                float scaleX = (float)originalTexture.width / customTexture.width;
-                float scaleY = (float)originalTexture.height / customTexture.height;
+                float scaleX = (float)originalTexture2D.width / customTexture.width;
+                float scaleY = (float)originalTexture2D.height / customTexture.height;
                 
                 // Adjust material's texture scale to compensate for size difference
                 // This makes the custom texture display at the same visual size as the original
@@ -776,6 +955,129 @@ public class CustomTexturePatch
                 }
             }
             value = customTexture;
+        }
+    }
+
+    /// <summary>
+    /// Intercept Material.mainTexture getter to replace textures that were already assigned
+    /// This catches textures loaded before our patches were active (e.g., summon effects)
+    /// </summary>
+    [HarmonyPatch(typeof(Material), nameof(Material.mainTexture), MethodType.Getter)]
+    [HarmonyPostfix]
+    public static void Material_get_mainTexture_Postfix(Material __instance, ref Texture __result)
+    {
+        if (__result == null)
+            return;
+
+        string textureName = __result.name;
+        
+        // Try in-place replacement for Texture2D objects
+        Texture2D texture2D = __result as Texture2D;
+        if (texture2D != null)
+        {
+            // Check if we have a custom texture for this
+            if (texturePathIndex.ContainsKey(textureName))
+            {
+                // Try to replace in-place (only once per texture instance)
+                int textureId = texture2D.GetInstanceID();
+                
+                // Check if we've already processed this texture instance
+                if (!processedTextureIds.Contains(textureId))
+                {
+                    processedTextureIds.Add(textureId);
+                    
+                    if (ReplaceTextureInPlace(texture2D, textureName))
+                    {
+                        // Success! The texture pixels were replaced in-place
+                        // No need to modify __result - we changed the pixels in the existing object
+                        Plugin.Log.LogInfo($"[Getter] Replaced texture in-place: {textureName}");
+                    }
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// Intercept Renderer.material getter to catch textures in particle systems and other renderers
+    /// This is critical for summon effects which use ParticleSystemRenderer
+    /// </summary>
+    [HarmonyPatch(typeof(Renderer), nameof(Renderer.material), MethodType.Getter)]
+    [HarmonyPostfix]
+    public static void Renderer_get_material_Postfix(Renderer __instance, ref Material __result)
+    {
+        // Proactively scan for particle effects on first renderer access
+        if (!hasScannedParticleEffects)
+        {
+            hasScannedParticleEffects = true;
+            ScanAndReplaceParticleEffectTextures();
+        }
+
+        if (__result == null)
+            return;
+
+        // Check the material's mainTexture
+        Texture mainTex = __result.mainTexture;
+        if (mainTex != null)
+        {
+            Texture2D texture2D = mainTex as Texture2D;
+            if (texture2D != null)
+            {
+                string textureName = texture2D.name;
+                
+                // Check if we have a custom texture for this
+                if (texturePathIndex.ContainsKey(textureName))
+                {
+                    int textureId = texture2D.GetInstanceID();
+                    
+                    if (!processedTextureIds.Contains(textureId))
+                    {
+                        processedTextureIds.Add(textureId);
+                        
+                        if (ReplaceTextureInPlace(texture2D, textureName))
+                        {
+                            Plugin.Log.LogInfo($"[Renderer.material] Replaced texture in-place: {textureName} (GameObject: {__instance.gameObject.name}, Renderer: {__instance.GetType().Name})");
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// Intercept Renderer.sharedMaterial getter for shared materials (particle systems often use this)
+    /// </summary>
+    [HarmonyPatch(typeof(Renderer), nameof(Renderer.sharedMaterial), MethodType.Getter)]
+    [HarmonyPostfix]
+    public static void Renderer_get_sharedMaterial_Postfix(Renderer __instance, ref Material __result)
+    {
+        if (__result == null)
+            return;
+
+        // Check the material's mainTexture
+        Texture mainTex = __result.mainTexture;
+        if (mainTex != null)
+        {
+            Texture2D texture2D = mainTex as Texture2D;
+            if (texture2D != null)
+            {
+                string textureName = texture2D.name;
+                
+                // Check if we have a custom texture for this
+                if (texturePathIndex.ContainsKey(textureName))
+                {
+                    int textureId = texture2D.GetInstanceID();
+                    
+                    if (!processedTextureIds.Contains(textureId))
+                    {
+                        processedTextureIds.Add(textureId);
+                        
+                        if (ReplaceTextureInPlace(texture2D, textureName))
+                        {
+                            Plugin.Log.LogInfo($"[Renderer.sharedMaterial] Replaced texture in-place: {textureName} (GameObject: {__instance.gameObject.name}, Renderer: {__instance.GetType().Name})");
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -1209,6 +1511,64 @@ public class CustomTexturePatch
     }
 
     /// <summary>
+    /// Replace an existing Texture2D's pixel data in-place from a custom image file
+    /// This preserves all references (Materials, ParticleSystems, etc.) to the original texture
+    /// Uses Texture2D.LoadImage() to overwrite pixel data while keeping the same object reference
+    /// </summary>
+    /// <param name="originalTexture">The existing texture to replace</param>
+    /// <param name="textureName">Name to look up in texture index</param>
+    /// <returns>True if replacement was successful</returns>
+    private static bool ReplaceTextureInPlace(Texture2D originalTexture, string textureName)
+    {
+        if (originalTexture == null)
+            return false;
+
+        // Look up full path from index
+        if (!texturePathIndex.TryGetValue(textureName, out string filePath))
+            return false;
+
+        try
+        {
+            // Load image file
+            byte[] fileData = File.ReadAllBytes(filePath);
+            
+            // CRITICAL: LoadImage() replaces the pixel data and resizes the texture automatically
+            // This keeps the original reference intact, so all sprites/materials update immediately
+            if (!UnityEngine.ImageConversion.LoadImage(originalTexture, fileData))
+            {
+                Plugin.Log.LogError($"Failed to load image data into texture: {filePath}");
+                return false;
+            }
+
+            // Apply texture settings for quality
+            originalTexture.filterMode = FilterMode.Bilinear;
+            originalTexture.wrapMode = TextureWrapMode.Clamp;
+            originalTexture.anisoLevel = 4;
+            
+            // Apply with mipmaps enabled and keep readable
+            originalTexture.Apply(true, false);
+            
+            // Prevent Unity from unloading the texture
+            UnityEngine.Object.DontDestroyOnLoad(originalTexture);
+            
+            // Log success (skip for sactx and character textures to reduce spam)
+            bool shouldSkipLog = textureName.StartsWith("sactx") || filePath.ToLower().Contains("characters");
+            if (!shouldSkipLog && Plugin.Config.DetailedTextureLog.Value)
+            {
+                Plugin.Log.LogInfo($"Replaced raw texture in-place: {textureName} ({originalTexture.width}x{originalTexture.height})");
+            }
+            
+            return true;
+        }
+        catch (System.Exception ex)
+        {
+            Plugin.Log.LogError($"Error replacing texture {textureName} in-place: {ex.Message}");
+            return false;
+        }
+    }
+
+
+    /// <summary>
     /// Build index of all texture files (supports subfolders)
     /// </summary>
     private static void BuildTextureIndex()
@@ -1237,6 +1597,10 @@ public class CustomTexturePatch
             {
                 // Skip files in 00-Mods folder for now (will process later)
                 if (hasModsFolder && filePath.StartsWith(modsFolder, StringComparison.OrdinalIgnoreCase))
+                    continue;
+                
+                // Skip textures based on category filters
+                if (!TextureOptions.ShouldLoadTexture(filePath))
                     continue;
                 
                 string textureName = Path.GetFileNameWithoutExtension(filePath);
@@ -1273,6 +1637,10 @@ public class CustomTexturePatch
                 
                 foreach (string filePath in modFiles)
                 {
+                    // Skip textures based on category filters
+                    if (!TextureOptions.ShouldLoadTexture(filePath))
+                        continue;
+                    
                     string textureName = Path.GetFileNameWithoutExtension(filePath);
                     string modRelative = filePath.Replace(customTexturesPath, "").TrimStart('\\', '/');
                     
