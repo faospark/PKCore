@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace PKCore;
 
-[BepInPlugin("faospark.pkcore", "PKCore (Project Kyaro Core)", "1.6.0")]
+[BepInPlugin("faospark.pkcore", "PKCore", "1.6.0")]
 [BepInDependency("d3xMachina.suikoden_fix", BepInDependency.DependencyFlags.SoftDependency)]
 public class Plugin : BasePlugin
 {
@@ -20,7 +20,11 @@ public class Plugin : BasePlugin
         Instance = this;
         Log = base.Log;
 
-        Log.LogInfo("Loading PKCore (Project Kyaro Core) by faospark...");
+        Log.LogInfo("Loading PKCore...");
+        
+        // Log build timestamp for symlink verification
+        var buildDate = System.IO.File.GetLastWriteTime(typeof(Plugin).Assembly.Location);
+        Log.LogInfo($"Build timestamp: {buildDate:yyyy-MM-dd HH:mm:ss}");
 
         Config = new ModConfiguration(base.Config);
         Config.Init();
@@ -88,6 +92,14 @@ public class Plugin : BasePlugin
             
             harmony.PatchAll(typeof(CustomTexturePatch));
             CustomTexturePatch.Initialize();
+        }
+
+        // ParticleSystem Diagnostics (Research)
+        if (Config.EnableParticleSystemDiagnostics.Value)
+        {
+            Log.LogInfo("Applying ParticleSystem diagnostic patches...");
+            harmony.PatchAll(typeof(ParticleSystemResearch));
+            ParticleSystemResearch.Initialize(true);
         }
     }
 }

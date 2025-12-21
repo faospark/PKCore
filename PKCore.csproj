@@ -118,6 +118,14 @@
       <HintPath>$(GamePath)\BepInEx\interop\UnityEngine.ImageConversionModule.dll</HintPath>
       <Private>false</Private>
     </Reference>
+    <Reference Include="UnityEngine.JSONSerializeModule">
+      <HintPath>$(GamePath)\BepInEx\interop\UnityEngine.JSONSerializeModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.ParticleSystemModule">
+      <HintPath>$(GamePath)\BepInEx\interop\UnityEngine.ParticleSystemModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
     <Reference Include="Unity.Addressables">
       <HintPath>$(GamePath)\BepInEx\interop\Unity.Addressables.dll</HintPath>
       <Private>false</Private>

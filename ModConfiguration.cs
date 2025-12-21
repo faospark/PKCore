@@ -32,6 +32,10 @@ public sealed class ModConfiguration
     public ConfigEntry<bool> LoadLauncherUITextures { get; private set; }
     public ConfigEntry<bool> LoadBattleEffectTextures { get; private set; }
     public ConfigEntry<bool> LoadCharacterTextures { get; private set; }
+    
+    // Diagnostic Settings
+    public ConfigEntry<bool> EnableParticleSystemDiagnostics { get; private set; }
+
 
 
 
@@ -158,6 +162,12 @@ public sealed class ModConfiguration
             "Load custom textures from Textures/characters folder. Set to false to use original character graphics."
         );
 
+        EnableParticleSystemDiagnostics = _config.Bind(
+            "Diagnostics",
+            "EnableParticleSystemDiagnostics",
+            false,
+            "Enable diagnostic logging for ParticleSystem texture usage. Logs how summon effects and particle systems access textures. For development/debugging only."
+        );
 
     }
 }

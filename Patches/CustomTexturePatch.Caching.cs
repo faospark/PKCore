@@ -1,0 +1,184 @@
+using System;
+using System.IO;
+using System.Collections.Generic;
+using UnityEngine;
+using BepInEx;
+using System.Xml.Serialization;
+
+namespace PKCore.Patches;
+
+public partial class CustomTexturePatch
+{
+    private static string cachePath;
+    private static string manifestPath;
+    
+    [Serializable]
+    public class ManifestEntry
+    {
+        [XmlAttribute]
+        public string Key;
+        [XmlAttribute]
+        public string Value;
+    }
+
+    [Serializable]
+    public class TextureManifest
+    {
+        public long LastModified;
+        public List<ManifestEntry> Entries = new List<ManifestEntry>();
+        
+        public void FromDictionary(Dictionary<string, string> dict)
+        {
+            Entries.Clear();
+            foreach(var kvp in dict)
+            {
+                Entries.Add(new ManifestEntry { Key = kvp.Key, Value = kvp.Value });
+            }
+        }
+        
+        public Dictionary<string, string> ToDictionary()
+        {
+            var dict = new Dictionary<string, string>();
+            foreach(var entry in Entries)
+            {
+                if (!dict.ContainsKey(entry.Key))
+                    dict.Add(entry.Key, entry.Value);
+            }
+            return dict;
+        }
+    }
+
+    /// <summary>
+    /// Initialize caching paths
+    /// </summary>
+    private static void InitializeCaching()
+    {
+        cachePath = Path.Combine(BepInEx.Paths.PluginPath, "PKCore", "Cache");
+        // Changing extension to .xml
+        manifestPath = Path.Combine(cachePath, "texture_manifest.xml");
+
+        if (!Directory.Exists(cachePath))
+        {
+            Directory.CreateDirectory(cachePath);
+        }
+    }
+
+    /// <summary>
+    /// Try to load texture index from manifest (XML)
+    /// </summary>
+    private static bool TryLoadManifestIndex()
+    {
+        if (!File.Exists(manifestPath))
+            return false;
+
+        try
+        {
+            // Check if textures directory has been modified since manifest
+            long currentModified = Directory.GetLastWriteTime(customTexturesPath).Ticks;
+            
+            XmlSerializer serializer = new XmlSerializer(typeof(TextureManifest));
+            using (FileStream stream = new FileStream(manifestPath, FileMode.Open))
+            {
+                TextureManifest manifest = (TextureManifest)serializer.Deserialize(stream);
+
+                if (manifest != null && manifest.LastModified == currentModified && manifest.Entries != null && manifest.Entries.Count > 0)
+                {
+                    texturePathIndex = manifest.ToDictionary();
+                    Plugin.Log.LogInfo($"Loaded texture index from manifest ({texturePathIndex.Count} textures)");
+                    return true;
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Plugin.Log.LogError($"Failed to load manifest: {ex.Message}");
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// Save texture index to manifest (XML)
+    /// </summary>
+    private static void SaveManifestIndex()
+    {
+        try
+        {
+            TextureManifest manifest = new TextureManifest
+            {
+                LastModified = Directory.GetLastWriteTime(customTexturesPath).Ticks
+            };
+            manifest.FromDictionary(texturePathIndex);
+
+            XmlSerializer serializer = new XmlSerializer(typeof(TextureManifest));
+            using (FileStream stream = new FileStream(manifestPath, FileMode.Create))
+            {
+                serializer.Serialize(stream, manifest);
+            }
+            Plugin.Log.LogInfo("Saved texture index validation manifest");
+        }
+        catch (Exception ex)
+        {
+            Plugin.Log.LogError($"Failed to save manifest: {ex.Message}");
+        }
+    }
+
+    /// <summary>
+    /// Try to load texture from binary cache (PNG format fallback for stability)
+    /// </summary>
+    private static Texture2D LoadFromBinaryCache(string textureName)
+    {
+        string binPath = Path.Combine(cachePath, $"{textureName}.bin");
+        
+        if (!File.Exists(binPath))
+            return null;
+
+        try
+        {
+            // Check if bin file is newer than source file
+            if (texturePathIndex.TryGetValue(textureName, out string sourcePath))
+            {
+                if (File.GetLastWriteTime(sourcePath) > File.GetLastWriteTime(binPath))
+                    return null; // Source is newer, rebuild cache
+            }
+
+            byte[] fileData = File.ReadAllBytes(binPath);
+            Texture2D texture = new Texture2D(2, 2); // Size replaces automatically
+            if (ImageConversion.LoadImage(texture, fileData))
+            {
+                texture.Apply(true, false);
+                return texture;
+            }
+            return null;
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
+    /// <summary>
+    /// Save texture to binary cache (PNG format fallback for stability)
+    /// </summary>
+    private static void SaveToBinaryCache(string textureName, Texture2D texture)
+    {
+        if (texture == null) return;
+
+        try
+        {
+            string binPath = Path.Combine(cachePath, $"{textureName}.bin");
+            
+            // Use EncodeToPNG instead of raw data for maximum compatibility
+            // This sacrifices some speed for stability in IL2CPP
+            byte[] pngData = ImageConversion.EncodeToPNG(texture);
+            if (pngData != null)
+            {
+                File.WriteAllBytes(binPath, pngData);
+            }
+        }
+        catch (Exception ex)
+        {
+            Plugin.Log.LogError($"Failed to save binary cache for {textureName}: {ex.Message}");
+        }
+    }
+}

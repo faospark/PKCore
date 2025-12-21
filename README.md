@@ -22,9 +22,11 @@ Designed for **Project Kyaro's upscaled sprites** - adds granular texture filter
 
 ### Custom Texture Replacement
 
-> **🆕 NEW FEATURE**: Texture replacement support in any Project Kyaro . This feature eliminates the need for Special K for texture loading.
+> **🆕 NEW FEATURE**: Texture replacement support in any Project Kyaro. This feature eliminates the need for Special K for texture loading.
 
 Replace game textures with custom PNG files in `BepInEx/plugins/PKCore/Textures/`. Use `00-Mods/` subfolder for highest priority custom mods.
+
+**Performance Optimization**: Built-in caching system dramatically improves boot times and eliminates runtime stuttering. See **[CACHING.md](CACHING.md)** for technical details.
 
 ### Controller Prompt Override
 Force specific controller button icons (PlayStation/Xbox) regardless of detected controller. Works throughout entire game including minigames.
@@ -91,7 +93,8 @@ Fullscreen = -1
 **White outlines on sprites?** → Decrease `SpriteMipmapBias` to `-1.0`  
 **Performance issues?** → Set `ResolutionScale = 0.75` or `0.5`  
 **Want original look?** → Set `SpriteFilteringQuality = 0`  
-**Controller prompts not changing?** → Check `ForceControllerPrompts = true` and verify `ControllerPromptType`
+**Controller prompts not changing?** → Check `ForceControllerPrompts = true` and verify `ControllerPromptType`  
+**Slow boot times?** → Cache builds on first run with custom textures; subsequent boots are much faster (see [CACHING.md](CACHING.md))
 
 ## Changelog
 
