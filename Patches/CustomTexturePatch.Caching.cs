@@ -128,6 +128,10 @@ public partial class CustomTexturePatch
     /// </summary>
     private static Texture2D LoadFromBinaryCache(string textureName)
     {
+        // Check if binary cache is enabled
+        if (!Plugin.Config.EnableBinaryTextureCache.Value)
+            return null;
+            
         string binPath = Path.Combine(cachePath, $"{textureName}.bin");
         
         if (!File.Exists(binPath))
@@ -162,6 +166,10 @@ public partial class CustomTexturePatch
     /// </summary>
     private static void SaveToBinaryCache(string textureName, Texture2D texture)
     {
+        // Check if binary cache is enabled
+        if (!Plugin.Config.EnableBinaryTextureCache.Value)
+            return;
+            
         if (texture == null) return;
 
         try

@@ -33,8 +33,12 @@ public sealed class ModConfiguration
     public ConfigEntry<bool> LoadBattleEffectTextures { get; private set; }
     public ConfigEntry<bool> LoadCharacterTextures { get; private set; }
     
+    // NPC Portrait Settings
+    public ConfigEntry<bool> EnableNPCPortraits { get; private set; }
+    
     // Diagnostic Settings
     public ConfigEntry<bool> EnableParticleSystemDiagnostics { get; private set; }
+    public ConfigEntry<bool> EnableBinaryTextureCache { get; private set; }
 
 
 
@@ -162,6 +166,13 @@ public sealed class ModConfiguration
             "Load custom textures from Textures/characters folder. Set to false to use original character graphics."
         );
 
+        EnableNPCPortraits = _config.Bind(
+            "NPC Portraits",
+            "EnableNPCPortraits",
+            true,
+            "Enable custom NPC portrait injection. Place PNG files in BepInEx/plugins/PKCore/NPCPortraits/ named after the NPC (e.g., Viktor.png, Flik.png). Case-insensitive."
+        );
+
         EnableParticleSystemDiagnostics = _config.Bind(
             "Diagnostics",
             "EnableParticleSystemDiagnostics",
@@ -169,5 +180,11 @@ public sealed class ModConfiguration
             "Enable diagnostic logging for ParticleSystem texture usage. Logs how summon effects and particle systems access textures. For development/debugging only."
         );
 
+        EnableBinaryTextureCache = _config.Bind(
+            "Performance",
+            "EnableBinaryTextureCache",
+            false,
+            "Cache loaded textures as PNG files for faster loading. Disable if experiencing slowdowns in large areas with many textures. Manifest cache will still be used."
+        );
     }
 }

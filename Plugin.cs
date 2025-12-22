@@ -94,6 +94,14 @@ public class Plugin : BasePlugin
             CustomTexturePatch.Initialize();
         }
 
+        // NPC Portrait Injection
+        if (Config.EnableNPCPortraits.Value)
+        {
+            Log.LogInfo("Applying NPC Portrait patches...");
+            harmony.PatchAll(typeof(NPCPortraitPatch));
+            NPCPortraitPatch.Initialize();
+        }
+
         // ParticleSystem Diagnostics (Research)
         if (Config.EnableParticleSystemDiagnostics.Value)
         {
