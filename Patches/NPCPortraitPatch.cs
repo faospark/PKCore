@@ -192,10 +192,15 @@ public class NPCPortraitPatch
         try
         {
             byte[] fileData = File.ReadAllBytes(filePath);
-            Texture2D texture = new Texture2D(2, 2, TextureFormat.RGBA32, true);
+            Texture2D texture = new Texture2D(2, 2, TextureFormat.RGBA32, false); // false = no mipmaps
             
             if (ImageConversion.LoadImage(texture, fileData))
             {
+                // Set filter mode to prevent white outline on transparent images
+                texture.filterMode = FilterMode.Bilinear;
+                texture.wrapMode = TextureWrapMode.Clamp;
+                texture.anisoLevel = 0;
+                
                 texture.Apply(true, false);
                 return texture;
             }
@@ -458,35 +463,31 @@ public class NPCPortraitPatch
             Plugin.Log.LogInfo($"[NPCPortrait] ✓ Found Image component, Current sprite: {(imgFace.sprite != null ? imgFace.sprite.name : "null")}");
             
             // Get sprite dimensions - try cached sprite first, then use fp_219.png as fallback
-            Rect spriteRect;
             Vector2 spritePivot;
             float pixelsPerUnit;
             
             if (cachedPortraitSprite != null)
             {
-                spriteRect = cachedPortraitSprite.rect;
                 spritePivot = cachedPortraitSprite.pivot;
                 pixelsPerUnit = cachedPortraitSprite.pixelsPerUnit;
                 Plugin.Log.LogInfo("[NPCPortrait] Using cached sprite settings");
             }
             else
             {
-                // Load fp_219.png as base template
+                // Load fp_219.png as base template for pivot and pixelsPerUnit only
                 Texture2D baseTexture = LoadPortraitTexture("fp_219");
                 if (baseTexture != null)
                 {
-                    spriteRect = new Rect(0, 0, baseTexture.width, baseTexture.height);
                     spritePivot = new Vector2(0.5f, 0.5f);
                     pixelsPerUnit = 100f;
-                    Plugin.Log.LogInfo($"[NPCPortrait] Using fp_219.png as base template ({baseTexture.width}x{baseTexture.height})");
+                    Plugin.Log.LogInfo($"[NPCPortrait] Using fp_219.png as base template");
                 }
                 else
                 {
-                    // Ultimate fallback - use standard portrait dimensions
-                    spriteRect = new Rect(0, 0, 256, 256);
+                    // Ultimate fallback - use standard portrait settings
                     spritePivot = new Vector2(0.5f, 0.5f);
                     pixelsPerUnit = 100f;
-                    Plugin.Log.LogWarning("[NPCPortrait] Using default sprite settings (256x256)");
+                    Plugin.Log.LogWarning("[NPCPortrait] Using default sprite settings");
                 }
             }
             
@@ -508,10 +509,10 @@ public class NPCPortraitPatch
                 Plugin.Log.LogInfo($"[NPCPortrait] ✓ Loaded custom texture: {customTexture.width}x{customTexture.height}");
             }
             
-            // Create new sprite
+            // Create new sprite using actual texture dimensions
             Sprite newSprite = Sprite.Create(
                 customTexture,
-                spriteRect,
+                new Rect(0, 0, customTexture.width, customTexture.height),
                 spritePivot,
                 pixelsPerUnit,
                 0,

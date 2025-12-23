@@ -107,7 +107,7 @@ public class Plugin : BasePlugin
         {
             Log.LogInfo("Applying ParticleSystem diagnostic patches...");
             harmony.PatchAll(typeof(ParticleSystemResearch));
-            ParticleSystemResearch.Initialize(true);
+            ParticleSystemResearch.Initialize(Config.EnableParticleSystemDiagnostics.Value);
         }
     }
 }
