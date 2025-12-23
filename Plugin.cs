@@ -32,6 +32,17 @@ public class Plugin : BasePlugin
         // Suppress harmless Addressables warning after texture replacement
         Application.SetStackTraceLogType(LogType.Error, StackTraceLogType.None);
         
+        // Register custom MonoBehaviours for IL2CPP
+        try
+        {
+            Il2CppInterop.Runtime.Injection.ClassInjector.RegisterTypeInIl2Cpp<SavePointSpriteMonitor>();
+            Log.LogInfo("Registered SavePointSpriteMonitor in IL2CPP domain.");
+        }
+        catch (System.Exception ex)
+        {
+            Log.LogError($"Failed to register SavePointSpriteMonitor: {ex.Message}");
+        }
+        
         ApplyPatches();
 
         Log.LogInfo("PKCore loaded successfully!");

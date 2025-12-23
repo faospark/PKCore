@@ -223,13 +223,25 @@ public partial class CustomTexturePatch
                         float x = col * frameWidth;
                         float y = atlasTexture.height - (row + 1) * frameHeight;
                         
-                        Plugin.Log.LogInfo($"[SavePoint] Creating sprite: rect=({x},{y},{frameWidth},{frameHeight}) from atlas {atlasTexture.width}x{atlasTexture.height}");
+                        // Preserve original sprite properties if available
+                        Vector2 customPivot = originalSprite != null ? originalSprite.pivot / originalSprite.rect.size : new Vector2(0.5f, 0.5f);
+                        float customPPU = originalSprite != null ? originalSprite.pixelsPerUnit : 100f;
+
+                        // Auto-scale pixelsPerUnit to maintain original display size
+                        if (originalSprite != null)
+                        {
+                            // Assuming the frame width corresponds to the original width
+                            float scaleRatio = frameWidth / originalSprite.rect.width;
+                            customPPU = originalSprite.pixelsPerUnit * scaleRatio;
+                        }
+
+                        Plugin.Log.LogInfo($"[SavePoint] Creating sprite: rect=({x},{y},{frameWidth},{frameHeight}) from atlas {atlasTexture.width}x{atlasTexture.height} PPU:{customPPU} Pivot:{customPivot}");
                         
                         Sprite customSprite = Sprite.Create(
                             atlasTexture,
                             new Rect(x, y, frameWidth, frameHeight),
-                            new Vector2(0.5f, 0.5f),
-                            100f,
+                            customPivot,
+                            customPPU,
                             0,
                             SpriteMeshType.FullRect
                         );

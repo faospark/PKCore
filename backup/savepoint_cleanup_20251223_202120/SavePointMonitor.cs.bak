@@ -88,7 +88,6 @@ public class SavePointSpriteMonitor : MonoBehaviour
                     if (loadedSprite != null)
                     {
                         spriteRenderer.sprite = loadedSprite;
-                        spriteRenderer.sprite = loadedSprite;
                         // Plugin.Log.LogInfo($"[SavePoint Monitor] ✓ Loaded and enforced custom sprite: {currentSpriteName}");
                     }
                 }
