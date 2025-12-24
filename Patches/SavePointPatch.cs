@@ -77,7 +77,10 @@ public partial class CustomTexturePatch
             return;
         }
 
-        Plugin.Log.LogInfo($"[SavePoint Preload] Atlas loaded: {atlasTexture.width}x{atlasTexture.height}");
+        if (Plugin.Config.DetailedTextureLog.Value)
+        {
+            Plugin.Log.LogInfo($"[SavePoint Preload] Atlas loaded: {atlasTexture.width}x{atlasTexture.height}");
+        }
         int preloaded = 0;
         
         // Atlas is 400x200 with 8 frames in a 4x2 grid (each frame is 100x100)
@@ -103,7 +106,10 @@ public partial class CustomTexturePatch
             float x = col * frameWidth;
             float y = atlasTexture.height - (row + 1) * frameHeight; // Flip Y
             
-            Plugin.Log.LogInfo($"[SavePoint Preload] Creating sprite {frameName}: rect=({x},{y},{frameWidth},{frameHeight})");
+            if (Plugin.Config.DetailedTextureLog.Value)
+            {
+                Plugin.Log.LogInfo($"[SavePoint Preload] Creating sprite {frameName}: rect=({x},{y},{frameWidth},{frameHeight})");
+            }
             
             Sprite sprite = Sprite.Create(
                 atlasTexture,
@@ -118,7 +124,7 @@ public partial class CustomTexturePatch
             {
                 Plugin.Log.LogError($"[SavePoint Preload] Sprite.Create returned NULL for {frameName}!");
             }
-            else
+            else if (Plugin.Config.DetailedTextureLog.Value)
             {
                 Plugin.Log.LogInfo($"[SavePoint Preload] Created sprite {frameName} successfully");
             }

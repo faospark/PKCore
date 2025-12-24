@@ -12,9 +12,6 @@ public class BorderlessWindowPatch
             return;
         }
 
-        Plugin.Log.LogInfo("========================================");
-        Plugin.Log.LogInfo("Enabling Borderless Window Mode...");
-
         try
         {
             // Just change the fullscreen mode without changing resolution
@@ -22,7 +19,6 @@ public class BorderlessWindowPatch
             Screen.fullScreenMode = FullScreenMode.FullScreenWindow;
 
             Plugin.Log.LogInfo($"✓ Borderless window enabled");
-            Plugin.Log.LogInfo("========================================");
         }
         catch (System.Exception ex)
         {

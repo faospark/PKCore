@@ -9,6 +9,7 @@ namespace PKCore.Patches;
 public class SavePointSpriteMonitor : MonoBehaviour
 {
     private SpriteRenderer spriteRenderer;
+    private static bool hasLoggedGlowDisable = false; // Track if we've logged glow disable
     
     void Start()
     {
@@ -33,7 +34,10 @@ public class SavePointSpriteMonitor : MonoBehaviour
                     bool success = CustomTexturePatch.ReplaceTextureInPlace(spriteRenderer.sprite.texture, textureName);
                     if (success)
                     {
-                        Plugin.Log.LogInfo("[SavePoint Monitor] ✓ Successfully replaced texture in-place. Disabling monitor.");
+                        if (Plugin.Config.DetailedTextureLog.Value)
+                        {
+                            Plugin.Log.LogInfo("[SavePoint Monitor] ✓ Successfully replaced texture in-place. Disabling monitor.");
+                        }
                         enabled = false; // No need to monitor frames anymore!
                     }
                 }
@@ -62,7 +66,11 @@ public class SavePointSpriteMonitor : MonoBehaviour
                     if (glowTransform != null)
                     {
                         glowTransform.gameObject.SetActive(false);
-                        Plugin.Log.LogInfo("[SavePoint Monitor] ✓ Disabled save point glow effect");
+                        if (!hasLoggedGlowDisable)
+                        {
+                            Plugin.Log.LogInfo("[SavePoint] ✓ Disabled save point glow effect");
+                            hasLoggedGlowDisable = true;
+                        }
                     }
                 }
             }

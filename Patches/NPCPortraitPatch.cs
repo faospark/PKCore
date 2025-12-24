@@ -71,57 +71,6 @@ public class NPCPortraitPatch
     /// </summary>
     public static void Initialize()
     {
-        Plugin.Log.LogInfo("========================================");
-        Plugin.Log.LogInfo("NPC Portrait System Initializing...");
-        
-        // DIAGNOSTIC: Test loading various portrait sprite names to find what exists
-        Plugin.Log.LogInfo("========================================");
-        Plugin.Log.LogInfo("Testing portrait sprite names...");
-        
-        string[] testNames = { 
-            "fp_001", "fp_001.png", "FP_001", "Fp_001",
-            "fp_100", "fp_129", "fp_219",
-            "FacePortrait_001", "portrait_001", "face_001"
-        };
-        
-        foreach (string testName in testNames)
-        {
-            // Try loading as Sprite
-            var testSprite = UnityEngine.Resources.Load<Sprite>(testName);
-            if (testSprite != null)
-            {
-                Plugin.Log.LogInfo($"✓ Found SPRITE: {testName}");
-            }
-            
-            // Try loading as Texture2D
-            var testTexture = UnityEngine.Resources.Load<Texture2D>(testName);
-            if (testTexture != null)
-            {
-                Plugin.Log.LogInfo($"✓ Found TEXTURE2D: {testName}");
-            }
-        }
-        
-        // Also try to find ALL resources with "fp" in the name
-        try
-        {
-            var allSprites = UnityEngine.Resources.FindObjectsOfTypeAll<Sprite>();
-            int fpCount = 0;
-            foreach (var sprite in allSprites)
-            {
-                if (sprite.name.ToLower().StartsWith("fp_") && fpCount < 10)
-                {
-                    Plugin.Log.LogInfo($"✓ Found sprite in scene: {sprite.name}");
-                    fpCount++;
-                }
-            }
-        }
-        catch (System.Exception ex)
-        {
-            Plugin.Log.LogError($"Error finding sprites: {ex.Message}");
-        }
-        
-        Plugin.Log.LogInfo("========================================");
-        
         // Create NPCPortraits folder inside PKCore/Textures directory (game root)
         portraitsPath = Path.Combine(BepInEx.Paths.GameRootPath, "PKCore", "Textures", "NPCPortraits");
         
@@ -130,16 +79,59 @@ public class NPCPortraitPatch
             Directory.CreateDirectory(portraitsPath);
             Plugin.Log.LogInfo($"Created NPCPortraits directory at: {portraitsPath}");
         }
-        else
+        
+        // Diagnostic: Test loading various portrait sprite names (only if detailed logging enabled)
+        if (Plugin.Config.DetailedTextureLog.Value)
         {
-            Plugin.Log.LogInfo($"NPCPortraits directory found at: {portraitsPath}");
+            Plugin.Log.LogInfo("Testing portrait sprite names...");
+            
+            string[] testNames = { 
+                "fp_001", "fp_001.png", "FP_001", "Fp_001",
+                "fp_100", "fp_129", "fp_219",
+                "FacePortrait_001", "portrait_001", "face_001"
+            };
+            
+            foreach (string testName in testNames)
+            {
+                // Try loading as Sprite
+                var testSprite = UnityEngine.Resources.Load<Sprite>(testName);
+                if (testSprite != null)
+                {
+                    Plugin.Log.LogInfo($"✓ Found SPRITE: {testName}");
+                }
+                
+                // Try loading as Texture2D
+                var testTexture = UnityEngine.Resources.Load<Texture2D>(testName);
+                if (testTexture != null)
+                {
+                    Plugin.Log.LogInfo($"✓ Found TEXTURE2D: {testName}");
+                }
+            }
+            
+            // Also try to find ALL resources with "fp" in the name
+            try
+            {
+                var allSprites = UnityEngine.Resources.FindObjectsOfTypeAll<Sprite>();
+                int fpCount = 0;
+                foreach (var sprite in allSprites)
+                {
+                    if (sprite.name.ToLower().StartsWith("fp_") && fpCount < 10)
+                    {
+                        Plugin.Log.LogInfo($"✓ Found sprite in scene: {sprite.name}");
+                        fpCount++;
+                    }
+                }
+            }
+            catch (System.Exception ex)
+            {
+                Plugin.Log.LogError($"Error finding sprites: {ex.Message}");
+            }
         }
         
         // Preload all portraits for performance
         PreloadPortraits();
         
         Plugin.Log.LogInfo("NPC Portrait System Ready!");
-        Plugin.Log.LogInfo("========================================");
     }
     
     /// <summary>
@@ -167,7 +159,10 @@ public class NPCPortraitPatch
                     // Store the texture (not a sprite) for later swapping
                     portraitCache.Add(new PortraitEntry(portraitName.ToLower(), null));
                     // We'll create the sprite dynamically by swapping fp_219's texture
-                    Plugin.Log.LogInfo($"Loaded portrait texture: {portraitName}");
+                    if (Plugin.Config.DetailedTextureLog.Value)
+                    {
+                        Plugin.Log.LogInfo($"Loaded portrait texture: {portraitName}");
+                    }
                 }
             }
             catch (System.Exception ex)
@@ -176,7 +171,10 @@ public class NPCPortraitPatch
             }
         }
         
-        Plugin.Log.LogInfo($"Preloaded {portraitCache.Count} custom NPC portrait texture(s)");
+        if (Plugin.Config.DetailedTextureLog.Value)
+        {
+            Plugin.Log.LogInfo($"Preloaded {portraitCache.Count} custom NPC portrait texture(s)");
+        }
     }
     
     /// <summary>
@@ -474,13 +472,13 @@ public class NPCPortraitPatch
             }
             else
             {
-                // Load fp_219.png as base template for pivot and pixelsPerUnit only
-                Texture2D baseTexture = LoadPortraitTexture("fp_219");
+                // Load fp_129.png as base template for pivot and pixelsPerUnit only
+                Texture2D baseTexture = LoadPortraitTexture("fp_129");
                 if (baseTexture != null)
                 {
                     spritePivot = new Vector2(0.5f, 0.5f);
                     pixelsPerUnit = 100f;
-                    Plugin.Log.LogInfo($"[NPCPortrait] Using fp_219.png as base template");
+                    Plugin.Log.LogInfo($"[NPCPortrait] Using fp_129.png as base template");
                 }
                 else
                 {
@@ -491,18 +489,18 @@ public class NPCPortraitPatch
                 }
             }
             
-            // Load custom texture (or fp_219 as fallback)
+            // Load custom texture (or fp_129 as fallback)
             Texture2D customTexture = LoadPortraitTexture(key);
             if (customTexture == null)
             {
-                // Use fp_219.png as placeholder
-                customTexture = LoadPortraitTexture("fp_219");
+                // Use fp_129.png as placeholder
+                customTexture = LoadPortraitTexture("fp_129");
                 if (customTexture == null)
                 {
-                    Plugin.Log.LogError($"[NPCPortrait] Failed to load custom texture or fp_219 fallback");
+                    Plugin.Log.LogError($"[NPCPortrait] Failed to load custom texture or fp_129 fallback");
                     return;
                 }
-                Plugin.Log.LogInfo($"[NPCPortrait] Using fp_219.png as placeholder portrait");
+                Plugin.Log.LogInfo($"[NPCPortrait] Using fp_129.png as placeholder portrait");
             }
             else
             {
