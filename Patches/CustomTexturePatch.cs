@@ -48,9 +48,39 @@ public partial class CustomTexturePatch
     internal static bool IsTextureLogged(string textureName) => loggedTextures.Contains(textureName);
     
     /// <summary>
-    /// Check if we have a custom texture for the given name
+    /// Sanitize texture name to make it filesystem-safe
+    /// Replaces invalid filename characters like | with underscores
     /// </summary>
-    internal static bool HasCustomTexture(string textureName) => texturePathIndex.ContainsKey(textureName);
+    internal static string SanitizeTextureName(string textureName)
+    {
+        if (string.IsNullOrEmpty(textureName))
+            return textureName;
+            
+        // Replace pipe and other invalid filename characters with underscore
+        return textureName.Replace('|', '_')
+                         .Replace('<', '_')
+                         .Replace('>', '_')
+                         .Replace(':', '_')
+                         .Replace('"', '_')
+                         .Replace('/', '_')
+                         .Replace('\\', '_')
+                         .Replace('?', '_')
+                         .Replace('*', '_');
+    }
+    
+    /// <summary>
+    /// Check if we have a custom texture for the given name
+    /// Tries both original and sanitized names
+    /// </summary>
+    internal static bool HasCustomTexture(string textureName)
+    {
+        if (texturePathIndex.ContainsKey(textureName))
+            return true;
+            
+        // Try sanitized name
+        string sanitized = SanitizeTextureName(textureName);
+        return sanitized != textureName && texturePathIndex.ContainsKey(sanitized);
+    }
     
     /// <summary>
     /// Log a replaceable texture/sprite (only once per texture)
@@ -305,9 +335,17 @@ public partial class CustomTexturePatch
         // Check for texture variants (e.g., save point colors)
         string lookupName = TextureOptions.GetTextureNameWithVariant(textureName);
 
-        // Look up full path
+        // Look up full path - try original name first
         if (!texturePathIndex.TryGetValue(lookupName, out string filePath))
-            return null;
+        {
+            // Try sanitized name (replaces | and other invalid filename chars with _)
+            string sanitizedName = SanitizeTextureName(lookupName);
+            if (sanitizedName != lookupName && !texturePathIndex.TryGetValue(sanitizedName, out filePath))
+                return null;
+                
+            if (filePath == null)
+                return null;
+        }
 
         try
         {
@@ -436,6 +474,15 @@ public partial class CustomTexturePatch
                 if (!texturePathIndex.ContainsKey(textureName))
                 {
                     texturePathIndex[textureName] = filePath;
+                    
+                    // Also add reverse mapping if filename contains underscores
+                    // This allows files with _ to match Unity textures with | and other invalid chars
+                    if (textureName.Contains('_'))
+                    {
+                        string unsanitized = textureName.Replace('_', '|');
+                        if (!texturePathIndex.ContainsKey(unsanitized))
+                            texturePathIndex[unsanitized] = filePath;
+                    }
                 }
             }
         }
@@ -454,6 +501,13 @@ public partial class CustomTexturePatch
                     
                     string textureName = Path.GetFileNameWithoutExtension(filePath);
                     texturePathIndex[textureName] = filePath; // Override
+                    
+                    // Also add reverse mapping for sanitized names
+                    if (textureName.Contains('_'))
+                    {
+                        string unsanitized = textureName.Replace('_', '|');
+                        texturePathIndex[unsanitized] = filePath;
+                    }
                 }
             }
         }

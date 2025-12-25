@@ -43,7 +43,7 @@ public static class TextureOptions
     /// </summary>
     public static string GetTextureNameWithVariant(string textureName)
     {
-        // Save point color variants
+        // Save point orb color variants
         if (textureName == "t_obj_savePoint_ball")
         {
             string colorSuffix = Plugin.Config.SavePointColor.Value.ToLower();

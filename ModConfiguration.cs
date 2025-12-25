@@ -181,7 +181,7 @@ public sealed class ModConfiguration
             "Custom Textures",
             "SavePointColor",
             "pink",
-            "Save point orb color. Options: blue, red, yellow, pink, green, default. Place color variants in Textures/SavePoint/ folder as 't_obj_savePoint_ball_<color>.png'."
+            "Save point orb color. Options: blue, red, yellow, pink, green, cyan, white, alt, default. Place color variants in Textures/SavePoint/ folder as 't_obj_savePoint_ball_<color>.png'."
         );
 
         DisableSavePointGlow = _config.Bind(

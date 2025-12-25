@@ -39,7 +39,7 @@ public class GRSpriteRendererPatch
             CustomTexturePatch.LogReplaceableTexture(spriteName, "Sprite - GRSpriteRenderer");
         }
 
-        // Try to replace with custom sprite
+        // Try to replace with custom sprite first
         Sprite customSprite = CustomTexturePatch.LoadCustomSprite(spriteName, value);
         if (customSprite != null)
         {
@@ -54,7 +54,48 @@ public class GRSpriteRendererPatch
                 }
             }
         }
-        else if (isSavePoint)
+        // If no custom sprite, check if the sprite's atlas texture has a custom replacement
+        else if (value.texture != null)
+        {
+            string atlasTextureName = value.texture.name;
+            
+            // Skip if texture name is empty
+            if (string.IsNullOrWhiteSpace(atlasTextureName))
+                return;
+            
+            if (Plugin.Config.DetailedTextureLog.Value)
+            {
+                Plugin.Log.LogInfo($"[GRSpriteRenderer] No custom sprite for '{spriteName}', checking atlas texture: {atlasTextureName}");
+            }
+            
+            Texture2D customAtlasTexture = CustomTexturePatch.LoadCustomTexture(atlasTextureName);
+            
+            if (customAtlasTexture != null)
+            {
+                if (Plugin.Config.DetailedTextureLog.Value)
+                {
+                    Plugin.Log.LogInfo($"[GRSpriteRenderer] Found custom atlas texture, replacing in-place...");
+                }
+                
+                // Replace the atlas texture in-place
+                bool replaced = CustomTexturePatch.ReplaceTextureInPlace(value.texture, atlasTextureName);
+                
+                if (replaced)
+                {
+                    Plugin.Log.LogInfo($"[GRSpriteRenderer] ✓ Replaced atlas texture for sprite '{spriteName}': {atlasTextureName}");
+                }
+                else
+                {
+                    Plugin.Log.LogWarning($"[GRSpriteRenderer] ✗ Failed to replace atlas texture: {atlasTextureName}");
+                }
+            }
+            else if (Plugin.Config.DetailedTextureLog.Value)
+            {
+                Plugin.Log.LogInfo($"[GRSpriteRenderer] No custom atlas texture found for: {atlasTextureName}");
+            }
+        }
+        
+        if (isSavePoint && customSprite == null)
         {
             Plugin.Log.LogWarning($"[SavePoint] No custom sprite found for: {spriteName}");
         }
@@ -117,30 +158,66 @@ public class GRSpriteRendererPatch
             Plugin.Log.LogInfo($"[SavePoint] GRSpriteRenderer.OnEnable for: {spriteName}");
         }
         
-        // Check if we have a custom texture for this sprite
-        if (!CustomTexturePatch.HasCustomTexture(spriteName))
+        // First, try to replace with custom sprite
+        if (CustomTexturePatch.HasCustomTexture(spriteName))
         {
-            if (isSavePoint)
+            Sprite customSprite = CustomTexturePatch.LoadCustomSprite(spriteName, currentSprite);
+            if (customSprite != null)
             {
-                Plugin.Log.LogWarning($"[SavePoint] No custom texture in index for: {spriteName}");
+                __instance.sprite = customSprite; // Use property setter to trigger updates
+                
+                if (Plugin.Config.DetailedTextureLog.Value || isSavePoint)
+                {
+                    Plugin.Log.LogInfo($"[GRSpriteRenderer] Replaced sprite on enable: {spriteName}");
+                }
+                return;
             }
-            return;
         }
-
-        // Load and apply custom sprite
-        Sprite customSprite = CustomTexturePatch.LoadCustomSprite(spriteName, currentSprite);
-        if (customSprite != null)
+        
+        // If no custom sprite, check if the sprite's atlas texture has a custom replacement
+        if (currentSprite.texture != null)
         {
-            __instance.sprite = customSprite; // Use property setter to trigger updates
+            string atlasTextureName = currentSprite.texture.name;
             
-            if (Plugin.Config.DetailedTextureLog.Value || isSavePoint)
+            // Skip if texture name is empty
+            if (string.IsNullOrWhiteSpace(atlasTextureName))
+                return;
+            
+            if (Plugin.Config.DetailedTextureLog.Value)
             {
-                Plugin.Log.LogInfo($"[GRSpriteRenderer] Replaced sprite on enable: {spriteName}");
+                Plugin.Log.LogInfo($"[GRSpriteRenderer OnEnable] No custom sprite for '{spriteName}', checking atlas: {atlasTextureName}");
+            }
+            
+            Texture2D customAtlasTexture = CustomTexturePatch.LoadCustomTexture(atlasTextureName);
+            
+            if (customAtlasTexture != null)
+            {
+                if (Plugin.Config.DetailedTextureLog.Value)
+                {
+                    Plugin.Log.LogInfo($"[GRSpriteRenderer OnEnable] Found custom atlas texture, replacing in-place...");
+                }
+                
+                // Replace the atlas texture in-place
+                bool replaced = CustomTexturePatch.ReplaceTextureInPlace(currentSprite.texture, atlasTextureName);
+                
+                if (replaced)
+                {
+                    Plugin.Log.LogInfo($"[GRSpriteRenderer OnEnable] ✓ Replaced atlas texture for sprite '{spriteName}': {atlasTextureName}");
+                }
+                else
+                {
+                    Plugin.Log.LogWarning($"[GRSpriteRenderer OnEnable] ✗ Failed to replace atlas texture: {atlasTextureName}");
+                }
+            }
+            else if (Plugin.Config.DetailedTextureLog.Value)
+            {
+                Plugin.Log.LogInfo($"[GRSpriteRenderer OnEnable] No custom atlas texture found for: {atlasTextureName}");
             }
         }
-        else if (isSavePoint)
+        
+        if (isSavePoint)
         {
-            Plugin.Log.LogWarning($"[SavePoint] Failed to load custom sprite for: {spriteName}");
+            Plugin.Log.LogWarning($"[SavePoint] No custom texture found for: {spriteName}");
         }
     }
 

@@ -85,6 +85,10 @@ public partial class CustomTexturePatch
             }
         }
         
+        // Force replace known bath decoration atlas textures
+        // These are loaded before the bath scene, so we need to replace them in-place
+        replaced += ForceReplaceBathDecorationAtlases();
+        
         if (replaced > 0)
         {
             Plugin.Log.LogInfo($"Bath sprite scan complete: replaced {replaced} sprite(s)");
@@ -93,6 +97,47 @@ public partial class CustomTexturePatch
         {
             Plugin.Log.LogInfo("Bath sprite scan complete: no sprites replaced");
         }
+    }
+    
+    /// <summary>
+    /// Force replace known bath decoration atlas textures that are already loaded
+    /// </summary>
+    private static int ForceReplaceBathDecorationAtlases()
+    {
+        int replaced = 0;
+        
+        // Find all atlas textures in the index that match bath decoration patterns
+        foreach (var kvp in texturePathIndex)
+        {
+            string textureName = kvp.Key;
+            
+            // Check if this is a bath decoration atlas (hp_book, hp_furo, etc.)
+            if (textureName.Contains("hp_book") || textureName.Contains("hp_furo"))
+            {
+                // Find all loaded textures with this name
+                var loadedTextures = Resources.FindObjectsOfTypeAll<Texture2D>();
+                foreach (var loadedTex in loadedTextures)
+                {
+                    if (loadedTex.name == textureName)
+                    {
+                        if (Plugin.Config.DetailedTextureLog.Value)
+                        {
+                            Plugin.Log.LogInfo($"[Bath Atlas] Found loaded atlas: {textureName}, replacing...");
+                        }
+                        
+                        bool atlasReplaced = ReplaceTextureInPlace(loadedTex, textureName);
+                        
+                        if (atlasReplaced)
+                        {
+                            Plugin.Log.LogInfo($"[Bath Atlas] ✓ Replaced: {textureName}");
+                            replaced++;
+                        }
+                    }
+                }
+            }
+        }
+        
+        return replaced;
     }
 
     /// <summary>
