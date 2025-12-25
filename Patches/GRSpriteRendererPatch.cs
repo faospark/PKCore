@@ -221,6 +221,85 @@ public class GRSpriteRendererPatch
         }
     }
 
+    /// <summary>
+    /// Intercept GRSpriteRenderer.material getter to catch suikozu textures
+    /// Suikozu textures are raw Texture2D objects accessed via material.mainTexture
+    /// </summary>
+    [HarmonyPatch(typeof(GRSpriteRenderer), nameof(GRSpriteRenderer.material), MethodType.Getter)]
+    [HarmonyPostfix]
+    public static void GRSpriteRenderer_get_material_Postfix(GRSpriteRenderer __instance, Material __result)
+    {
+        if (!Plugin.Config.EnableCustomTextures.Value || __result == null)
+            return;
+
+        try
+        {
+            if (__result.mainTexture is Texture2D texture)
+            {
+                string textureName = texture.name;
+                
+                // Check if this is a suikozu texture
+                if (textureName != null && textureName.StartsWith("suikozu_", System.StringComparison.OrdinalIgnoreCase))
+                {
+                    Plugin.Log.LogInfo($"[Suikozu DEBUG] GRSpriteRenderer.material getter called: {textureName}");
+                    
+                    // Try to replace the texture
+                    if (CustomTexturePatch.ReplaceTextureInPlace(texture, textureName))
+                    {
+                        Plugin.Log.LogInfo($"[Suikozu] ✓ Replaced via GRSpriteRenderer.material: {textureName}");
+                    }
+                    else
+                    {
+                        Plugin.Log.LogInfo($"[Suikozu DEBUG] Replacement failed for: {textureName}");
+                    }
+                }
+            }
+        }
+        catch (System.Exception ex)
+        {
+            Plugin.Log.LogError($"[GRSpriteRenderer] Error in material getter postfix: {ex}");
+        }
+    }
+
+    /// <summary>
+    /// Intercept GRSpriteRenderer.material setter to catch suikozu material assignments
+    /// </summary>
+    [HarmonyPatch(typeof(GRSpriteRenderer), nameof(GRSpriteRenderer.material), MethodType.Setter)]
+    [HarmonyPrefix]
+    public static void GRSpriteRenderer_set_material_Prefix(GRSpriteRenderer __instance, ref Material value)
+    {
+        if (!Plugin.Config.EnableCustomTextures.Value || value == null)
+            return;
+
+        try
+        {
+            if (value.mainTexture is Texture2D texture)
+            {
+                string textureName = texture.name;
+                
+                // Check if this is a suikozu texture
+                if (textureName != null && textureName.StartsWith("suikozu_", System.StringComparison.OrdinalIgnoreCase))
+                {
+                    Plugin.Log.LogInfo($"[Suikozu DEBUG] GRSpriteRenderer.material setter called: {textureName}");
+                    
+                    // Try to replace the texture
+                    if (CustomTexturePatch.ReplaceTextureInPlace(texture, textureName))
+                    {
+                        Plugin.Log.LogInfo($"[Suikozu] ✓ Replaced via GRSpriteRenderer.material setter: {textureName}");
+                    }
+                    else
+                    {
+                        Plugin.Log.LogInfo($"[Suikozu DEBUG] Replacement failed for: {textureName}");
+                    }
+                }
+            }
+        }
+        catch (System.Exception ex)
+        {
+            Plugin.Log.LogError($"[GRSpriteRenderer] Error in material setter prefix: {ex}");
+        }
+    }
+
     public static void Initialize()
     {
         Plugin.Log.LogInfo("GRSpriteRenderer patches initialized");

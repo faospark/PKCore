@@ -82,6 +82,12 @@ public class Plugin : BasePlugin
             BorderlessWindowPatch.Initialize();
         }
 
+        // Mouse Cursor Visibility (for debugging)
+        if (Config.ShowMouseCursor.Value)
+        {
+            MouseCursorPatch.Initialize(true);
+        }
+
         // Controller Prompt Override
         if (Config.ForceControllerPrompts.Value)
         {
@@ -107,6 +113,14 @@ public class Plugin : BasePlugin
             // Apply GRSpriteRenderer patches for better sprite interception
             harmony.PatchAll(typeof(GRSpriteRendererPatch));
             GRSpriteRendererPatch.Initialize();
+            
+            // Apply Suikozu texture brute-force replacement
+            // DISABLED: Using targeted Renderer.sharedMaterial patch instead (see HwMeshTexturePatch)
+            // SuikozuTexturePatch.Initialize(Config.EnableCustomTextures.Value, harmony);
+            
+            // Apply Renderer.sharedMaterial patch for suikozu textures
+            harmony.PatchAll(typeof(HwMeshTexturePatch));
+            HwMeshTexturePatch.Initialize();
         }
 
         // NPC Portrait Injection

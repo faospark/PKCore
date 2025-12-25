@@ -19,6 +19,7 @@ public sealed class ModConfiguration
     
     // Display Settings
     public ConfigEntry<bool> EnableBorderlessWindow { get; private set; }
+    public ConfigEntry<bool> ShowMouseCursor { get; private set; }
 
     // Controller Prompt Settings
     public ConfigEntry<bool> ForceControllerPrompts { get; private set; }
@@ -30,7 +31,7 @@ public sealed class ModConfiguration
     public ConfigEntry<bool> LogTexturePaths { get; private set; }
     public ConfigEntry<bool> DetailedTextureLog { get; private set; }
     public ConfigEntry<bool> LoadLauncherUITextures { get; private set; }
-    public ConfigEntry<bool> LoadBattleEffectTextures { get; private set; }
+    public ConfigEntry<bool> LoadBattleTextures { get; private set; }
     public ConfigEntry<bool> LoadCharacterTextures { get; private set; }
     
     // NPC Portrait Settings
@@ -43,7 +44,7 @@ public sealed class ModConfiguration
     // Diagnostic Settings
     public ConfigEntry<bool> EnableParticleSystemDiagnostics { get; private set; }
     public ConfigEntry<bool> EnableObjectDiagnostics { get; private set; }
-    public ConfigEntry<bool> EnableBinaryTextureCache { get; private set; }
+    public ConfigEntry<bool> EnableTextureManifestCache { get; private set; }
     
     // Custom Object Insertion
     public ConfigEntry<bool> EnableCustomObjects { get; private set; }
@@ -58,15 +59,23 @@ public sealed class ModConfiguration
 
     public void Init()
     {
+        // Visual section - most important sprite rendering settings first
+        DisableSpritePostProcessing = _config.Bind(
+            "Visual",
+            "DisableSpritePostProcessing",
+            true,
+            "Prevent post-processing effects (bloom, vignette, depth of field, etc.) from affecting sprites. Sprites will render with pure pixel art look while keeping post-processing on 3D elements and backgrounds. Compatible with sprite anti-aliasing."
+        );
+
         SpriteFilteringQuality = _config.Bind(
-            "Sprite Filtering",
+            "Visual",
             "SpriteFilteringQuality",
             3,
             "Texture filtering quality for sprites. 0 = Disabled (pure pixels), 1 = Low (Bilinear + 2x Aniso), 2 = Medium (Trilinear + 4x Aniso), 3 = High (Trilinear + 8x Aniso). Best for Project Kyaro's upscaled sprites."
         );
 
         SpriteMipmapBias = _config.Bind(
-            "Sprite Filtering",
+            "Visual",
             "SpriteMipmapBias",
             -0.5f,
             new ConfigDescription(
@@ -87,16 +96,9 @@ public sealed class ModConfiguration
             "ResolutionScale",
             1.0f,
             new ConfigDescription(
-                "Resolution scale multiplier (0.5 to 2.0). 0.5 = half resolution for performance, 1.0 = native, 1.5-2.0 = super-sampling for quality. Only applies when StretchToWindow=true.",
+                "Resolution scale multiplier (0.5 to 2.0). 0.5 = half resolution for performance, 1.0 = native, 1.5-2.0 = super-sampling for quality. Only applies when EnableResolutionScaling is enabled.",
                 new AcceptableValueRange<float>(0.5f, 2.0f)
             )
-        );
-
-        DisableSpritePostProcessing = _config.Bind(
-            "Visual",
-            "DisableSpritePostProcessing",
-            true,
-            "Prevent post-processing effects (bloom, vignette, depth of field, etc.) from affecting sprites. Sprites will render with pure pixel art look while keeping post-processing on 3D elements and backgrounds. Compatible with sprite anti-aliasing."
         );
 
         EnableBorderlessWindow = _config.Bind(
@@ -104,6 +106,13 @@ public sealed class ModConfiguration
             "EnableBorderlessWindow",
             false,
             "Enable borderless fullscreen window mode. Provides instant alt-tab switching and better multi-monitor support."
+        );
+
+        ShowMouseCursor = _config.Bind(
+            "Display",
+            "ShowMouseCursor",
+            false,
+            "Show mouse cursor when hovering over the game window. Useful for debugging with Unity Explorer or accessing overlays. The game is designed for controller, so this is primarily for development/debugging."
         );
 
 
@@ -129,28 +138,7 @@ public sealed class ModConfiguration
             "Custom Textures",
             "EnableCustomTextures",
             true,
-            "Enable custom texture replacement. Place PNG files in BepInEx/plugins/PKCore/Textures/ with the same name as the game texture (e.g., hp_telepo_00.png)."
-        );
-
-        LogReplaceableTextures = _config.Bind(
-            "Custom Textures",
-            "LogReplaceableTextures",
-            false,
-            "Log all textures that could be replaced. Each texture name is logged only once. Useful for discovering which textures you can customize."
-        );
-
-        LogTexturePaths = _config.Bind(
-            "Custom Textures",
-            "LogTexturePaths",
-            false,
-            "Include GameObject hierarchy paths in texture logs. Enable for detailed debugging to see exactly which UI elements use which textures."
-        );
-
-        DetailedTextureLog = _config.Bind(
-            "Custom Textures",
-            "DetailedTextureLog",
-            false,
-            "Enable detailed texture logging (replacement confirmations and full texture list on startup). Disable for silent operation (only errors will be logged)."
+            "Enable custom texture replacement. Place PNG files in PKCore/Textures/ (in game root folder) with the same name as the game texture (e.g., hp_telepo_00.png)."
         );
 
         LoadLauncherUITextures = _config.Bind(
@@ -160,11 +148,11 @@ public sealed class ModConfiguration
             "Load custom textures from Textures/launcher folder. Set to false to use original launcher UI."
         );
 
-        LoadBattleEffectTextures = _config.Bind(
+        LoadBattleTextures = _config.Bind(
             "Custom Textures",
-            "LoadBattleEffectTextures",
+            "LoadBattleTextures",
             true,
-            "Load custom textures from Textures/battle folder. Set to false to use original battle effects."
+            "Load custom textures from Textures/battle folder. Set to false to use original battle graphics."
         );
 
         LoadCharacterTextures = _config.Bind(
@@ -178,7 +166,7 @@ public sealed class ModConfiguration
             "NPC Portraits",
             "EnableNPCPortraits",
             true,
-            "Enable custom NPC portrait injection. Place PNG files in BepInEx/plugins/PKCore/NPCPortraits/ named after the NPC (e.g., Viktor.png, Flik.png). Case-insensitive."
+            "Enable custom NPC portrait injection. Place PNG files in PKCore/NPCPortraits/ (in game root folder) named after the NPC (e.g., Viktor.png, Flik.png). Case-insensitive."
         );
 
         SavePointColor = _config.Bind(
@@ -195,6 +183,42 @@ public sealed class ModConfiguration
             "Disable the glow effect on save point orbs. Set to false to keep the original glow."
         );
 
+        EnableTextureManifestCache = _config.Bind(
+            "Performance",
+            "EnableTextureManifestCache",
+            false,
+            "Enable texture manifest caching for faster startup. Caches the texture index to skip re-scanning the Textures folder on every launch. Disable if you're actively adding/removing textures and want changes detected immediately."
+        );
+
+        EnableCustomObjects = _config.Bind(
+            "Experimental",
+            "EnableCustomObjects",
+            false,
+            "[EXPERIMENTAL] Enable custom object insertion. Adds a test object to scenes to verify the system works. This is a proof-of-concept feature."
+        );
+
+        // Diagnostics section - all logging and debugging settings at the bottom
+        LogReplaceableTextures = _config.Bind(
+            "Diagnostics",
+            "LogReplaceableTextures",
+            false,
+            "Log all textures that could be replaced. Each texture name is logged only once. Useful for discovering which textures you can customize."
+        );
+
+        LogTexturePaths = _config.Bind(
+            "Diagnostics",
+            "LogTexturePaths",
+            false,
+            "Include GameObject hierarchy paths in texture logs. Enable for detailed debugging to see exactly which UI elements use which textures."
+        );
+
+        DetailedTextureLog = _config.Bind(
+            "Diagnostics",
+            "DetailedTextureLog",
+            false,
+            "Enable detailed texture logging (replacement confirmations and full texture list on startup). Disable for silent operation (only errors will be logged)."
+        );
+
         EnableParticleSystemDiagnostics = _config.Bind(
             "Diagnostics",
             "EnableParticleSystemDiagnostics",
@@ -207,20 +231,6 @@ public sealed class ModConfiguration
             "EnableObjectDiagnostics",
             false,
             "Enable diagnostic logging for MapBGManagerHD objects. Logs all objects in field scenes (event objects, sprites, animations) to help understand scene structure. For development/debugging only."
-        );
-
-        EnableBinaryTextureCache = _config.Bind(
-            "Performance",
-            "EnableBinaryTextureCache",
-            false,
-            "Cache loaded textures as PNG files for faster loading. Disable if experiencing slowdowns in large areas with many textures. Manifest cache will still be used."
-        );
-
-        EnableCustomObjects = _config.Bind(
-            "Experimental",
-            "EnableCustomObjects",
-            false,
-            "[EXPERIMENTAL] Enable custom object insertion. Adds a test object to scenes to verify the system works. This is a proof-of-concept feature."
         );
     }
 }

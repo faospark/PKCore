@@ -21,7 +21,7 @@ public static class TextureOptions
             return false;
 
         // Disable battle effect textures
-        if (!Plugin.Config.LoadBattleEffectTextures.Value && 
+        if (!Plugin.Config.LoadBattleTextures.Value && 
             filePath.Contains("\\battle\\", StringComparison.OrdinalIgnoreCase))
             return false;
 
