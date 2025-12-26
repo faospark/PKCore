@@ -111,6 +111,9 @@ public class Plugin : BasePlugin
             
             harmony.PatchAll(typeof(CustomTexturePatch));
             CustomTexturePatch.Initialize();
+
+            // Patch for Save Window custom background
+            harmony.PatchAll(typeof(SaveWindowPatch));
             
             // Apply GRSpriteRenderer patches for better sprite interception
             harmony.PatchAll(typeof(GRSpriteRendererPatch));

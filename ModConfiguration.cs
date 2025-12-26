@@ -41,6 +41,9 @@ public sealed class ModConfiguration
     public ConfigEntry<string> SavePointColor { get; private set; }
     public ConfigEntry<bool> DisableSavePointGlow { get; private set; }
     
+    // Suikoden 2 Classic UI Settings
+    public ConfigEntry<bool> S2ClassicSaveWindow { get; private set; }
+    
     // Diagnostic Settings
     public ConfigEntry<bool> EnableParticleSystemDiagnostics { get; private set; }
     public ConfigEntry<bool> EnableObjectDiagnostics { get; private set; }
@@ -183,10 +186,17 @@ public sealed class ModConfiguration
             "Disable the glow effect on save point orbs. Set to false to keep the original glow."
         );
 
+        S2ClassicSaveWindow = _config.Bind(
+            "Suikoden 2",
+            "S2ClassicSaveWindow",
+            false,
+            "Mimics the feel of the PSX version of Save/Load window for Suikoden 2. Replaces the HD Remaster's ornate frame with a simple fullscreen background."
+        );
+
         EnableTextureManifestCache = _config.Bind(
             "Performance",
             "EnableTextureManifestCache",
-            false,
+            true,
             "Enable texture manifest caching for faster startup. Caches the texture index to skip re-scanning the Textures folder on every launch. Disable if you're actively adding/removing textures and want changes detected immediately."
         );
 
