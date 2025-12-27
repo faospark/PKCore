@@ -119,6 +119,10 @@ public class Plugin : BasePlugin
             harmony.PatchAll(typeof(GRSpriteRendererPatch));
             GRSpriteRendererPatch.Initialize();
             
+            // Apply Unity SpriteRenderer patches for standard Unity sprites
+            harmony.PatchAll(typeof(UnitySpriteRendererPatch));
+            UnitySpriteRendererPatch.Initialize();
+            
             // Register lazy loader component
             Il2CppInterop.Runtime.Injection.ClassInjector.RegisterTypeInIl2Cpp<SuikozuTextureEnforcer>();
             Log.LogInfo("Registered SuikozuTextureEnforcer in IL2CPP domain.");

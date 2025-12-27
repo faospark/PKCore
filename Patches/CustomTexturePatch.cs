@@ -70,7 +70,7 @@ public partial class CustomTexturePatch
     
     /// <summary>
     /// Check if we have a custom texture for the given name
-    /// Tries both original and sanitized names
+    /// Tries original, sanitized, and variant names
     /// </summary>
     internal static bool HasCustomTexture(string textureName)
     {
@@ -79,7 +79,15 @@ public partial class CustomTexturePatch
             
         // Try sanitized name
         string sanitized = SanitizeTextureName(textureName);
-        return sanitized != textureName && texturePathIndex.ContainsKey(sanitized);
+        if (sanitized != textureName && texturePathIndex.ContainsKey(sanitized))
+            return true;
+        
+        // Try variant name (e.g., save point colors)
+        string variant = TextureOptions.GetTextureNameWithVariant(textureName);
+        if (variant != textureName && texturePathIndex.ContainsKey(variant))
+            return true;
+            
+        return false;
     }
     
     /// <summary>

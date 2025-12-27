@@ -198,11 +198,13 @@ public partial class CustomTexturePatch
     {
         Plugin.Log.LogInfo("[SavePoint Preload] Starting save point sprite preloading...");
         
-        // Check if we have the atlas texture
+        // Check if we have the atlas texture (apply color variant)
         string atlasName = "t_obj_savePoint_ball";
-        if (!texturePathIndex.ContainsKey(atlasName))
+        string atlasLookupName = TextureOptions.GetTextureNameWithVariant(atlasName);
+        
+        if (!texturePathIndex.ContainsKey(atlasLookupName))
         {
-            Plugin.Log.LogWarning($"[SavePoint Preload] Atlas texture '{atlasName}' not found in texture index!");
+            Plugin.Log.LogWarning($"[SavePoint Preload] Atlas texture '{atlasLookupName}' not found in texture index!");
             return;
         }
 
@@ -292,9 +294,11 @@ public partial class CustomTexturePatch
         if (!value || !Plugin.Config.EnableCustomTextures.Value)
             return;
 
-        // Check if this is a bgManagerHD object (save points are children of this)
+        // Check if this is a save point container object
+        // Suikoden 2: bgManagerHD
+        // Suikoden 1: AppRoot/Map/MapBackGround
         string objectPath = GetGameObjectPath(__instance);
-        if (!objectPath.Contains("bgManagerHD"))
+        if (!objectPath.Contains("bgManagerHD") && !objectPath.Contains("MapBackGround"))
             return;
 
         // Scan for save point sprites in this object's children

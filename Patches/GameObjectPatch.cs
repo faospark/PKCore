@@ -28,15 +28,17 @@ public partial class CustomTexturePatch
         string objectPath = GetGameObjectPath(__instance);
         
         
-        // Check if this is a bgManagerHD object
-        bool isBgManager = objectPath.Contains("bgManagerHD");
+        // Check if this is a background manager object
+        // Suikoden 2: bgManagerHD
+        // Suikoden 1: MapBackGround
+        bool isBgManager = objectPath.Contains("bgManagerHD") || objectPath.Contains("MapBackGround");
         
-        // Handle bgManagerHD activation - scan for sprites to replace
+        // Handle background manager activation - scan for sprites to replace
         if (isBgManager)
         {
             if (Plugin.Config.DetailedTextureLog.Value)
             {
-                Plugin.Log.LogInfo($"bgManagerHD activated: {objectPath}");
+                Plugin.Log.LogInfo($"Background manager activated: {objectPath}");
             }
             
             // Scan for SpriteRenderers and replace sprites (excluding save points, handled in SavePointPatch.cs)
