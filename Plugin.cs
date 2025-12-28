@@ -166,5 +166,12 @@ public class Plugin : BasePlugin
             Log.LogInfo("Applying Custom Object Insertion patches...");
             CustomObjectInsertion.Initialize(Config.EnableCustomObjects.Value, harmony);
         }
+
+        // Dragon Sprite Patch
+        if (Config.EnableCustomTextures.Value)
+        {
+            Log.LogInfo("Applying Dragon Sprite patches...");
+            DragonPatch.Initialize();
+        }
     }
 }

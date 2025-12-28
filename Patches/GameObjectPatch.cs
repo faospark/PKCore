@@ -49,6 +49,9 @@ public partial class CustomTexturePatch
                 {
                     string spriteName = sr.sprite.name;
                     
+                    // Attach dragon monitor if applicable
+                    DragonPatch.CheckAndAttachMonitor(sr.gameObject);
+
                     // Skip save point sprites - they're handled in SavePointPatch.cs
                     if (spriteName.Contains("savePoint", StringComparison.OrdinalIgnoreCase))
                         continue;
@@ -65,6 +68,9 @@ public partial class CustomTexturePatch
                             Plugin.Log.LogInfo($"Replaced sprite on activation: {spriteName} (from {objectPath})");
                         }
                     }
+                    
+                    // Attach dragon monitor if applicable
+                    DragonPatch.CheckAndAttachMonitor(sr.gameObject);
                 }
             }
 
