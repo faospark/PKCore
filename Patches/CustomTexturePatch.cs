@@ -31,7 +31,6 @@ public partial class CustomTexturePatch
     
     // Preloaded sprites
     internal static Dictionary<string, Sprite> preloadedBathSprites = new Dictionary<string, Sprite>();
-    internal static Dictionary<string, Sprite> preloadedSavePointSprites = new Dictionary<string, Sprite>();
     
     // State tracking
     internal static int lastBathBGInstanceID = -1;
@@ -548,7 +547,8 @@ public partial class CustomTexturePatch
         
         // Preload bath and save point sprites
         PreloadBathSprites();
-        PreloadSavePointSprites();
+        // Delegated to decoupled SavePointPatch
+        SavePointPatch.PreloadSprites();
     }
     
     #endregion
