@@ -9,6 +9,7 @@ namespace PKCore;
 
 [BepInPlugin("faospark.pkcore", "PKCore", "1.6.0")]
 [BepInDependency("d3xMachina.suikoden_fix", BepInDependency.DependencyFlags.SoftDependency)]
+[BepInDependency("faospark.SquidFam", BepInDependency.DependencyFlags.SoftDependency)]
 public class Plugin : BasePlugin
 {
     public static Plugin Instance { get; private set; }

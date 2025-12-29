@@ -49,7 +49,7 @@ public static class TextureOptions
             string colorSuffix = Plugin.Config.SavePointColor.Value.ToLower();
             
             if (colorSuffix == "default")
-                return "___VANILLA_SAVEPOINT___";
+                return textureName;
 
             if (!string.IsNullOrEmpty(colorSuffix))
             {
@@ -74,7 +74,7 @@ public static class TextureOptions
              string tirVariant = Plugin.Config.TirRunTexture.Value.ToLower();
              
              if (tirVariant == "default")
-                 return "___VANILLA_TIR_RUN___";
+                 return textureName;
 
              if (tirVariant == "alt")
              {
