@@ -47,7 +47,11 @@ public static class TextureOptions
         if (textureName == "t_obj_savePoint_ball")
         {
             string colorSuffix = Plugin.Config.SavePointColor.Value.ToLower();
-            if (!string.IsNullOrEmpty(colorSuffix) && colorSuffix != "default")
+            
+            if (colorSuffix == "default")
+                return "___VANILLA_SAVEPOINT___";
+
+            if (!string.IsNullOrEmpty(colorSuffix))
             {
                 string colorVariant = $"{textureName}_{colorSuffix}";
                 if (CustomTexturePatch.texturePathIndex.ContainsKey(colorVariant))
@@ -68,6 +72,10 @@ public static class TextureOptions
         {
              // Check if user wants the alt version
              string tirVariant = Plugin.Config.TirRunTexture.Value.ToLower();
+             
+             if (tirVariant == "default")
+                 return "___VANILLA_TIR_RUN___";
+
              if (tirVariant == "alt")
              {
                  string altName = $"{textureName}_alt";

@@ -74,7 +74,7 @@ public sealed class ModConfiguration
         SpriteFilteringQuality = _config.Bind(
             "Visual",
             "SpriteFilteringQuality",
-            3,
+            0,
             "Texture filtering quality for sprites. 0 = Disabled (pure pixels), 1 = Low (Bilinear + 2x Aniso), 2 = Medium (Trilinear + 4x Aniso), 3 = High (Trilinear + 8x Aniso). Best for Project Kyaro's upscaled sprites."
         );
 
@@ -118,7 +118,6 @@ public sealed class ModConfiguration
             false,
             "Show mouse cursor when hovering over the game window. Useful for debugging with Unity Explorer or accessing overlays. The game is designed for controller, so this is primarily for development/debugging."
         );
-
 
         ForceControllerPrompts = _config.Bind(
             "Controller",
@@ -176,7 +175,7 @@ public sealed class ModConfiguration
         SavePointColor = _config.Bind(
             "Custom Textures",
             "SavePointColor",
-            "pink",
+            "default",
             "Save point orb color. Options: blue, red, yellow, pink, green, cyan, white, alt, default. Place color variants in Textures/SavePoint/ folder as 't_obj_savePoint_ball_<color>.png'."
         );
 
@@ -236,7 +235,6 @@ public sealed class ModConfiguration
             false,
             "Enable detailed texture logging (replacement confirmations and full texture list on startup). Disable for silent operation (only errors will be logged)."
         );
-
 
         EnableObjectDiagnostics = _config.Bind(
             "Diagnostics",

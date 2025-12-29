@@ -190,7 +190,8 @@ public partial class CustomTexturePatch
         {
             // Check if we have the atlas texture
             string atlasName = "t_obj_savePoint_ball";
-            if (texturePathIndex.ContainsKey(atlasName))
+            string atlasLookupName = TextureOptions.GetTextureNameWithVariant(atlasName);
+            if (texturePathIndex.ContainsKey(atlasLookupName))
             {
                 // Extract frame number from sprite name (e.g., "t_obj_savePoint_ball_0" -> 0)
                 string frameNumStr = spriteName.Substring("t_obj_savePoint_ball_".Length);
