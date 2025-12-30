@@ -135,7 +135,6 @@ public class Plugin : BasePlugin
             // Apply BGManagerHD.Load patch for bath sprite preloading
             Log.LogInfo("Applying BGManagerHD.Load patch for bath sprite preloading...");
             CustomTexturePatch.BGManagerHD_Load_Patch.Initialize(harmony);
-
         }
 
         // NPC Portrait Injection

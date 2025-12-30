@@ -31,8 +31,8 @@ public partial class CustomTexturePatch
         // Check if this is a background manager object
         // Suikoden 2: bgManagerHD
         // Suikoden 1: MapBackGround
-        // Also scan 3D objects (contains FieldObject MeshRenderers)
-        bool isBgManager = objectPath.Contains("bgManagerHD") || objectPath.Contains("MapBackGround") || objectPath.Contains("3D");
+        // Also scan 3D objects (contains FieldObject MeshRenderers) HDEffect
+        bool isBgManager = objectPath.Contains("bgManagerHD") || objectPath.Contains("MapBackGround") || objectPath.Contains("3D") || objectPath.Contains("HDEffect");
         
         // Handle background manager activation - scan for sprites to replace
         if (isBgManager)
