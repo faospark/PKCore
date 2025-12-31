@@ -135,6 +135,10 @@ public class Plugin : BasePlugin
             // Apply BGManagerHD.Load patch for bath sprite preloading
             Log.LogInfo("Applying BGManagerHD.Load patch for bath sprite preloading...");
             CustomTexturePatch.BGManagerHD_Load_Patch.Initialize(harmony);
+            
+            // [NEW] Map Texture Replacement (Native Material Array)
+            Log.LogInfo("Applying Native Map Texture patches...");
+            harmony.PatchAll(typeof(MapTexturePatch));
         }
 
         // NPC Portrait Injection

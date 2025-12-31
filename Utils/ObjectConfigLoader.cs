@@ -11,9 +11,9 @@ public static class ObjectConfigLoader
 {
     private static CustomObjectsConfig _config;
     
-    // Path: PKCore/CustomObjects/objects.json
-    private static string ConfigDir => Path.Combine(Paths.PluginPath, "PKCore", "CustomObjects");
-    private static string ConfigPath => Path.Combine(ConfigDir, "objects.json");
+    // Path: GameRoot/PKCore/CustomObjects
+    private static string ConfigDir => Path.Combine(Paths.GameRootPath, "PKCore", "CustomObjects");
+    private static string ConfigPath => Path.Combine(ConfigDir, "ExistingMapObjects.json");
     
     public static void Initialize()
     {
@@ -77,9 +77,9 @@ public static class ObjectConfigLoader
                 {
                     ["vk07_01"] = new MapObjectsConfig
                     {
-                        Objects = new List<ObjectDefinition>
+                        Objects = new List<DiscoveredObject>
                         {
-                            new ObjectDefinition
+                            new DiscoveredObject
                             {
                                 Name = "custom_test_object",
                                 Texture = "custom_object_test", 
@@ -110,16 +110,16 @@ public static class ObjectConfigLoader
         }
     }
     
-    public static List<ObjectDefinition> GetObjectsForMap(string mapId)
+    public static List<DiscoveredObject> GetObjectsForMap(string mapId)
     {
         if (_config == null || _config.Maps == null)
-            return new List<ObjectDefinition>();
+            return new List<DiscoveredObject>();
             
         if (_config.Maps.TryGetValue(mapId, out var mapConfig))
         {
-            return mapConfig.Objects ?? new List<ObjectDefinition>();
+            return mapConfig.Objects ?? new List<DiscoveredObject>();
         }
         
-        return new List<ObjectDefinition>();
+        return new List<DiscoveredObject>();
     }
 }

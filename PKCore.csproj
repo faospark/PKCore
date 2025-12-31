@@ -47,6 +47,9 @@
     <Compile Remove="reserve\**" />
     <EmbeddedResource Remove="reserve\**" />
     <None Remove="reserve\**" />
+    <Compile Remove="maps\**" />
+    <EmbeddedResource Remove="maps\**" />
+    <None Remove="maps\**" />
   </ItemGroup>
 
   <ItemGroup>

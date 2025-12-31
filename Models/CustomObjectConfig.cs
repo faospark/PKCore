@@ -11,7 +11,7 @@ public class CustomObjectsConfig
 
 public class MapObjectsConfig
 {
-    public List<ObjectDefinition> Objects { get; set; } = new List<ObjectDefinition>();
+    public List<DiscoveredObject> Objects { get; set; } = new List<DiscoveredObject>();
 }
 
 public class ObjectDefinition

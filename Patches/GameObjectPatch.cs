@@ -133,7 +133,9 @@ public partial class CustomTexturePatch
                     return;
                 }
                 
-                if (objectPath.Contains("(Clone)"))
+                // Only trigger on the actual Scene Root (e.g. vk16_00(Clone))
+                // effectively ignoring children like "xzon" even if they are in the clone hierarchy
+                if (__instance.name.EndsWith("(Clone)"))
                 {
                     PKCore.Patches.CustomObjectInsertion.TryCreateCustomObjects(__instance);
                     

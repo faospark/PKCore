@@ -6,6 +6,7 @@ using System.Text.Json;
 using UnityEngine;
 using PKCore.Models;
 using BepInEx;
+using Il2CppInterop.Runtime;
 
 namespace PKCore.Utils;
 
@@ -48,6 +49,16 @@ public static class ObjectDiscovery
                 {
                     objects.Add(discovered);
                 }
+            }
+
+            // [NEW] Discover native event objects from MapBGManagerHD
+            try 
+            {
+                LogNativeEventObjects(objects);
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogWarning($"[ObjectDiscovery] Failed to log native objects: {ex.Message}");
             }
             
             _discoveredObjects[mapId] = objects;
@@ -307,36 +318,59 @@ public static class ObjectDiscovery
             Plugin.Log.LogError($"[ObjectDiscovery] Error saving discovered objects: {ex}");
         }
     }
+    private static void LogNativeEventObjects(List<DiscoveredObject> objects)
+    {
+        // Fix: Use m_instance and cast to MapBGManagerHD
+        var managerBase = MapBGManager.m_instance;
+        if (managerBase == null) return;
+        
+        var manager = managerBase.TryCast<MapBGManagerHD>();
+        if (manager == null) return;
+        
+        var eventObjects = manager.eventObjects;
+        if (eventObjects == null) return;
+        
+        Plugin.Log.LogInfo($"[ObjectDiscovery] Found {eventObjects.Count} native event objects");
+        
+        for (int i = 0; i < eventObjects.Count; i++)
+        {
+            var evt = eventObjects[i];
+            if (evt == null) continue;
+            
+            objects.Add(new DiscoveredObject
+            {
+                Name = $"Native_Event_Unknown", // Name = $"Native_Event_{evt.id}",
+                Texture = "Native",
+                HasSpriteRenderer = true, // Assumed
+                Position = new Vector3Config 
+                { 
+                    X = 0, // evt.pos.x,
+                    Y = 0, // evt.pos.y,
+                    Z = 0 // 2D map
+                },
+                Scale = new Vector3Config { X = 1, Y = 1, Z = 1 },
+                Rotation = 0,
+                SortingOrder = 0,
+                Layer = 0,
+                Tag = "NativeID:Unknown", // Tag = $"NativeID:{evt.id}",
+                Active = true, // evt.isVisible,
+                HasCollision = true,
+                ColliderType = "NativeBox",
+                IsMovable = false,
+                RigidbodyType = null,
+                IsInteractable = true,
+                InteractableType = $"NativeEvent", // InteractableType = $"NativeEvent (EventMapNo: {evt.eventMapNo}, AN: {evt.an})",
+                DialogText = null,
+                ComponentCount = 0,
+                // Custom fields
+                NativeID = -1, // evt.id,
+                EventMapNo = -1 // evt.eventMapNo
+            });
+            
+            // TODO: Use Reflection to dump properties once and find correct names
+            // Plugin.Log.LogInfo($"[Reflection] EventObject Props: {string.Join(", ", evt.GetType().GetProperties().Select(p => p.Name))}");
+        }
+    }
 }
 
-public class DiscoveredObject
-{
-    public string Name { get; set; }
-    public string Texture { get; set; }
-    public bool HasSpriteRenderer { get; set; }
-    public Vector3Config Position { get; set; }
-    public Vector3Config Scale { get; set; }
-    public float Rotation { get; set; }
-    public int SortingOrder { get; set; }
-    public int Layer { get; set; }
-    public string Tag { get; set; }
-    public bool Active { get; set; }
-    
-    // Collision detection
-    public bool HasCollision { get; set; }
-    public string ColliderType { get; set; }
-    
-    // Movement detection
-    public bool IsMovable { get; set; }
-    public string RigidbodyType { get; set; }
-    
-    // Interactable detection
-    public bool IsInteractable { get; set; }
-    public string InteractableType { get; set; }
-    
-    // Dialog/Remark detection
-    public string DialogText { get; set; }
-    
-    // Additional info
-    public int ComponentCount { get; set; }
-}
+
