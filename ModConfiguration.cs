@@ -217,26 +217,27 @@ public sealed class ModConfiguration
             "Enable texture manifest caching for faster startup. Caches the texture index to skip re-scanning the Textures folder on every launch. Disable if you're actively adding/removing textures and want changes detected immediately."
         );
 
-        EnableCustomObjects = _config.Bind(
-            "Experimental",
-            "EnableCustomObjects",
-            true,
-            "[EXPERIMENTAL] Enable custom object insertion. Allows you to add custom static objects to game scenes via objects.json configuration."
-        );
+        // EXPERIMENTAL FEATURES - Hidden for current release, will revisit in future
+        // EnableCustomObjects = _config.Bind(
+        //     "Experimental",
+        //     "EnableCustomObjects",
+        //     true,
+        //     "[EXPERIMENTAL] Enable custom object insertion. Allows you to add custom static objects to game scenes via objects.json configuration."
+        // );
 
-        DebugCustomObjects = _config.Bind(
-            "Experimental",
-            "DebugCustomObjects",
-            true,
-            "Show magenta debug sprites for custom objects when their texture files are missing. Useful for testing object placement and visibility."
-        );
+        // DebugCustomObjects = _config.Bind(
+        //     "Experimental",
+        //     "DebugCustomObjects",
+        //     true,
+        //     "Show magenta debug sprites for custom objects when their texture files are missing. Useful for testing object placement and visibility."
+        // );
 
-        LogExistingMapObjects = _config.Bind(
-            "Experimental",
-            "LogExistingMapObjects",
-            false,
-            "Log all existing map objects to ExistingMapObjects.json. This creates a reference file you can copy from when creating custom objects. Disable after collecting the data you need."
-        );
+        // LogExistingMapObjects = _config.Bind(
+        //     "Experimental",
+        //     "LogExistingMapObjects",
+        //     false,
+        //     "Log all existing map objects to ExistingMapObjects.json. This creates a reference file you can copy from when creating custom objects. Disable after collecting the data you need."
+        // );
 
         // Diagnostics section - all logging and debugging settings at the bottom
         LogReplaceableTextures = _config.Bind(
