@@ -539,12 +539,34 @@ public partial class CustomTexturePatch
             return;
         }
 
-        Plugin.Log.LogInfo($"Custom textures directory: {customTexturesPath}");
+        // Custom textures directory: {customTexturesPath}
         
         InitializeCaching();
         BuildTextureIndex();
         
-        Plugin.Log.LogInfo($"Indexed {texturePathIndex.Count} custom texture(s) ready to use");
+        
+        // Count unique file paths (index contains duplicate entries for sanitized names)
+        int uniqueFileCount = texturePathIndex.Values.Distinct().Count();
+        Plugin.Log.LogInfo($"Indexed {uniqueFileCount} custom texture(s)");
+        
+        
+        
+        // Log texture category status (always show)
+        Plugin.Log.LogInfo($"Launcher UI textures: {(Plugin.Config.LoadLauncherUITextures.Value ? "enabled" : "disabled")}");
+        Plugin.Log.LogInfo($"Battle textures: {(Plugin.Config.LoadBattleTextures.Value ? "enabled" : "disabled")}");
+        Plugin.Log.LogInfo($"Character textures: {(Plugin.Config.LoadCharacterTextures.Value ? "enabled" : "disabled")}");
+        
+        // Log active texture options (only if non-default)
+        if (Plugin.Config.SavePointColor.Value != "default")
+            Plugin.Log.LogInfo($"Save point color: {Plugin.Config.SavePointColor.Value}");
+        if (Plugin.Config.DisableSavePointGlow.Value)
+            Plugin.Log.LogInfo("Save point glow: disabled");
+        if (Plugin.Config.TirRunTexture.Value != "default")
+            Plugin.Log.LogInfo($"Tir run texture variant: {Plugin.Config.TirRunTexture.Value}");
+        if (Plugin.Config.S2ClassicSaveWindow.Value)
+            Plugin.Log.LogInfo("Suikoden 2 classic save window: enabled");
+        if (Plugin.Config.MercFortFence.Value != "default")
+            Plugin.Log.LogInfo($"Mercenary Fortress fence variant: {Plugin.Config.MercFortFence.Value}");
         
         // Preload bath and save point sprites
         PreloadBathSprites();

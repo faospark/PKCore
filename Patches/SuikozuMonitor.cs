@@ -11,6 +11,25 @@ namespace PKCore.Patches;
 /// </summary>
 public class SuikozuInternalPatch
 {
+    private static bool _isRegistered = false;
+    
+    // Lazy registration - only register when first Suikozu map is created (GSD2 only)
+    private static void EnsureRegistered()
+    {
+        if (_isRegistered) return;
+        
+        try 
+        {
+            Il2CppInterop.Runtime.Injection.ClassInjector.RegisterTypeInIl2Cpp<SuikozuTextureEnforcer>();
+            Plugin.Log.LogInfo("[SuikozuPatch] Registered SuikozuTextureEnforcer type (lazy-loaded on first world map open)");
+            _isRegistered = true;
+        }
+        catch (System.Exception ex)
+        {
+            Plugin.Log.LogError($"[SuikozuPatch] Failed to register SuikozuTextureEnforcer: {ex.Message}");
+        }
+    }
+    
     // Capture objects created and IMMEDIATELY attach the Smart Enforcer.
     // We attach to everything (Map and Dot) because the Smart Enforcer only activates 
     // if it detects a 'suikozu_' texture assignment.
@@ -19,6 +38,10 @@ public class SuikozuInternalPatch
     public static void CreateMapObj_Postfix(int type, GameObject __result)
     {
         if (__result == null) return;
+        
+        // Ensure type is registered before attaching component
+        EnsureRegistered();
+        
         Plugin.Log.LogInfo($"[SuikozuPatch] CreateMapObj produced: {__result.name} (Type: {type}) - Attaching Smart Enforcer.");
         
         // Immediate attachment

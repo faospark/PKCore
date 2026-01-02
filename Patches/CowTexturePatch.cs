@@ -13,18 +13,29 @@ namespace PKCore.Patches;
 public static class CowTexturePatch
 {
     private const string COW_PREFIX = "t_gsd1_vaa_00_obj_ushi_";
-
-    public static void Initialize()
+    private static bool _isRegistered = false;
+    
+    // Lazy registration - only register when first cow is encountered
+    private static void EnsureRegistered()
     {
+        if (_isRegistered) return;
+        
         try 
         {
             Il2CppInterop.Runtime.Injection.ClassInjector.RegisterTypeInIl2Cpp<CowMonitor>();
-            Plugin.Log.LogInfo("[CowTexturePatch] Registered CowMonitor type");
+            Plugin.Log.LogInfo("[CowTexturePatch] Registered CowMonitor type (lazy-loaded on first cow encounter)");
+            _isRegistered = true;
         }
         catch (Exception ex)
         {
             Plugin.Log.LogError($"[CowTexturePatch] Failed to register CowMonitor: {ex.Message}");
         }
+    }
+
+    // Called at startup - no longer registers immediately
+    public static void Initialize()
+    {
+        // Registration is now deferred until first cow is encountered (silent)
     }
 
     public static void CheckAndAttachMonitor(GameObject go)
@@ -46,7 +57,9 @@ public static class CowTexturePatch
 
         if (isCow)
         {
-             AttachMonitor(go);
+            // Ensure the type is registered before trying to add the component
+            EnsureRegistered();
+            AttachMonitor(go);
         }
     }
 

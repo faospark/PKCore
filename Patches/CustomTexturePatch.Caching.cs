@@ -76,8 +76,12 @@ public partial class CustomTexturePatch
                             $"{Plugin.Config.LoadCharacterTextures.Value}|" +
                             $"{Plugin.Config.SavePointColor.Value}";
         
-        // Simple hash (GetHashCode is sufficient for cache invalidation)
-        return configString.GetHashCode().ToString();
+        // Use stable hash (SHA256) instead of GetHashCode which is not stable across runs
+        using (var sha256 = System.Security.Cryptography.SHA256.Create())
+        {
+            byte[] hashBytes = sha256.ComputeHash(System.Text.Encoding.UTF8.GetBytes(configString));
+            return BitConverter.ToString(hashBytes).Replace("-", "");
+        }
     }
 
     /// <summary>
@@ -108,7 +112,7 @@ public partial class CustomTexturePatch
                     manifest.Entries.Count > 0)
                 {
                     texturePathIndex = manifest.ToDictionary();
-                    Plugin.Log.LogInfo($"Loaded texture index from manifest ({texturePathIndex.Count} textures)");
+                    // Loaded from cache (silent)
                     return true;
                 }
                 else if (manifest != null && manifest.ConfigHash != currentConfigHash)
@@ -144,7 +148,7 @@ public partial class CustomTexturePatch
             {
                 serializer.Serialize(stream, manifest);
             }
-            Plugin.Log.LogInfo("Saved texture index validation manifest");
+            // Manifest saved successfully (silent)
         }
         catch (Exception ex)
         {

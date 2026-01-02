@@ -302,6 +302,6 @@ public class GRSpriteRendererPatch
 
     public static void Initialize()
     {
-        Plugin.Log.LogInfo("GRSpriteRenderer patches initialized");
+        Plugin.Log.LogInfo("Applying GRSpriteRenderer patches");
     }
 }

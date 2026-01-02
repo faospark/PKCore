@@ -12,18 +12,29 @@ namespace PKCore.Patches;
 /// </summary>
 public class DragonPatch
 {
-    // Register the monitor component so it can be used via Il2CppInterop
-    public static void Initialize()
+    private static bool _isRegistered = false;
+    
+    // Lazy registration - only register when first dragon is encountered
+    private static void EnsureRegistered()
     {
+        if (_isRegistered) return;
+        
         try 
         {
             Il2CppInterop.Runtime.Injection.ClassInjector.RegisterTypeInIl2Cpp<DragonSpriteMonitor>();
-            Plugin.Log.LogInfo("[DragonPatch] Registered DragonSpriteMonitor type");
+            Plugin.Log.LogInfo("[DragonPatch] Registered DragonSpriteMonitor type (lazy-loaded on first dragon encounter)");
+            _isRegistered = true;
         }
         catch (Exception ex)
         {
             Plugin.Log.LogError($"[DragonPatch] Failed to register DragonSpriteMonitor: {ex.Message}");
         }
+    }
+    
+    // Called at startup - no longer registers immediately
+    public static void Initialize()
+    {
+        // Registration is now deferred until first dragon is encountered (silent)
     }
 
     /// <summary>
@@ -38,6 +49,9 @@ public class DragonPatch
         bool isDragon = go.name.Contains("dragon", StringComparison.OrdinalIgnoreCase);
         
         if (!isDragon) return;
+
+        // Ensure the type is registered before trying to add the component
+        EnsureRegistered();
 
         // Avoid adding multiple monitors
         if (go.GetComponent<DragonSpriteMonitor>() != null) return;

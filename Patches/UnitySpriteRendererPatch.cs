@@ -94,6 +94,6 @@ public class UnitySpriteRendererPatch
 
     public static void Initialize()
     {
-        Plugin.Log.LogInfo("Unity SpriteRenderer patches initialized");
+        Plugin.Log.LogInfo("Applying Unity SpriteRenderer patches");
     }
 }

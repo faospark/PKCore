@@ -218,21 +218,21 @@ public sealed class ModConfiguration
 
         // Diagnostics section - all logging and debugging settings
         LogReplaceableTextures = _config.Bind(
-            "Diagnostics",
+            "zz - Diagnostics",
             "LogReplaceableTextures",
             false,
             "Log all textures that could be replaced. Each texture name is logged only once. Useful for discovering which textures you can customize."
         );
 
         LogTexturePaths = _config.Bind(
-            "Diagnostics",
+            "zz - Diagnostics",
             "LogTexturePaths",
             false,
             "Include GameObject hierarchy paths in texture logs. Enable for detailed debugging to see exactly which UI elements use which textures."
         );
 
         DetailedTextureLog = _config.Bind(
-            "Diagnostics",
+            "zz - Diagnostics",
             "DetailedTextureLog",
             false,
             "Enable detailed texture logging (replacement confirmations and full texture list on startup). Disable for silent operation (only errors will be logged)."
@@ -245,28 +245,28 @@ public sealed class ModConfiguration
         // Enable at your own risk for testing purposes.
         
         EnableObjectDiagnostics = _config.Bind(
-            "Experimental",
+            "zz - Experimental",
             "EnableObjectDiagnostics",
             false,
             "[EXPERIMENTAL] Enable diagnostic logging for MapBGManagerHD objects. Logs all objects in field scenes to help understand scene structure. For development/debugging only."
         );
 
         EnableCustomObjects = _config.Bind(
-            "Experimental",
+            "zz - Experimental",
             "EnableCustomObjects",
             false,
             "[EXPERIMENTAL - NOT WORKING] Enable custom object insertion. Objects are created but invisible due to MapSpriteHD interference. Allows you to add custom static objects to game scenes via objects.json configuration."
         );
 
         DebugCustomObjects = _config.Bind(
-            "Experimental",
+            "zz - Experimental",
             "DebugCustomObjects",
             false,
             "[EXPERIMENTAL] Show magenta debug sprites for custom objects when their texture files are missing. Useful for testing object placement and visibility."
         );
 
         LogExistingMapObjects = _config.Bind(
-            "Experimental",
+            "zz - Experimental",
             "LogExistingMapObjects",
             false,
             "[EXPERIMENTAL] Log all existing map objects to ExistingMapObjects.json. This creates a reference file you can copy from when creating custom objects. Disable after collecting the data you need."

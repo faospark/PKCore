@@ -124,12 +124,9 @@ public class Plugin : BasePlugin
             harmony.PatchAll(typeof(UnitySpriteRendererPatch));
             UnitySpriteRendererPatch.Initialize();
             
-            // Register lazy loader component
-            Il2CppInterop.Runtime.Injection.ClassInjector.RegisterTypeInIl2Cpp<SuikozuTextureEnforcer>();
-            Log.LogInfo("Registered SuikozuTextureEnforcer in IL2CPP domain.");
-
-            // Apply Suikozu Internal Patch (Reactive instead of polling)
-            Log.LogInfo("Applying Suikozu Internal Patch...");
+            
+            // Suikozu reactive patch (GSD2 world map)
+            // IL2CPP registration is now lazy-loaded when first map is opened
             harmony.PatchAll(typeof(SuikozuInternalPatch));
 
             // Apply BGManagerHD.Load patch for bath sprite preloading
