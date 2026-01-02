@@ -17,23 +17,6 @@ public class UnitySpriteRendererPatch
         if (value == null)
             return;
 
-        // CRITICAL: Skip custom objects created by CustomObjectInsertion
-        // They handle their own texture loading and we don't want to interfere
-        // Build path inline to check if this is a custom object
-        string path = "";
-        Transform current = __instance.gameObject.transform;
-        while (current != null)
-        {
-            path = "/" + current.name + path;
-            current = current.parent;
-        }
-        
-        bool isCustomObject = path.Contains("/object/") && (path.Contains("bgManagerHD") || path.Contains("MapBackGround"));
-        if (isCustomObject)
-        {
-            // Let custom objects handle their own sprites (silent skip)
-            return;
-        }
 
         string spriteName = value.name;
         
@@ -82,6 +65,46 @@ public class UnitySpriteRendererPatch
                 if ((isSavePoint || isDragon) && customSprite.texture != null)
                 {
                     Plugin.Log.LogInfo($"[UnitySpriteRenderer]   Custom texture: {customSprite.texture.name} ({customSprite.texture.width}x{customSprite.texture.height})");
+                }
+            }
+        }
+        // If no custom sprite, check if the sprite's atlas texture has a custom replacement
+        else if (value.texture != null)
+        {
+            string atlasTextureName = value.texture.name;
+            
+            // Skip if texture name is empty
+            if (!string.IsNullOrWhiteSpace(atlasTextureName))
+            {
+                if (Plugin.Config.DetailedTextureLog.Value)
+                {
+                    Plugin.Log.LogInfo($"[UnitySpriteRenderer] No custom sprite for '{spriteName}', checking atlas texture: {atlasTextureName}");
+                }
+                
+                Texture2D customAtlasTexture = CustomTexturePatch.LoadCustomTexture(atlasTextureName);
+                
+                if (customAtlasTexture != null)
+                {
+                    if (Plugin.Config.DetailedTextureLog.Value)
+                    {
+                        Plugin.Log.LogInfo($"[UnitySpriteRenderer] Found custom atlas texture, replacing in-place...");
+                    }
+                    
+                    // Replace the atlas texture in-place
+                    bool replaced = CustomTexturePatch.ReplaceTextureInPlace(value.texture, atlasTextureName);
+                    
+                    if (replaced)
+                    {
+                        Plugin.Log.LogInfo($"[UnitySpriteRenderer] ✓ Replaced atlas texture for sprite '{spriteName}': {atlasTextureName}");
+                    }
+                    else
+                    {
+                        Plugin.Log.LogWarning($"[UnitySpriteRenderer] ✗ Failed to replace atlas texture: {atlasTextureName}");
+                    }
+                }
+                else if (Plugin.Config.DetailedTextureLog.Value)
+                {
+                    Plugin.Log.LogInfo($"[UnitySpriteRenderer] No custom atlas texture found for: {atlasTextureName}");
                 }
             }
         }
