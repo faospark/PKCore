@@ -16,6 +16,8 @@ public sealed class ModConfiguration
     
     // Visual Settings
     public ConfigEntry<bool> DisableSpritePostProcessing { get; private set; }
+    public ConfigEntry<bool> EnableSMAA { get; private set; }
+    public ConfigEntry<string> SMAAExcludeGroups { get; private set; }
     
     // Display Settings
     public ConfigEntry<bool> EnableBorderlessWindow { get; private set; }
@@ -32,7 +34,7 @@ public sealed class ModConfiguration
     public ConfigEntry<bool> DetailedTextureLog { get; private set; }
     public ConfigEntry<bool> LoadLauncherUITextures { get; private set; }
     public ConfigEntry<bool> LoadBattleTextures { get; private set; }
-    public ConfigEntry<bool> LoadCharacterTextures { get; private set; }
+    public ConfigEntry<bool> EnableProjectKyaroSprites { get; private set; }
     
     // NPC Portrait Settings
     public ConfigEntry<bool> EnableNPCPortraits { get; private set; }
@@ -93,6 +95,20 @@ public sealed class ModConfiguration
                 "Mipmap bias for sprite textures. Negative values (-0.5 to -1.0) make textures sharper and prevent white outlines on edges. Positive values (0.5 to 1.0) make textures softer/blurrier. 0 = neutral.",
                 new AcceptableValueRange<float>(-2.0f, 2.0f)
             )
+        );
+
+        EnableSMAA = _config.Bind(
+            "Visual",
+            "EnableSMAA",
+            false,
+            "Enable SMAA (Subpixel Morphological Anti-Aliasing) for sprites. Provides high-quality edge smoothing while excluding UI_Root to keep UI sharp. Better quality than FXAA with minimal performance cost."
+        );
+
+        SMAAExcludeGroups = _config.Bind(
+            "Visual",
+            "SMAAExcludeGroups",
+            "UI_Root",
+            "Comma-separated list of parent GameObject names to exclude from SMAA. These objects and their children will not have SMAA applied."
         );
 
         EnableResolutionScaling = _config.Bind(
@@ -158,18 +174,11 @@ public sealed class ModConfiguration
             "Load custom textures from Textures/launcher folder. Set to false to use original launcher UI."
         );
 
-        LoadBattleTextures = _config.Bind(
+        EnableProjectKyaroSprites = _config.Bind(
             "Custom Textures",
-            "LoadBattleTextures",
+            "EnableProjectKyaroSprites",
             true,
-            "Load custom textures from Textures/battle folder. Set to false to use original battle graphics."
-        );
-
-        LoadCharacterTextures = _config.Bind(
-            "Custom Textures",
-            "LoadCharacterTextures",
-            true,
-            "Load custom textures from Textures/characters folder. Set to false to use original character graphics."
+            "Enable Project Kyaro sprite textures from PKS1 and PKS2 folders. Set to false to use original sprites."
         );
 
         EnableNPCPortraits = _config.Bind(

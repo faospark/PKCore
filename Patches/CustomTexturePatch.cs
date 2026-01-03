@@ -585,8 +585,7 @@ public partial class CustomTexturePatch
         
         // Log texture category status (always show)
         Plugin.Log.LogInfo($"Launcher UI textures: {(Plugin.Config.LoadLauncherUITextures.Value ? "enabled" : "disabled")}");
-        Plugin.Log.LogInfo($"Battle textures: {(Plugin.Config.LoadBattleTextures.Value ? "enabled" : "disabled")}");
-        Plugin.Log.LogInfo($"Character textures: {(Plugin.Config.LoadCharacterTextures.Value ? "enabled" : "disabled")}");
+        Plugin.Log.LogInfo($"Project Kyaro textures: {(Plugin.Config.EnableProjectKyaroSprites.Value ? "enabled" : "disabled")}");
         
         // Log active texture options (only if non-default)
         if (Plugin.Config.SavePointColor.Value != "default")

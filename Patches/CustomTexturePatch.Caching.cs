@@ -74,8 +74,6 @@ public partial class CustomTexturePatch
     {
         // Combine all texture-related config values into a string
         string configString = $"{Plugin.Config.LoadLauncherUITextures.Value}|" +
-                            $"{Plugin.Config.LoadBattleTextures.Value}|" +
-                            $"{Plugin.Config.LoadCharacterTextures.Value}|" +
                             $"{Plugin.Config.SavePointColor.Value}";
         
         // Use stable hash (SHA256) instead of GetHashCode which is not stable across runs

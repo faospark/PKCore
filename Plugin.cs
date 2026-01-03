@@ -79,6 +79,14 @@ public class Plugin : BasePlugin
             DisableSpritePostProcessingPatch.Initialize();
         }
 
+        // Apply SMAA anti-aliasing (excludes UI_Root)
+        if (Config.EnableSMAA.Value)
+        {
+            Log.LogInfo("Applying SMAA anti-aliasing patches (UI_Root excluded)...");
+            harmony.PatchAll(typeof(SMAAPatch));
+            SMAAPatch.Initialize();
+        }
+
         // Borderless Window Mode
         if (Config.EnableBorderlessWindow.Value)
         {

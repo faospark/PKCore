@@ -20,14 +20,10 @@ public static class TextureOptions
             filePath.Contains("\\launcher\\", StringComparison.OrdinalIgnoreCase))
             return false;
 
-        // Disable battle effect textures
-        if (!Plugin.Config.LoadBattleTextures.Value && 
-            filePath.Contains("\\battle\\", StringComparison.OrdinalIgnoreCase))
-            return false;
-
-        // Disable character textures
-        if (!Plugin.Config.LoadCharacterTextures.Value && 
-            filePath.Contains("\\characters\\", StringComparison.OrdinalIgnoreCase))
+        // Disable Project Kyaro textures
+        if (!Plugin.Config.EnableProjectKyaroSprites.Value && 
+            (filePath.Contains("\\PKS1\\", StringComparison.OrdinalIgnoreCase) ||
+             filePath.Contains("\\PKS2\\", StringComparison.OrdinalIgnoreCase)))
             return false;
 
         // Add more filters here as needed:
