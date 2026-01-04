@@ -157,7 +157,9 @@ public partial class CustomTexturePatch
 
         // Check if this is a bgManagerHD object (save points are children of this)
         string objectPath = GetGameObjectPath(__instance);
-        if (!objectPath.Contains("bgManagerHD"))
+        bool isBgManager = objectPath.Contains("bgManagerHD") || objectPath.Contains("MapBackGround");
+        
+        if (!isBgManager)
             return;
 
         // Scan for save point sprites in this object's children
