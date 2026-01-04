@@ -192,5 +192,12 @@ public class Plugin : BasePlugin
             Log.LogInfo("Applying DisableCustomPostEffect patch for colored intro/flashbacks...");
             DisableCustomPostEffectPatch.Initialize(harmony);
         }
+
+        // Apply Dialog Patch (Smaller Dialog Box)
+        if (Config.SmallerDialogBox.Value)
+        {
+            Log.LogInfo("Applying Dialog patches...");
+            harmony.PatchAll(typeof(DialogPatch));
+        }
     }
 }
