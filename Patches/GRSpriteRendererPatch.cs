@@ -39,7 +39,7 @@ public class GRSpriteRendererPatch
             CustomTexturePatch.LogReplaceableTexture(spriteName, "Sprite - GRSpriteRenderer");
         }
 
-        // Try to replace with custom sprite first
+        // Try to replace with custom sprite
         Sprite customSprite = CustomTexturePatch.LoadCustomSprite(spriteName, value);
         if (customSprite != null)
         {
@@ -54,48 +54,7 @@ public class GRSpriteRendererPatch
                 }
             }
         }
-        // If no custom sprite, check if the sprite's atlas texture has a custom replacement
-        else if (value.texture != null)
-        {
-            string atlasTextureName = value.texture.name;
-            
-            // Skip if texture name is empty
-            if (string.IsNullOrWhiteSpace(atlasTextureName))
-                return;
-            
-            if (Plugin.Config.DetailedTextureLog.Value)
-            {
-                Plugin.Log.LogInfo($"[GRSpriteRenderer] No custom sprite for '{spriteName}', checking atlas texture: {atlasTextureName}");
-            }
-            
-            Texture2D customAtlasTexture = CustomTexturePatch.LoadCustomTexture(atlasTextureName);
-            
-            if (customAtlasTexture != null)
-            {
-                if (Plugin.Config.DetailedTextureLog.Value)
-                {
-                    Plugin.Log.LogInfo($"[GRSpriteRenderer] Found custom atlas texture, replacing in-place...");
-                }
-                
-                // Replace the atlas texture in-place
-                bool replaced = CustomTexturePatch.ReplaceTextureInPlace(value.texture, atlasTextureName);
-                
-                if (replaced)
-                {
-                    Plugin.Log.LogInfo($"[GRSpriteRenderer] ✓ Replaced atlas texture for sprite '{spriteName}': {atlasTextureName}");
-                }
-                else
-                {
-                    Plugin.Log.LogWarning($"[GRSpriteRenderer] ✗ Failed to replace atlas texture: {atlasTextureName}");
-                }
-            }
-            else if (Plugin.Config.DetailedTextureLog.Value)
-            {
-                Plugin.Log.LogInfo($"[GRSpriteRenderer] No custom atlas texture found for: {atlasTextureName}");
-            }
-        }
-        
-        if (isSavePoint && customSprite == null)
+        else if (isSavePoint)
         {
             Plugin.Log.LogWarning($"[SavePoint] No custom sprite found for: {spriteName}");
         }
@@ -158,150 +117,35 @@ public class GRSpriteRendererPatch
             Plugin.Log.LogInfo($"[SavePoint] GRSpriteRenderer.OnEnable for: {spriteName}");
         }
         
-        // First, try to replace with custom sprite
-        if (CustomTexturePatch.HasCustomTexture(spriteName))
+        // Check if we have a custom texture for this sprite
+        if (!CustomTexturePatch.HasCustomTexture(spriteName))
         {
-            Sprite customSprite = CustomTexturePatch.LoadCustomSprite(spriteName, currentSprite);
-            if (customSprite != null)
+            if (isSavePoint)
             {
-                __instance.sprite = customSprite; // Use property setter to trigger updates
-                
-                if (Plugin.Config.DetailedTextureLog.Value || isSavePoint)
-                {
-                    Plugin.Log.LogInfo($"[GRSpriteRenderer] Replaced sprite on enable: {spriteName}");
-                }
-                return;
+                Plugin.Log.LogWarning($"[SavePoint] No custom texture in index for: {spriteName}");
             }
-        }
-        
-        // If no custom sprite, check if the sprite's atlas texture has a custom replacement
-        if (currentSprite.texture != null)
-        {
-            string atlasTextureName = currentSprite.texture.name;
-            
-            // Skip if texture name is empty
-            if (string.IsNullOrWhiteSpace(atlasTextureName))
-                return;
-            
-            if (Plugin.Config.DetailedTextureLog.Value)
-            {
-                Plugin.Log.LogInfo($"[GRSpriteRenderer OnEnable] No custom sprite for '{spriteName}', checking atlas: {atlasTextureName}");
-            }
-            
-            Texture2D customAtlasTexture = CustomTexturePatch.LoadCustomTexture(atlasTextureName);
-            
-            if (customAtlasTexture != null)
-            {
-                if (Plugin.Config.DetailedTextureLog.Value)
-                {
-                    Plugin.Log.LogInfo($"[GRSpriteRenderer OnEnable] Found custom atlas texture, replacing in-place...");
-                }
-                
-                // Replace the atlas texture in-place
-                bool replaced = CustomTexturePatch.ReplaceTextureInPlace(currentSprite.texture, atlasTextureName);
-                
-                if (replaced)
-                {
-                    Plugin.Log.LogInfo($"[GRSpriteRenderer OnEnable] ✓ Replaced atlas texture for sprite '{spriteName}': {atlasTextureName}");
-                }
-                else
-                {
-                    Plugin.Log.LogWarning($"[GRSpriteRenderer OnEnable] ✗ Failed to replace atlas texture: {atlasTextureName}");
-                }
-            }
-            else if (Plugin.Config.DetailedTextureLog.Value)
-            {
-                Plugin.Log.LogInfo($"[GRSpriteRenderer OnEnable] No custom atlas texture found for: {atlasTextureName}");
-            }
-        }
-        
-        if (isSavePoint)
-        {
-            Plugin.Log.LogWarning($"[SavePoint] No custom texture found for: {spriteName}");
-        }
-    }
-
-    /// <summary>
-    /// Intercept GRSpriteRenderer.material getter to catch suikozu textures
-    /// Suikozu textures are raw Texture2D objects accessed via material.mainTexture
-    /// </summary>
-    [HarmonyPatch(typeof(GRSpriteRenderer), nameof(GRSpriteRenderer.material), MethodType.Getter)]
-    [HarmonyPostfix]
-    public static void GRSpriteRenderer_get_material_Postfix(GRSpriteRenderer __instance, Material __result)
-    {
-        if (!Plugin.Config.EnableCustomTextures.Value || __result == null)
             return;
+        }
 
-        try
+        // Load and apply custom sprite
+        Sprite customSprite = CustomTexturePatch.LoadCustomSprite(spriteName, currentSprite);
+        if (customSprite != null)
         {
-            if (__result.mainTexture is Texture2D texture)
+            __instance.sprite = customSprite; // Use property setter to trigger updates
+            
+            if (Plugin.Config.DetailedTextureLog.Value || isSavePoint)
             {
-                string textureName = texture.name;
-                
-                // Check if this is a suikozu texture
-                if (textureName != null && textureName.StartsWith("suikozu_", System.StringComparison.OrdinalIgnoreCase))
-                {
-                    Plugin.Log.LogInfo($"[Suikozu DEBUG] GRSpriteRenderer.material getter called: {textureName}");
-                    
-                    // Try to replace the texture
-                    if (CustomTexturePatch.ReplaceTextureInPlace(texture, textureName))
-                    {
-                        Plugin.Log.LogInfo($"[Suikozu] ✓ Replaced via GRSpriteRenderer.material: {textureName}");
-                    }
-                    else
-                    {
-                        Plugin.Log.LogInfo($"[Suikozu DEBUG] Replacement failed for: {textureName}");
-                    }
-                }
+                Plugin.Log.LogInfo($"[GRSpriteRenderer] Replaced sprite on enable: {spriteName}");
             }
         }
-        catch (System.Exception ex)
+        else if (isSavePoint)
         {
-            Plugin.Log.LogError($"[GRSpriteRenderer] Error in material getter postfix: {ex}");
-        }
-    }
-
-    /// <summary>
-    /// Intercept GRSpriteRenderer.material setter to catch suikozu material assignments
-    /// </summary>
-    [HarmonyPatch(typeof(GRSpriteRenderer), nameof(GRSpriteRenderer.material), MethodType.Setter)]
-    [HarmonyPrefix]
-    public static void GRSpriteRenderer_set_material_Prefix(GRSpriteRenderer __instance, ref Material value)
-    {
-        if (!Plugin.Config.EnableCustomTextures.Value || value == null)
-            return;
-
-        try
-        {
-            if (value.mainTexture is Texture2D texture)
-            {
-                string textureName = texture.name;
-                
-                // Check if this is a suikozu texture
-                if (textureName != null && textureName.StartsWith("suikozu_", System.StringComparison.OrdinalIgnoreCase))
-                {
-                    Plugin.Log.LogInfo($"[Suikozu DEBUG] GRSpriteRenderer.material setter called: {textureName}");
-                    
-                    // Try to replace the texture
-                    if (CustomTexturePatch.ReplaceTextureInPlace(texture, textureName))
-                    {
-                        Plugin.Log.LogInfo($"[Suikozu] ✓ Replaced via GRSpriteRenderer.material setter: {textureName}");
-                    }
-                    else
-                    {
-                        Plugin.Log.LogInfo($"[Suikozu DEBUG] Replacement failed for: {textureName}");
-                    }
-                }
-            }
-        }
-        catch (System.Exception ex)
-        {
-            Plugin.Log.LogError($"[GRSpriteRenderer] Error in material setter prefix: {ex}");
+            Plugin.Log.LogWarning($"[SavePoint] Failed to load custom sprite for: {spriteName}");
         }
     }
 
     public static void Initialize()
     {
-        Plugin.Log.LogInfo("Applying GRSpriteRenderer patches");
+        Plugin.Log.LogInfo("GRSpriteRenderer patches initialized");
     }
 }

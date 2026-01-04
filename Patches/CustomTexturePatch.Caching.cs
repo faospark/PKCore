@@ -25,9 +25,7 @@ public partial class CustomTexturePatch
     public class TextureManifest
     {
         public long LastModified;
-        public long BuildTime; // Ticks when manifest was built
         public string ConfigHash; // Hash of texture-related config settings
-        public int FileCount; // Total number of texture files indexed
         public List<ManifestEntry> Entries = new List<ManifestEntry>();
         
         public void FromDictionary(Dictionary<string, string> dict)
@@ -73,15 +71,10 @@ public partial class CustomTexturePatch
     private static string ComputeConfigHash()
     {
         // Combine all texture-related config values into a string
-        string configString = $"{Plugin.Config.LoadLauncherUITextures.Value}|" +
-                            $"{Plugin.Config.SavePointColor.Value}";
+        string configString = $"{Plugin.Config.SavePointColor.Value}";
         
-        // Use stable hash (SHA256) instead of GetHashCode which is not stable across runs
-        using (var sha256 = System.Security.Cryptography.SHA256.Create())
-        {
-            byte[] hashBytes = sha256.ComputeHash(System.Text.Encoding.UTF8.GetBytes(configString));
-            return BitConverter.ToString(hashBytes).Replace("-", "");
-        }
+        // Simple hash (GetHashCode is sufficient for cache invalidation)
+        return configString.GetHashCode().ToString();
     }
 
     /// <summary>
@@ -105,35 +98,19 @@ public partial class CustomTexturePatch
                 // Check if config has changed since manifest was created
                 string currentConfigHash = ComputeConfigHash();
                 
-                // Count current texture files
-                int currentFileCount = Directory.GetFiles(customTexturesPath, "*.png", SearchOption.AllDirectories).Length;
-                
-                // Check if 48 hours have passed since last build
-                long currentTicks = DateTime.Now.Ticks;
-                long ticksSinceBuild = currentTicks - manifest.BuildTime;
-                double hoursSinceBuild = TimeSpan.FromTicks(ticksSinceBuild).TotalHours;
-                bool buildExpired = hoursSinceBuild >= 48.0;
-                
                 if (manifest != null && 
                     manifest.LastModified == currentModified && 
                     manifest.ConfigHash == currentConfigHash &&
-                    manifest.FileCount == currentFileCount &&
-                    !buildExpired &&
                     manifest.Entries != null && 
                     manifest.Entries.Count > 0)
                 {
                     texturePathIndex = manifest.ToDictionary();
-                    // Loaded from cache (silent)
+                    Plugin.Log.LogInfo($"Loaded texture index from manifest ({texturePathIndex.Count} textures)");
                     return true;
                 }
-                else if (manifest != null)
+                else if (manifest != null && manifest.ConfigHash != currentConfigHash)
                 {
-                    if (buildExpired)
-                        Plugin.Log.LogInfo($"Build expired ({hoursSinceBuild:F1} hours old) - rebuilding texture index");
-                    else if (manifest.ConfigHash != currentConfigHash)
-                        Plugin.Log.LogInfo("Config changed - rebuilding texture index");
-                    else if (manifest.FileCount != currentFileCount)
-                        Plugin.Log.LogInfo($"File count changed ({manifest.FileCount} -> {currentFileCount}) - rebuilding texture index");
+                    Plugin.Log.LogInfo("Config changed - rebuilding texture index");
                 }
             }
         }
@@ -152,14 +129,10 @@ public partial class CustomTexturePatch
     {
         try
         {
-            int fileCount = Directory.GetFiles(customTexturesPath, "*.png", SearchOption.AllDirectories).Length;
-            
             TextureManifest manifest = new TextureManifest
             {
                 LastModified = Directory.GetLastWriteTime(customTexturesPath).Ticks,
-                BuildTime = DateTime.Now.Ticks,
-                ConfigHash = ComputeConfigHash(),
-                FileCount = fileCount
+                ConfigHash = ComputeConfigHash()
             };
             manifest.FromDictionary(texturePathIndex);
 
@@ -168,7 +141,7 @@ public partial class CustomTexturePatch
             {
                 serializer.Serialize(stream, manifest);
             }
-            // Manifest saved successfully (silent)
+            Plugin.Log.LogInfo("Saved texture index validation manifest");
         }
         catch (Exception ex)
         {

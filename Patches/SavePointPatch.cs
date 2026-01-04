@@ -1,259 +1,212 @@
 using HarmonyLib;
 using UnityEngine;
+using UnityEngine.U2D;
 using System;
-using System.Collections.Generic;
-using Il2CppInterop.Runtime.Injection;
 
-namespace PKCore.Patches
+namespace PKCore.Patches;
+
+/// <summary>
+/// Patches for save point sprite replacement
+/// Handles preloading and Resources.Load interception for save point animation frames
+/// </summary>
+public partial class CustomTexturePatch
 {
     /// <summary>
-    /// Dedicated patch for handling Save Point sprite replacements.
-    /// Handles monitoring, preloading, and Resources.Load interception for save points.
+    /// Intercept Resources.Load<Sprite>() to replace save point animation frames
+    /// The Animator loads sprite frames via Resources.Load, not through sprite property setters
     /// </summary>
-    public static class SavePointPatch
+    [HarmonyPatch(typeof(Resources))]
+    [HarmonyPatch(nameof(Resources.Load))]
+    [HarmonyPatch(new Type[] { typeof(string) }, new ArgumentType[] { ArgumentType.Normal })]
+    [HarmonyPatch(MethodType.Normal)]
+    public static class Resources_Load_Sprite_Patch
     {
-        // Dictionary to hold preloaded sprites for this patch
-        internal static Dictionary<string, Sprite> preloadedSavePointSprites = new Dictionary<string, Sprite>();
-
-        public static void Initialize()
+        [HarmonyPostfix]
+        [HarmonyPatch]
+        public static void Postfix(string path, ref UnityEngine.Object __result)
         {
-            try 
-            {
-                ClassInjector.RegisterTypeInIl2Cpp<SavePointSpriteMonitor>();
-                Plugin.Log.LogInfo("[SavePointPatch] Registered SavePointSpriteMonitor type");
-                
-                // Initialize the Resources.Load patch manually since we aren't using Harmony.PatchAll() on this specific static class 
-                // typically, but the original code used [HarmonyPatch] attributes. 
-                // If Plugin.cs uses Harmony.CreateAndPatchAll(Assembly), it will find this class if we add attributes?
-                // The original SavePointPatch logic was just a helper. The patch was in CustomTexturePatch partial.
-                // We should probably rely on manual patching or ensure this class is scanned.
-                // For safety, let's keep the nested patch class with attributes so Harmony finds it if scanning assembly.
-            }
-            catch (Exception ex)
-            {
-                Plugin.Log.LogError($"[SavePointPatch] Failed to register SavePointSpriteMonitor: {ex.Message}");
-            }
-        }
+            // Only process if result is a Sprite
+            if (__result == null || !(__result is Sprite))
+                return;
 
-        /// <summary>
-        /// Checks if an object is a save point logic part and attaches a monitor if needed
-        /// </summary>
-        public static void CheckAndAttachMonitor(GameObject go)
-        {
-            if (go == null) return;
+            Sprite sprite = __result as Sprite;
+            string spriteName = sprite.name;
 
-            // Check against known save point texture names
-            bool isSavePoint = false;
-            
-            // Name check
-            if (go.name.Contains("savePoint", StringComparison.OrdinalIgnoreCase))
-                isSavePoint = true;
-                
-            // Sprite check (if name is generic)
-            if (!isSavePoint)
+            // DIAGNOSTIC: Log save point sprite loads
+            bool isSavePoint = spriteName.Contains("savePoint", StringComparison.OrdinalIgnoreCase);
+            if (isSavePoint)
             {
-                var sr = go.GetComponent<SpriteRenderer>();
-                if (sr != null && sr.sprite != null && sr.sprite.name.Contains("savePoint", StringComparison.OrdinalIgnoreCase))
-                    isSavePoint = true;
+                Plugin.Log.LogInfo($"[SavePoint] Resources.Load<Sprite>() called for: {spriteName}");
+                Plugin.Log.LogInfo($"[SavePoint]   Path: {path}");
             }
 
-            if (!isSavePoint) return;
-
-            // Only attach if not already present
-            if (go.GetComponent<SavePointSpriteMonitor>() != null) return;
-
-            if (Plugin.Config.DetailedTextureLog.Value)
+            // Check if this is a save point animation frame
+            if (spriteName.StartsWith("t_obj_savePoint_ball_") && preloadedSavePointSprites.TryGetValue(spriteName, out Sprite customSprite))
             {
-                Plugin.Log.LogInfo($"[SavePointPatch] Attaching monitor to: {go.name}");
+                Plugin.Log.LogInfo($"[SavePoint] ✓ Replacing Resources.Load sprite: {spriteName}");
+                __result = customSprite;
             }
-            
-            // If it's the ball/orb, attach the monitor
-            // The monitor will handle disable glow logic too if it finds parents
-            go.AddComponent<SavePointSpriteMonitor>();
-        }
-
-        /// <summary>
-        /// Preload save point animation frames (t_obj_savePoint_ball_0 through _10).
-        /// Replaces the old PreloadSavePointSprites method.
-        /// </summary>
-        public static void PreloadSprites()
-        {
-            if (Plugin.Config.DetailedTextureLog.Value)
-                 Plugin.Log.LogInfo("[SavePoint Preload] Checking for atlas...");
-
-            string atlasName = "t_obj_savePoint_ball";
-            // We need to access CustomTexturePatch's helper for loading.
-            // Ideally we move those helpers to a shared Utility class, but for now calling public/internal static methods on CustomTexturePatch is fine.
-            string atlasLookupName = TextureOptions.GetTextureNameWithVariant(atlasName);
-            
-            // Accessing internal dictionary from CustomTexturePatch might be restricted if not in same assembly (they are).
-            if (!CustomTexturePatch.texturePathIndex.ContainsKey(atlasLookupName)) return;
-
-            Texture2D atlasTexture = CustomTexturePatch.LoadCustomTexture(atlasName);
-            if (atlasTexture == null) return;
-
-            // Atlas specs
-            int frameWidth = 100;
-            int frameHeight = 100;
-            int columns = 4;
-            
-            for (int i = 0; i <= 10; i++)
+            else if (isSavePoint)
             {
-                string frameName = $"t_obj_savePoint_ball_{i}";
-                int frameIndex = i % 8; 
-                int col = frameIndex % columns;
-                int row = frameIndex / columns;
-                
-                float x = col * frameWidth;
-                float y = atlasTexture.height - (row + 1) * frameHeight; 
-                
-                Sprite sprite = Sprite.Create(
-                    atlasTexture,
-                    new Rect(x, y, frameWidth, frameHeight),
-                    new Vector2(0.5f, 0.5f), 
-                    100f, 
-                    0,
-                    SpriteMeshType.FullRect
-                );
-
-                if (sprite != null)
-                {
-                    UnityEngine.Object.DontDestroyOnLoad(sprite);
-                    preloadedSavePointSprites[frameName] = sprite;
-                }
-            }
-            UnityEngine.Object.DontDestroyOnLoad(atlasTexture);
-            if (Plugin.Config.DetailedTextureLog.Value) Plugin.Log.LogInfo($"[SavePoint Preload] Preloaded {preloadedSavePointSprites.Count} frames.");
-        }
-
-        /// <summary>
-        /// Patch Resources.Load to intercept save point sprites.
-        /// Moved from CustomTexturePatch partial.
-        /// </summary>
-        [HarmonyPatch(typeof(Resources))]
-        [HarmonyPatch(nameof(Resources.Load))]
-        [HarmonyPatch(new Type[] { typeof(string) }, new ArgumentType[] { ArgumentType.Normal })]
-        [HarmonyPatch(MethodType.Normal)]
-        public static class Resources_Load_Sprite_Patch
-        {
-            [HarmonyPostfix]
-            [HarmonyPatch]
-            public static void Postfix(string path, ref UnityEngine.Object __result)
-            {
-                 if (__result == null || !(__result is Sprite)) return;
-
-                 Sprite sprite = __result as Sprite;
-                 string spriteName = sprite.name;
-
-                 if (spriteName.StartsWith("t_obj_savePoint_ball_") && preloadedSavePointSprites.TryGetValue(spriteName, out Sprite customSprite))
-                 {
-                     if (Plugin.Config.DetailedTextureLog.Value)
-                        Plugin.Log.LogInfo($"[SavePoint] Replacing Resources.Load result: {spriteName}");
-                     __result = customSprite;
-                 }
+                Plugin.Log.LogWarning($"[SavePoint] ✗ No preloaded sprite found for: {spriteName}");
             }
         }
     }
 
     /// <summary>
-    /// Monitor component to enforce custom save point sprites and disable effects
+    /// Preload save point animation frames (t_obj_savePoint_ball_0 through _10)
+    /// This ensures all animation frames use the custom texture
     /// </summary>
-    public class SavePointSpriteMonitor : MonoBehaviour
+    private static void PreloadSavePointSprites()
     {
-        private SpriteRenderer _renderer;
-        private bool _hasLoggedGlowDisable = false;
-        private string _lastSpriteName;
-        private Sprite _customSprite;
-        private string _lastEnforcedLogName;
-
-        void Awake()
+        Plugin.Log.LogInfo("[SavePoint Preload] Starting save point sprite preloading...");
+        
+        // Check if we have the atlas texture
+        string atlasName = "t_obj_savePoint_ball";
+        if (!texturePathIndex.ContainsKey(atlasName))
         {
-            _renderer = GetComponent<SpriteRenderer>();
+            Plugin.Log.LogWarning($"[SavePoint Preload] Atlas texture '{atlasName}' not found in texture index!");
+            return;
         }
 
-        void Start()
+        Plugin.Log.LogInfo($"[SavePoint Preload] Found atlas '{atlasName}' in index, loading texture...");
+        Texture2D atlasTexture = LoadCustomTexture(atlasName);
+        if (atlasTexture == null)
         {
-            // One-time logic: Disable glow if configured
-            if (Plugin.Config.DisableSavePointGlow.Value)
-            {
-                 DisableGlowEffect();
-            }
+            Plugin.Log.LogError($"[SavePoint Preload] Failed to load atlas texture '{atlasName}'!");
+            return;
         }
 
-        private void DisableGlowEffect()
+        if (Plugin.Config.DetailedTextureLog.Value)
         {
-            // Navigate up to find root, then down for glow
-            Transform current = transform;
-            while (current != null && !current.name.Contains("savePoint") && !current.name.Contains("MapBackGround"))
+            Plugin.Log.LogInfo($"[SavePoint Preload] Atlas loaded: {atlasTexture.width}x{atlasTexture.height}");
+        }
+        int preloaded = 0;
+        
+        // Atlas is 400x200 with 8 frames in a 4x2 grid (each frame is 100x100)
+        int frameWidth = 100;
+        int frameHeight = 100;
+        int columns = 4;
+        
+        // Preload frames 0-10 (11 frames total for the animation)
+        // Note: Atlas only has 8 unique frames, so some frames may repeat
+        for (int i = 0; i <= 10; i++)
+        {
+            string frameName = $"t_obj_savePoint_ball_{i}";
+            
+            // Calculate frame position in the atlas (4 columns, 2 rows)
+            // Frames are arranged left-to-right, top-to-bottom
+            int frameIndex = i % 8; // Cycle through 8 frames if there are more than 8
+            int col = frameIndex % columns;
+            int row = frameIndex / columns;
+            
+            // Calculate the rect for this frame
+            // Unity's Rect origin is bottom-left, but texture coords are top-left
+            // So we need to flip the Y coordinate
+            float x = col * frameWidth;
+            float y = atlasTexture.height - (row + 1) * frameHeight; // Flip Y
+            
+            if (Plugin.Config.DetailedTextureLog.Value)
             {
-                current = current.parent;
-                // Safety break for root
-                if (current != null && current.parent == null) break;
+                Plugin.Log.LogInfo($"[SavePoint Preload] Creating sprite {frameName}: rect=({x},{y},{frameWidth},{frameHeight})");
             }
             
-            if (current != null)
+            Sprite sprite = Sprite.Create(
+                atlasTexture,
+                new Rect(x, y, frameWidth, frameHeight),
+                new Vector2(0.5f, 0.5f), // Center pivot
+                100f, // Default ppu for save point
+                0,
+                SpriteMeshType.FullRect
+            );
+
+            if (sprite == null)
             {
-                // S2 Structure: .../Fire_add/Glow_add or Particle_add/Glow_add
-                Transform glowTransform = current.Find("Fire_add/Glow_add"); // Typical for S2
-                if (glowTransform == null) glowTransform = current.Find("Particle_add/Glow_add");
-                
-                if (glowTransform != null)
-                {
-                    glowTransform.gameObject.SetActive(false);
-                    if (!_hasLoggedGlowDisable)
-                    {
-                        Plugin.Log.LogInfo("[SavePoint] ✓ Disabled save point glow effect");
-                        _hasLoggedGlowDisable = true;
-                    }
-                }
+                Plugin.Log.LogError($"[SavePoint Preload] Sprite.Create returned NULL for {frameName}!");
             }
+            else if (Plugin.Config.DetailedTextureLog.Value)
+            {
+                Plugin.Log.LogInfo($"[SavePoint Preload] Created sprite {frameName} successfully");
+            }
+
+            UnityEngine.Object.DontDestroyOnLoad(sprite);
+            preloadedSavePointSprites[frameName] = sprite;
+            preloaded++;
         }
+        
+        // Don't destroy the atlas texture
+        UnityEngine.Object.DontDestroyOnLoad(atlasTexture);
 
-        void LateUpdate()
+        if (preloaded > 0)
         {
-             if (_renderer == null || _renderer.sprite == null) return;
+            Plugin.Log.LogInfo($"Preloaded {preloaded} save point animation frame(s) for instant replacement");
+        }
+    }
 
-            string currentSpriteName = _renderer.sprite.name;
-            
-            // Strip (Clone) if present
-            if (currentSpriteName.EndsWith("(Clone)"))
+    /// <summary>
+    /// Intercept GameObject.SetActive to replace save point sprites when bgManagerHD activates
+    /// This handles the initial sprite replacement when save point objects are first activated
+    /// </summary>
+    [HarmonyPatch(typeof(GameObject), nameof(GameObject.SetActive))]
+    [HarmonyPostfix]
+    public static void GameObject_SetActive_SavePoint_Postfix(GameObject __instance, bool value)
+    {
+        // Only scan when activating
+        if (!value || !Plugin.Config.EnableCustomTextures.Value)
+            return;
+
+        // Check if this is a bgManagerHD object (save points are children of this)
+        string objectPath = GetGameObjectPath(__instance);
+        if (!objectPath.Contains("bgManagerHD"))
+            return;
+
+        // Scan for save point sprites in this object's children
+        var spriteRenderers = __instance.GetComponentsInChildren<SpriteRenderer>(true);
+        foreach (var sr in spriteRenderers)
+        {
+            if (sr.sprite != null)
             {
-                currentSpriteName = currentSpriteName.Substring(0, currentSpriteName.Length - 7);
-            }
-
-            // Only act on save point sprites
-            if (!currentSpriteName.Contains("savePoint")) return;
-
-            // Optimization: Check for change
-            if (_lastSpriteName != currentSpriteName)
-            {
-                _lastSpriteName = currentSpriteName;
+                string spriteName = sr.sprite.name;
                 
-                // Try load custom sprite
-                Sprite replacement = CustomTexturePatch.LoadCustomSprite(currentSpriteName, _renderer.sprite);
+                // Only process save point sprites
+                bool isSavePoint = spriteName.Contains("savePoint", StringComparison.OrdinalIgnoreCase);
+                if (!isSavePoint)
+                    continue;
+
+                Plugin.Log.LogInfo($"[SavePoint GameObject] Found sprite: {spriteName} in {objectPath}");
                 
-                if (replacement != null)
+                Sprite customSprite = LoadCustomSprite(spriteName, sr.sprite);
+                if (customSprite != null)
                 {
-                    _customSprite = replacement;
-                    _renderer.sprite = replacement;
-
-                    if (Plugin.Config.DetailedTextureLog.Value && _lastEnforcedLogName != currentSpriteName)
+                    sr.sprite = customSprite;
+                    Plugin.Log.LogInfo($"[SavePoint GameObject] ✓ SET custom sprite: {spriteName}");
+                    
+                    // Add monitor component for animated save point ball
+                    if (spriteName.StartsWith("t_obj_savePoint_ball_"))
                     {
-                        Plugin.Log.LogInfo($"[SavePointMonitor] Enforced: {currentSpriteName}");
-                        _lastEnforcedLogName = currentSpriteName;
+                        try
+                        {
+                            if (sr.GetComponent<SavePointSpriteMonitor>() == null)
+                            {
+                                sr.gameObject.AddComponent<SavePointSpriteMonitor>();
+                                Plugin.Log.LogInfo($"[SavePoint Monitor] Added monitor to: {sr.gameObject.name}");
+                            }
+                        }
+                        catch (System.Exception ex)
+                        {
+                            if (!ex.Message.Contains("already has"))
+                            {
+                                Plugin.Log.LogWarning($"[SavePoint Monitor] Note: {ex.Message}");
+                            }
+                        }
                     }
                 }
                 else
                 {
-                     _customSprite = null;
-                     _lastEnforcedLogName = null;
+                    Plugin.Log.LogWarning($"[SavePoint GameObject] ✗ LoadCustomSprite returned null for: {spriteName}");
                 }
-            }
-            else if (_customSprite != null && _renderer.sprite != _customSprite)
-            {
-                // Animator reset it -> force back
-                 _renderer.sprite = _customSprite;
             }
         }
     }
 }
+

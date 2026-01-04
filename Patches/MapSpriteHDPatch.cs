@@ -78,19 +78,6 @@ namespace PKCore.Patches
                     {
                         Plugin.Log.LogInfo($"Replaced MapSpriteHD sprite: {spriteName}");
                     }
-                    
-                    // Add monitor component for animated save point ball (fix for non-HQ areas)
-                    if (spriteName.StartsWith("t_obj_savePoint_ball_"))
-                    {
-                        if (spriteRenderer.GetComponent<SavePointSpriteMonitor>() == null)
-                        {
-                            spriteRenderer.gameObject.AddComponent<SavePointSpriteMonitor>();
-                        Plugin.Log.LogInfo($"[MapSpriteHD] Added SavePointSpriteMonitor to: {spriteRenderer.gameObject.name}");
-                        }
-                    }
-                    
-                    // Attach cow monitor if applicable
-                    CowTexturePatch.CheckAndAttachMonitor(spriteRenderer.gameObject);
                 }
             }
         }

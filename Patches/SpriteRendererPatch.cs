@@ -10,16 +10,19 @@ namespace PKCore.Patches;
 /// </summary>
 public partial class CustomTexturePatch
 {
+    /// <summary>
+    /// Intercept SpriteRenderer.sprite setter to replace with custom textures
+    /// </summary>
     [HarmonyPatch(typeof(SpriteRenderer), nameof(SpriteRenderer.sprite), MethodType.Setter)]
     [HarmonyPrefix]
     public static void SpriteRenderer_set_sprite_Prefix(SpriteRenderer __instance, ref Sprite value)
     {
-        if (value == null || !Plugin.Config.EnableCustomTextures.Value)
+        if (value == null)
             return;
 
         string originalName = value.name;
         
-        // DIAGNOSTIC: Log save point sprites
+        // DIAGNOSTIC: ALWAYS log save point sprites to see if Animator calls this
         bool isSavePoint = originalName.Contains("savePoint", StringComparison.OrdinalIgnoreCase);
         if (isSavePoint)
         {
@@ -28,35 +31,62 @@ public partial class CustomTexturePatch
             {
                 Plugin.Log.LogInfo($"[SavePoint SETTER]   Original texture: {value.texture.name} ({value.texture.width}x{value.texture.height})");
             }
+            
+            // Try to replace with custom sprite
+            Sprite customSprite = LoadCustomSprite(originalName, value);
+            if (customSprite != null)
+            {
+                Plugin.Log.LogInfo($"[SavePoint SETTER] ✓ Replacing {originalName} with custom sprite");
+                value = customSprite;
+                return; // Early return - sprite replaced
+            }
+            else
+            {
+                Plugin.Log.LogWarning($"[SavePoint SETTER] ✗ LoadCustomSprite returned null for {originalName}");
+            }
         }
         
         // Get object path for context
         string objectPath = GetGameObjectPath(__instance.gameObject);
         bool isBathBackground = objectPath.Contains("BathBG");
-        bool isBgManager = objectPath.Contains("bgManagerHD") || objectPath.Contains("MapBackGround");
+        bool isBgManager = objectPath.Contains("bgManagerHD");
         
-        // CRITICAL: Skip custom objects created by CustomObjectInsertion
-        // They handle their own texture loading and we don't want to interfere
-        // Check if this is under the "object" folder in bgManagerHD hierarchy
-        if (objectPath.Contains("/object/") && isBgManager)
-        {
-            // Let custom objects handle their own sprites (silent skip to reduce log spam)
-            return;
-        }
-        
-        // Handle bath background instance tracking
+        // If this is a bath sprite being assigned, check if it's a new BathBG instance
         if (isBathBackground && originalName.StartsWith("bath_"))
         {
             Plugin.Log.LogInfo($"Sprite setter called for bath sprite: {originalName} (path: {objectPath})");
             
-            var bathBG = GameObject.Find("AppRoot/BathBG");
-            if (bathBG != null)
+            if (Plugin.Config.EnableCustomTextures.Value)
             {
-                int currentInstanceID = bathBG.GetInstanceID();
-                if (currentInstanceID != lastBathBGInstanceID)
+                var bathBG = GameObject.Find("AppRoot/BathBG");
+                if (bathBG != null)
                 {
-                    Plugin.Log.LogInfo($"New BathBG instance detected via sprite setter (ID: {currentInstanceID}, previous: {lastBathBGInstanceID})");
-                    lastBathBGInstanceID = currentInstanceID;
+                    int currentInstanceID = bathBG.GetInstanceID();
+                    if (currentInstanceID != lastBathBGInstanceID)
+                    {
+                        Plugin.Log.LogInfo($"New BathBG instance detected via sprite setter (ID: {currentInstanceID}, previous: {lastBathBGInstanceID})");
+                        lastBathBGInstanceID = currentInstanceID;
+                    }
+                    
+                    // Replace this bath sprite with custom texture
+                    if (texturePathIndex.ContainsKey(originalName))
+                    {
+                        Sprite customSprite = LoadCustomSprite(originalName, value);
+                        if (customSprite != null)
+                        {
+                            Plugin.Log.LogInfo($"Replaced bath sprite via setter: {originalName}");
+                            value = customSprite;
+                            return; // Early return - we've replaced the sprite
+                        }
+                    }
+                    else
+                    {
+                        Plugin.Log.LogInfo($"Bath sprite {originalName} not found in texture index");
+                    }
+                }
+                else
+                {
+                    Plugin.Log.LogInfo("BathBG not found when trying to replace sprite");
                 }
             }
         }
@@ -75,41 +105,32 @@ public partial class CustomTexturePatch
             }
         }
         
-        // UNIVERSAL FALLBACK: Try to replace ANY sprite with custom texture
-        Sprite customSprite = LoadCustomSprite(originalName, value);
-        if (customSprite != null)
+        // Try to load custom sprite replacement
+        if (Plugin.Config.EnableCustomTextures.Value)
         {
-            // Skip logging for sactx and character sprites to reduce spam
-            bool shouldSkipReplacementLog = originalName.StartsWith("sactx");
-            if (!shouldSkipReplacementLog && texturePathIndex.TryGetValue(originalName, out string replacementTexPath))
+            Sprite customSprite = LoadCustomSprite(originalName, value);
+            if (customSprite != null)
             {
-                shouldSkipReplacementLog = replacementTexPath.ToLower().Contains("characters");
+                // Skip logging for sactx and character sprites to reduce spam
+                bool shouldSkipReplacementLog = originalName.StartsWith("sactx");
+                if (!shouldSkipReplacementLog && texturePathIndex.TryGetValue(originalName, out string replacementTexPath))
+                {
+                    shouldSkipReplacementLog = replacementTexPath.ToLower().Contains("characters");
+                }
+                
+                if (!shouldSkipReplacementLog)
+                {
+                    if (isBathBackground || isBgManager)
+                    {
+                        Plugin.Log.LogInfo($"Replaced sprite: {originalName} (from {objectPath})");
+                    }
+                    else
+                    {
+                        Plugin.Log.LogInfo($"Replaced sprite: {originalName}");
+                    }
+                }
+                value = customSprite;
             }
-            
-            if (!shouldSkipReplacementLog)
-            {
-                if (isSavePoint)
-                {
-                    Plugin.Log.LogInfo($"[SavePoint SETTER] ✓ Replaced {originalName} with custom sprite");
-                }
-                else if (isBathBackground)
-                {
-                    Plugin.Log.LogInfo($"Replaced bath sprite via setter: {originalName}");
-                }
-                else if (isBgManager)
-                {
-                    Plugin.Log.LogInfo($"Replaced sprite: {originalName} (from {objectPath})");
-                }
-                else
-                {
-                    Plugin.Log.LogInfo($"Replaced sprite: {originalName}");
-                }
-            }
-            value = customSprite;
-        }
-        else if (isSavePoint)
-        {
-            Plugin.Log.LogWarning($"[SavePoint SETTER] ✗ LoadCustomSprite returned null for {originalName}");
         }
     }
 }

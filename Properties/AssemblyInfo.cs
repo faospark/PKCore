@@ -1,11 +1,11 @@
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle("PKCore")]
-[assembly: AssemblyDescription("PKCore (Project Kyaro Core) by faospark - Core enhancement plugin for Suikoden I & II HD Remaster")]
+[assembly: AssemblyTitle("PKextended")]
+[assembly: AssemblyDescription("PKextended (Project Kyaro Extended) by faospark - Visual enhancement plugin for Suikoden I & II HD Remaster")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("faospark")]
-[assembly: AssemblyProduct("PKCore")]
+[assembly: AssemblyProduct("PKextended")]
 [assembly: AssemblyCopyright("Copyright © 2025 faospark")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

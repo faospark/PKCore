@@ -34,7 +34,7 @@ public partial class CustomTexturePatch
 
     /// <summary>
     /// Intercept Sprite.texture getter to replace atlas textures
-    /// This is THE KEY PATCH for replacing atlas textures
+    /// This is THE KEY PATCH for replacing atlas textures (including summon effects)
     /// </summary>
     [HarmonyPatch(typeof(Sprite), nameof(Sprite.texture), MethodType.Getter)]
     [HarmonyPostfix]

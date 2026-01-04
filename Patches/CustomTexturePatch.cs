@@ -31,6 +31,7 @@ public partial class CustomTexturePatch
     
     // Preloaded sprites
     internal static Dictionary<string, Sprite> preloadedBathSprites = new Dictionary<string, Sprite>();
+    internal static Dictionary<string, Sprite> preloadedSavePointSprites = new Dictionary<string, Sprite>();
     
     // State tracking
     internal static int lastBathBGInstanceID = -1;
@@ -47,47 +48,9 @@ public partial class CustomTexturePatch
     internal static bool IsTextureLogged(string textureName) => loggedTextures.Contains(textureName);
     
     /// <summary>
-    /// Sanitize texture name to make it filesystem-safe
-    /// Replaces invalid filename characters like | with underscores
-    /// </summary>
-    internal static string SanitizeTextureName(string textureName)
-    {
-        if (string.IsNullOrEmpty(textureName))
-            return textureName;
-            
-        // Replace pipe and other invalid filename characters with underscore
-        return textureName.Replace('|', '_')
-                         .Replace('<', '_')
-                         .Replace('>', '_')
-                         .Replace(':', '_')
-                         .Replace('"', '_')
-                         .Replace('/', '_')
-                         .Replace('\\', '_')
-                         .Replace('?', '_')
-                         .Replace('*', '_');
-    }
-    
-    /// <summary>
     /// Check if we have a custom texture for the given name
-    /// Tries original, sanitized, and variant names
     /// </summary>
-    internal static bool HasCustomTexture(string textureName)
-    {
-        if (texturePathIndex.ContainsKey(textureName))
-            return true;
-            
-        // Try sanitized name
-        string sanitized = SanitizeTextureName(textureName);
-        if (sanitized != textureName && texturePathIndex.ContainsKey(sanitized))
-            return true;
-        
-        // Try variant name (e.g., save point colors)
-        string variant = TextureOptions.GetTextureNameWithVariant(textureName);
-        if (variant != textureName && texturePathIndex.ContainsKey(variant))
-            return true;
-            
-        return false;
-    }
+    internal static bool HasCustomTexture(string textureName) => texturePathIndex.ContainsKey(textureName);
     
     /// <summary>
     /// Log a replaceable texture/sprite (only once per texture)
@@ -190,17 +153,13 @@ public partial class CustomTexturePatch
         {
             // Check if we have the atlas texture
             string atlasName = "t_obj_savePoint_ball";
-            string atlasLookupName = TextureOptions.GetTextureNameWithVariant(atlasName);
-            if (texturePathIndex.ContainsKey(atlasLookupName))
+            if (texturePathIndex.ContainsKey(atlasName))
             {
                 // Extract frame number from sprite name (e.g., "t_obj_savePoint_ball_0" -> 0)
                 string frameNumStr = spriteName.Substring("t_obj_savePoint_ball_".Length);
                 if (int.TryParse(frameNumStr, out int frameNum))
                 {
-                    if (Plugin.Config.DetailedTextureLog.Value)
-                    {
-                        Plugin.Log.LogInfo($"[SavePoint] Creating sprite from atlas for: {spriteName} (frame {frameNum})");
-                    }
+                    Plugin.Log.LogInfo($"[SavePoint] Creating sprite from atlas for: {spriteName} (frame {frameNum})");
                     
                     // Load the atlas texture
                     Texture2D atlasTexture = LoadCustomTexture(atlasName);
@@ -232,10 +191,7 @@ public partial class CustomTexturePatch
                             customPPU = originalSprite.pixelsPerUnit * scaleRatio;
                         }
 
-                        if (Plugin.Config.DetailedTextureLog.Value)
-                        {
-                            Plugin.Log.LogInfo($"[SavePoint] Creating sprite: rect=({x},{y},{frameWidth},{frameHeight}) from atlas {atlasTexture.width}x{atlasTexture.height} PPU:{customPPU} Pivot:{customPivot}");
-                        }
+                        Plugin.Log.LogInfo($"[SavePoint] Creating sprite: rect=({x},{y},{frameWidth},{frameHeight}) from atlas {atlasTexture.width}x{atlasTexture.height} PPU:{customPPU} Pivot:{customPivot}");
                         
                         Sprite customSprite = Sprite.Create(
                             atlasTexture,
@@ -254,10 +210,7 @@ public partial class CustomTexturePatch
                             // Cache it for future use
                             customSpriteCache[spriteName] = customSprite;
                             
-                            if (Plugin.Config.DetailedTextureLog.Value)
-                            {
-                                Plugin.Log.LogInfo($"[SavePoint] ✓ Created and cached sprite: {spriteName}");
-                            }
+                            Plugin.Log.LogInfo($"[SavePoint] ✓ Created and cached sprite: {spriteName}");
                             return customSprite;
                         }
                         else
@@ -343,46 +296,9 @@ public partial class CustomTexturePatch
         // Check for texture variants (e.g., save point colors)
         string lookupName = TextureOptions.GetTextureNameWithVariant(textureName);
 
-        // Try DDS first if enabled
-        if (Plugin.Config.EnableDDSTextures.Value)
-        {
-            // Look for .dds file
-            if (texturePathIndex.TryGetValue(lookupName, out string ddsPath) && ddsPath.EndsWith(".dds", System.StringComparison.OrdinalIgnoreCase))
-            {
-                Texture2D ddsTexture = DDSLoader.LoadDDS(ddsPath);
-                if (ddsTexture != null)
-                {
-                    ddsTexture.filterMode = FilterMode.Bilinear;
-                    ddsTexture.wrapMode = TextureWrapMode.Clamp;
-                    ddsTexture.anisoLevel = 4;
-                    
-                    UnityEngine.Object.DontDestroyOnLoad(ddsTexture);
-                    customTextureCache[textureName] = ddsTexture;
-                    
-                    bool shouldSkipLog = textureName.StartsWith("sactx");
-                    if (!shouldSkipLog && Plugin.Config.DetailedTextureLog.Value)
-                    {
-                        Plugin.Log.LogInfo($"Loaded pre-compressed DDS: {textureName} ({ddsTexture.width}x{ddsTexture.height})");
-                    }
-                    
-                    return ddsTexture;
-                }
-            }
-        }
-
-        // Fall back to PNG/JPG loading with runtime compression
-        // Look up full path - try original name first
-        string filePath = null;
-        if (!texturePathIndex.TryGetValue(lookupName, out filePath) || filePath.EndsWith(".dds", System.StringComparison.OrdinalIgnoreCase))
-        {
-            // Try sanitized name (replaces | and other invalid filename chars with _)
-            string sanitizedName = SanitizeTextureName(lookupName);
-            if (sanitizedName != lookupName && !texturePathIndex.TryGetValue(sanitizedName, out filePath))
-                return null;
-                
-            if (filePath == null || filePath.EndsWith(".dds", System.StringComparison.OrdinalIgnoreCase))
-                return null;
-        }
+        // Look up full path
+        if (!texturePathIndex.TryGetValue(lookupName, out string filePath))
+            return null;
 
         try
         {
@@ -396,9 +312,6 @@ public partial class CustomTexturePatch
                 UnityEngine.Object.Destroy(texture);
                 return null;
             }
-
-            // Compress texture to BC1/BC3/BC7 for GPU efficiency
-            TextureCompression.CompressTexture(texture, textureName);
 
             texture.filterMode = FilterMode.Bilinear;
             texture.wrapMode = TextureWrapMode.Clamp;
@@ -491,7 +404,7 @@ public partial class CustomTexturePatch
         if (TryLoadManifestIndex())
             return;
 
-        string[] extensions = { "*.png", "*.jpg", "*.jpeg", "*.tga", "*.dds" };
+        string[] extensions = { "*.png", "*.jpg", "*.jpeg", "*.tga" };
         
         string modsFolder = Path.Combine(customTexturesPath, "00-Mods");
         bool hasModsFolder = Directory.Exists(modsFolder);
@@ -514,15 +427,6 @@ public partial class CustomTexturePatch
                 if (!texturePathIndex.ContainsKey(textureName))
                 {
                     texturePathIndex[textureName] = filePath;
-                    
-                    // Also add reverse mapping if filename contains underscores
-                    // This allows files with _ to match Unity textures with | and other invalid chars
-                    if (textureName.Contains('_'))
-                    {
-                        string unsanitized = textureName.Replace('_', '|');
-                        if (!texturePathIndex.ContainsKey(unsanitized))
-                            texturePathIndex[unsanitized] = filePath;
-                    }
                 }
             }
         }
@@ -541,13 +445,6 @@ public partial class CustomTexturePatch
                     
                     string textureName = Path.GetFileNameWithoutExtension(filePath);
                     texturePathIndex[textureName] = filePath; // Override
-                    
-                    // Also add reverse mapping for sanitized names
-                    if (textureName.Contains('_'))
-                    {
-                        string unsanitized = textureName.Replace('_', '|');
-                        texturePathIndex[unsanitized] = filePath;
-                    }
                 }
             }
         }
@@ -571,38 +468,16 @@ public partial class CustomTexturePatch
             return;
         }
 
-        // Custom textures directory: {customTexturesPath}
+        Plugin.Log.LogInfo($"Custom textures directory: {customTexturesPath}");
         
         InitializeCaching();
         BuildTextureIndex();
         
-        
-        // Count unique file paths (index contains duplicate entries for sanitized names)
-        int uniqueFileCount = texturePathIndex.Values.Distinct().Count();
-        Plugin.Log.LogInfo($"Indexed {uniqueFileCount} custom texture(s)");
-        
-        
-        
-        // Log texture category status (always show)
-        Plugin.Log.LogInfo($"Launcher UI textures: {(Plugin.Config.LoadLauncherUITextures.Value ? "enabled" : "disabled")}");
-        Plugin.Log.LogInfo($"Project Kyaro textures: {(Plugin.Config.EnableProjectKyaroSprites.Value ? "enabled" : "disabled")}");
-        
-        // Log active texture options (only if non-default)
-        if (Plugin.Config.SavePointColor.Value != "default")
-            Plugin.Log.LogInfo($"Save point color: {Plugin.Config.SavePointColor.Value}");
-        if (Plugin.Config.DisableSavePointGlow.Value)
-            Plugin.Log.LogInfo("Save point glow: disabled");
-        if (Plugin.Config.TirRunTexture.Value != "default")
-            Plugin.Log.LogInfo($"Tir run texture variant: {Plugin.Config.TirRunTexture.Value}");
-        if (Plugin.Config.S2ClassicSaveWindow.Value)
-            Plugin.Log.LogInfo("Suikoden 2 classic save window: enabled");
-        if (Plugin.Config.MercFortFence.Value != "default")
-            Plugin.Log.LogInfo($"Mercenary Fortress fence variant: {Plugin.Config.MercFortFence.Value}");
+        Plugin.Log.LogInfo($"Indexed {texturePathIndex.Count} custom texture(s) ready to use");
         
         // Preload bath and save point sprites
         PreloadBathSprites();
-        // Delegated to decoupled SavePointPatch
-        SavePointPatch.PreloadSprites();
+        PreloadSavePointSprites();
     }
     
     #endregion

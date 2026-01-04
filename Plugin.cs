@@ -79,13 +79,8 @@ public class Plugin : BasePlugin
             DisableSpritePostProcessingPatch.Initialize();
         }
 
-        // Apply SMAA anti-aliasing (excludes UI_Root)
-        if (Config.EnableSMAA.Value)
-        {
-            Log.LogInfo("Applying SMAA anti-aliasing patches (UI_Root excluded)...");
-            harmony.PatchAll(typeof(SMAAPatch));
-            SMAAPatch.Initialize();
-        }
+
+
 
         // Borderless Window Mode
         if (Config.EnableBorderlessWindow.Value)
@@ -137,9 +132,9 @@ public class Plugin : BasePlugin
             // IL2CPP registration is now lazy-loaded when first map is opened
             harmony.PatchAll(typeof(SuikozuInternalPatch));
 
-            // Apply BGManagerHD.Load patch for bath sprite preloading
-            Log.LogInfo("Applying BGManagerHD.Load patch ...");
-            CustomTexturePatch.BGManagerHD_Load_Patch.Initialize(harmony);
+            // NOTE: BGManagerHD_Load_Patch is part of BathTexturePatch in this version
+            // Log.LogInfo("Applying BGManagerHD.Load patch ...");
+            // CustomTexturePatch.BGManagerHD_Load_Patch.Initialize(harmony);
             
             // [NEW] Map Texture Replacement (Native Material Array)
             Log.LogInfo("Applying Native Map Texture patches...");
