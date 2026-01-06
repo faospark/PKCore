@@ -24,7 +24,7 @@ public static class DisableCustomPostEffectPatch
 
         try
         {
-            Plugin.Log.LogInfo("[DisableCustomPostEffect] Searching for CustomPostEffect type...");
+            Plugin.Log.LogInfo("Applying ColoredIntroAndFlashbacks Patch");
             
             // Find the CustomPostEffect type
             System.Type customPostEffectType = FindCustomPostEffectType();
@@ -52,7 +52,7 @@ public static class DisableCustomPostEffectPatch
             // Apply the patch
             harmony.Patch(onRenderImageMethod, prefix: new HarmonyMethod(prefixMethod));
             
-            Plugin.Log.LogInfo("[DisableCustomPostEffect] ✓ Successfully patched CustomPostEffect.OnRenderImage");
+
             hasPatched = true;
         }
         catch (System.Exception ex)
@@ -87,7 +87,7 @@ public static class DisableCustomPostEffectPatch
                 var type = assembly.GetType("CustomPostEffect");
                 if (type != null)
                 {
-                    Plugin.Log.LogInfo($"[DisableCustomPostEffect] Found CustomPostEffect in {assemblyName}");
+
                     return type;
                 }
             }

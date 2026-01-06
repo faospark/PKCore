@@ -24,7 +24,7 @@ public partial class CustomTexturePatch
     [Serializable]
     public class TextureManifest
     {
-        public long LastModified;
+        public int FileCount; // Number of texture files indexed
         public string ConfigHash; // Hash of texture-related config settings
         public List<ManifestEntry> Entries = new List<ManifestEntry>();
         
@@ -87,9 +87,6 @@ public partial class CustomTexturePatch
 
         try
         {
-            // Check if textures directory has been modified since manifest
-            long currentModified = Directory.GetLastWriteTime(customTexturesPath).Ticks;
-            
             XmlSerializer serializer = new XmlSerializer(typeof(TextureManifest));
             using (FileStream stream = new FileStream(manifestPath, FileMode.Open))
             {
@@ -99,18 +96,21 @@ public partial class CustomTexturePatch
                 string currentConfigHash = ComputeConfigHash();
                 
                 if (manifest != null && 
-                    manifest.LastModified == currentModified && 
                     manifest.ConfigHash == currentConfigHash &&
                     manifest.Entries != null && 
                     manifest.Entries.Count > 0)
                 {
                     texturePathIndex = manifest.ToDictionary();
-                    Plugin.Log.LogInfo($"Loaded texture index from manifest ({texturePathIndex.Count} textures)");
+                    Plugin.Log.LogInfo($"✓ Loaded texture index from cache ({texturePathIndex.Count} textures, {manifest.FileCount} files)");
                     return true;
                 }
                 else if (manifest != null && manifest.ConfigHash != currentConfigHash)
                 {
                     Plugin.Log.LogInfo("Config changed - rebuilding texture index");
+                }
+                else if (manifest == null || manifest.Entries == null || manifest.Entries.Count == 0)
+                {
+                    Plugin.Log.LogInfo("Invalid or empty manifest - rebuilding texture index");
                 }
             }
         }
@@ -131,7 +131,7 @@ public partial class CustomTexturePatch
         {
             TextureManifest manifest = new TextureManifest
             {
-                LastModified = Directory.GetLastWriteTime(customTexturesPath).Ticks,
+                FileCount = texturePathIndex.Count,
                 ConfigHash = ComputeConfigHash()
             };
             manifest.FromDictionary(texturePathIndex);
@@ -141,7 +141,7 @@ public partial class CustomTexturePatch
             {
                 serializer.Serialize(stream, manifest);
             }
-            Plugin.Log.LogInfo("Saved texture index validation manifest");
+            Plugin.Log.LogInfo($"✓ Saved texture cache manifest ({manifest.FileCount} files)");
         }
         catch (Exception ex)
         {

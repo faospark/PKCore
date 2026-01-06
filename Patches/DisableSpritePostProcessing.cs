@@ -78,11 +78,8 @@ public class DisableSpritePostProcessingPatch
 
         if (_isEnabled)
         {
-            Plugin.Log.LogInfo("Sprite post-processing exclusion enabled");
-
             // Find all existing sprite renderers and update them
             var spriteRenderers = Object.FindObjectsOfType<GRSpriteRenderer>();
-            Plugin.Log.LogInfo($"Updating {spriteRenderers.Length} existing sprite renderers...");
             
             foreach (var renderer in spriteRenderers)
             {

@@ -37,7 +37,6 @@ public class Plugin : BasePlugin
         try
         {
             Il2CppInterop.Runtime.Injection.ClassInjector.RegisterTypeInIl2Cpp<SavePointSpriteMonitor>();
-            Log.LogInfo("Registered SavePointSpriteMonitor in IL2CPP domain.");
 
             // SuikozuMonitor removed (replaced by Harmony Patch)
         }
@@ -74,7 +73,7 @@ public class Plugin : BasePlugin
         // Apply Sprite Post-Processing patch independently
         if (Config.DisableSpritePostProcessing.Value)
         {
-            Log.LogInfo("Applying Disable Sprite Post-Processing patches...");
+            Log.LogInfo("Applying DisableSpritePostProcessing Patch");
             harmony.PatchAll(typeof(DisableSpritePostProcessingPatch));
             DisableSpritePostProcessingPatch.Initialize();
         }
@@ -185,7 +184,6 @@ public class Plugin : BasePlugin
         // Disable CustomPostEffect for colored intro/flashbacks (Suikoden 2)
         if (Config.ColoredIntroAndFlashbacks.Value)
         {
-            Log.LogInfo("Applying DisableCustomPostEffect patch for colored intro/flashbacks...");
             DisableCustomPostEffectPatch.Initialize(harmony);
         }
 
