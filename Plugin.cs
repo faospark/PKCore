@@ -54,6 +54,10 @@ public class Plugin : BasePlugin
     {
         var harmony = new Harmony("faospark.pkcore");
 
+        // Note: Log suppression via Application.logMessageReceived doesn't actually prevent logs
+        // since the event fires AFTER logging. Disabled for now due to IL2CPP Debug method patching issues.
+        // SuppressLogs.Initialize();
+
         // Apply Sprite Filtering patch independently
         if (Config.SpriteFilteringQuality.Value > 0)
         {
@@ -139,6 +143,13 @@ public class Plugin : BasePlugin
             // [NEW] Map Texture Replacement (Native Material Array)
             Log.LogInfo("Applying Native Map Texture patches...");
             harmony.PatchAll(typeof(MapTexturePatch));
+            
+            // Summon Texture Replacement (requires monitor component)
+            Log.LogInfo("Initializing Summon Texture patches...");
+            SummonPatch.Initialize();
+            
+            // GameObject activation patches are part of CustomTexturePatch (already applied above)
+            // This handles Dragon, Cow, Summon, and Suikozu monitor attachment
         }
 
         // NPC Portrait Injection
@@ -192,6 +203,27 @@ public class Plugin : BasePlugin
         {
             Log.LogInfo("Applying Dialog patches...");
             harmony.PatchAll(typeof(DialogPatch));
+        }
+
+        // Mask Replacement System (Always Active)
+        // Replaces _Mask_Map textures with corresponding files from PKCore/Textures
+        // Build exclusion list based on config
+        var excludedMasks = new System.Collections.Generic.HashSet<string>();
+        
+        if (!Config.DisableMaskPortraitDialog.Value)
+        {
+            // If DisableMaskPortraitDialog is OFF, exclude Face_Mask_01
+            excludedMasks.Add("Face_Mask_01");
+        }
+        
+        Log.LogInfo("Applying Mask Replacement System...");
+        DisableMask.Initialize(excludedMasks);
+        harmony.PatchAll(typeof(DisableMask));
+        // Enable DebugMenu2 (Experimental)
+        if (Config.EnableDebugMenu2.Value)
+        {
+            Log.LogInfo("Initializing EnableDebugMenu2...");
+            EnableDebugMenu2.Initialize();
         }
     }
 }

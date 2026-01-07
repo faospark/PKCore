@@ -16,6 +16,7 @@ public sealed class ModConfiguration
     
     // Visual Settings
     public ConfigEntry<bool> DisableSpritePostProcessing { get; private set; }
+    public ConfigEntry<bool> DisableMaskPortraitDialog { get; private set; }
     
     // Display Settings
     public ConfigEntry<bool> EnableBorderlessWindow { get; private set; }
@@ -62,6 +63,7 @@ public sealed class ModConfiguration
     public ConfigEntry<bool> EnableCustomObjects { get; private set; }
     public ConfigEntry<bool> DebugCustomObjects { get; private set; }
     public ConfigEntry<bool> LogExistingMapObjects { get; private set; }
+    public ConfigEntry<bool> EnableDebugMenu2 { get; private set; }
 
 
 
@@ -79,6 +81,13 @@ public sealed class ModConfiguration
             "DisableSpritePostProcessing",
             true,
             "Prevent post-processing effects (bloom, vignette, depth of field, etc.) from affecting sprites. Sprites will render with pure pixel art look while keeping post-processing on 3D elements and backgrounds. Compatible with sprite anti-aliasing."
+        );
+
+        DisableMaskPortraitDialog = _config.Bind(
+            "Visual",
+            "DisableMaskPortraitDialog",
+            false,
+            "Disable the Face_Mask_01 texture overlay on character portraits in dialog windows. This removes the mask effect that appears on portrait displays during conversations."
         );
 
         SpriteFilteringQuality = _config.Bind(
@@ -313,6 +322,13 @@ public sealed class ModConfiguration
             "LogExistingMapObjects",
             false,
             "[EXPERIMENTAL] Log all existing map objects to ExistingMapObjects.json. This creates a reference file you can copy from when creating custom objects. Disable after collecting the data you need."
+        );
+
+        EnableDebugMenu2 = _config.Bind(
+            "zz - Experimental",
+            "EnableDebugMenu2",
+            false,
+            "[EXPERIMENTAL] Enable the DebugMenu2 object which is normally disabled in the game. This may provide access to developer debug features."
         );
     }
 }

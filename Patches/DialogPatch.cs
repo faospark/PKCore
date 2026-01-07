@@ -17,19 +17,8 @@ namespace PKCore.Patches
                 return;
 
             GameObject dialogWindow = __instance.gameObject;
-            
-            Plugin.Log.LogInfo($"[DialogPatch] OpenMessageWindow called");
-            Plugin.Log.LogInfo($"[DialogPatch] GameObject name: {dialogWindow.name}");
-            Plugin.Log.LogInfo($"[DialogPatch] Scene: {UnityEngine.SceneManagement.SceneManager.GetActiveScene().name}");
-            Plugin.Log.LogInfo($"[DialogPatch] Current Position: {dialogWindow.transform.localPosition}");
-            Plugin.Log.LogInfo($"[DialogPatch] Current Scale: {dialogWindow.transform.localScale}");
-            
-            // Apply transform
             ApplyTransform(dialogWindow);
-            
-            Plugin.Log.LogInfo($"[DialogPatch] Transform applied!");
-            Plugin.Log.LogInfo($"[DialogPatch] New Position: {dialogWindow.transform.localPosition}");
-            Plugin.Log.LogInfo($"[DialogPatch] New Scale: {dialogWindow.transform.localScale}");
+            Plugin.Log.LogInfo($"[DialogPatch] Applied dialog transform via OpenMessageWindow");
         }
 
         // Hook into UIMessageWindow.SetCharacterFace
@@ -42,25 +31,14 @@ namespace PKCore.Patches
                 return;
 
             GameObject dialogWindow = __instance.gameObject;
-            
-            Plugin.Log.LogInfo($"[DialogPatch] SetCharacterFace called");
-            Plugin.Log.LogInfo($"[DialogPatch] GameObject name: {dialogWindow.name}");
-            Plugin.Log.LogInfo($"[DialogPatch] Scene: {UnityEngine.SceneManagement.SceneManager.GetActiveScene().name}");
-            Plugin.Log.LogInfo($"[DialogPatch] Current Position: {dialogWindow.transform.localPosition}");
-            Plugin.Log.LogInfo($"[DialogPatch] Current Scale: {dialogWindow.transform.localScale}");
-            
-            // Apply transform
             ApplyTransform(dialogWindow);
-            
-            Plugin.Log.LogInfo($"[DialogPatch] Transform applied via SetCharacterFace!");
-            Plugin.Log.LogInfo($"[DialogPatch] New Position: {dialogWindow.transform.localPosition}");
-            Plugin.Log.LogInfo($"[DialogPatch] New Scale: {dialogWindow.transform.localScale}");
+            Plugin.Log.LogInfo($"[DialogPatch] Applied dialog transform via SetCharacterFace");
         }
 
         private static void ApplyTransform(GameObject obj)
         {
             // Apply position offset (0, -84, 0)
-            obj.transform.localPosition = new Vector3(0f, -94f, 0f);
+            obj.transform.localPosition = new Vector3(0f, -104f, 0f);
             
             // Apply scale (0.8, 0.8, 1)
             obj.transform.localScale = new Vector3(0.8f, 0.8f, 1f);

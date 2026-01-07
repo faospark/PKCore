@@ -10,6 +10,9 @@ namespace PKCore.Patches;
 /// </summary>
 public partial class CustomTexturePatch
 {
+    // Track processed sprite instances to prevent redundant replacements
+    private static System.Collections.Generic.HashSet<int> _processedSpriteInstances = new System.Collections.Generic.HashSet<int>();
+
     /// <summary>
     /// Intercept GameObject.SetActive to catch sprites when objects are activated
     /// This catches sprites in objects that are instantiated/activated after scene load
@@ -72,6 +75,12 @@ public partial class CustomTexturePatch
             {
                 if (sr.sprite != null)
                 {
+                    int instanceId = sr.GetInstanceID();
+                    
+                    // Skip if already processed
+                    if (_processedSpriteInstances.Contains(instanceId))
+                        continue;
+                    
                     string spriteName = sr.sprite.name;
                     
                     // Check and attach Dragon monitor if applicable
@@ -91,6 +100,7 @@ public partial class CustomTexturePatch
                     if (customSprite != null)
                     {
                         sr.sprite = customSprite;
+                        _processedSpriteInstances.Add(instanceId);
                         Plugin.Log.LogInfo($"Replaced sprite on activation: {spriteName} (from {objectPath})");
                     }
                 }
@@ -102,6 +112,12 @@ public partial class CustomTexturePatch
             {
                 if (gr.sprite != null)
                 {
+                    int instanceId = gr.GetInstanceID();
+                    
+                    // Skip if already processed
+                    if (_processedSpriteInstances.Contains(instanceId))
+                        continue;
+                    
                     string spriteName = gr.sprite.name;
                     
                     // Check and attach Dragon monitor if applicable
@@ -112,6 +128,8 @@ public partial class CustomTexturePatch
                     
                     // Check and attach Summon monitor if applicable
                     SummonPatch.CheckAndAttachMonitor(gr.gameObject);
+                    
+                    _processedSpriteInstances.Add(instanceId);
                 }
             }
             

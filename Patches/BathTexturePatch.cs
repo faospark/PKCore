@@ -114,9 +114,25 @@ public partial class CustomTexturePatch
     /// <summary>
     /// Preload bath sprites (bath_1 through bath_5) for instant replacement
     /// This ensures bath backgrounds are replaced immediately when the bath scene loads
+    /// Only runs if bath textures are actually present (Suikoden 1 & 2 specific)
     /// </summary>
     private static void PreloadBathSprites()
     {
+        // Check if any bath textures exist before preloading
+        bool hasBathTextures = false;
+        for (int i = 1; i <= 5; i++)
+        {
+            if (texturePathIndex.ContainsKey($"bath_{i}"))
+            {
+                hasBathTextures = true;
+                break;
+            }
+        }
+        
+        // Skip preloading if no bath textures found
+        if (!hasBathTextures)
+            return;
+        
         int preloaded = 0;
         
         // Preload bath_1 through bath_5
@@ -146,16 +162,16 @@ public partial class CustomTexturePatch
                     
                     // Cache the sprite for instant replacement
                     preloadedBathSprites[bathName] = sprite;
-                    
-                    Plugin.Log.LogInfo($"  Preloaded: {bathName} ({texture.width}x{texture.height})");
                     preloaded++;
                 }
             }
         }
 
-        if (preloaded > 0)
+        // Only log when DetailedTextureLog is enabled
+        if (preloaded > 0 && Plugin.Config.DetailedTextureLog.Value)
         {
-            Plugin.Log.LogInfo($"Preloaded {preloaded} bath sprite(s) for instant replacement");
+            Plugin.Log.LogInfo("Applying BathTexture Patch");
+            Plugin.Log.LogInfo($"  Preloaded {preloaded} bath sprite(s) for instant replacement");
         }
     }
 
