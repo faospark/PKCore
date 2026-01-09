@@ -74,12 +74,36 @@
     </Reference>
     
     <!-- Game assemblies -->
+    <Reference Include="GSD1">
+      <HintPath>$(GamePath)\BepInEx\interop\GSD1.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
     <Reference Include="GSDShare">
       <HintPath>$(GamePath)\BepInEx\interop\GSDShare.dll</HintPath>
       <Private>false</Private>
     </Reference>
     <Reference Include="GSD2">
       <HintPath>$(GamePath)\BepInEx\interop\GSD2.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="ShareUI">
+      <HintPath>$(GamePath)\BepInEx\interop\ShareUI.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="DOTween">
+      <HintPath>$(GamePath)\BepInEx\interop\DOTween.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Unity.TextMeshPro">
+      <HintPath>$(GamePath)\BepInEx\interop\Unity.TextMeshPro.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="FrameWork">
+      <HintPath>$(GamePath)\BepInEx\interop\FrameWork.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="PostProcess">
+      <HintPath>$(GamePath)\BepInEx\interop\PostProcess.dll</HintPath>
       <Private>false</Private>
     </Reference>
     <Reference Include="Il2Cppmscorlib">

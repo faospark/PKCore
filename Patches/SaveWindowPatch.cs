@@ -45,7 +45,10 @@ namespace PKCore.Patches
                     }
                 }
 
-                Plugin.Log.LogInfo($"[SaveWindowPatch] Processed {__instance.name}");
+                if (Plugin.Config.DetailedTextureLog.Value)
+                {
+                    Plugin.Log.LogInfo($"[SaveWindowPatch] Processed {__instance.name}");
+                }
                 
                 // Continue with searching for the main window to insert background
                 // Find UI_System_SaveLoad2 - traverse up the hierarchy
@@ -118,25 +121,37 @@ namespace PKCore.Patches
             string customObjName = "ClassicSaveBackground";
             if (saveLoadWindow.transform.Find(customObjName) != null)
             {
-                Plugin.Log.LogInfo("[SaveWindowPatch] ClassicSaveBackground already exists, skipping");
+                if (Plugin.Config.DetailedTextureLog.Value)
+                {
+                    Plugin.Log.LogInfo("[SaveWindowPatch] ClassicSaveBackground already exists, skipping");
+                }
                 return;
             }
 
-            Plugin.Log.LogInfo($"[SaveWindowPatch] Creating custom background in {saveLoadWindow.name}");
+            if (Plugin.Config.DetailedTextureLog.Value)
+            {
+                Plugin.Log.LogInfo($"[SaveWindowPatch] Creating custom background in {saveLoadWindow.name}");
+            }
 
             // Modify the default HD Remaster Img_bg to black with 20% alpha
             Transform imgBg = saveLoadWindow.transform.Find("Img_bg");
             if (imgBg != null)
             {
                 imgBg.gameObject.SetActive(false);
-                Plugin.Log.LogInfo("[SaveWindowPatch] Disabled Img_bg");
+                if (Plugin.Config.DetailedTextureLog.Value)
+                {
+                    Plugin.Log.LogInfo("[SaveWindowPatch] Disabled Img_bg");
+                }
             }
             
             Transform imgFlame = saveLoadWindow.transform.Find("Img_Flame");
             if (imgFlame != null)
             {
                 imgFlame.gameObject.SetActive(false);
-                Plugin.Log.LogInfo("[SaveWindowPatch] Disabled Img_Flame");
+                if (Plugin.Config.DetailedTextureLog.Value)
+                {
+                    Plugin.Log.LogInfo("[SaveWindowPatch] Disabled Img_Flame");
+                }
             }
 
             // Create custom object as child of the save/load window
@@ -159,13 +174,19 @@ namespace PKCore.Patches
             rt.anchoredPosition = Vector2.zero;
             rt.localScale = Vector3.one;
             rt.localPosition = new Vector3(0, 0, 100); // Z=100 to match other UI elements
-            Plugin.Log.LogInfo($"[SaveWindowPatch] RectTransform configured for fullscreen");
+            if (Plugin.Config.DetailedTextureLog.Value)
+            {
+                Plugin.Log.LogInfo($"[SaveWindowPatch] RectTransform configured for fullscreen");
+            }
 
             // Add Image component (this automatically adds CanvasRenderer)
             Image img = customObj.AddComponent<Image>();
             img.color = Color.white; // Ensure image is fully opaque
             img.raycastTarget = false; // Don't block input
-            Plugin.Log.LogInfo($"[SaveWindowPatch] Image component added, color: {img.color}");
+            if (Plugin.Config.DetailedTextureLog.Value)
+            {
+                Plugin.Log.LogInfo($"[SaveWindowPatch] Image component added, color: {img.color}");
+            }
             
             // Load texture
             Texture2D tex = CustomTexturePatch.LoadCustomTexture("hp_classicmap_02");
@@ -173,7 +194,10 @@ namespace PKCore.Patches
             {
                 Sprite sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100f);
                 img.sprite = sprite;
-                Plugin.Log.LogInfo("[SaveWindowPatch] ✓ Applied hp_classicmap_02 to save window background");
+                if (Plugin.Config.DetailedTextureLog.Value)
+                {
+                    Plugin.Log.LogInfo("[SaveWindowPatch] ✓ Applied hp_classicmap_02 to save window background");
+                }
             }
             else
             {

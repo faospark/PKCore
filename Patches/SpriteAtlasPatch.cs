@@ -76,7 +76,7 @@ public partial class CustomTexturePatch
                     
                     if (!shouldSkipLog)
                     {
-                        Plugin.Log.LogInfo($"Replaced texture: {textureName}");
+                        Plugin.Log.LogDebug($"Replaced texture: {textureName}");
                     }
                 }
                 

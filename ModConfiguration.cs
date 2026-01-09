@@ -50,6 +50,8 @@ public sealed class ModConfiguration
     
     // UI Settings
     public ConfigEntry<string> DialogBoxScale { get; private set; }
+    public ConfigEntry<string> MenuScale { get; private set; }
+    public ConfigEntry<string> SMAAQuality { get; private set; }
     
     // Performance Settings
     public ConfigEntry<bool> EnableTextureManifestCache { get; private set; }
@@ -64,6 +66,7 @@ public sealed class ModConfiguration
     public ConfigEntry<bool> DebugCustomObjects { get; private set; }
     public ConfigEntry<bool> LogExistingMapObjects { get; private set; }
     public ConfigEntry<bool> EnableDebugMenu2 { get; private set; }
+    
 
 
 
@@ -231,6 +234,20 @@ public sealed class ModConfiguration
             "DialogBoxScale",
             "Large",
             "Dialog box size preset. Options: Large (full size, default), Medium (80% size), Small (50% size, very compact). Affects both size and position."
+        );
+
+        MenuScale = _config.Bind(
+            "UI",
+            "MenuScale",
+            "default",
+            "Main menu layout preset. Options: default (original layout), alt (scaled down 80% with adjusted position for better visibility)."
+        );
+
+        SMAAQuality = _config.Bind(
+            "Graphics",
+            "SMAAQuality",
+            "Off",
+            "SMAA anti-aliasing quality. Options: Off, Low, Medium, High. Higher quality = better visuals but lower performance."
         );
 
         EnableTextureManifestCache = _config.Bind(

@@ -52,6 +52,8 @@ public static class ObjectDiscovery
             }
 
             // [NEW] Discover native event objects from MapBGManagerHD
+            // Temporarily disabled due to missing GSD2 types
+            /*
             try 
             {
                 LogNativeEventObjects(objects);
@@ -60,6 +62,7 @@ public static class ObjectDiscovery
             {
                 Plugin.Log.LogWarning($"[ObjectDiscovery] Failed to log native objects: {ex.Message}");
             }
+            */
             
             _discoveredObjects[mapId] = objects;
             _discoveredMaps.Add(mapId);
@@ -318,13 +321,14 @@ public static class ObjectDiscovery
             Plugin.Log.LogError($"[ObjectDiscovery] Error saving discovered objects: {ex}");
         }
     }
+    /* Temporarily disabled due to missing GSD2 types
     private static void LogNativeEventObjects(List<DiscoveredObject> objects)
     {
         // Fix: Use m_instance and cast to MapBGManagerHD
-        var managerBase = MapBGManager.m_instance;
+        var managerBase = GSD2.MapBGManager.m_instance;
         if (managerBase == null) return;
         
-        var manager = managerBase.TryCast<MapBGManagerHD>();
+        var manager = managerBase.TryCast<GSD2.MapBGManagerHD>();
         if (manager == null) return;
         
         var eventObjects = manager.eventObjects;
@@ -371,6 +375,7 @@ public static class ObjectDiscovery
             // Plugin.Log.LogInfo($"[Reflection] EventObject Props: {string.Join(", ", evt.GetType().GetProperties().Select(p => p.Name))}");
         }
     }
+    */
 }
 
 

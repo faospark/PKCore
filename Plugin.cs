@@ -205,6 +205,20 @@ public class Plugin : BasePlugin
             harmony.PatchAll(typeof(DialogPatch));
         }
 
+        // Apply Menu Scale Patch (Menu Scaling)
+        if (Config.MenuScale.Value.Equals("alt", System.StringComparison.OrdinalIgnoreCase))
+        {
+            Log.LogInfo($"Applying Menu Scale patches (mode: {Config.MenuScale.Value})...");
+            harmony.PatchAll(typeof(MenuScalePatch));
+        }
+
+        // Apply SMAA patches
+        if (!Config.SMAAQuality.Value.Equals("Off", System.StringComparison.OrdinalIgnoreCase))
+        {
+            Log.LogInfo($"Applying SMAA patches (quality: {Config.SMAAQuality.Value})...");
+            harmony.PatchAll(typeof(SMAAPatch));
+        }
+
         // Mask Replacement System (Always Active)
         // Replaces _Mask_Map textures with corresponding files from PKCore/Textures
         // Build exclusion list based on config
