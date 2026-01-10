@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using UnityEngine.SceneManagement;
 
 namespace PKCore.Patches
@@ -33,7 +34,7 @@ namespace PKCore.Patches
             
             if (isPatched)
             {
-                Logger.LogWarning("WarAbilityPatch already applied!");
+                // Logger.LogWarning("WarAbilityPatch already applied!");
                 return;
             }
 
@@ -55,14 +56,17 @@ namespace PKCore.Patches
                         if (abilities.Length > 0 || kvp.Value.Attack.HasValue || kvp.Value.Defense.HasValue)
                         {
                             CharacterConfigs[characterIndex] = kvp.Value;
+                            // Suppressed logging configuration details
+                            /*
                             Logger.LogInfo($"Configured character {characterIndex} ({kvp.Value.Name}): {abilities.Length} abilities" + 
                                 (kvp.Value.Attack.HasValue ? $", ATK={kvp.Value.Attack.Value}" : "") +
                                 (kvp.Value.Defense.HasValue ? $", DEF={kvp.Value.Defense.Value}" : ""));
+                            */
                         }
                     }
                 }
                 
-                Logger.LogInfo("War Ability Modification initialized - will activate when GSD2 scene loads");
+                // Logger.LogInfo("War Ability Modification initialized - will activate when GSD2 scene loads");
                 
                 // Register scene listener to apply patches when GSD2 loads
                 SceneManager.sceneLoaded += (System.Action<Scene, LoadSceneMode>)OnSceneLoaded;
@@ -84,14 +88,51 @@ namespace PKCore.Patches
                 
             try
             {
-                Logger.LogInfo("=== War Ability Patch Initializing ===");
-                Logger.LogInfo($"Ability overrides configured: {Config?.CharacterAbilities?.Count ?? 0}");
-                Logger.LogInfo($"Global abilities enabled: {(Config?.GlobalAbilities?.Count > 0)}");
+                // Suppressed initialization logs
+                // Logger.LogInfo("=== War Ability Patch Initializing ===");
+                // Logger.LogInfo($"Ability overrides configured: {Config?.CharacterAbilities?.Count ?? 0}");
+                // Logger.LogInfo($"Global abilities enabled: {(Config?.GlobalAbilities?.Count > 0)}");
                 
                 var harmony = new Harmony("faospark.pkcore.warability");
-                harmony.PatchAll(typeof(WarAbilityPatch));
+                
+                // Manual patching to avoid HarmonyX assembly scanning warnings
+                
+                // 1. Patch WarChapter.Update
+                var warChapterType = AccessTools.TypeByName("WarChapter");
+                if (warChapterType != null)
+                {
+                    var originalUpdate = AccessTools.Method(warChapterType, "Update");
+                    var postfixUpdate = AccessTools.Method(typeof(WarAbilityPatch), nameof(AfterWarChapterUpdate));
+                    
+                    if (originalUpdate != null && postfixUpdate != null)
+                    {
+                        harmony.Patch(originalUpdate, postfix: new HarmonyMethod(postfixUpdate));
+                    }
+                    else
+                    {
+                        Logger.LogWarning("[War Ability] Could not find WarChapter.Update or patch method");
+                    }
+                }
+                else
+                {
+                    Logger.LogWarning("[War Ability] Could not find type WarChapter");
+                }
+
+                // 2. Patch w_chara.charaInit
+                var charaInitMethod = AccessTools.Method(typeof(w_chara), nameof(w_chara.charaInit));
+                var postfixCharaInit = AccessTools.Method(typeof(WarAbilityPatch), nameof(AfterCharaInit));
+
+                if (charaInitMethod != null && postfixCharaInit != null)
+                {
+                    harmony.Patch(charaInitMethod, postfix: new HarmonyMethod(postfixCharaInit));
+                }
+                else
+                {
+                    Logger.LogWarning("[War Ability] Could not find w_chara.charaInit or patch method");
+                }
+                
                 isPatched = true;
-                Logger.LogInfo("War Ability Patch applied");
+                // Logger.LogInfo("War Ability Patch applied");
             }
             catch (Exception ex)
             {
@@ -114,7 +155,7 @@ namespace PKCore.Patches
                 
                 if (currentAbilities == null)
                 {
-                    Logger.LogWarning($"Character {nameIndex} has null abilities array");
+                    // Logger.LogWarning($"Character {nameIndex} has null abilities array");
                     return;
                 }
 
@@ -123,7 +164,7 @@ namespace PKCore.Patches
                 // Check if we have specific config for this character
                 if (CharacterConfigs.TryGetValue(nameIndex, out var config))
                 {
-                    Logger.LogInfo($"Applying custom configuration to character {nameIndex}");
+                    // Logger.LogInfo($"Applying custom configuration to character {nameIndex}");
                     
                     // Apply abilities if configured
                     if (config.Abilities != null && config.Abilities.Count > 0)
@@ -137,20 +178,20 @@ namespace PKCore.Patches
                     {
                         byte oldAtk = character.attack;
                         character.attack = config.Attack.Value;
-                        Logger.LogInfo($"  Character {nameIndex}: ATK {oldAtk} → {config.Attack.Value}");
+                        // Logger.LogInfo($"  Character {nameIndex}: ATK {oldAtk} → {config.Attack.Value}");
                     }
                     
                     if (config.Defense.HasValue)
                     {
                         byte oldDef = character.defense;
                         character.defense = config.Defense.Value;
-                        Logger.LogInfo($"  Character {nameIndex}: DEF {oldDef} → {config.Defense.Value}");
+                        // Logger.LogInfo($"  Character {nameIndex}: DEF {oldDef} → {config.Defense.Value}");
                     }
                 }
                 // Otherwise, apply global abilities if any
                 else if (GlobalAbilities.Length > 0)
                 {
-                    Logger.LogInfo($"Applying global abilities to character {nameIndex}");
+                    // Logger.LogInfo($"Applying global abilities to character {nameIndex}");
                     AddAbilities(character, GlobalAbilities);
                 }
             }
@@ -187,7 +228,7 @@ namespace PKCore.Patches
                 var abilityList = abilities.Where(a => a != war_data_h.tagSPECIAL_ABILITY.SP_NONE).ToList();
                 InitializeAbilityUsageCounts(character, abilityList);
                 
-                Logger.LogInfo($"Replaced abilities: {string.Join(", ", abilities)}");
+                // Logger.LogInfo($"Replaced abilities: {string.Join(", ", abilities)}");
             }
             catch (Exception ex)
             {
@@ -236,7 +277,7 @@ namespace PKCore.Patches
                 // Default to 3 uses per ability (can be configured later)
                 InitializeAbilityUsageCounts(character, existingAbilities);
                 
-                Logger.LogInfo($"Added abilities. New total: {string.Join(", ", existingAbilities)}");
+                // Logger.LogInfo($"Added abilities. New total: {string.Join(", ", existingAbilities)}");
             }
             catch (Exception ex)
             {
@@ -260,7 +301,7 @@ namespace PKCore.Patches
                 
                 if (kaisuArray == null || kaisuMaxArray == null)
                 {
-                    Logger.LogWarning($"Character {character.name} has null usage count arrays");
+                    // Logger.LogWarning($"Character {character.name} has null usage count arrays");
                     return;
                 }
                 
@@ -272,7 +313,7 @@ namespace PKCore.Patches
                     kaisuMaxArray[abilitySlot] = DEFAULT_USES;
                 }
                 
-                Logger.LogInfo($"✓ Initialized usage counts ({DEFAULT_USES} uses each) for {Math.Min(abilities.Count, 3)} abilities on character {character.name}");
+                // Logger.LogInfo($"✓ Initialized usage counts ({DEFAULT_USES} uses each) for {Math.Min(abilities.Count, 3)} abilities on character {character.name}");
             }
             catch (Exception ex)
             {
@@ -340,8 +381,6 @@ namespace PKCore.Patches
         /// Patch WarChapter.Update - called every frame during war battle
         /// We modify abilities on the first frame only
         /// </summary>
-        [HarmonyPatch("WarChapter", "Update")]
-        [HarmonyPostfix]
         public static void AfterWarChapterUpdate(int __result)
         {
             // __result is the return value from Update()
@@ -357,7 +396,7 @@ namespace PKCore.Patches
             if (!hasModifiedThisBattle)
             {
                 hasModifiedThisBattle = true;
-                Logger.LogInfo("[War Ability] ===== WAR BATTLE STARTED - WarChapter.Update called =====");
+                // Logger.LogInfo("[War Ability] ===== WAR BATTLE STARTED - WarChapter.Update called =====");
                 ModifyAllWarCharacters();
             }
         }
@@ -369,11 +408,11 @@ namespace PKCore.Patches
         {
             try
             {
-                Logger.LogInfo("[War Ability] Modifying character abilities...");
+                // Logger.LogInfo("[War Ability] Modifying character abilities...");
                 
                 if (Config == null || Config.CharacterAbilities == null)
                 {
-                    Logger.LogWarning("[War Ability] Config not loaded, skipping ability modifications");
+                    // Logger.LogWarning("[War Ability] Config not loaded, skipping ability modifications");
                     return;
                 }
 
@@ -401,14 +440,15 @@ namespace PKCore.Patches
                         // Some indices may not be valid, skip them
                         continue;
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
-                        Logger.LogWarning($"[War Ability] Error processing character {i}: {ex.Message}");
+                        // Only log errors if serious
+                        // Logger.LogWarning($"[War Ability] Error processing character {i}: {ex.Message}");
                         continue;
                     }
                 }
 
-                Logger.LogInfo($"[War Ability] Ability modifications complete! Modified: {modifiedCount}");
+                // Logger.LogInfo($"[War Ability] Ability modifications complete! Modified: {modifiedCount}");
             }
             catch (Exception)
             {
@@ -420,18 +460,16 @@ namespace PKCore.Patches
         /// Harmony postfix for w_chara.charaInit - called when war characters are initialized
         /// This is where we modify the character abilities based on our configuration
         /// </summary>
-        [HarmonyPostfix]
-        [HarmonyPatch(typeof(w_chara), nameof(w_chara.charaInit))]
         public static void AfterCharaInit()
         {
             try
             {
-                Logger.LogInfo("[War Ability] ===== AfterCharaInit CALLED! =====");
-                Logger.LogInfo("[War Ability] w_chara.charaInit hook triggered!");
+                // Logger.LogInfo("[War Ability] ===== AfterCharaInit CALLED! =====");
+                // Logger.LogInfo("[War Ability] w_chara.charaInit hook triggered!");
                 
                 if (Config == null || Config.CharacterAbilities == null)
                 {
-                    Logger.LogWarning("[War Ability] Config not loaded, skipping ability modifications");
+                    // Logger.LogWarning("[War Ability] Config not loaded, skipping ability modifications");
                     return;
                 }
 
@@ -453,7 +491,7 @@ namespace PKCore.Patches
                     modifiedCount++;
                 }
 
-                Logger.LogInfo($"[War Ability] Ability modifications complete! Modified: {modifiedCount}");
+                // Logger.LogInfo($"[War Ability] Ability modifications complete! Modified: {modifiedCount}");
             }
             catch (Exception)
             {
