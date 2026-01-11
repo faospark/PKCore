@@ -98,7 +98,9 @@ namespace PKCore.Patches
                 // Manual patching to avoid HarmonyX assembly scanning warnings
                 
                 // 1. Patch WarChapter.Update
-                var warChapterType = AccessTools.TypeByName("WarChapter");
+                // Use targeted assembly search instead of AccessTools.TypeByName to avoid global scanning warnings
+                var warChapterType = FindTypeInAssemblies("WarChapter", new[] { "GSD2", "GSD1", "Assembly-CSharp" });
+                
                 if (warChapterType != null)
                 {
                     var originalUpdate = AccessTools.Method(warChapterType, "Update");
@@ -497,6 +499,24 @@ namespace PKCore.Patches
             {
                 // Silently catch any errors during character initialization
             }
+        }
+        /// <summary>
+        /// targeted type lookup to avoid scanning all assemblies
+        /// </summary>
+        private static Type FindTypeInAssemblies(string typeName, string[] assemblyNames)
+        {
+            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+            foreach (var assembly in assemblies)
+            {
+                var name = assembly.GetName().Name;
+                if (assemblyNames.Contains(name))
+                {
+                    var type = assembly.GetType(typeName);
+                    if (type != null)
+                        return type;
+                }
+            }
+            return null;
         }
     }
 }

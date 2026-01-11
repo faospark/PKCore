@@ -361,7 +361,7 @@ public partial class CustomTexturePatch
                 return null;
             }
 
-            // Compress texture to BC1/BC3/BC7 for GPU efficiency
+            // Compress texture to BC1/BC3 for GPU efficiency
             TextureCompression.CompressTexture(texture, textureName, filePath);
 
             texture.filterMode = FilterMode.Bilinear;

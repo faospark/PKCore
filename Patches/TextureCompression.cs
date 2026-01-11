@@ -4,7 +4,7 @@ using System.Diagnostics;
 namespace PKCore.Patches;
 
 /// <summary>
-/// Centralized texture compression utilities for BC1/BC3/BC7 compression
+/// Centralized texture compression utilities for BC1/BC3 compression
 /// Reduces VRAM usage by 4-8x with minimal quality loss
 /// </summary>
 public static class TextureCompression
@@ -13,12 +13,11 @@ public static class TextureCompression
     {
         Auto,   // BC1 for RGB, BC3 for RGBA
         BC1,    // DXT1 - RGB, 8:1 compression
-        BC3,    // DXT5 - RGBA, 6:1 compression
-        BC7     // Highest quality RGBA, 6:1 compression
+        BC3     // DXT5 - RGBA, 6:1 compression
     }
 
     /// <summary>
-    /// Compress a texture to BC1/BC3/BC7 format for GPU efficiency
+    /// Compress a texture to BC1/BC3 format for GPU efficiency
     /// Automatically pads textures to multiples of 4 if needed (BC compression requirement)
     /// </summary>
     /// <param name="texture">Texture to compress (must be RGBA32 format)</param>
@@ -103,8 +102,6 @@ public static class TextureCompression
             return CompressionFormat.BC1;
         if (formatSetting.Equals("BC3", System.StringComparison.OrdinalIgnoreCase))
             return CompressionFormat.BC3;
-        if (formatSetting.Equals("BC7", System.StringComparison.OrdinalIgnoreCase))
-            return CompressionFormat.BC7;
         
         // Auto mode: detect based on alpha channel
         if (HasSignificantAlpha(texture))
@@ -154,13 +151,6 @@ public static class TextureCompression
                 // BC3 (DXT5) - RGBA, 6:1 compression
                 texture.Compress(highQuality);
                 return "BC3 (DXT5)";
-                
-            case CompressionFormat.BC7:
-                // BC7 - Highest quality RGBA
-                // Note: Unity's Compress() doesn't directly support BC7
-                // We'll use BC3 as fallback with high quality
-                texture.Compress(true); // Always high quality for BC7 request
-                return "BC3 (DXT5, BC7 fallback)";
                 
             default:
                 texture.Compress(highQuality);

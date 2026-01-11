@@ -277,7 +277,7 @@ public sealed class ModConfiguration
             "Performance",
             "TextureCompressionFormat",
             "Auto",
-            "Texture compression format. Options: Auto (BC1 for RGB, BC3 for RGBA - recommended), BC1 (DXT1, 8:1 compression, RGB only), BC3 (DXT5, 6:1 compression, RGBA), BC7 (highest quality, RGBA). Auto is recommended."
+            "Texture compression format. Options: Auto (BC1 for RGB, BC3 for RGBA - recommended), BC1 (DXT1, 8:1 compression, RGB only), BC3 (DXT5, 6:1 compression, RGBA). Auto is recommended."
         );
 
         EnableDDSTextures = _config.Bind(

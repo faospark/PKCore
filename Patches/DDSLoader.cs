@@ -6,6 +6,7 @@ namespace PKCore.Patches;
 /// <summary>
 /// DDS file loader for pre-compressed textures
 /// Supports BC1 (DXT1), BC3 (DXT5), and BC7 formats
+/// Note: BC7 can be loaded from DDS files but cannot be created at runtime via Texture2D.Compress()
 /// </summary>
 public static class DDSLoader
 {
