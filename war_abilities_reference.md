@@ -6,18 +6,18 @@ Complete list of all available war abilities you can use in `war_abilities.json`
 
 ### Offensive
 - `SP_CHARGE` - Charge attack
-- `SP_CRITICAL` - Critical hit ability
+- `SP_CRITICAL` - Critical 
 - `SP_AIMING` - Aimed shot ability
-- `SP_FLAME_SPEAR` - Flame spear attack
-- `SP_CONFUSED_FIGHT` - Confusion attack
+- `SP_FLAME_SPEAR` - Fire spear attack
+- `SP_CONFUSED_FIGHT` - Evade
 
 ### Magic Attacks
-- `SP_MAGIC_FIRE1` - Fire magic (level 1)
-- `SP_MAGIC_WIND1` - Wind magic (level 1)
-- `SP_MAGIC_THUNDER1` - Thunder magic (level 1)
+- `SP_MAGIC_FIRE1` - Fire magic 
+- `SP_MAGIC_WIND1` - Wind magic 
+- `SP_MAGIC_THUNDER1` - Thunder magic 
 
 ### Defensive
-- `SP_SHINING_SHIELD` - Shield ability
+- `SP_SHINING_SHIELD` - Bright Shield
 - `SP_BODY_GUARD` - Bodyguard protection
 - `SP_HP_PLUS` - HP boost
 
@@ -25,14 +25,14 @@ Complete list of all available war abilities you can use in `war_abilities.json`
 - `SP_MEDICAL1` - Healing (level 1)
 - `SP_MEDICAL2` - Healing (level 2)
 - `SP_CHEAR_UP` - Morale boost
-- `SP_INVENTION` - Invention ability
+- `SP_INVENTION` - Invention
 
 ## Movement Abilities
 
-- `SP_MOUNT` - Mounted movement
-- `SP_FLYING` - Flying movement
-- `SP_FOREST_WALK` - Forest walking
-- `SP_THROUGH_ROAD` - Road movement
+- `SP_MOUNT` - Cavalry
+- `SP_FLYING` - Flight
+- `SP_FOREST_WALK` - Forest Walk
+- `SP_THROUGH_ROAD` - Shortcut
 
 ## Tactical Abilities
 

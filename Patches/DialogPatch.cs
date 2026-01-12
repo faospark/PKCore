@@ -6,6 +6,8 @@ namespace PKCore.Patches
 {
     public class DialogPatch
     {
+        private static bool _loggedOpenMessageWindow;
+        private static bool _loggedSetCharacterFace;
         // Hook into UIMessageWindow.OpenMessageWindow (5-parameter overload)
         // This is used by Suikoden 2
         [HarmonyPatch(typeof(UIMessageWindow), nameof(UIMessageWindow.OpenMessageWindow))]
@@ -21,7 +23,15 @@ namespace PKCore.Patches
 
             GameObject dialogWindow = __instance.gameObject;
             ApplyTransform(dialogWindow, scale);
-            Plugin.Log.LogInfo($"[DialogPatch] Applied dialog transform (scale: {scale}) via OpenMessageWindow");
+            if (!_loggedOpenMessageWindow)
+            {
+                Plugin.Log.LogInfo($"[DialogPatch] Applied dialog transform (scale: {scale}) via OpenMessageWindow");
+                _loggedOpenMessageWindow = true;
+            }
+            else
+            {
+                Plugin.Log.LogDebug($"[DialogPatch] Applied dialog transform (scale: {scale}) via OpenMessageWindow");
+            }
         }
 
         // Hook into UIMessageWindow.SetCharacterFace
@@ -38,7 +48,16 @@ namespace PKCore.Patches
 
             GameObject dialogWindow = __instance.gameObject;
             ApplyTransform(dialogWindow, scale);
-            Plugin.Log.LogInfo($"[DialogPatch] Applied dialog transform (scale: {scale}) via SetCharacterFace");
+            
+            if (!_loggedSetCharacterFace)
+            {
+                Plugin.Log.LogInfo($"[DialogPatch] Applied dialog transform (scale: {scale}) via SetCharacterFace");
+                _loggedSetCharacterFace = true;
+            }
+            else
+            {
+                Plugin.Log.LogDebug($"[DialogPatch] Applied dialog transform (scale: {scale}) via SetCharacterFace");
+            }
         }
 
         /// <summary>
