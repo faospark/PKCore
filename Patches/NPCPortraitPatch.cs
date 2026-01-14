@@ -1,8 +1,11 @@
 using HarmonyLib;
 using UnityEngine;
+using System.Text.RegularExpressions;
 using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Text.Json;
+using System.Text.Encodings.Web;
 using Share.UI.Window;
 using BepInEx.Unity.IL2CPP;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -32,6 +35,206 @@ public class NPCPortraitPatch
     private static string portraitsPath;
     private static List<PortraitEntry> portraitCache = new List<PortraitEntry>();
     private static Sprite cachedPortraitSprite = null; // Cache the Hero's portrait sprite for reuse
+    
+    // --- Dialog Replacement System ---
+    private static Dictionary<string, string> dialogReplacements = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+    private static string dialogOverridesPath;
+    
+    // --- Speaker Injection System ---
+    private static Dictionary<string, string> speakerOverrides = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+    private static string speakerOverridesPath;
+    
+    private static void LoadDialogOverrides()
+    {
+        string baseDir = Path.Combine(BepInEx.Paths.GameRootPath, "PKCore");
+        string configDir = Path.Combine(baseDir, "Config");
+        
+        // Ensure Config directory exists
+        if (!Directory.Exists(configDir))
+            Directory.CreateDirectory(configDir);
+
+        dialogOverridesPath = Path.Combine(configDir, "DialogOverrides.json");
+        speakerOverridesPath = Path.Combine(configDir, "SpeakerOverrides.json");
+        
+        // Migration: Move files from old location if they exist there but not in new location
+        string oldDialogPath = Path.Combine(baseDir, "DialogOverrides.json");
+        if (File.Exists(oldDialogPath) && !File.Exists(dialogOverridesPath))
+        {
+            try 
+            { 
+                File.Move(oldDialogPath, dialogOverridesPath); 
+                Plugin.Log.LogInfo($"Migrated DialogOverrides.json to Config folder.");
+            }
+            catch (Exception ex) { Plugin.Log.LogError($"Failed to migrate DialogOverrides.json: {ex.Message}"); }
+        }
+        
+        string oldSpeakerPath = Path.Combine(baseDir, "SpeakerOverrides.json");
+        if (File.Exists(oldSpeakerPath) && !File.Exists(speakerOverridesPath))
+        {
+            try 
+            { 
+                File.Move(oldSpeakerPath, speakerOverridesPath); 
+                Plugin.Log.LogInfo($"Migrated SpeakerOverrides.json to Config folder.");
+            }
+            catch (Exception ex) { Plugin.Log.LogError($"Failed to migrate SpeakerOverrides.json: {ex.Message}"); }
+        }
+        
+        // Load Dialog Overrides
+        if (!File.Exists(dialogOverridesPath))
+        {
+            // Create default file with examples
+            var defaultData = new Dictionary<string, string>
+            {
+                { "Example original text", "<speaker:Viktor>Example replacement text" },
+                { "Another line to replace", "<speaker:Flik>Replaced!" }
+            };
+            
+            try
+            {
+                string json = JsonSerializer.Serialize(defaultData, new JsonSerializerOptions { WriteIndented = true, Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping });
+                File.WriteAllText(dialogOverridesPath, json);
+                Plugin.Log.LogInfo($"Created default DialogOverrides.json at {dialogOverridesPath}");
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogError($"Failed to create default DialogOverrides.json: {ex.Message}");
+            }
+        }
+        else
+        {
+            try
+            {
+                string json = File.ReadAllText(dialogOverridesPath);
+                var loaded = JsonSerializer.Deserialize<Dictionary<string, string>>(json);
+                if (loaded != null)
+                {
+                    dialogReplacements = new Dictionary<string, string>(loaded, StringComparer.OrdinalIgnoreCase);
+                    Plugin.Log.LogInfo($"Loaded {dialogReplacements.Count} dialog overrides.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogError($"Failed to load DialogOverrides.json: {ex.Message}");
+            }
+        }
+
+        // Load Speaker Overrides
+        if (!File.Exists(speakerOverridesPath))
+        {
+            // Create default file with examples
+            var defaultSpeakerData = new Dictionary<string, string>
+            {
+                { "sys_01:5", "Guard" },
+                { "sys_02:10", "Villager" }
+            };
+            
+            try
+            {
+                string json = JsonSerializer.Serialize(defaultSpeakerData, new JsonSerializerOptions { WriteIndented = true, Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping });
+                File.WriteAllText(speakerOverridesPath, json);
+                Plugin.Log.LogInfo($"Created default SpeakerOverrides.json at {speakerOverridesPath}");
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogError($"Failed to create default SpeakerOverrides.json: {ex.Message}");
+            }
+        }
+        else
+        {
+            try
+            {
+                string json = File.ReadAllText(speakerOverridesPath);
+                var loaded = JsonSerializer.Deserialize<Dictionary<string, string>>(json);
+                if (loaded != null)
+                {
+                    speakerOverrides = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+                    
+                    foreach (var kvp in loaded)
+                    {
+                        string key = kvp.Key;
+                        string value = kvp.Value;
+                        
+                        // Check for range syntax (e.g., "sys_01:5-10" or "message:100-200")
+                        int lastColon = key.LastIndexOf(':');
+                        bool isRange = false;
+                        
+                        if (lastColon != -1 && lastColon < key.Length - 1)
+                        {
+                            string idPart = key.Substring(0, lastColon);
+                            string rangePart = key.Substring(lastColon + 1);
+                            
+                            if (rangePart.Contains("-"))
+                            {
+                                var parts = rangePart.Split('-');
+                                if (parts.Length == 2 && int.TryParse(parts[0], out int start) && int.TryParse(parts[1], out int end))
+                                {
+                                    if (start <= end)
+                                    {
+                                        isRange = true;
+                                        int count = 0;
+                                        // Limit range size to prevent accidental massive loops (e.g. 1-999999)
+                                        if (end - start > 5000)
+                                        {
+                                            Plugin.Log.LogWarning($"Range {key} is too large (>5000), skipping expansion.");
+                                            continue; 
+                                        }
+
+                                        for (int i = start; i <= end; i++)
+                                        {
+                                            string newKey = $"{idPart}:{i}";
+                                            speakerOverrides[newKey] = value;
+                                            count++;
+                                        }
+                                        Plugin.Log.LogInfo($"Expanded range '{key}' into {count} entries for speaker '{value}'.");
+                                    }
+                                }
+                            }
+                        }
+                        
+                        if (!isRange)
+                        {
+                            speakerOverrides[key] = value;
+                        }
+                    }
+                    
+                    Plugin.Log.LogInfo($"Loaded {speakerOverrides.Count} active speaker overrides.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogError($"Failed to load SpeakerOverrides.json: {ex.Message}");
+            }
+        }
+    }
+    
+    /// <summary>
+    /// Get a dialog override by key (can be text or ID:Index)
+    /// </summary>
+    public static string GetDialogOverride(string key)
+    {
+        if (dialogReplacements == null || dialogReplacements.Count == 0)
+            return null;
+            
+        if (dialogReplacements.TryGetValue(key, out string replacement))
+            return replacement;
+            
+        return null;
+    }
+    
+    /// <summary>
+    /// Get a speaker override by ID key
+    /// </summary>
+    public static string GetSpeakerOverride(string key)
+    {
+        if (speakerOverrides == null || speakerOverrides.Count == 0)
+            return null;
+            
+        if (speakerOverrides.TryGetValue(key, out string speakerName))
+            return speakerName;
+            
+        return null;
+    }
+    // -------------------------------
     
     /// <summary>
     /// Find and cache the Hero's portrait sprite from the UI
@@ -130,6 +333,9 @@ public class NPCPortraitPatch
         
         // Preload all portraits for performance
         PreloadPortraits();
+        
+        // Load dialog overrides
+        LoadDialogOverrides();
         
         Plugin.Log.LogInfo("NPC Portrait System Ready!");
     }
@@ -290,10 +496,41 @@ public class NPCPortraitPatch
     [HarmonyPatch(typeof(UIMessageWindow), nameof(UIMessageWindow.OpenMessageWindow))]
     [HarmonyPatch(new[] { typeof(Sprite), typeof(string), typeof(string), typeof(Vector3), typeof(bool) })]
     [HarmonyPrefix]
-    public static void OpenMessageWindow_Prefix(ref Sprite faceImage, string name)
+    public static void OpenMessageWindow_Prefix(ref Sprite faceImage, ref string name, ref string message)
     {
         if (Plugin.Config.LogReplaceableTextures.Value)
             Plugin.Log.LogInfo($"[NPCPortrait] OpenMessageWindow called - Name: '{name}', HasFaceImage: {faceImage != null}");
+        
+        // --- Dialog Replacement ---
+        if (!string.IsNullOrEmpty(message) && dialogReplacements.Count > 0)
+        {
+            // Check for entire string match (trimmed)
+            string paramsClean = message.Trim();
+            if (dialogReplacements.TryGetValue(paramsClean, out string replacement))
+            {
+                Plugin.Log.LogInfo($"[NPCPortrait] Applying dialog override: '{paramsClean.Substring(0, Math.Min(20, paramsClean.Length))}...' -> '{replacement.Substring(0, Math.Min(20, replacement.Length))}...'");
+                message = replacement;
+            }
+        }
+        // -------------------------
+        
+        // Parsing <speaker:Name> tag from text to override speaker
+        if (!string.IsNullOrEmpty(message))
+        {
+            var match = Regex.Match(message, @"<speaker:([^>]+)>");
+            if (match.Success)
+            {
+                string newName = match.Groups[1].Value;
+                Plugin.Log.LogInfo($"[NPCPortrait] Found speaker tag! Overriding '{name}' with '{newName}'");
+                
+                name = newName;
+                message = message.Replace(match.Value, "").TrimStart(); // Remove tag and potential leading space
+                
+                // Force portrait lookup by clearing existing faceImage
+                // This ensures we look for the new speaker's portrait
+                faceImage = null;
+            }
+        }
         
         // If there's an existing portrait, capture it for reuse!
         if (faceImage != null)

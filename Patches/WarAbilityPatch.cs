@@ -112,7 +112,7 @@ namespace PKCore.Patches
                 
             if (isPatched)
                 return;
-                
+     
             try
             {
                 // Suppressed initialization logs

@@ -581,8 +581,6 @@ public partial class CustomTexturePatch
             return;
         }
 
-        Plugin.Log.LogInfo($"Custom textures directory: {customTexturesPath}");
-        
         InitializeCaching();
         BuildTextureIndex();
         

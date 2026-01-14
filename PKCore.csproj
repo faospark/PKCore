@@ -47,6 +47,12 @@
     <Compile Remove="reserve\**" />
     <EmbeddedResource Remove="reserve\**" />
     <None Remove="reserve\**" />
+    <Compile Remove="TTSHelper\**" />
+    <EmbeddedResource Remove="TTSHelper\**" />
+    <None Remove="TTSHelper\**" />
+    <Compile Remove="SuikoVA\**" />
+    <EmbeddedResource Remove="SuikoVA\**" />
+    <None Remove="SuikoVA\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -148,6 +154,18 @@
     </Reference>
     <Reference Include="UnityEngine.ParticleSystemModule">
       <HintPath>$(GamePath)\BepInEx\interop\UnityEngine.ParticleSystemModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.AudioModule">
+      <HintPath>$(GamePath)\BepInEx\interop\UnityEngine.AudioModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestAudioModule">
+      <HintPath>$(GamePath)\BepInEx\interop\UnityEngine.UnityWebRequestAudioModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestModule">
+      <HintPath>$(GamePath)\BepInEx\interop\UnityEngine.UnityWebRequestModule.dll</HintPath>
       <Private>false</Private>
     </Reference>
     <Reference Include="Unity.Addressables">

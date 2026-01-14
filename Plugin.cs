@@ -154,6 +154,13 @@ public class Plugin : BasePlugin
             Log.LogInfo("Applying NPC Portrait patches...");
             harmony.PatchAll(typeof(NPCPortraitPatch));
             NPCPortraitPatch.Initialize();
+            
+            // Apply Dialog Text ID interceptor (if overrides or logging enabled)
+            if (Config.EnableDialogOverrides.Value || Config.LogTextIDs.Value)
+            {
+                Log.LogInfo("Applying TextDatabase patches...");
+                harmony.PatchAll(typeof(TextDatabasePatch));
+            }
         }
 
 
@@ -200,6 +207,9 @@ public class Plugin : BasePlugin
             Log.LogInfo($"Applying Dialog patches (size: {Config.DialogBoxScale.Value})...");
             harmony.PatchAll(typeof(DialogPatch));
         }
+
+        // Apply Voice Acting Patch (Text-to-Speech)
+
 
         // Apply Menu Scale Patch (Menu Scaling)
         if (Config.MenuScale.Value.Equals("alt", System.StringComparison.OrdinalIgnoreCase))

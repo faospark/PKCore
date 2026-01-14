@@ -175,13 +175,19 @@ public partial class CustomTexturePatch
                 if (!isSavePoint)
                     continue;
 
-                Plugin.Log.LogInfo($"[SavePoint GameObject] Found sprite: {spriteName} in {objectPath}");
+                if (Plugin.Config.DetailedTextureLog.Value)
+                {
+                    Plugin.Log.LogInfo($"[SavePoint GameObject] Found sprite: {spriteName} in {objectPath}");
+                }
                 
                 Sprite customSprite = LoadCustomSprite(spriteName, sr.sprite);
                 if (customSprite != null)
                 {
                     sr.sprite = customSprite;
-                    Plugin.Log.LogInfo($"[SavePoint GameObject] ✓ SET custom sprite: {spriteName}");
+                    if (Plugin.Config.DetailedTextureLog.Value)
+                    {
+                        Plugin.Log.LogInfo($"[SavePoint GameObject] ✓ SET custom sprite: {spriteName}");
+                    }
                     
                     // Add monitor component for animated save point ball
                     if (spriteName.StartsWith("t_obj_savePoint_ball_"))
@@ -191,7 +197,10 @@ public partial class CustomTexturePatch
                             if (sr.GetComponent<SavePointSpriteMonitor>() == null)
                             {
                                 sr.gameObject.AddComponent<SavePointSpriteMonitor>();
-                                Plugin.Log.LogInfo($"[SavePoint Monitor] Added monitor to: {sr.gameObject.name}");
+                                if (Plugin.Config.DetailedTextureLog.Value)
+                                {
+                                    Plugin.Log.LogInfo($"[SavePoint Monitor] Added monitor to: {sr.gameObject.name}");
+                                }
                             }
                         }
                         catch (System.Exception ex)

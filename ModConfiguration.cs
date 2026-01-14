@@ -28,6 +28,7 @@ public sealed class ModConfiguration
 
     // Custom Texture Settings
     public ConfigEntry<bool> EnableCustomTextures { get; private set; }
+    public ConfigEntry<bool> LogTextIDs { get; private set; }
     public ConfigEntry<bool> LogReplaceableTextures { get; private set; }
     public ConfigEntry<bool> LogTexturePaths { get; private set; }
     public ConfigEntry<bool> DetailedTextureLog { get; private set; }
@@ -37,6 +38,7 @@ public sealed class ModConfiguration
     
     // NPC Portrait Settings
     public ConfigEntry<bool> EnableNPCPortraits { get; private set; }
+    public ConfigEntry<bool> EnableDialogOverrides { get; private set; }
     
     // Save Point Settings
     public ConfigEntry<string> SavePointColor { get; private set; }
@@ -189,6 +191,13 @@ public sealed class ModConfiguration
             "Enable custom NPC portrait injection. Place PNG files in PKCore/NPCPortraits/ (in game root folder) named after the NPC (e.g., Viktor.png, Flik.png). Case-insensitive."
         );
 
+        EnableDialogOverrides = _config.Bind(
+            "NPC Portraits",
+            "EnableDialogOverrides",
+            true,
+            "Enable dialog text overrides from DialogOverrides.json. Allows replacing specific text lines and injecting custom speaker names."
+        );
+            
         SavePointColor = _config.Bind(
             "Custom Textures",
             "SavePointColor",
@@ -252,6 +261,8 @@ public sealed class ModConfiguration
             "SMAA anti-aliasing quality. Options: Off, Low, Medium, High. Higher quality = better visuals but lower performance."
         );
 
+
+
         EnableTextureManifestCache = _config.Bind(
             "Performance",
             "EnableTextureManifestCache",
@@ -288,6 +299,13 @@ public sealed class ModConfiguration
         );
 
         // Diagnostics section - all logging and debugging settings
+        LogTextIDs = _config.Bind(
+            "zz - Diagnostics",
+            "LogTextIDs",
+            false,
+            "Log all text ID lookups to the console. Enable this to find the ID of dialog lines you want to replace. WARNING: Creates a lot of log output."
+        );
+
         LogReplaceableTextures = _config.Bind(
             "zz - Diagnostics",
             "LogReplaceableTextures",
