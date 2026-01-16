@@ -29,6 +29,7 @@ public class MenuScalePatch
             Plugin.Log.LogWarning($"[MenuScale] Expected UI_Canvas_Root parent for {menuObject.name}, got {uiCanvasRoot?.name ?? "null"}");
             return;
         }
+
         
         // Then find UIMainMenu(Clone) child
         Transform uiMainMenuClone = uiCanvasRoot.Find("UIMainMenu(Clone)");
@@ -44,6 +45,43 @@ public class MenuScalePatch
         {
             Plugin.Log.LogWarning($"[MenuScale] Expected UI_Set parent for {menuObject.name}, got {uiSet?.name ?? "null"}");
             return;
+        }
+
+        // Header: Apply scale and position
+        Transform header = uiCanvasRoot.Find("UI_Com_Header(Clone)") ?? uiCanvasRoot.Find("UI_Com_Header");
+        if (header != null)
+        {
+            Vector3 targetScale = new Vector3(0.8f, 0.8f, 1f);
+            Vector3 targetPosition = new Vector3(194.4f, 108f, 0f);
+            header.DOKill();
+            header.DOScale(targetScale, 0.2f).SetEase(Ease.OutCubic);
+            header.DOLocalMove(targetPosition, 0.2f).SetEase(Ease.OutCubic);
+        }
+
+        // BackLog: Apply scale and position to Set01 child
+        Transform backLog = uiCanvasRoot.Find("UI_Com_BackLog01(Clone)") ?? uiCanvasRoot.Find("UI_Com_BackLog01");
+        if (backLog != null)
+        {
+            Transform set01 = backLog.Find("Set01");
+            if (set01 != null)
+            {
+                Vector3 targetScale = new Vector3(0.8f, 0.8f, 1f);
+                Vector3 targetPosition = new Vector3(0f, 86.4f, 0f);
+                set01.DOKill();
+                set01.DOScale(targetScale, 0.2f).SetEase(Ease.OutCubic);
+                set01.DOLocalMove(targetPosition, 0.2f).SetEase(Ease.OutCubic);
+            }
+        }
+
+        // Config: Apply scale and position
+        Transform config = uiCanvasRoot.Find("UI_Config_01(Clone)") ?? uiCanvasRoot.Find("UI_Config_01");
+        if (config != null)
+        {
+            Vector3 targetScale = new Vector3(0.8f, 0.8f, 1f);
+            Vector3 targetPosition = new Vector3(0f, 86.4f, 0f);
+            config.DOKill();
+            config.DOScale(targetScale, 0.2f).SetEase(Ease.OutCubic);
+            config.DOLocalMove(targetPosition, 0.2f).SetEase(Ease.OutCubic);
         }
         
         // TopMenu: Apply scale only (no position change)
