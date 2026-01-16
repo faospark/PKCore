@@ -23,7 +23,8 @@ public static class CowTexturePatch
         try 
         {
             Il2CppInterop.Runtime.Injection.ClassInjector.RegisterTypeInIl2Cpp<CowMonitor>();
-            Plugin.Log.LogInfo("[CowTexturePatch] Registered CowMonitor type (lazy-loaded on first cow encounter)");
+            if (Plugin.Config.DetailedTextureLog.Value)
+                Plugin.Log.LogInfo("[CowTexturePatch] Registered CowMonitor type (lazy-loaded on first cow encounter)");
             _isRegistered = true;
         }
         catch (Exception ex)
@@ -67,7 +68,8 @@ public static class CowTexturePatch
     {
         if (obj.GetComponent<CowMonitor>() == null)
         {
-            Plugin.Log.LogInfo($"[CowPatch] Detected cow object: {obj.name}. Attaching monitor.");
+            if (Plugin.Config.DetailedTextureLog.Value)
+                Plugin.Log.LogInfo($"[CowPatch] Detected cow object: {obj.name}. Attaching monitor.");
             obj.AddComponent<CowMonitor>();
         }
     }

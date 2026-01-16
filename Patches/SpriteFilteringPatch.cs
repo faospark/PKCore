@@ -45,8 +45,6 @@ public class SpriteFilteringPatch
     {
         _spriteAntiAliasingLevel = Plugin.Config.SpriteFilteringQuality.Value;
         _spriteMipmapBias = Plugin.Config.SpriteMipmapBias.Value;
-
-        Plugin.Log.LogInfo($"Sprite filtering initialized with quality level: {_spriteAntiAliasingLevel}");
     }
 
     public static int GetSpriteQuality()

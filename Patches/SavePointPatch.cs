@@ -59,7 +59,10 @@ public partial class CustomTexturePatch
     /// </summary>
     private static void PreloadSavePointSprites()
     {
-        Plugin.Log.LogInfo("[SavePoint Preload] Starting save point sprite preloading...");
+        if (Plugin.Config.DetailedTextureLog.Value)
+        {
+            Plugin.Log.LogInfo("[SavePoint Preload] Starting save point sprite preloading...");
+        }
         
         // Check if we have the atlas texture
         string atlasName = "t_obj_savePoint_ball";
@@ -69,7 +72,10 @@ public partial class CustomTexturePatch
             return;
         }
 
-        Plugin.Log.LogInfo($"[SavePoint Preload] Found atlas '{atlasName}' in index, loading texture...");
+        if (Plugin.Config.DetailedTextureLog.Value)
+        {
+            Plugin.Log.LogInfo($"[SavePoint Preload] Found atlas '{atlasName}' in index, loading texture...");
+        }
         Texture2D atlasTexture = LoadCustomTexture(atlasName);
         if (atlasTexture == null)
         {
@@ -137,7 +143,7 @@ public partial class CustomTexturePatch
         // Don't destroy the atlas texture
         UnityEngine.Object.DontDestroyOnLoad(atlasTexture);
 
-        if (preloaded > 0)
+        if (preloaded > 0 && Plugin.Config.DetailedTextureLog.Value)
         {
             Plugin.Log.LogInfo($"Preloaded {preloaded} save point animation frame(s) for instant replacement");
         }

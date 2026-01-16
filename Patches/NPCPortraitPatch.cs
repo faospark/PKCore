@@ -63,7 +63,8 @@ public class NPCPortraitPatch
             try 
             { 
                 File.Move(oldDialogPath, dialogOverridesPath); 
-                Plugin.Log.LogInfo($"Migrated DialogOverrides.json to Config folder.");
+                if (Plugin.Config.DetailedTextureLog.Value)
+                    Plugin.Log.LogInfo($"Migrated DialogOverrides.json to Config folder.");
             }
             catch (Exception ex) { Plugin.Log.LogError($"Failed to migrate DialogOverrides.json: {ex.Message}"); }
         }
@@ -74,7 +75,8 @@ public class NPCPortraitPatch
             try 
             { 
                 File.Move(oldSpeakerPath, speakerOverridesPath); 
-                Plugin.Log.LogInfo($"Migrated SpeakerOverrides.json to Config folder.");
+                if (Plugin.Config.DetailedTextureLog.Value)
+                    Plugin.Log.LogInfo($"Migrated SpeakerOverrides.json to Config folder.");
             }
             catch (Exception ex) { Plugin.Log.LogError($"Failed to migrate SpeakerOverrides.json: {ex.Message}"); }
         }
@@ -109,7 +111,8 @@ public class NPCPortraitPatch
                 if (loaded != null)
                 {
                     dialogReplacements = new Dictionary<string, string>(loaded, StringComparer.OrdinalIgnoreCase);
-                    Plugin.Log.LogInfo($"Loaded {dialogReplacements.Count} dialog overrides.");
+                    if (Plugin.Config.DetailedTextureLog.Value)
+                        Plugin.Log.LogInfo($"Loaded {dialogReplacements.Count} dialog overrides.");
                 }
             }
             catch (Exception ex)
@@ -201,7 +204,8 @@ public class NPCPortraitPatch
                         }
                     }
                     
-                    Plugin.Log.LogInfo($"Loaded {speakerOverrides.Count} active speaker overrides.");
+                    if (Plugin.Config.DetailedTextureLog.Value)
+                        Plugin.Log.LogInfo($"Loaded {speakerOverrides.Count} active speaker overrides.");
                 }
             }
             catch (Exception ex)
@@ -284,7 +288,8 @@ public class NPCPortraitPatch
         if (!Directory.Exists(portraitsPath))
         {
             Directory.CreateDirectory(portraitsPath);
-            Plugin.Log.LogInfo($"Created NPCPortraits directory at: {portraitsPath}");
+            if (Plugin.Config.DetailedTextureLog.Value)
+                Plugin.Log.LogInfo($"Created NPCPortraits directory at: {portraitsPath}");
         }
         
         // Diagnostic: Test loading various portrait sprite names (only if detailed logging enabled)
@@ -341,7 +346,8 @@ public class NPCPortraitPatch
         // Load dialog overrides
         LoadDialogOverrides();
         
-        Plugin.Log.LogInfo("NPC Portrait System Ready!");
+        if (Plugin.Config.DetailedTextureLog.Value)
+            Plugin.Log.LogInfo("NPC Portrait System Ready!");
     }
     
     /// <summary>

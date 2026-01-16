@@ -52,11 +52,13 @@ public class CustomObjectInsertion
     {
         if (!enabled) return;
 
-        Plugin.Log.LogInfo("[Custom Objects] Initializing object insertion system...");
+        if (Plugin.Config.DetailedTextureLog.Value)
+            Plugin.Log.LogInfo("[Custom Objects] Initializing object insertion system...");
         
         LoadConfiguration();
         
-        Plugin.Log.LogInfo($"[Custom Objects] Objects will be created when scenes are activated");
+        if (Plugin.Config.DetailedTextureLog.Value)
+            Plugin.Log.LogInfo($"[Custom Objects] Objects will be created when scenes are activated");
         
         // Apply patches
         harmony.PatchAll(typeof(RefleshObjectPatch));
@@ -82,7 +84,8 @@ public class CustomObjectInsertion
                 return;
             }
 
-            Plugin.Log.LogInfo($"[Custom Objects] Loading configuration from: {configPath}");
+            if (Plugin.Config.DetailedTextureLog.Value)
+                Plugin.Log.LogInfo($"[Custom Objects] Loading configuration from: {configPath}");
             string json = File.ReadAllText(configPath);
 
             try 
@@ -115,7 +118,8 @@ public class CustomObjectInsertion
             if (_loadedObjects != null)
             {
                 int totalObjects = _loadedObjects.Sum(x => x.Value.Count);
-                Plugin.Log.LogInfo($"[Custom Objects] Loaded {totalObjects} objects for {_loadedObjects.Count} maps");
+                if (Plugin.Config.DetailedTextureLog.Value)
+                    Plugin.Log.LogInfo($"[Custom Objects] Loaded {totalObjects} objects for {_loadedObjects.Count} maps");
                 _configLoaded = true;
             }
         }
@@ -154,7 +158,8 @@ public class CustomObjectInsertion
                 return;
             }
 
-            Plugin.Log.LogInfo($"[Custom Objects] Attempting to create objects in: {sceneRoot.name} ({mapId})");
+            if (Plugin.Config.DetailedTextureLog.Value)
+                Plugin.Log.LogInfo($"[Custom Objects] Attempting to create objects in: {sceneRoot.name} ({mapId})");
 
             // Use cached MapBGManagerHD instance (captured by MapBGManagerHDCachePatch)
             object mapBGManager = _currentMapBGManager;
@@ -164,7 +169,8 @@ public class CustomObjectInsertion
             }
             else
             {
-                Plugin.Log.LogInfo($"[Custom Objects] Using cached MapBGManagerHD instance");
+                if (Plugin.Config.DetailedTextureLog.Value)
+                    Plugin.Log.LogInfo($"[Custom Objects] Using cached MapBGManagerHD instance");
             }
 
             // Find the "object" folder
@@ -223,7 +229,8 @@ public class CustomObjectInsertion
     private static void CreateCustomObjectsForMap(string mapId, Transform objectFolder, object mapBGManager)
     {
         List<DiscoveredObject> objects = _loadedObjects[mapId];
-        Plugin.Log.LogInfo($"[Custom Objects] Creating {objects.Count} custom objects for {mapId}...");
+        if (Plugin.Config.DetailedTextureLog.Value)
+            Plugin.Log.LogInfo($"[Custom Objects] Creating {objects.Count} custom objects for {mapId}...");
 
         int successCount = 0;
         foreach (var objData in objects)
@@ -274,7 +281,8 @@ public class CustomObjectInsertion
                         if (sr != null)
                         {
                             sr.sprite = sprite;
-                            Plugin.Log.LogInfo($"[Custom Objects] ✓✓ FINAL sprite re-assignment for {obj.name}: {sprite.name}");
+                            if (Plugin.Config.DetailedTextureLog.Value)
+                                Plugin.Log.LogInfo($"[Custom Objects] ✓✓ FINAL sprite re-assignment for {obj.name}: {sprite.name}");
                             
                             if (Plugin.Config.DebugCustomObjects.Value)
                             {
@@ -288,10 +296,13 @@ public class CustomObjectInsertion
                     obj.transform.localPosition = position;
                     obj.transform.localScale = scale;
                     obj.transform.localRotation = rotation;
-                    Plugin.Log.LogInfo($"[Custom Objects] ✓✓ FINAL transform re-application for {obj.name}:");
-                    Plugin.Log.LogInfo($"  - Position: {position}");
-                    Plugin.Log.LogInfo($"  - Scale: {scale}");
-                    Plugin.Log.LogInfo($"  - Rotation: {rotation.eulerAngles}");
+                    if (Plugin.Config.DetailedTextureLog.Value)
+                    {
+                        Plugin.Log.LogInfo($"[Custom Objects] ✓✓ FINAL transform re-application for {obj.name}:");
+                        Plugin.Log.LogInfo($"  - Position: {position}");
+                        Plugin.Log.LogInfo($"  - Scale: {scale}");
+                        Plugin.Log.LogInfo($"  - Rotation: {rotation.eulerAngles}");
+                    }
                 }
             }
             catch (System.Exception ex)
@@ -300,7 +311,8 @@ public class CustomObjectInsertion
             }
         }
         
-        Plugin.Log.LogInfo($"[Custom Objects] Successfully created {successCount}/{objects.Count} objects");
+        if (Plugin.Config.DetailedTextureLog.Value)
+            Plugin.Log.LogInfo($"[Custom Objects] Successfully created {successCount}/{objects.Count} objects");
     }
 
     private static (GameObject obj, Sprite sprite, Vector3 position, Vector3 scale, Quaternion rotation) CreateSingleObject(DiscoveredObject data, Transform parent)
@@ -366,7 +378,8 @@ public class CustomObjectInsertion
                  if (customObj.layer == 0) // Only override if not set in JSON
                  {
                      customObj.layer = siblingSr.gameObject.layer;
-                     Plugin.Log.LogInfo($"[Custom Objects] Copied GameObject Layer from {siblingSr.name}: {LayerMask.LayerToName(customObj.layer)} ({customObj.layer})");
+                                           if (Plugin.Config.DetailedTextureLog.Value)
+                          Plugin.Log.LogInfo($"[Custom Objects] Copied GameObject Layer from {siblingSr.name}: {LayerMask.LayerToName(customObj.layer)} ({customObj.layer})");
                  }
 
                  sr.sortingLayerID = siblingSr.sortingLayerID;
@@ -375,22 +388,26 @@ public class CustomObjectInsertion
                  if (siblingSr.material != null)
                  {
                      sr.material = siblingSr.material;
-                     Plugin.Log.LogInfo($"[Custom Objects] Copied material from {siblingSr.name}: {siblingSr.material.name} (shader: {siblingSr.material.shader.name})");
+                                           if (Plugin.Config.DetailedTextureLog.Value)
+                          Plugin.Log.LogInfo($"[Custom Objects] Copied material from {siblingSr.name}: {siblingSr.material.name} (shader: {siblingSr.material.shader.name})");
                  }
                  else
                  {
                      // Fallback if sibling has no material
                      sr.material = new Material(Shader.Find("Sprites/Default"));
-                     Plugin.Log.LogInfo($"[Custom Objects] Sibling has no material, using Sprites/Default");
+                                           if (Plugin.Config.DetailedTextureLog.Value)
+                          Plugin.Log.LogInfo($"[Custom Objects] Sibling has no material, using Sprites/Default");
                  }
 
-                 Plugin.Log.LogInfo($"[Custom Objects] Copied Sorting Layer from {siblingSr.name}: {sr.sortingLayerName} ({sr.sortingLayerID})");
+                                   if (Plugin.Config.DetailedTextureLog.Value)
+                      Plugin.Log.LogInfo($"[Custom Objects] Copied Sorting Layer from {siblingSr.name}: {sr.sortingLayerName} ({sr.sortingLayerID})");
             }
             else
             {
                  // No sibling found, force standard shader
                  sr.material = new Material(Shader.Find("Sprites/Default"));
-                 Plugin.Log.LogInfo($"[Custom Objects] No sibling found, using Sprites/Default");
+                                   if (Plugin.Config.DetailedTextureLog.Value)
+                      Plugin.Log.LogInfo($"[Custom Objects] No sibling found, using Sprites/Default");
             }
             
             // DEBUG: Extreme Sorting Order to force on top of EVERYTHING
@@ -410,7 +427,8 @@ public class CustomObjectInsertion
                 spriteToAssign = LoadCustomSprite(data.Texture);
                 if (spriteToAssign != null)
                 {
-                    Plugin.Log.LogInfo($"[Custom Objects] Loaded sprite '{spriteToAssign.name}' for {customObj.name}");
+                    if (Plugin.Config.DetailedTextureLog.Value)
+                        Plugin.Log.LogInfo($"[Custom Objects] Loaded sprite '{spriteToAssign.name}' for {customObj.name}");
                 }
                 else
                 {
@@ -449,15 +467,18 @@ public class CustomObjectInsertion
         if (sr != null && spriteToAssign != null)
         {
             sr.sprite = spriteToAssign;
-            Plugin.Log.LogInfo($"[Custom Objects] ✓ Assigned sprite '{spriteToAssign.name}' to {customObj.name} AFTER activation");
+            if (Plugin.Config.DetailedTextureLog.Value)
+                Plugin.Log.LogInfo($"[Custom Objects] ✓ Assigned sprite '{spriteToAssign.name}' to {customObj.name} AFTER activation");
             
-            // DIAGNOSTIC: Verify sprite immediately after assignment
-            Plugin.Log.LogInfo($"[Custom Objects] VERIFY: sr.sprite after final assignment: {(sr.sprite != null ? $"EXISTS (name='{sr.sprite.name}')" : "NULL")}");
-            if (sr.sprite != null)
+            if (Plugin.Config.DetailedTextureLog.Value)
             {
-                Plugin.Log.LogInfo($"[Custom Objects]   - Sprite texture: {(sr.sprite.texture != null ? $"{sr.sprite.texture.name} ({sr.sprite.texture.width}x{sr.sprite.texture.height})" : "NULL")}");
-                Plugin.Log.LogInfo($"[Custom Objects]   - Sprite rect: {sr.sprite.rect}");
-                Plugin.Log.LogInfo($"[Custom Objects]   - Sprite bounds: {sr.sprite.bounds}");
+                Plugin.Log.LogInfo($"[Custom Objects] VERIFY: sr.sprite after final assignment: {(sr.sprite != null ? $"EXISTS (name='{sr.sprite.name}')" : "NULL")}");
+                if (sr.sprite != null)
+                {
+                    Plugin.Log.LogInfo($"[Custom Objects]   - Sprite texture: {(sr.sprite.texture != null ? $"{sr.sprite.texture.name} ({sr.sprite.texture.width}x{sr.sprite.texture.height})" : "NULL")}");
+                    Plugin.Log.LogInfo($"[Custom Objects]   - Sprite rect: {sr.sprite.rect}");
+                    Plugin.Log.LogInfo($"[Custom Objects]   - Sprite bounds: {sr.sprite.bounds}");
+                }
             }
         }
         else
@@ -491,7 +512,8 @@ public class CustomObjectInsertion
                 SetProperty(mapSpriteComponent, "gameObject", obj);
                 SetProperty(mapSpriteComponent, "transform", obj.transform);
                 
-                Plugin.Log.LogInfo($"[Custom Objects] Added MapSpriteHD component to {obj.name}");
+                if (Plugin.Config.DetailedTextureLog.Value)
+                    Plugin.Log.LogInfo($"[Custom Objects] Added MapSpriteHD component to {obj.name}");
             }
         }
         catch (System.Exception ex)
@@ -522,7 +544,8 @@ public class CustomObjectInsertion
 
             if (!string.IsNullOrEmpty(finalPath))
             {
-                Plugin.Log.LogInfo($"[Custom Objects] Logic: Reading bytes from {finalPath}");
+                if (Plugin.Config.DetailedTextureLog.Value)
+                    Plugin.Log.LogInfo($"[Custom Objects] Logic: Reading bytes from {finalPath}");
                 byte[] fileData = File.ReadAllBytes(finalPath);
 
                 Texture2D texture = new Texture2D(2, 2, TextureFormat.RGBA32, true);
@@ -617,7 +640,8 @@ public class CustomObjectInsertion
                     var component = sceneRoot.transform.parent.gameObject.GetComponent(il2cppType);
                     if (component != null)
                     {
-                        Plugin.Log.LogInfo($"[Custom Objects] Found MapBGManagerHD instance (parent of scene)");
+                        if (Plugin.Config.DetailedTextureLog.Value)
+                            Plugin.Log.LogInfo($"[Custom Objects] Found MapBGManagerHD instance (parent of scene)");
                         return component;
                     }
                 }
@@ -641,7 +665,8 @@ public class CustomObjectInsertion
                     var component = bgManager.gameObject.GetComponent(il2cppType);
                     if (component != null)
                     {
-                        Plugin.Log.LogInfo($"[Custom Objects] Found MapBGManagerHD instance (child of scene)");
+                        if (Plugin.Config.DetailedTextureLog.Value)
+                            Plugin.Log.LogInfo($"[Custom Objects] Found MapBGManagerHD instance (child of scene)");
                         return component;
                     }
                 }
@@ -679,7 +704,8 @@ public class CustomObjectInsertion
         try
         {
             var managerType = mapBGManager.GetType();
-            Plugin.Log.LogInfo($"[Custom Objects] MapBGManager type: {managerType.FullName}");
+            if (Plugin.Config.DetailedTextureLog.Value)
+                Plugin.Log.LogInfo($"[Custom Objects] MapBGManager type: {managerType.FullName}");
             
             // Get the MapSpriteHD component from our custom object
             var mapSpriteHDType = FindMapSpriteHDType();
@@ -710,7 +736,8 @@ public class CustomObjectInsertion
                     var ptr = (IntPtr)ptrProperty.GetValue(componentPtr);
                     // Create instance using the constructor that takes IntPtr
                     mapSpriteHD = System.Activator.CreateInstance(mapSpriteHDType, ptr);
-                    Plugin.Log.LogInfo($"[Custom Objects] Created typed MapSpriteHD instance from pointer");
+                    if (Plugin.Config.DetailedTextureLog.Value)
+                        Plugin.Log.LogInfo($"[Custom Objects] Created typed MapSpriteHD instance from pointer");
                 }
                 else
                 {
@@ -728,7 +755,8 @@ public class CustomObjectInsertion
             var spritesProp = managerType.GetProperty("sprites");
             if (spritesProp != null)
             {
-                Plugin.Log.LogInfo($"[Custom Objects] Found 'sprites' property");
+                if (Plugin.Config.DetailedTextureLog.Value)
+                    Plugin.Log.LogInfo($"[Custom Objects] Found 'sprites' property");
                 var sprites = spritesProp.GetValue(mapBGManager);
                 
                 if (sprites == null)
@@ -744,7 +772,8 @@ public class CustomObjectInsertion
                         
                         spritesProp.SetValue(mapBGManager, sprites);
                         
-                        Plugin.Log.LogInfo($"[Custom Objects] ✓ Created new sprites list");
+                        if (Plugin.Config.DetailedTextureLog.Value)
+                            Plugin.Log.LogInfo($"[Custom Objects] ✓ Created new sprites list");
                     }
                     catch (System.Exception ex)
                     {
@@ -769,11 +798,13 @@ public class CustomObjectInsertion
                             
                             // The mapSpriteHD is a Component, but we need to pass it as the IL2CPP object
                             // Don't wrap it - just pass the object directly since it's already an IL2CPP object
-                            Plugin.Log.LogInfo($"[Custom Objects] mapSpriteHD type: {mapSpriteHD.GetType().FullName}");
+                            if (Plugin.Config.DetailedTextureLog.Value)
+                                Plugin.Log.LogInfo($"[Custom Objects] mapSpriteHD type: {mapSpriteHD.GetType().FullName}");
                             addMethod.Invoke(sprites, new object[] { mapSpriteHD });
                             
                             var newCount = countProp?.GetValue(sprites) ?? 0;
-                            Plugin.Log.LogInfo($"[Custom Objects] ✓ Registered {customObj.name} with MapBGManagerHD (sprites list, total: {newCount})");
+                            if (Plugin.Config.DetailedTextureLog.Value)
+                                Plugin.Log.LogInfo($"[Custom Objects] ✓ Registered {customObj.name} with MapBGManagerHD (sprites list, total: {newCount})");
                         }
                         else
                         {

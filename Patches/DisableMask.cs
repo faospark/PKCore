@@ -25,11 +25,13 @@ namespace PKCore.Patches
             
             if (_excludedMasks.Count > 0)
             {
-                Plugin.Log.LogInfo($"[DisableMask] Initialized - will replace all mask textures EXCEPT: {string.Join(", ", _excludedMasks)}");
+                if (Plugin.Config.DetailedTextureLog.Value)
+                    Plugin.Log.LogInfo($"[DisableMask] Initialized - will replace all mask textures EXCEPT: {string.Join(", ", _excludedMasks)}");
             }
             else
             {
-                Plugin.Log.LogInfo("[DisableMask] Initialized - will replace all mask textures found in PKCore/Textures");
+                if (Plugin.Config.DetailedTextureLog.Value)
+                    Plugin.Log.LogInfo("[DisableMask] Initialized - will replace all mask textures found in PKCore/Textures");
             }
         }
 
@@ -59,7 +61,8 @@ namespace PKCore.Patches
                     maskTexture.name = $"{maskName}_Replacement";
                     UnityEngine.Object.DontDestroyOnLoad(maskTexture);
                     _maskTextures[maskName] = maskTexture;
-                    Plugin.Log.LogInfo($"[DisableMask] Loaded replacement texture for '{maskName}': {maskTexture.width}x{maskTexture.height}");
+                    if (Plugin.Config.DetailedTextureLog.Value)
+                        Plugin.Log.LogInfo($"[DisableMask] Loaded replacement texture for '{maskName}': {maskTexture.width}x{maskTexture.height}");
                     return maskTexture;
                 }
                 else
@@ -142,7 +145,8 @@ namespace PKCore.Patches
                                     if (replacementTexture != null)
                                     {
                                         image.material.SetTexture(propName, replacementTexture);
-                                        Plugin.Log.LogInfo($"[DisableMask] ✓ Replaced '{maskTextureName}' in property '{propName}'");
+                                        if (Plugin.Config.DetailedTextureLog.Value)
+                                            Plugin.Log.LogInfo($"[DisableMask] ✓ Replaced '{maskTextureName}' in property '{propName}'");
                                     }
                                     else
                                     {
@@ -164,7 +168,8 @@ namespace PKCore.Patches
         [HarmonyPostfix]
         public static void Initialize_Postfix(UIMessage __instance)
         {
-            Plugin.Log.LogInfo("[DisableMask] UIMessage.Initialize called");
+            if (Plugin.Config.DetailedTextureLog.Value)
+                Plugin.Log.LogInfo("[DisableMask] UIMessage.Initialize called");
             
             if (__instance.windowObject != null)
             {
