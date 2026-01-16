@@ -101,7 +101,10 @@ public partial class CustomTexturePatch
                     manifest.Entries.Count > 0)
                 {
                     texturePathIndex = manifest.ToDictionary();
-                    Plugin.Log.LogInfo($"✓ Loaded texture index from cache ({texturePathIndex.Count} textures, {manifest.FileCount} files)");
+                    if (Plugin.Config.DetailedTextureLog.Value)
+                    {
+                        Plugin.Log.LogInfo($"✓ Loaded texture index from cache ({texturePathIndex.Count} textures, {manifest.FileCount} files)");
+                    }
                     return true;
                 }
                 else if (manifest != null && manifest.ConfigHash != currentConfigHash)
@@ -141,7 +144,10 @@ public partial class CustomTexturePatch
             {
                 serializer.Serialize(stream, manifest);
             }
-            Plugin.Log.LogInfo($"✓ Saved texture cache manifest ({manifest.FileCount} files)");
+            if (Plugin.Config.DetailedTextureLog.Value)
+            {
+                Plugin.Log.LogInfo($"✓ Saved texture cache manifest ({manifest.FileCount} files)");
+            }
         }
         catch (Exception ex)
         {

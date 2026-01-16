@@ -137,6 +137,23 @@ public partial class CustomTexturePatch
         return replaced;
     }
     
+    /// <summary>
+    /// Check if a texture is a window-ui texture that should use Point filtering
+    /// </summary>
+    internal static bool IsWindowUITexture(string textureName, string filePath)
+    {
+        // Check if texture name starts with "window_"
+        if (textureName.StartsWith("window_", StringComparison.OrdinalIgnoreCase))
+            return true;
+        
+        // Check if file path contains "window-ui" folder
+        if (filePath.Contains("\\window-ui\\", StringComparison.OrdinalIgnoreCase) ||
+            filePath.Contains("/window-ui/", StringComparison.OrdinalIgnoreCase))
+            return true;
+        
+        return false;
+    }
+    
     #endregion
     
     #region Core Texture/Sprite Loading
@@ -325,9 +342,11 @@ public partial class CustomTexturePatch
                 Texture2D ddsTexture = DDSLoader.LoadDDS(ddsPath);
                 if (ddsTexture != null)
                 {
-                    ddsTexture.filterMode = FilterMode.Bilinear;
+                    // Window-UI textures use Point filtering to prevent seams
+                    bool isWindowUI = IsWindowUITexture(textureName, ddsPath);
+                    ddsTexture.filterMode = isWindowUI ? FilterMode.Point : FilterMode.Bilinear;
                     ddsTexture.wrapMode = TextureWrapMode.Clamp;
-                    ddsTexture.anisoLevel = 4;
+                    ddsTexture.anisoLevel = isWindowUI ? 0 : 4;
                     
                     UnityEngine.Object.DontDestroyOnLoad(ddsTexture);
                     customTextureCache[textureName] = ddsTexture;
@@ -364,9 +383,11 @@ public partial class CustomTexturePatch
             // Compress texture to BC1/BC3 for GPU efficiency
             TextureCompression.CompressTexture(texture, textureName, filePath);
 
-            texture.filterMode = FilterMode.Bilinear;
+            // Window-UI textures use Point filtering to prevent seams
+            bool isWindowUI = IsWindowUITexture(textureName, filePath);
+            texture.filterMode = isWindowUI ? FilterMode.Point : FilterMode.Bilinear;
             texture.wrapMode = TextureWrapMode.Clamp;
-            texture.anisoLevel = 4;
+            texture.anisoLevel = isWindowUI ? 0 : 4;
             
             texture.Apply(true, false);
             
@@ -411,9 +432,11 @@ public partial class CustomTexturePatch
                 return false;
             }
 
-            originalTexture.filterMode = FilterMode.Bilinear;
+            // Window-UI textures use Point filtering to prevent seams
+            bool isWindowUI = IsWindowUITexture(textureName, filePath);
+            originalTexture.filterMode = isWindowUI ? FilterMode.Point : FilterMode.Bilinear;
             originalTexture.wrapMode = TextureWrapMode.Clamp;
-            originalTexture.anisoLevel = 4;
+            originalTexture.anisoLevel = isWindowUI ? 0 : 4;
             
             originalTexture.Apply(true, false);
             
@@ -443,6 +466,7 @@ public partial class CustomTexturePatch
     
     /// <summary>
     /// Build index of all texture files
+    /// Prioritizes DDS files over PNG/JPG to avoid duplicate counting
     /// </summary>
     private static void BuildTextureIndex()
     {
@@ -455,7 +479,11 @@ public partial class CustomTexturePatch
         if (TryLoadManifestIndex())
             return;
 
-        string[] extensions = { "*.png", "*.jpg", "*.jpeg", "*.tga", "*.dds" };
+        // Only scan source image files (PNG, JPG, TGA)
+        // DDS files are either:
+        // 1. Pre-compressed textures you manually placed (will be found via LoadCustomTexture)
+        // 2. Runtime-generated compressed textures (shouldn't be counted as "custom textures")
+        string[] extensions = { "*.png", "*.jpg", "*.jpeg", "*.tga" };
         
         string modsFolder = Path.Combine(customTexturesPath, "00-Mods");
         bool hasModsFolder = Directory.Exists(modsFolder);
@@ -465,6 +493,24 @@ public partial class CustomTexturePatch
         
         string gsd2Folder = Path.Combine(customTexturesPath, "GSD2");
         bool hasGSD2Folder = Directory.Exists(gsd2Folder);
+        
+        int totalFilesScanned = 0;
+        
+        // Helper function to add texture to index
+        void AddTextureToIndex(string filePath, string textureName, bool allowOverride = true)
+        {
+            totalFilesScanned++;
+            
+            if (!texturePathIndex.ContainsKey(textureName))
+            {
+                texturePathIndex[textureName] = filePath;
+            }
+            else if (allowOverride)
+            {
+                texturePathIndex[textureName] = filePath;
+            }
+            // If not allowing override and key exists, skip (DDS already indexed)
+        }
         
         // Phase 1: Scan base textures (all folders except 00-Mods, GSD1, GSD2)
         foreach (string extension in extensions)
@@ -485,11 +531,7 @@ public partial class CustomTexturePatch
                     continue;
                 
                 string textureName = Path.GetFileNameWithoutExtension(filePath);
-                
-                if (!texturePathIndex.ContainsKey(textureName))
-                {
-                    texturePathIndex[textureName] = filePath;
-                }
+                AddTextureToIndex(filePath, textureName, allowOverride: true);
             }
         }
         
@@ -513,10 +555,10 @@ public partial class CustomTexturePatch
                     
                     // Store with GSD1 prefix to track game-specific textures
                     string gsd1Key = $"GSD1:{textureName}";
-                    texturePathIndex[gsd1Key] = filePath;
+                    AddTextureToIndex(filePath, gsd1Key, allowOverride: true);
                     
                     // Also store without prefix for fallback (will be overridden by GSD2 if it exists)
-                    texturePathIndex[textureName] = filePath;
+                    AddTextureToIndex(filePath, textureName, allowOverride: true);
                 }
             }
         }
@@ -536,10 +578,10 @@ public partial class CustomTexturePatch
                     
                     // Store with GSD2 prefix to track game-specific textures
                     string gsd2Key = $"GSD2:{textureName}";
-                    texturePathIndex[gsd2Key] = filePath;
+                    AddTextureToIndex(filePath, gsd2Key, allowOverride: true);
                     
                     // Also store without prefix (overrides GSD1 fallback)
-                    texturePathIndex[textureName] = filePath;
+                    AddTextureToIndex(filePath, textureName, allowOverride: true);
                 }
             }
         }
@@ -557,9 +599,15 @@ public partial class CustomTexturePatch
                         continue;
                     
                     string textureName = Path.GetFileNameWithoutExtension(filePath);
-                    texturePathIndex[textureName] = filePath; // Override
+                    AddTextureToIndex(filePath, textureName, allowOverride: true); // Override everything
                 }
             }
+        }
+        
+        // Log summary
+        if (Plugin.Config.DetailedTextureLog.Value)
+        {
+            Plugin.Log.LogInfo($"Scanned {totalFilesScanned} texture files, indexed {texturePathIndex.Count} unique textures");
         }
         
         // Save manifest for next time
@@ -584,7 +632,10 @@ public partial class CustomTexturePatch
         InitializeCaching();
         BuildTextureIndex();
         
-        Plugin.Log.LogInfo($"Indexed {texturePathIndex.Count} custom texture(s) ready to use");
+        if (Plugin.Config.DetailedTextureLog.Value)
+        {
+            Plugin.Log.LogInfo($"Indexed {texturePathIndex.Count} custom texture(s) ready to use");
+        }
         
         // Preload bath and save point sprites
         PreloadBathSprites();
