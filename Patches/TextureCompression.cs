@@ -116,20 +116,16 @@ public static class TextureCompression
     /// </summary>
     private static bool HasSignificantAlpha(Texture2D texture)
     {
-        int width = texture.width;
-        int height = texture.height;
+        // Get pixels in bulk for performance
+        Color32[] pixels = texture.GetPixels32();
         
-        // Sample every 4th pixel for performance
+        // Sample pixels for performance on large textures
         int step = 4;
         
-        for (int y = 0; y < height; y += step)
+        for (int i = 0; i < pixels.Length; i += step)
         {
-            for (int x = 0; x < width; x += step)
-            {
-                Color pixel = texture.GetPixel(x, y);
-                if (pixel.a < 0.99f)
-                    return true; // Found transparency
-            }
+            if (pixels[i].a < 254)
+                return true; // Found significant transparency
         }
         
         return false; // Fully opaque

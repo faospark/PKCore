@@ -23,6 +23,9 @@ public partial class CustomTexturePatch
     internal static Dictionary<string, Texture2D> customTextureCache = new Dictionary<string, Texture2D>();
     internal static Dictionary<string, string> texturePathIndex = new Dictionary<string, string>(); // Maps texture name -> full file path
     
+    // Tracking for persistent textures that shouldn't be cleared on scene change
+    internal static HashSet<string> persistentTextures = new HashSet<string> { "window_", "t_obj_savePoint_ball", "sactx" };
+    
     // Tracking
     internal static HashSet<string> loggedTextures = new HashSet<string>();
     internal static HashSet<string> replacedTextures = new HashSet<string>();
@@ -369,7 +372,8 @@ public partial class CustomTexturePatch
 
         try
         {
-            byte[] fileData = File.ReadAllBytes(filePath);
+            // Move IO to background thread to reduce main-thread blocking
+            byte[] fileData = System.Threading.Tasks.Task.Run(() => File.ReadAllBytes(filePath)).Result;
             
             Texture2D texture = new Texture2D(2, 2, TextureFormat.RGBA32, true);
             
@@ -380,14 +384,19 @@ public partial class CustomTexturePatch
                 return null;
             }
 
+            // Set name for debugging/profiling
+            texture.name = textureName + "_Custom";
+
             // Compress texture to BC1/BC3 for GPU efficiency
             TextureCompression.CompressTexture(texture, textureName, filePath);
 
-            // Window-UI textures use Point filtering to prevent seams
+            // Window-UI and Map textures often need Point filtering to prevent seams
             bool isWindowUI = IsWindowUITexture(textureName, filePath);
-            texture.filterMode = isWindowUI ? FilterMode.Point : FilterMode.Bilinear;
+            bool isMap = filePath.Contains("Maps", StringComparison.OrdinalIgnoreCase);
+            
+            texture.filterMode = (isWindowUI || isMap) ? FilterMode.Point : FilterMode.Bilinear;
             texture.wrapMode = TextureWrapMode.Clamp;
-            texture.anisoLevel = isWindowUI ? 0 : 4;
+            texture.anisoLevel = (isWindowUI || isMap) ? 0 : 4;
             
             texture.Apply(true, false);
             
@@ -424,7 +433,8 @@ public partial class CustomTexturePatch
 
         try
         {
-            byte[] fileData = File.ReadAllBytes(filePath);
+            // Move IO to background thread
+            byte[] fileData = System.Threading.Tasks.Task.Run(() => File.ReadAllBytes(filePath)).Result;
             
             if (!UnityEngine.ImageConversion.LoadImage(originalTexture, fileData))
             {
@@ -479,135 +489,91 @@ public partial class CustomTexturePatch
         if (TryLoadManifestIndex())
             return;
 
-        // Scan image files and pre-compressed DDS textures
-        string[] extensions = { "*.png", "*.jpg", "*.jpeg", "*.tga", "*.dds" };
+        var sw = System.Diagnostics.Stopwatch.StartNew();
+        
+        // Scan all files in one pass
+        HashSet<string> validExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { ".png", ".jpg", ".jpeg", ".tga", ".dds" };
+        string[] allFiles = Directory.GetFiles(customTexturesPath, "*.*", SearchOption.AllDirectories);
         
         string modsFolder = Path.Combine(customTexturesPath, "00-Mods");
-        bool hasModsFolder = Directory.Exists(modsFolder);
-        
         string gsd1Folder = Path.Combine(customTexturesPath, "GSD1");
-        bool hasGSD1Folder = Directory.Exists(gsd1Folder);
-        
         string gsd2Folder = Path.Combine(customTexturesPath, "GSD2");
-        bool hasGSD2Folder = Directory.Exists(gsd2Folder);
         
-        int totalFilesScanned = 0;
+        int filesIndexed = 0;
         
-        // Helper function to add texture to index
-        void AddTextureToIndex(string filePath, string textureName, bool allowOverride = true)
+        // Helper to add texture to index with priority
+        void AddToIndex(string path, string key, bool allowOverride)
         {
-            totalFilesScanned++;
+            if (allowOverride || !texturePathIndex.ContainsKey(key))
+            {
+                texturePathIndex[key] = path;
+                filesIndexed++;
+            }
+        }
+
+        // Process files in layers to handle overrides correctly
+        // Layer 1: All files except special folders
+        foreach (var file in allFiles)
+        {
+            string ext = Path.GetExtension(file);
+            if (!validExtensions.Contains(ext)) continue;
+            if (!TextureOptions.ShouldLoadTexture(file)) continue;
+
+            string fileName = Path.GetFileNameWithoutExtension(file);
             
-            if (!texturePathIndex.ContainsKey(textureName))
+            bool isSpecial = file.StartsWith(modsFolder, StringComparison.OrdinalIgnoreCase) ||
+                             file.StartsWith(gsd1Folder, StringComparison.OrdinalIgnoreCase) ||
+                             file.StartsWith(gsd2Folder, StringComparison.OrdinalIgnoreCase);
+
+            if (!isSpecial)
             {
-                texturePathIndex[textureName] = filePath;
+                // DDS takes priority over other formats if both exist in same folder
+                bool isDDS = ext.Equals(".dds", StringComparison.OrdinalIgnoreCase);
+                AddToIndex(file, fileName, isDDS);
             }
-            else if (allowOverride)
-            {
-                texturePathIndex[textureName] = filePath;
-            }
-            // If not allowing override and key exists, skip (DDS already indexed)
         }
-        
-        // Phase 1: Scan base textures (all folders except 00-Mods, GSD1, GSD2)
-        foreach (string extension in extensions)
+
+        // Layer 2: GSD1 / GSD2
+        foreach (var file in allFiles)
         {
-            string[] files = Directory.GetFiles(customTexturesPath, extension, SearchOption.AllDirectories);
+            string ext = Path.GetExtension(file);
+            if (!validExtensions.Contains(ext)) continue;
             
-            foreach (string filePath in files)
+            string fileName = Path.GetFileNameWithoutExtension(file);
+            bool isDDS = ext.Equals(".dds", StringComparison.OrdinalIgnoreCase);
+
+            if (file.StartsWith(gsd1Folder, StringComparison.OrdinalIgnoreCase))
             {
-                // Skip special folders
-                if (hasModsFolder && filePath.StartsWith(modsFolder, StringComparison.OrdinalIgnoreCase))
-                    continue;
-                if (hasGSD1Folder && filePath.StartsWith(gsd1Folder, StringComparison.OrdinalIgnoreCase))
-                    continue;
-                if (hasGSD2Folder && filePath.StartsWith(gsd2Folder, StringComparison.OrdinalIgnoreCase))
-                    continue;
-                
-                if (!TextureOptions.ShouldLoadTexture(filePath))
-                    continue;
-                
-                string textureName = Path.GetFileNameWithoutExtension(filePath);
-                AddTextureToIndex(filePath, textureName, allowOverride: true);
+                AddToIndex(file, $"GSD1:{fileName}", isDDS);
+                AddToIndex(file, fileName, isDDS); // Fallback
+            }
+            else if (file.StartsWith(gsd2Folder, StringComparison.OrdinalIgnoreCase))
+            {
+                AddToIndex(file, $"GSD2:{fileName}", isDDS);
+                AddToIndex(file, fileName, isDDS); // Fallback (overrides GSD1 if both exist)
             }
         }
-        
-        
-        // Phase 2: Scan game-specific folders (GSD1 and GSD2) - overrides base textures
-        // We scan BOTH folders during initialization since we don't know which game will be played yet
-        // The actual game-specific texture will be selected at runtime based on active scene
-        
-        if (hasGSD1Folder)
+
+        // Layer 3: 00-Mods (Highest priority)
+        foreach (var file in allFiles)
         {
-            foreach (string extension in extensions)
+            string ext = Path.GetExtension(file);
+            if (!validExtensions.Contains(ext)) continue;
+
+            if (file.StartsWith(modsFolder, StringComparison.OrdinalIgnoreCase))
             {
-                string[] gsd1Files = Directory.GetFiles(gsd1Folder, extension, SearchOption.AllDirectories);
-                
-                foreach (string filePath in gsd1Files)
-                {
-                    if (!TextureOptions.ShouldLoadTexture(filePath))
-                        continue;
-                    
-                    string textureName = Path.GetFileNameWithoutExtension(filePath);
-                    
-                    // Store with GSD1 prefix to track game-specific textures
-                    string gsd1Key = $"GSD1:{textureName}";
-                    AddTextureToIndex(filePath, gsd1Key, allowOverride: true);
-                    
-                    // Also store without prefix for fallback (will be overridden by GSD2 if it exists)
-                    AddTextureToIndex(filePath, textureName, allowOverride: true);
-                }
+                string fileName = Path.GetFileNameWithoutExtension(file);
+                bool isDDS = ext.Equals(".dds", StringComparison.OrdinalIgnoreCase);
+                AddToIndex(file, fileName, isDDS || !texturePathIndex.ContainsKey(fileName));
             }
         }
         
-        if (hasGSD2Folder)
-        {
-            foreach (string extension in extensions)
-            {
-                string[] gsd2Files = Directory.GetFiles(gsd2Folder, extension, SearchOption.AllDirectories);
-                
-                foreach (string filePath in gsd2Files)
-                {
-                    if (!TextureOptions.ShouldLoadTexture(filePath))
-                        continue;
-                    
-                    string textureName = Path.GetFileNameWithoutExtension(filePath);
-                    
-                    // Store with GSD2 prefix to track game-specific textures
-                    string gsd2Key = $"GSD2:{textureName}";
-                    AddTextureToIndex(filePath, gsd2Key, allowOverride: true);
-                    
-                    // Also store without prefix (overrides GSD1 fallback)
-                    AddTextureToIndex(filePath, textureName, allowOverride: true);
-                }
-            }
-        }
-        
-        // Phase 3: Scan 00-Mods folder (highest priority - overrides everything)
-        if (hasModsFolder)
-        {
-            foreach (string extension in extensions)
-            {
-                string[] modFiles = Directory.GetFiles(modsFolder, extension, SearchOption.AllDirectories);
-                
-                foreach (string filePath in modFiles)
-                {
-                    if (!TextureOptions.ShouldLoadTexture(filePath))
-                        continue;
-                    
-                    string textureName = Path.GetFileNameWithoutExtension(filePath);
-                    AddTextureToIndex(filePath, textureName, allowOverride: true); // Override everything
-                }
-            }
-        }
-        
-        // Log summary
+        sw.Stop();
         if (Plugin.Config.DetailedTextureLog.Value)
         {
-            Plugin.Log.LogInfo($"Scanned {totalFilesScanned} texture files, indexed {texturePathIndex.Count} unique textures");
+            Plugin.Log.LogInfo($"Indexed {texturePathIndex.Count} textures from {allFiles.Length} files in {sw.ElapsedMilliseconds}ms");
         }
         
-        // Save manifest for next time
         SaveManifestIndex();
     }
 
@@ -634,9 +600,92 @@ public partial class CustomTexturePatch
             Plugin.Log.LogInfo($"Indexed {texturePathIndex.Count} custom texture(s) ready to use");
         }
         
+        // Register for scene loaded to clear caches
+        UnityEngine.SceneManagement.SceneManager.sceneLoaded += (Action<UnityEngine.SceneManagement.Scene, UnityEngine.SceneManagement.LoadSceneMode>)OnSceneLoaded;
+
         // Preload bath and save point sprites
         PreloadBathSprites();
         PreloadSavePointSprites();
+    }
+
+    /// <summary>
+    /// Clear non-persistent caches on scene change to save memory
+    /// </summary>
+    private static void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, UnityEngine.SceneManagement.LoadSceneMode mode)
+    {
+        if (mode == UnityEngine.SceneManagement.LoadSceneMode.Additive)
+            return;
+
+        int texturesCleared = 0;
+        int spritesCleared = 0;
+
+        // Identify non-persistent textures
+        List<string> texturesToRemove = new List<string>();
+        foreach (var kvp in customTextureCache)
+        {
+            bool isPersistent = false;
+            foreach (var prefix in persistentTextures)
+            {
+                if (kvp.Key.StartsWith(prefix, StringComparison.OrdinalIgnoreCase))
+                {
+                    isPersistent = true;
+                    break;
+                }
+            }
+
+            if (!isPersistent)
+                texturesToRemove.Add(kvp.Key);
+        }
+
+        // Identify non-persistent sprites
+        List<string> spritesToRemove = new List<string>();
+        foreach (var kvp in customSpriteCache)
+        {
+            bool isPersistent = false;
+            foreach (var prefix in persistentTextures)
+            {
+                if (kvp.Key.StartsWith(prefix, StringComparison.OrdinalIgnoreCase))
+                {
+                    isPersistent = true;
+                    break;
+                }
+            }
+
+            if (!isPersistent)
+                spritesToRemove.Add(kvp.Key);
+        }
+
+        // Perform cleanup
+        foreach (var key in texturesToRemove)
+        {
+            if (customTextureCache.TryGetValue(key, out Texture2D tex) && tex)
+            {
+                UnityEngine.Object.Destroy(tex);
+                texturesCleared++;
+            }
+            customTextureCache.Remove(key);
+        }
+
+        foreach (var key in spritesToRemove)
+        {
+            if (customSpriteCache.TryGetValue(key, out Sprite sprite) && sprite)
+            {
+                if (sprite.texture) UnityEngine.Object.Destroy(sprite.texture);
+                UnityEngine.Object.Destroy(sprite);
+                spritesCleared++;
+            }
+            customSpriteCache.Remove(key);
+        }
+
+        if ((texturesCleared > 0 || spritesCleared > 0) && Plugin.Config.DetailedTextureLog.Value)
+        {
+            Plugin.Log.LogInfo($"[Memory] Cleared {texturesCleared} textures and {spritesCleared} sprites on scene transition to {scene.name}");
+        }
+
+        // Reset tracking
+        processedTextureIds.Clear();
+        processedAtlases.Clear();
+        replacedTextures.Clear();
     }
     
     #endregion
