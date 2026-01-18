@@ -114,11 +114,8 @@ public class SavePointSpriteMonitor : MonoBehaviour
                     // IMPORTANT: Duplicate assignment is intentional and necessary!
                     // Setting the sprite twice ensures it "sticks" in IL2CPP/Unity.
                     // Removing the duplicate breaks texture replacement. Do not remove!
+                    //spriteRenderer.sprite = cachedCustomSprite;
                     spriteRenderer.sprite = cachedCustomSprite;
-                    spriteRenderer.sprite = cachedCustomSprite;
-                    // Log less frequently to avoid spam if it fights the animator constanty
-                    // if (Time.frameCount % 60 == 0) 
-                    //    Plugin.Log.LogInfo($"[SavePoint Monitor] Enforcing custom sprite: {currentSpriteName}");
                 }
                 else
                 {
@@ -129,9 +126,8 @@ public class SavePointSpriteMonitor : MonoBehaviour
                         // IMPORTANT: Duplicate assignment is intentional and necessary!
                         // Setting the sprite twice ensures it "sticks" in IL2CPP/Unity.
                         // Removing the duplicate breaks texture replacement. Do not remove!
+                        //spriteRenderer.sprite = loadedSprite;
                         spriteRenderer.sprite = loadedSprite;
-                        spriteRenderer.sprite = loadedSprite;
-                        // Plugin.Log.LogInfo($"[SavePoint Monitor] ✓ Loaded and enforced custom sprite: {currentSpriteName}");
                     }
                 }
             }
