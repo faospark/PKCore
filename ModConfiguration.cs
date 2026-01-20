@@ -28,7 +28,6 @@ public sealed class ModConfiguration
 
     // Custom Texture Settings
     public ConfigEntry<bool> EnableCustomTextures { get; private set; }
-    public ConfigEntry<bool> LogTextIDs { get; private set; }
     public ConfigEntry<bool> LogReplaceableTextures { get; private set; }
     public ConfigEntry<bool> LogTexturePaths { get; private set; }
     public ConfigEntry<bool> DetailedTextureLog { get; private set; }
@@ -36,6 +35,7 @@ public sealed class ModConfiguration
     public ConfigEntry<bool> EnableProjectKyaroSprites { get; private set; }
 
     // NPC Portrait Settings
+    public ConfigEntry<bool> LogTextIDs { get; private set; }
     public ConfigEntry<bool> EnableNPCPortraits { get; private set; }
     public ConfigEntry<bool> EnableDialogOverrides { get; private set; }
 
@@ -48,7 +48,10 @@ public sealed class ModConfiguration
     public ConfigEntry<bool> S2ClassicSaveWindow { get; private set; }
     public ConfigEntry<string> MercFortFence { get; private set; }
     public ConfigEntry<bool> ColoredIntroAndFlashbacks { get; private set; }
-
+    
+    // War Ability Mod
+    public ConfigEntry<bool> EnableWarAbilityMod { get; private set; }
+ 
     // UI Settings
     public ConfigEntry<string> DialogBoxScale { get; private set; }
     public ConfigEntry<string> ScaledDownMenu { get; private set; }
@@ -67,7 +70,7 @@ public sealed class ModConfiguration
     public ConfigEntry<bool> DebugCustomObjects { get; private set; }
     public ConfigEntry<bool> LogExistingMapObjects { get; private set; }
     public ConfigEntry<bool> EnableDebugMenu2 { get; private set; }
-    public ConfigEntry<bool> EnableWarAbilityMod { get; private set; }
+ 
 
     public ModConfiguration(ConfigFile config)
     {
@@ -136,14 +139,14 @@ public sealed class ModConfiguration
             "Display",
             "ShowMouseCursor",
             false,
-            "Show mouse cursor when hovering over the game window. Useful for debugging with Unity Explorer or accessing overlays. The game is designed for controller, so this is primarily for development/debugging."
+            "Show mouse cursor when hovering over the game window. Useful for debugging with Unity Explorer or accessing overlays."
         );
 
         ForceControllerPrompts = _config.Bind(
             "Controller",
             "ForceControllerPrompts",
             true,
-            "Force specific controller button prompts regardless of detected controller. Useful if you prefer PS/Xbox/Switch button icons."
+            "Force specific controller button prompts regardless of detected controller. Must be on for controller prompts to work."
         );
 
         ControllerPromptType = _config.Bind(
@@ -153,7 +156,7 @@ public sealed class ModConfiguration
             "Controller type to display:\n" +
             "- PS4: 'PlayStation', 'PlayStation4', 'DS4', 'PS4' (_01 suffix)\n" +
             "- PS5: 'PlayStation5', 'DualSense', 'PS5' (_02 suffix)\n" +
-            "- Xbox/Generic/PC: 'Xbox', 'Generic', 'PC', 'Keyboard' (_00 suffix)\n" +
+            "- /Generic/PC: 'Generic', 'PC', 'Keyboard' (_00 suffix)\n" +
             "- XboxNative: 'XboxNative' (_03 suffix - use with custom textures)\n" +
             "- Switch: 'Switch', 'Nintendo' (_04 suffix - use with custom textures)\n" +
             "- Custom: 'Custom' (_05 suffix - use with custom textures)\n" +
@@ -235,6 +238,13 @@ public sealed class ModConfiguration
             "ColoredIntroAndFlashbacks",
             false,
             "Enable colored intro and flashback sequences for Suikoden 2. When enabled, disables the CustomPostEffect component to restore color to these scenes."
+        );
+
+        EnableWarAbilityMod = _config.Bind(
+            "Suikoden 2",
+            "EnableWarAbilityMod",
+            false,
+            "Enable war battle ability modification. Allows you to customize character abilities in Suikoden 2's war battles. Wont appear on the game menu of Apple but will have an effect on battle. Base is already boosted but can be further configures in PKCore/Config/war_abilities.json"
         );
 
         DialogBoxScale = _config.Bind(
@@ -365,12 +375,7 @@ public sealed class ModConfiguration
             "[EXPERIMENTAL] Enable the DebugMenu2 object which is normally disabled in the game. This may provide access to developer debug features."
         );
 
-        EnableWarAbilityMod = _config.Bind(
-            "zz - Experimental",
-            "EnableWarAbilityMod",
-            false,
-            "[EXPERIMENTAL] Enable war battle ability modification. Allows you to customize character abilities in Suikoden 2's war battles. Configure abilities in Patches/WarAbilityPatch.cs."
-        );
+
 
     }
 }

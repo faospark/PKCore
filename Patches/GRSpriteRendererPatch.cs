@@ -146,6 +146,9 @@ public class GRSpriteRendererPatch
 
     public static void Initialize()
     {
-        Plugin.Log.LogInfo("GRSpriteRenderer patches initialized");
+        if (Plugin.Config.DetailedTextureLog.Value)
+        {
+            Plugin.Log.LogInfo("GRSpriteRenderer patches initialized");
+        }
     }
 }

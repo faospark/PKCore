@@ -125,8 +125,10 @@ public class Plugin : BasePlugin
             // Log.LogInfo("Applying BGManagerHD.Load patch ...");
             // CustomTexturePatch.BGManagerHD_Load_Patch.Initialize(harmony);
             
-            // [NEW] Map Texture Replacement (Native Material Array)
-            Log.LogInfo("Applying Native Map Texture patches...");
+            if (Config.DetailedTextureLog.Value)
+            {
+                Log.LogInfo("Applying Native Map Texture patches...");
+            }
             harmony.PatchAll(typeof(MapTexturePatch));
             
             
@@ -183,17 +185,21 @@ public class Plugin : BasePlugin
             CustomObjectInsertion.Initialize(Config.EnableCustomObjects.Value, harmony);
         }
 
-        // Dragon Sprite Patch
         if (Config.EnableCustomTextures.Value)
         {
-            Log.LogInfo("Applying Dragon Sprite patches...");
+            if (Config.DetailedTextureLog.Value)
+            {
+                Log.LogInfo("Applying Dragon Sprite patches...");
+            }
             DragonPatch.Initialize();
         }
 
-        // Cow Texture Patch (Similar to Dragon Patch)
         if (Config.EnableCustomTextures.Value)
         {
-             Log.LogInfo("Applying Cow texture patches...");
+             if (Config.DetailedTextureLog.Value)
+             {
+                Log.LogInfo("Applying Cow texture patches...");
+             }
              CowTexturePatch.Initialize();
         }
 
@@ -238,7 +244,10 @@ public class Plugin : BasePlugin
             excludedMasks.Add("Face_Mask_01");
         }
         
-        Log.LogInfo("Applying Mask Replacement System...");
+        if (Config.DetailedTextureLog.Value)
+        {
+            Log.LogInfo("Applying Mask Replacement System...");
+        }
         DisableMask.Initialize(excludedMasks);
         harmony.PatchAll(typeof(DisableMask));
         // Enable DebugMenu2 (Experimental)

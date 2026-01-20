@@ -76,6 +76,9 @@ public class UnitySpriteRendererPatch
 
     public static void Initialize()
     {
-        Plugin.Log.LogInfo("Applying Unity SpriteRenderer patches");
+        if (Plugin.Config.DetailedTextureLog.Value)
+        {
+            Plugin.Log.LogInfo("Applying Unity SpriteRenderer patches");
+        }
     }
 }
