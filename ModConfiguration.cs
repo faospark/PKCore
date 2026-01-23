@@ -265,9 +265,8 @@ public sealed class ModConfiguration
             "Graphics",
             "SMAAQuality",
             "Off",
-            "SMAA anti-aliasing quality. Options: Off, Low, Medium, High. Higher quality = better visuals but lower performance."
+            "SMAA anti-aliasing quality Mainly for battle effects. Options: Off, Low, Medium, High. Higher quality = better visuals but lower performance."
         );
-
 
 
         EnableTextureManifestCache = _config.Bind(

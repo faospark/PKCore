@@ -55,9 +55,9 @@ public static class TextureCompression
                 // Resize texture to padded dimensions
                 Texture2D paddedTexture = ResizeTexture(texture, paddedWidth, paddedHeight);
                 
-                // Copy pixels back to original texture
+                // Copy pixels back to original texture using 32-bit for 4x less memory than GetPixels()
                 texture.Reinitialize(paddedWidth, paddedHeight);
-                texture.SetPixels(paddedTexture.GetPixels());
+                texture.SetPixels32(paddedTexture.GetPixels32());
                 texture.Apply(false, false);
                 
                 // Clean up temporary texture
@@ -116,15 +116,16 @@ public static class TextureCompression
     /// </summary>
     private static bool HasSignificantAlpha(Texture2D texture)
     {
-        // Get pixels in bulk for performance
+        // Get pixels in bulk using 32-bit (4x less memory than GetPixels())
         Color32[] pixels = texture.GetPixels32();
         
         // Sample pixels for performance on large textures
-        int step = 4;
+        // We use a larger step to speed up detection on 4K+ textures (like overworld maps)
+        int step = 16;
         
         for (int i = 0; i < pixels.Length; i += step)
         {
-            if (pixels[i].a < 254)
+            if (pixels[i].a < 250) // Use 250 to allow for slight compression noise
                 return true; // Found significant transparency
         }
         

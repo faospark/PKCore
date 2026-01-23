@@ -1,40 +1,43 @@
 # PKCore - Project Kyaro Core
 
-**By faospark**  
-**Current Version: 2.0.0**
+**By faospark**
+**Current Version: 2.1.0**
 
-The **core DLL component** for **[Project Kyaro](https://www.nexusmods.com/suikoden1and2hdremaster/mods/6)** that provides sprite smoothing, anti-aliasing, texture replacement, and visual enhancements for **Suikoden I & II HD Remaster**.
+The **core DLL component** for **[Project Kyaro](https://www.nexusmods.com/suikoden1and2hdremaster/mods/6)** that provides a variety of features such as texture replacement framework, sprite smoothing, anti-aliasing, graphical and visual enhancement, and some gameplay enhancement for **Suikoden I & II HD Remaster**.
 
 > **Note**: This repository contains the **source code for the PKCore.dll** file. The complete Project Kyaro mod package (including upscaled textures) is available on [Nexus Mods](https://www.nexusmods.com/suikoden1and2hdremaster/mods/6).
 
-Built as the foundational enhancement suite for Project Kyaro's upscaled sprites, replacing the previous Special K dependency with native BepInEx integration.
+Built as the foundational enhancement suite for Project Kyaro's upscaled sprites, replacing the previous Special K dependency and now with native BepInEx integration.
 
 ## Requirements
 
 - **BepInEx 6.0.0-pre.2 IL2CPP**
-- **Suikoden I & II HD Remaster** (Unity 2022.3.28f1)
+- **Suikoden I & II HD Remaster** (U`nity 2022.3.28f1)
 - **Highly Recommended**: [Suikoden Fix](https://github.com/d3xMachina/BepInEx.Suikoden) for best experience
 
 ## Features
 
-### Sprite Smoothing
-Designed for **Project Kyaro's upscaled sprites** - adds granular texture filtering with 4 quality levels (High/Medium/Low/Off) and mipmap bias control to prevent white outlines.
+### Sprite Smoothing & Anti-Aliasing (SMAA)
 
-### Custom Texture Replacement
+Designed for **Project Kyaro's upscaled sprites** - adds granular texture filtering with 4 quality levels (High/Medium/Low/Off) and mipmap bias control. Now includes native **SMAA (Subpixel Morphological Anti-Aliasing)** for the smoothest possible edges.
 
-> **🆕 NEW FEATURE**: Texture replacement support in any Project Kyaro. This feature eliminates the need for Special K for texture loading.
+### Custom Texture Replacement (PNG & DDS)
 
-Replace game textures with custom PNG files in `BepInEx/plugins/PKCore/Textures/`. Use `00-Mods/` subfolder for highest priority custom mods.
+> **🆕 NOW SUPPORTS DDS**: Texture replacement support in any Project Kyaro. Support for pre-compressed **DDS files** (BC1/BC3/BC7) for zero-stall loading and reduced VRAM.
 
-**Performance Optimization**: Built-in caching system dramatically improves boot times and eliminates runtime stuttering. See **[CACHING.md](CACHING.md)** for technical details.
+Replace game textures with custom PNG or DDS files in `BepInEx/plugins/PKCore/Textures/`. Use `00-Mods/` subfolder for highest priority custom mods.
 
-### Controller Prompt Override
-Force specific controller button icons (PlayStation/Xbox) regardless of detected controller. Works throughout entire game including minigames.
+**Performance Optimization**: Built-in BC1/BC3 runtime compression and manifest caching dramatically improve boot times and eliminate runtime stuttering. See **[Caching.md](Caching.md)** for technical details.
 
-### Visual Enhancements
-- **Post-Processing Control**: Disable effects on sprites while keeping them on backgrounds
-- **Resolution Scaling**: Adjust internal resolution for performance (0.5x - 2.0x)
-- **Borderless Window Mode**: Instant alt-tab and multi-monitor support
+### Advanced Customization
+
+- **NPC Portraits**: Inject custom high-resolution portraits for any NPC.
+- **S2 Summon Support**: Direct replacement support for Suikoden 2 summon effects.
+- **War Battle Modding**: Customize character stats and abilities in Suikoden 2 war battles via JSON.
+- **UI Scaling**: Presets for dialog box size and menu layout scaling.
+- **Classic UI**: Revert Suikoden 2 save windows to the classic PSX look.
+- **Controller Prompt Override**: Force specific button icons (Xbox/PS4/PS5/Switch) regardless of detected controller.
+- **Experimental Object Insertion**: Add new static objects to scenes via configuration.
 
 ## Installation
 
@@ -49,6 +52,7 @@ Force specific controller button icons (PlayStation/Xbox) regardless of detected
 Config file auto-generates at `BepInEx\config\faospark.pkcore.cfg` on first launch.
 
 **Key Settings:**
+
 ```ini
 [Sprite Filtering]
 SpriteFilteringQuality = 3        # 0-3: Off/Low/Medium/High (default: 3)
@@ -66,44 +70,29 @@ ForceControllerPrompts = false
 ControllerPromptType = PlayStation  # PlayStation/PlayStation5/Xbox
 
 [Custom Textures]
-EnableCustomTextures = false
+EnableCustomTextures = true
+EnableTextureCompression = true   # Save 4-6x VRAM
+EnableDDSTextures = true         # Use .dds files for speed
 LoadLauncherUITextures = true     # Load custom launcher UI
-SavePointColor = pink              # blue/red/yellow/pink/green/default
-DisableSavePointGlow = true        # Remove glow effect from save points
-LogReplaceableTextures = false     # Discovery mode
-DetailedTextureLog = false         # Verbose logging
+SavePointColor = default          # blue/red/yellow/pink/green/default
+
+[Graphics]
+SMAAQuality = Medium              # Off/Low/Medium/High
+
+[UI]
+DialogBoxScale = Large           # Large/Medium/Small
+ScaledDownMenu = false           # true/false (alt layout)
 ```
 
-**Quick Presets:**
-- **Default**: `SpriteFilteringQuality = 3`, `ResolutionScale = 1.0`
-- **Performance**: `SpriteFilteringQuality = 2`, `ResolutionScale = 0.75`
-- **Pixel Art**: `SpriteFilteringQuality = 0`
+**Latest (v2.1.0):**
+- **Native DDS Support**: Load pre-compressed DDS files for faster loading.
+- **Runtime Compression**: Automatic BC1/BC3 compression for PNGs.
+- **SMAA Anti-Aliasing**: High-quality edge smoothing for the main camera.
+- **S2 Summon Replacement**: Support for replacing summon effect textures.
+- **NPC Portraits**: Inject custom portraits into the dialog system.
+- **War Battle Modding**: Configurable stats for Suikoden 2 war battles.
+- **UI scaling**: Presets for dialog box and menu sizes.
 
-## Important Notes
-
-**Using with Suikoden Fix?**  
-Disable its resolution settings if using `ResolutionScale`:
-```ini
-# In d3xMachina.suikoden_fix.cfg
-Width = -1
-Height = -1
-Fullscreen = -1
-```
-
-## Troubleshooting
-
-**Sprites look blurry?** → Increase `SpriteMipmapBias` to `0` or `-0.25`  
-**White outlines on sprites?** → Decrease `SpriteMipmapBias` to `-1.0`  
-**Performance issues?** → Set `ResolutionScale = 0.75` or `0.5`  
-**Want original look?** → Set `SpriteFilteringQuality = 0`  
-**Controller prompts not changing?** → Check `ForceControllerPrompts = true` and verify `ControllerPromptType`  
-**Slow boot times?** → Cache builds on first run with custom textures; subsequent boots are much faster (see [CACHING.md](CACHING.md))
-
-## Changelog
-
-See **[CHANGELOG.md](CHANGELOG.md)** for detailed version history and technical implementation details.
-
-**Latest (v2.0.0):**
 - **Save Point Customization**: Choose from 5 color variants (blue/red/yellow/pink/green) and disable glow effect
 - **Config-Aware Manifest Cache**: Texture index automatically rebuilds when config settings change
 - **Texture Variant System**: Centralized texture variant handling in TextureOptions.cs
@@ -113,10 +102,11 @@ See **[CHANGELOG.md](CHANGELOG.md)** for detailed version history and technical 
 If you have **PKextended.dll** installed from a previous version:
 
 1. **Remove Old DLL**:
+
    - Delete `PKextended.dll` from `BepInEx/plugins/`
    - Add new `PKCore.dll` to `BepInEx/plugins/`
-
 2. **Config File** (optional - will auto-generate):
+
    - Old config: `BepInEx/config/faospark.pkextended.cfg`
    - New config: `BepInEx/config/faospark.pkcore.cfg`
    - You can copy your old settings to the new file, or let it regenerate with defaults
@@ -131,6 +121,6 @@ MIT License - See LICENSE.txt
 
 ## Credits
 
-**Author**: faospark  
-**For**: [Project Kyaro](https://www.nexusmods.com/suikoden1and2hdremaster/mods/6) HD sprite pack  
+**Author**: faospark
+**For**: [Project Kyaro](https://www.nexusmods.com/suikoden1and2hdremaster/mods/6) HD sprite pack
 **Compatible with**: [Suikoden Fix](https://github.com/d3xMachina/BepInEx.Suikoden) by d3xMachina

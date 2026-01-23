@@ -453,13 +453,15 @@ public partial class CustomTexturePatch
             // Compress texture to BC1/BC3 for GPU efficiency
             TextureCompression.CompressTexture(texture, textureName, filePath);
 
-            // Window-UI and Map textures often need Point filtering to prevent seams
+            // Window-UI and Map textures often need Point filtering to prevent seams,
+            // but we use Bilinear if higher filtering quality is requested in config.
             bool isWindowUI = IsWindowUITexture(textureName, filePath);
             bool isMap = filePath.Contains("Maps", StringComparison.OrdinalIgnoreCase);
+            bool useBilinear = Plugin.Config.SpriteFilteringQuality.Value > 0 || !isMap;
             
-            texture.filterMode = (isWindowUI || isMap) ? FilterMode.Point : FilterMode.Bilinear;
+            texture.filterMode = (isWindowUI || (isMap && !useBilinear)) ? FilterMode.Point : FilterMode.Bilinear;
             texture.wrapMode = TextureWrapMode.Clamp;
-            texture.anisoLevel = (isWindowUI || isMap) ? 0 : 4;
+            texture.anisoLevel = (isWindowUI || (isMap && !useBilinear)) ? 0 : 4;
             
             texture.Apply(true, false);
             

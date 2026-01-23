@@ -6,6 +6,41 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [2.1.0] - 2026-01-23
+
+### Added - Performance & Advanced Systems
+- **Native DDS Support**: Load pre-compressed `.dds` files (BC1/BC3/BC7) for faster load times and zero runtime stuttering.
+- **Runtime Compression**: All PNG/JPG custom textures are automatically compressed to BC1/BC3 at runtime to save VRAM.
+- **SMAA Anti-Aliasing**: High-quality **Subpixel Morphological Anti-Aliasing** can now be applied to the main camera.
+- **Experimental Object Insertion**: Framework to add entirely new static objects to scenes via JSON configuration (`fixed_objects.json`).
+- **Config Folder Management**: All local configuration JSONs (War stats, Dialog overrides) now reside in `PKCore/Config/`.
+
+### Added - Expanded Feature Set
+
+#### Enhanced Dialogue System
+- **Custom NPC Portraits**: Inject custom high-resolution portraits for NPCs that don't have them in the base game.
+- **Text & Speaker Overrides**: Advanced JSON-based system to replace any line of dialogue in the game and inject custom speaker names using `<speaker:Name>` tags.
+- **Portraits Storage**: Place PNG files named after the NPC in `PKCore/NPCPortraits/`.
+
+#### Visual Improvements
+- **Portrait Mask Removal**: Option to disable the Face_Mask_01 overlay on character portraits (`DisableMaskPortraitDialog`), providing a cleaner look for custom portraits.
+- **Colored Intro and Flashbacks**: Restores full color to Suikoden 2's intro and flashback sequences by disabling the game's sepia/monochrome filter.
+- **Classic Save Window**: Mimic the feel of the PSX version with a simpler, fullscreen Save/Load interface for Suikoden 2.
+- **Save Point Customization**: Choose from 5 color variants and optionally disable the glow effect.
+
+#### Specialized Suikoden 2 Support
+- **Summon Effect Replacement**: New `SummonMonitor` system proactively replaces textures for summon effects (Eff_tex_Summon_*) which was previously unsupported.
+- **War Battle Modding**: Modify character stats and abilities for Suikoden 2 war battles via `war_abilities.json`.
+- **Texture Variants**: Toggle alternate textures for Tir's run cycle (`TirRunTexture`) and the Mercenary Fortress fence (`MercFortFence`).
+
+#### UI Scaling & Customization
+- **Dialog Box Presets**: Adjust dialog window size (Large/Medium/Small) for a less obstructive view.
+- **Menu Layout Scaling**: Smaller layout preset for main game menus (`ScaledDownMenu`).
+- **Borderless Window Mode**: Full support for borderless fullscreen window mode.
+- **Cursor Visibility**: Option to show/hide the system mouse cursor over the game window.
+
+---
+
 ## [2.0.0] - 2025-12-23
 
 ### Added - Save Point Customization
