@@ -14,20 +14,15 @@ public static class DDSLoader
     private const int DDS_HEADER_SIZE = 128;
     
     /// <summary>
-    /// Load a DDS file as a pre-compressed texture
+    /// Load a DDS file from a byte array as a pre-compressed texture
     /// </summary>
-    public static Texture2D LoadDDS(string filePath)
+    public static Texture2D LoadDDSFromBytes(byte[] ddsBytes, string textureName = null)
     {
-        if (!File.Exists(filePath))
-            return null;
-        
         try
         {
-            byte[] ddsBytes = File.ReadAllBytes(filePath);
-            
             if (ddsBytes.Length < DDS_HEADER_SIZE)
             {
-                Plugin.Log.LogError($"DDS file too small: {filePath}");
+                Plugin.Log.LogError($"DDS data too small{(textureName != null ? $" for {textureName}" : "")}");
                 return null;
             }
             
@@ -36,7 +31,7 @@ public static class DDSLoader
             
             if (header == null)
             {
-                Plugin.Log.LogError($"Invalid DDS file: {filePath}");
+                Plugin.Log.LogError($"Invalid DDS data{(textureName != null ? $" for {textureName}" : "")}");
                 return null;
             }
             
@@ -50,9 +45,30 @@ public static class DDSLoader
             texture.LoadRawTextureData(textureData);
             texture.Apply(false, false);
             
-            texture.name = Path.GetFileNameWithoutExtension(filePath);
+            if (textureName != null)
+                texture.name = textureName;
             
             return texture;
+        }
+        catch (System.Exception ex)
+        {
+            Plugin.Log.LogError($"Failed to load DDS data: {ex.Message}");
+            return null;
+        }
+    }
+
+    /// <summary>
+    /// Load a DDS file as a pre-compressed texture
+    /// </summary>
+    public static Texture2D LoadDDS(string filePath)
+    {
+        if (!File.Exists(filePath))
+            return null;
+        
+        try
+        {
+            byte[] ddsBytes = File.ReadAllBytes(filePath);
+            return LoadDDSFromBytes(ddsBytes, Path.GetFileNameWithoutExtension(filePath));
         }
         catch (System.Exception ex)
         {

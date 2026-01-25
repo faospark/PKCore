@@ -26,6 +26,8 @@ public class Plugin : BasePlugin
         Config = new ModConfiguration(base.Config);
         Config.Init();
 
+        AssetLoader.Initialize();
+
         // Force immediate exit on quit to prevent Alt+F4 hangs (Unity 2022/BepInEx 6 issue)
         Application.SetStackTraceLogType(LogType.Error, StackTraceLogType.None);
         Application.quitting += (System.Action)(() => 
@@ -49,6 +51,11 @@ public class Plugin : BasePlugin
         ApplyPatches();
 
         Log.LogInfo("PKCore loaded successfully!");
+    }
+
+    public void Update()
+    {
+        AssetLoader.Update();
     }
 
     private void ApplyPatches()

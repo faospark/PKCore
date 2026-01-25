@@ -399,91 +399,16 @@ public partial class CustomTexturePatch
 
         if (targetKey == null) return null;
 
-        // Try DDS first if enabled
-        if (Plugin.Config.EnableDDSTextures.Value)
+        // Use decentralized AssetLoader for unified loading logic
+        Texture2D texture = AssetLoader.LoadTextureSync(targetKey, textureName != targetKey ? textureName : null);
+        
+        if (texture != null)
         {
-            // Look for .dds file
-            if (texturePathIndex.TryGetValue(targetKey, out string ddsPath) && ddsPath.EndsWith(".dds", System.StringComparison.OrdinalIgnoreCase))
-            {
-                Texture2D ddsTexture = DDSLoader.LoadDDS(ddsPath);
-                if (ddsTexture != null)
-                {
-                    // Window-UI textures use Point filtering to prevent seams
-                    bool isWindowUI = IsWindowUITexture(textureName, ddsPath);
-                    ddsTexture.filterMode = isWindowUI ? FilterMode.Point : FilterMode.Bilinear;
-                    ddsTexture.wrapMode = TextureWrapMode.Clamp;
-                    ddsTexture.anisoLevel = isWindowUI ? 0 : 4;
-                    
-                    UnityEngine.Object.DontDestroyOnLoad(ddsTexture);
-                    customTextureCache[textureName] = ddsTexture;
-                    
-                    bool shouldSkipLog = textureName.StartsWith("sactx");
-                    if (!shouldSkipLog && Plugin.Config.DetailedTextureLog.Value)
-                    {
-                        Plugin.Log.LogInfo($"Loaded pre-compressed DDS: {textureName} ({ddsTexture.width}x{ddsTexture.height})");
-                    }
-                    
-                    return ddsTexture;
-                }
-            }
-        }
-
-        // Fall back to PNG/JPG loading with runtime compression
-        // Look up full path - skip if it's a DDS file (already tried above)
-        if (!texturePathIndex.TryGetValue(targetKey, out string filePath) || filePath.EndsWith(".dds", System.StringComparison.OrdinalIgnoreCase))
-            return null;
-
-        try
-        {
-            // Move IO to background thread to reduce main-thread blocking
-            byte[] fileData = System.Threading.Tasks.Task.Run(() => File.ReadAllBytes(filePath)).Result;
-            
-            Texture2D texture = new Texture2D(2, 2, TextureFormat.RGBA32, true);
-            
-            if (!UnityEngine.ImageConversion.LoadImage(texture, fileData))
-            {
-                Plugin.Log.LogError($"Failed to load image: {filePath}");
-                UnityEngine.Object.Destroy(texture);
-                return null;
-            }
-
-            // Set name for debugging/profiling
-            texture.name = textureName + "_Custom";
-
-            // Compress texture to BC1/BC3 for GPU efficiency
-            // This will handle padding, mipmap generation, and compression
-            TextureCompression.CompressTexture(texture, textureName, filePath);
-
-            // Window-UI and Map textures often need Point filtering to prevent seams
-            bool isWindowUI = IsWindowUITexture(textureName, filePath);
-            bool isMap = filePath.Contains("Maps", StringComparison.OrdinalIgnoreCase);
-            bool useBilinear = Plugin.Config.SpriteFilteringQuality.Value > 0 || !isMap;
-            
-            texture.filterMode = (isWindowUI || (isMap && !useBilinear)) ? FilterMode.Point : FilterMode.Bilinear;
-            texture.wrapMode = TextureWrapMode.Clamp;
-            texture.anisoLevel = (isWindowUI || (isMap && !useBilinear)) ? 0 : 4;
-            
-            // Final apply to upload the compressed data and its mipmaps to the GPU
-            texture.Apply(false, false);
-            
-            UnityEngine.Object.DontDestroyOnLoad(texture);
-
             customTextureCache[textureName] = texture;
-            
-            bool shouldSkipLog = textureName.StartsWith("sactx") || filePath.ToLower().Contains("characters");
-            
-            if (!shouldSkipLog && Plugin.Config.DetailedTextureLog.Value)
-            {
-                Plugin.Log.LogInfo($"Loaded and cached custom texture: {textureName} ({texture.width}x{texture.height}) from {Path.GetExtension(filePath)}");
-            }
-            
             return texture;
         }
-        catch (Exception ex)
-        {
-            Plugin.Log.LogError($"Error loading texture {textureName}: {ex.Message}");
-            return null;
-        }
+
+        return null;
     }
 
     /// <summary>
