@@ -451,10 +451,10 @@ public partial class CustomTexturePatch
             texture.name = textureName + "_Custom";
 
             // Compress texture to BC1/BC3 for GPU efficiency
+            // This will handle padding, mipmap generation, and compression
             TextureCompression.CompressTexture(texture, textureName, filePath);
 
-            // Window-UI and Map textures often need Point filtering to prevent seams,
-            // but we use Bilinear if higher filtering quality is requested in config.
+            // Window-UI and Map textures often need Point filtering to prevent seams
             bool isWindowUI = IsWindowUITexture(textureName, filePath);
             bool isMap = filePath.Contains("Maps", StringComparison.OrdinalIgnoreCase);
             bool useBilinear = Plugin.Config.SpriteFilteringQuality.Value > 0 || !isMap;
@@ -463,7 +463,8 @@ public partial class CustomTexturePatch
             texture.wrapMode = TextureWrapMode.Clamp;
             texture.anisoLevel = (isWindowUI || (isMap && !useBilinear)) ? 0 : 4;
             
-            texture.Apply(true, false);
+            // Final apply to upload the compressed data and its mipmaps to the GPU
+            texture.Apply(false, false);
             
             UnityEngine.Object.DontDestroyOnLoad(texture);
 

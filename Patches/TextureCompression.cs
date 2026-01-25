@@ -58,15 +58,24 @@ public static class TextureCompression
                 // Copy pixels back to original texture using 32-bit for 4x less memory than GetPixels()
                 texture.Reinitialize(paddedWidth, paddedHeight);
                 texture.SetPixels32(paddedTexture.GetPixels32());
-                texture.Apply(false, false);
+                
+                // Generate mipmaps for the padded texture BEFORE compression
+                // This ensures we have high-quality mipmaps in the compressed result
+                texture.Apply(true, false);
                 
                 // Clean up temporary texture
                 UnityEngine.Object.Destroy(paddedTexture);
                 
                 if (Plugin.Config.DetailedTextureLog.Value && !string.IsNullOrEmpty(textureName))
                 {
-                    Plugin.Log.LogInfo($"Padded {textureName} from {originalWidth}x{originalHeight} to {paddedWidth}x{paddedHeight}");
+                    Plugin.Log.LogInfo($"Padded {textureName} from {originalWidth}x{originalHeight} to {paddedWidth}x{paddedHeight} and generated mipmaps");
                 }
+            }
+            else
+            {
+                // No padding needed, but still ensure mipmaps are generated if they haven't been yet
+                // Unity.Compress requires mipmaps to be generated first if we want them compressed
+                texture.Apply(true, false);
             }
             
             // Determine compression format
@@ -169,9 +178,10 @@ public static class TextureCompression
     private static Texture2D ResizeTexture(Texture2D source, int targetWidth, int targetHeight)
     {
         RenderTexture rt = RenderTexture.GetTemporary(targetWidth, targetHeight, 0, RenderTextureFormat.ARGB32);
-        rt.filterMode = FilterMode.Bilinear;
+        rt.filterMode = FilterMode.Point; // Use Point for padding to avoid bleed
         
         RenderTexture.active = rt;
+        GL.Clear(true, true, Color.clear); // Clear to transparent black to prevent "white filter" or garbage artifacts
         Graphics.Blit(source, rt);
         
         Texture2D result = new Texture2D(targetWidth, targetHeight, TextureFormat.RGBA32, false);

@@ -554,11 +554,17 @@ public class CustomObjectInsertion
                 if (UnityEngine.ImageConversion.LoadImage(texture, fileData))
                 {
                     // Compress texture to BC3 (DXT5) for GPU efficiency
+                    // This handles padding, mipmap generation, and compression
                     TextureCompression.CompressTexture(texture, textureName);
 
                     texture.name = textureName;
                     texture.filterMode = FilterMode.Bilinear;
                     texture.wrapMode = TextureWrapMode.Clamp;
+                    
+                    // Final apply to upload the compressed data and its mipmaps to the GPU
+                    texture.Apply(false, false);
+                    
+                    UnityEngine.Object.DontDestroyOnLoad(texture);
 
                     Sprite sprite = Sprite.Create(
                         texture,
