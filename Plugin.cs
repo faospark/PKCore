@@ -65,6 +65,13 @@ public class Plugin : BasePlugin
             CustomTexturePatch.Initialize();
         }
 
+        // Initialize memory caching system for smart texture cleanup
+        if (Config.EnableMemoryCaching.Value)
+        {
+            Log.LogInfo("Initializing Texture Memory Caching System...");
+            TextureMemoryCachePatch.Initialize();
+        }
+
         // Apply Sprite Filtering patch independently
         if (Config.SpriteFilteringQuality.Value > 0)
         {

@@ -59,6 +59,7 @@ public sealed class ModConfiguration
 
     // Performance Settings
     public ConfigEntry<bool> EnableTextureManifestCache { get; private set; }
+    public ConfigEntry<bool> EnableMemoryCaching { get; private set; }
     public ConfigEntry<bool> EnableTextureCompression { get; private set; }
     public ConfigEntry<string> TextureCompressionQuality { get; private set; }
     public ConfigEntry<string> TextureCompressionFormat { get; private set; }
@@ -274,6 +275,13 @@ public sealed class ModConfiguration
             "EnableTextureManifestCache",
             true,
             "Enable texture manifest caching for faster startup. Caches the texture index to skip re-scanning the Textures folder on every launch. Disable if you're actively adding/removing textures and want changes detected immediately."
+        );
+
+        EnableMemoryCaching = _config.Bind(
+            "Performance",
+            "EnableMemoryCaching",
+            true,
+            "Enable intelligent texture memory caching. Automatically clears textures from memory when transitioning between areas to free up RAM. Textures are rebuilt when you enter new scenes. Keeps persistent UI textures in memory. Recommended for performance optimization on lower-end systems."
         );
 
         EnableTextureCompression = _config.Bind(
