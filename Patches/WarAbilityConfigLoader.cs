@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 using BepInEx.Logging;
 using PKCore.IL2CPP;
 
-namespace PKCore.Config
+namespace PKCore.Patches
 {
     /// <summary>
     /// Configuration structure for war abilities

@@ -2,7 +2,7 @@ using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
-using PKCore.Config;
+
 using PKCore.IL2CPP;
 using System;
 using System.Collections.Generic;
