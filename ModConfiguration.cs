@@ -37,7 +37,7 @@ public sealed class ModConfiguration
     // NPC Portrait Settings
     public ConfigEntry<bool> LogTextIDs { get; private set; }
     public ConfigEntry<bool> EnableNPCPortraits { get; private set; }
-    public ConfigEntry<bool> EnableDialogOverrides { get; private set; }
+
 
     // Save Point Settings
     public ConfigEntry<string> SavePointColor { get; private set; }
@@ -62,11 +62,23 @@ public sealed class ModConfiguration
     public ConfigEntry<bool> EnableMemoryCaching { get; private set; }
 
     // EXPERIMENTAL FEATURES (at end of config file)
-    public ConfigEntry<bool> EnableObjectDiagnostics { get; private set; }
-    public ConfigEntry<bool> EnableCustomObjects { get; private set; }
-    public ConfigEntry<bool> DebugCustomObjects { get; private set; }
-    public ConfigEntry<bool> LogExistingMapObjects { get; private set; }
     public ConfigEntry<bool> EnableDebugMenu2 { get; private set; }
+    
+    // Hidden internal settings - not exposed in config file at all
+    // These are hardcoded to false and cannot be changed by users
+    // If you need to enable them for development, uncomment the bindings in Init()
+    public class HiddenConfigEntry<T>
+    {
+        private T _value;
+        public T Value => _value;
+        public HiddenConfigEntry(T defaultValue) { _value = defaultValue; }
+    }
+    
+    public HiddenConfigEntry<bool> EnableObjectDiagnostics { get; private set; }
+    public HiddenConfigEntry<bool> EnableCustomObjects { get; private set; }
+    public HiddenConfigEntry<bool> DebugCustomObjects { get; private set; }
+    public HiddenConfigEntry<bool> LogExistingMapObjects { get; private set; }
+    public HiddenConfigEntry<bool> EnableDialogOverrides { get; private set; }
  
 
     public ModConfiguration(ConfigFile config)
@@ -186,13 +198,6 @@ public sealed class ModConfiguration
             "EnableNPCPortraits",
             true,
             "Enable custom NPC portrait injection. Place PNG files in PKCore/NPCPortraits/ (in game root folder) named after the NPC (e.g., Viktor.png, Flik.png). Case-insensitive."
-        );
-
-        EnableDialogOverrides = _config.Bind(
-            "NPC Portraits",
-            "EnableDialogOverrides",
-            true,
-            "Enable dialog text overrides from DialogOverrides.json. Allows replacing specific text lines and injecting custom speaker names."
         );
 
         SavePointColor = _config.Bind(
@@ -315,34 +320,6 @@ public sealed class ModConfiguration
         // These features are work-in-progress and may not function correctly.
         // Enable at your own risk for testing purposes.
 
-        EnableObjectDiagnostics = _config.Bind(
-            "zz - Experimental",
-            "EnableObjectDiagnostics",
-            false,
-            "[EXPERIMENTAL] Enable diagnostic logging for MapBGManagerHD objects. Logs all objects in field scenes to help understand scene structure. For development/debugging only."
-        );
-
-        EnableCustomObjects = _config.Bind(
-            "zz - Experimental",
-            "EnableCustomObjects",
-            false,
-            "[EXPERIMENTAL - NOT WORKING] Enable custom object insertion. Objects are created but invisible due to MapSpriteHD interference. Allows you to add custom static objects to game scenes via objects.json configuration."
-        );
-
-        DebugCustomObjects = _config.Bind(
-            "zz - Experimental",
-            "DebugCustomObjects",
-            false,
-            "[EXPERIMENTAL] Show magenta debug sprites for custom objects when their texture files are missing. Useful for testing object placement and visibility."
-        );
-
-        LogExistingMapObjects = _config.Bind(
-            "zz - Experimental",
-            "LogExistingMapObjects",
-            false,
-            "[EXPERIMENTAL] Log all existing map objects to ExistingMapObjects.json. This creates a reference file you can copy from when creating custom objects. Disable after collecting the data you need."
-        );
-
         EnableDebugMenu2 = _config.Bind(
             "zz - Experimental",
             "EnableDebugMenu2",
@@ -350,7 +327,17 @@ public sealed class ModConfiguration
             "[EXPERIMENTAL] Enable the DebugMenu2 object which is normally disabled in the game. This may provide access to developer debug features."
         );
 
-
+        // ========================================
+        // HIDDEN SETTINGS (Internal Use Only)
+        // ========================================
+        // These settings are NOT written to the config file and are hardcoded to false
+        // If you need to enable them for development, replace these with _config.Bind() calls
+        
+        EnableDialogOverrides = new HiddenConfigEntry<bool>(false);
+        EnableObjectDiagnostics = new HiddenConfigEntry<bool>(false);
+        EnableCustomObjects = new HiddenConfigEntry<bool>(false);
+        DebugCustomObjects = new HiddenConfigEntry<bool>(false);
+        LogExistingMapObjects = new HiddenConfigEntry<bool>(false);
 
     }
 }
