@@ -55,6 +55,7 @@ public class Plugin : BasePlugin
 
     public void Update()
     {
+        Patches.GameDetection.Update();
         AssetLoader.Update();
     }
 

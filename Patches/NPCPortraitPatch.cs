@@ -231,8 +231,22 @@ public class NPCPortraitPatch
         
         if (Plugin.Config.DetailedTextureLog.Value)
             Plugin.Log.LogInfo("NPC Portrait System Ready!");
+            
+        // Subscribe to game change events for lazy reloading
+        GameDetection.OnGameChanged += (newGame) => 
+        {
+            Plugin.Log.LogInfo($"[NPCPortrait] Event received: Game changed to {newGame}. Reloading portraits...");
+            PreloadPortraits();
+        };
     }
     
+    /// <summary>
+    /// Preload all portrait files and prepare for texture swapping
+    /// Supports game-specific subdirectories (GSD1/NPCPortraits/, GSD2/NPCPortraits/)
+    /// Priority: Game-specific folder > Shared folder
+    /// </summary>
+    private static string _lastLoadedGame = "Launcher"; // Track which game context we loaded for
+
     /// <summary>
     /// Preload all portrait files and prepare for texture swapping
     /// Supports game-specific subdirectories (GSD1/NPCPortraits/, GSD2/NPCPortraits/)
@@ -245,6 +259,13 @@ public class NPCPortraitPatch
         
         // Get current game
         string currentGame = GameDetection.GetCurrentGame();
+        
+        // Update tracker
+        _lastLoadedGame = currentGame;
+        
+        // Clear existing cache to allow reloading
+        portraitCache.Clear();
+
         string texturesPath = Path.Combine(BepInEx.Paths.GameRootPath, "PKCore", "Textures");
         
         // Determine game-specific portrait folder
@@ -505,6 +526,8 @@ public class NPCPortraitPatch
         if (Plugin.Config.LogReplaceableTextures.Value)
             Plugin.Log.LogInfo($"[NPCPortrait] OpenMessageWindow called - Name: '{name}', HasFaceImage: {faceImage != null}");
         
+
+
         // --- Dialog Replacement ---
         if (!string.IsNullOrEmpty(message) && dialogReplacements.Count > 0)
         {

@@ -9,47 +9,53 @@ namespace PKCore.Patches;
 /// </summary>
 public static class GameDetection
 {
-    private static string _cachedGameId = null;
+    private static string _cachedGameId = "Launcher";
     private static string _lastSceneName = "";
+    
+    /// <summary>
+    /// Event fired when the detected game context changes.
+    /// Parameter is the new game ID ("GSD1", "GSD2", "Launcher")
+    /// </summary>
+    public static event System.Action<string> OnGameChanged;
 
     /// <summary>
-    /// Get the current game identifier (GSD1, GSD2, or Unknown)
-    /// Handles scene switching and cache invalidation
+    /// Update loop called by Plugin.Update()
+    /// Monitors scene changes and fires events
     /// </summary>
-    public static string GetCurrentGame()
+    public static void Update()
     {
         string sceneName = SceneManager.GetActiveScene().name;
-
-        // Invalidate cache if scene changed (e.g. GSD1 -> Main -> GSD2)
-        if (sceneName != _lastSceneName)
-        {
-            _cachedGameId = null;
-            _lastSceneName = sceneName;
-            // Optional: Log scene change for debug only
-            // Plugin.Log.LogDebug($"[GameDetection] Scene changed to: {sceneName}");
-        }
-
-        // Return cached result if we have a resolved game ID
-        if (_cachedGameId != null)
-            return _cachedGameId;
         
+        // Only check if scene has changed
+        if (sceneName == _lastSceneName)
+            return;
+            
+        _lastSceneName = sceneName;
+        
+        string newGameId = "Launcher";
         if (sceneName.Contains("GSD1"))
         {
-            _cachedGameId = "GSD1";
-            Plugin.Log.LogInfo($"[GameDetection] ✓ Suikoden 1 (GSD1) detected (Scene: {sceneName})");
+            newGameId = "GSD1";
         }
         else if (sceneName.Contains("GSD2"))
         {
-            _cachedGameId = "GSD2";
-            Plugin.Log.LogInfo($"[GameDetection] ✓ Suikoden 2 (GSD2) detected (Scene: {sceneName})");
-        }
-        else
-        {
-            // Do NOT cache "Unknown" to allow retrying later
-            // And do NOT log here to prevent spam (this is called every frame by monitors)
-            return "Unknown";
+            newGameId = "GSD2";
         }
         
+        // If detection changed, fire event
+        if (newGameId != _cachedGameId)
+        {
+            Plugin.Log.LogInfo($"[GameDetection] Game detected: {newGameId} (Scene: {sceneName})");
+            _cachedGameId = newGameId;
+            OnGameChanged?.Invoke(_cachedGameId);
+        }
+    }
+
+    /// <summary>
+    /// Get the current game identifier (GSD1, GSD2, or Unknown)
+    /// </summary>
+    public static string GetCurrentGame()
+    {
         return _cachedGameId;
     }
     
