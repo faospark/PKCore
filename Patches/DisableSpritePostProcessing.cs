@@ -68,11 +68,10 @@ public class DisableSpritePostProcessingPatch
         }
     }
 
-    // Hook into GRSpriteRenderer DO NOT hook Awake as sprite is often null then
-    // Instead hook Start or just rely on the sprite setter
-    [HarmonyPatch(typeof(GRSpriteRenderer), nameof(GRSpriteRenderer.Start))]
+    // Hook into GRSpriteRenderer (Awake is more reliable than Start for IL2CPP proxies usually)
+    [HarmonyPatch(typeof(GRSpriteRenderer), nameof(GRSpriteRenderer.Awake))]
     [HarmonyPostfix]
-    static void GRSpriteRenderer_Start_Postfix(GRSpriteRenderer __instance)
+    static void GRSpriteRenderer_Awake_Postfix(GRSpriteRenderer __instance)
     {
         if (!_isEnabled || __instance == null) return;
         UpdateRendererLayer(__instance);
