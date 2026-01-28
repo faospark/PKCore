@@ -10,32 +10,15 @@ public class DisableSpritePostProcessingPatch
     private static bool _isEnabled = false;
 
     /// <summary>
-    /// Check if a sprite comes from the specific battle directories that require disabling post-processing
+    /// Check if a sprite is a battle sprite by examining its name
     /// </summary>
     private static bool IsBattleSprite(Sprite sprite)
     {
         if (sprite == null) return false;
         
-        // Check if we have a path for this sprite's textue
-        string textureName = sprite.name;
-        
-        // If it's a custom texture/sprite, checking the index is reliable
-        if (CustomTexturePatch.texturePathIndex.TryGetValue(textureName, out string filePath))
-        {
-            // Normalize separators
-            filePath = filePath.Replace('/', '\\');
-            
-            // Check for specific battle directories
-            // PKCore\Textures\GSD2\PKS2\battle
-            // PKCore\Textures\GSD1\PKS1\battle
-            if (filePath.IndexOf("\\GSD2\\PKS2\\battle", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
-                filePath.IndexOf("\\GSD1\\PKS1\\battle", System.StringComparison.OrdinalIgnoreCase) >= 0)
-            {
-                return true;
-            }
-        }
-        
-        return false;
+        // Battle sprites are named like: battle_monster_*, battle_player_*, etc.
+        string spriteName = sprite.name;
+        return spriteName.StartsWith("battle_");
     }
 
     /// <summary>
