@@ -89,9 +89,6 @@ public partial class CustomTexturePatch
                     // Check and attach Cow monitor if applicable
                     CowTexturePatch.CheckAndAttachMonitor(sr.gameObject);
                     
-                    // Check and attach UI Scale monitor if applicable
-                    MenuScalePatch.CheckAndAttachMonitor(sr.gameObject);
-                    
                     // Skip save point sprites - they're handled in SavePointPatch.cs
                     if (spriteName.Contains("savePoint", StringComparison.OrdinalIgnoreCase))
                         continue;
@@ -129,9 +126,6 @@ public partial class CustomTexturePatch
                     
                     // Check and attach Cow monitor if applicable
                     CowTexturePatch.CheckAndAttachMonitor(gr.gameObject);
-                    
-                    // Check and attach UI Scale monitor if applicable
-                    MenuScalePatch.CheckAndAttachMonitor(gr.gameObject);
                     
                     _processedSpriteInstances.Add(instanceId);
                 }
