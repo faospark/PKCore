@@ -245,54 +245,53 @@ public class NPCPortraitPatch
     /// Supports game-specific subdirectories (GSD1/NPCPortraits/, GSD2/NPCPortraits/)
     /// Priority: Game-specific folder > Shared folder
     /// </summary>
-    private static string _lastLoadedGame = "Launcher"; // Track which game context we loaded for
-
-    /// <summary>
-    /// Preload all portrait files and prepare for texture swapping
-    /// Supports game-specific subdirectories (GSD1/NPCPortraits/, GSD2/NPCPortraits/)
-    /// Priority: Game-specific folder > Shared folder
-    /// </summary>
     private static void PreloadPortraits()
     {
         if (!Directory.Exists(portraitsPath))
             return;
-        
-        // Get current game
-        string currentGame = GameDetection.GetCurrentGame();
-        
-        // Update tracker
-        _lastLoadedGame = currentGame;
         
         // Clear existing cache to allow reloading
         portraitCache.Clear();
 
         string texturesPath = Path.Combine(BepInEx.Paths.GameRootPath, "PKCore", "Textures");
         
-        // Determine game-specific portrait folder
-        string gameSpecificPath = null;
-        if (currentGame == "GSD1" || currentGame == "GSD2")
-        {
-            gameSpecificPath = Path.Combine(texturesPath, currentGame, "NPCPortraits");
-        }
-        
-        // Scan portraits from game-specific folder first, then shared folder
+        // Scan portraits from all directories
         HashSet<string> portraitNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         
-        // 1. Scan game-specific folder (higher priority)
-        if (!string.IsNullOrEmpty(gameSpecificPath) && Directory.Exists(gameSpecificPath))
+        // 1. Scan GSD1 folder
+        string gsd1PortraitsPath = Path.Combine(texturesPath, "GSD1", "NPCPortraits");
+        if (Directory.Exists(gsd1PortraitsPath))
         {
-            string[] gamePortraits = Directory.GetFiles(gameSpecificPath, "*.png", SearchOption.TopDirectoryOnly);
-            foreach (string filePath in gamePortraits)
+            string[] gsd1Portraits = Directory.GetFiles(gsd1PortraitsPath, "*.png", SearchOption.TopDirectoryOnly);
+            foreach (string filePath in gsd1Portraits)
             {
                 string portraitName = Path.GetFileNameWithoutExtension(filePath);
                 portraitNames.Add(portraitName);
                 
                 if (Plugin.Config.DetailedTextureLog.Value)
-                    Plugin.Log.LogInfo($"Found {currentGame} portrait: {portraitName}");
+                    Plugin.Log.LogInfo($"Found GSD1 portrait: {portraitName}");
             }
         }
         
-        // 2. Scan shared folder (fallback for portraits not in game-specific folder)
+        // 2. Scan GSD2 folder
+        string gsd2PortraitsPath = Path.Combine(texturesPath, "GSD2", "NPCPortraits");
+        if (Directory.Exists(gsd2PortraitsPath))
+        {
+            string[] gsd2Portraits = Directory.GetFiles(gsd2PortraitsPath, "*.png", SearchOption.TopDirectoryOnly);
+            foreach (string filePath in gsd2Portraits)
+            {
+                string portraitName = Path.GetFileNameWithoutExtension(filePath);
+                if (!portraitNames.Contains(portraitName))
+                {
+                    portraitNames.Add(portraitName);
+                    
+                    if (Plugin.Config.DetailedTextureLog.Value)
+                        Plugin.Log.LogInfo($"Found GSD2 portrait: {portraitName}");
+                }
+            }
+        }
+        
+        // 3. Scan shared folder (fallback for portraits not in game-specific folders)
         string[] sharedPortraits = Directory.GetFiles(portraitsPath, "*.png", SearchOption.TopDirectoryOnly);
         foreach (string filePath in sharedPortraits)
         {
@@ -314,7 +313,7 @@ public class NPCPortraitPatch
         
         if (Plugin.Config.DetailedTextureLog.Value)
         {
-            Plugin.Log.LogInfo($"Preloaded {portraitCache.Count} custom NPC portrait(s) for {currentGame}");
+            Plugin.Log.LogInfo($"Preloaded {portraitCache.Count} custom NPC portrait(s)");
         }
         
         // Preload fp_129 as the base portrait sprite for swapping
@@ -369,23 +368,31 @@ public class NPCPortraitPatch
     
     /// <summary>
     /// Load portrait texture from PNG file
-    /// Priority: GSD1/NPCPortraits/ or GSD2/NPCPortraits/ > NPCPortraits/
+    /// Priority: GSD1/NPCPortraits/ > GSD2/NPCPortraits/ > NPCPortraits/
     /// </summary>
     private static Texture2D LoadPortraitTexture(string npcName)
     {
-        string currentGame = GameDetection.GetCurrentGame();
         string texturesPath = Path.Combine(BepInEx.Paths.GameRootPath, "PKCore", "Textures");
         string filePath = null;
         
-        // Try game-specific folder first
-        if (currentGame == "GSD1" || currentGame == "GSD2")
+        // Try GSD1 folder first
+        string gsd1Path = Path.Combine(texturesPath, "GSD1", "NPCPortraits", $"{npcName}.png");
+        if (File.Exists(gsd1Path))
         {
-            string gameSpecificPath = Path.Combine(texturesPath, currentGame, "NPCPortraits", $"{npcName}.png");
-            if (File.Exists(gameSpecificPath))
+            filePath = gsd1Path;
+            if (Plugin.Config.DetailedTextureLog.Value)
+                Plugin.Log.LogInfo($"[NPCPortrait] Using GSD1 portrait: {npcName}");
+        }
+        
+        // Try GSD2 folder second
+        if (filePath == null)
+        {
+            string gsd2Path = Path.Combine(texturesPath, "GSD2", "NPCPortraits", $"{npcName}.png");
+            if (File.Exists(gsd2Path))
             {
-                filePath = gameSpecificPath;
+                filePath = gsd2Path;
                 if (Plugin.Config.DetailedTextureLog.Value)
-                    Plugin.Log.LogInfo($"[NPCPortrait] Using {currentGame} portrait: {npcName}");
+                    Plugin.Log.LogInfo($"[NPCPortrait] Using GSD2 portrait: {npcName}");
             }
         }
         
