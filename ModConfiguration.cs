@@ -7,7 +7,7 @@ public sealed class ModConfiguration
     private ConfigFile _config;
 
     // Sprite Filtering Settings
-    public ConfigEntry<bool> SpriteFilteringQuality { get; private set; }
+    public ConfigEntry<bool> SpriteFilteringEnabled { get; private set; }
     public ConfigEntry<float> SpriteMipmapBias { get; private set; }
 
     // Display Settings
@@ -106,9 +106,9 @@ public sealed class ModConfiguration
             "Disable the Face_Mask_01 texture overlay on character portraits in dialog windows. This removes the mask effect that appears on portrait displays during conversations."
         );
 
-        SpriteFilteringQuality = _config.Bind(
+        SpriteFilteringEnabled = _config.Bind(
             "Visual",
-            "SpriteFilteringQuality",
+            "SpriteFilteringEnabled",
             false,
             "Enable texture filtering for sprites. false = Disabled (pure pixels), true = Enabled (Bilinear + 2x Aniso). Best for Project Kyaro's upscaled sprites."
         );

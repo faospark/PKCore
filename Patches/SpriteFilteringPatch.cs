@@ -37,7 +37,7 @@ public class SpriteFilteringPatch
 
     public static void Initialize()
     {
-        _spriteFilteringEnabled = Plugin.Config.SpriteFilteringQuality.Value;
+        _spriteFilteringEnabled = Plugin.Config.SpriteFilteringEnabled.Value;
         _spriteMipmapBias = Plugin.Config.SpriteMipmapBias.Value;
     }
 

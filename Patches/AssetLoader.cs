@@ -163,7 +163,7 @@ public static class AssetLoader
                 
                 bool isWindowUI = CustomTexturePatch.IsWindowUITexture(assetName, filePath);
                 bool isMap = filePath.Contains("Maps", StringComparison.OrdinalIgnoreCase);
-                bool useBilinear = Plugin.Config.SpriteFilteringQuality.Value || !isMap;
+                bool useBilinear = Plugin.Config.SpriteFilteringEnabled.Value || !isMap;
 
                 texture.filterMode = (isWindowUI || (isMap && !useBilinear)) ? FilterMode.Point : FilterMode.Bilinear;
                 texture.wrapMode = TextureWrapMode.Clamp;

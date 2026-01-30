@@ -83,9 +83,9 @@ public class Plugin : BasePlugin
         }
 
         // Apply Sprite Filtering patch independently
-        if (Config.SpriteFilteringQuality.Value)
+        if (Config.SpriteFilteringEnabled.Value)
         {
-            Log.LogInfo($"Applying Sprite Filtering patches (Enabled: {Config.SpriteFilteringQuality.Value})...");
+            Log.LogInfo($"Applying Sprite Filtering patches (Enabled: {Config.SpriteFilteringEnabled.Value})...");
             harmony.PatchAll(typeof(SpriteFilteringPatch));
             SpriteFilteringPatch.Initialize();
        }
