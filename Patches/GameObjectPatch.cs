@@ -1,12 +1,14 @@
 using HarmonyLib;
 using UnityEngine;
 using System;
+using ShareUI.Menu;
 
 namespace PKCore.Patches;
 
 /// <summary>
-/// Patches for GameObject.SetActive
+/// Patches for GameObject.SetActive and UI menu operations
 /// Handles detection and replacement of textures when GameObjects are activated
+/// Also handles TopMenuPartyList refresh for MenuTopPartyStatus texture fix
 /// </summary>
 public partial class CustomTexturePatch
 {
@@ -131,6 +133,85 @@ public partial class CustomTexturePatch
                 }
             }
             
+        }
+    }
+
+    /// <summary>
+    /// Patch UIMainMenu.Open to refresh TopMenuPartyList for MenuTopPartyStatus texture fix
+    /// This forces texture replacement by toggling the UI element
+    /// </summary>
+    [HarmonyPatch(typeof(UIMainMenu), nameof(UIMainMenu.Open))]
+    [HarmonyPostfix]
+    public static void UIMainMenu_Open_Postfix(UIMainMenu __instance)
+    {
+        // Only process if custom textures are enabled
+        if (!Plugin.Config.EnableCustomTextures.Value) return;
+        
+        // Find and refresh TopMenuPartyList to force texture replacement
+        var topMenuPartyList = FindTopMenuPartyList(__instance.gameObject);
+        if (topMenuPartyList != null)
+        {
+            RefreshTopMenuPartyList(topMenuPartyList);
+        }
+    }
+
+    /// <summary>
+    /// Find TopMenuPartyList in the UIMainMenu hierarchy
+    /// </summary>
+    private static GameObject FindTopMenuPartyList(GameObject uiMainMenu)
+    {
+        // Try direct path: UIMainMenu -> UI_Set -> TopMenuPartyList
+        var uiSet = uiMainMenu.transform.Find("UI_Set");
+        if (uiSet != null)
+        {
+            var topMenuPartyList = uiSet.Find("TopMenuPartyList");
+            if (topMenuPartyList != null)
+                return topMenuPartyList.gameObject;
+        }
+        
+        // Fallback: search all children
+        var allTransforms = uiMainMenu.GetComponentsInChildren<Transform>(true);
+        foreach (var transform in allTransforms)
+        {
+            if (transform.name == "TopMenuPartyList")
+                return transform.gameObject;
+        }
+        
+        return null;
+    }
+
+    /// <summary>
+    /// Refresh TopMenuPartyList by toggling it to force texture replacement
+    /// </summary>
+    private static void RefreshTopMenuPartyList(GameObject topMenuPartyList)
+    {
+        // Toggle the entire TopMenuPartyList
+        topMenuPartyList.SetActive(false);
+        topMenuPartyList.SetActive(true);
+        
+        // Also refresh individual Img_BG objects with MenuTopPartyStatus
+        var allImages = topMenuPartyList.GetComponentsInChildren<UnityEngine.UI.Image>(true);
+        foreach (var image in allImages)
+        {
+            if (image.gameObject.name == "Img_BG")
+            {
+                // Check if this image has MenuTopPartyStatus texture
+                bool hasMenuTopPartyStatus = false;
+                
+                if (image.sprite?.texture?.name == "MenuTopPartyStatus" || 
+                    image.sprite?.name.Contains("MenuTopPartyStatus") == true)
+                    hasMenuTopPartyStatus = true;
+                    
+                if (image.overrideSprite?.texture?.name == "MenuTopPartyStatus" ||
+                    image.overrideSprite?.name.Contains("MenuTopPartyStatus") == true)
+                    hasMenuTopPartyStatus = true;
+                
+                if (hasMenuTopPartyStatus)
+                {
+                    image.gameObject.SetActive(false);
+                    image.gameObject.SetActive(true);
+                }
+            }
         }
     }
 }

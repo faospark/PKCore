@@ -1,7 +1,7 @@
 # PKCore - Project Kyaro Core
 
 **By faospark**
-**Current Version: 2.1.0**
+**Current Version: 2026.01.0**
 
 The **core DLL component** for **[Project Kyaro](https://www.nexusmods.com/suikoden1and2hdremaster/mods/6)** that provides a variety of features such as texture replacement framework, sprite smoothing, anti-aliasing, graphical and visual enhancement, and some gameplay enhancement for **Suikoden I & II HD Remaster**.
 

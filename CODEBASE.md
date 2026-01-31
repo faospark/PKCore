@@ -1,6 +1,6 @@
 # PKCore Codebase Overview
 
-> **Last Updated:** 2026-01-28
+> **Last Updated:** 2026-01-31
 > **Purpose:** High-level map of the PKCore "Core Engine" to ensure content awareness and avoid redundant implementation.
 
 ## 📂 Project Structure
@@ -22,10 +22,12 @@
 |------|-------------|
 | `CustomTexturePatch.cs` | Main logic for intercepting texture requests and swapping with custom assets. |
 | `CustomTexturePersist.cs` | Handles persistence of custom texture states. |
+| `GameObjectPatch.cs` | Handles GameObject.SetActive patches for texture replacement and UI refreshes (includes TopMenuPartyList refresh for MenuTopPartyStatus). |
 | `TextureMemoryCachePatch.cs` | Smart memory management to prevent leaks and handle cache cleanup (referenced in `Caching.md`). |
 | `SpriteFilteringPatch.cs` | Applies filtering modes (Point, Bilinear) to sprites based on config. |
 | `GRSpriteRendererPatch.cs` | Patches specifically for `GRSpriteRenderer` (custom rendering component). |
 | `UnitySpriteRendererPatch.cs` | Patches for standard Unity `SpriteRenderer`. |
+| `SpriteAtlasPatch.cs` | Patches for Sprite.texture getter to replace atlas textures during runtime. |
 | `MapTexturePatch.cs` | Handling for map-specific textures. |
 | `PortraitIndexCache.cs` | Caching mechanism for portrait indexing to improve performance. |
 
@@ -48,6 +50,9 @@
 | `NPCPortraitPatch.cs` | Core logic for injecting and managing NPC portraits in dialogs. |
 | `TextDatabasePatch.cs` | Intercepts text retrieval, often used in tandem with NPC portraits. |
 | `SavePointPatch.cs` | Enhancements to save point logic and interaction. |
+| `BathTexturePatch.cs` | Specific handling for bath background textures with preloading system. |
+| `CowTexturePatch.cs` | Animated cow texture replacement with continuous monitoring (Suikoden 1 Gregminster). |
+| `DragonPatch.cs` | Dragon sprite texture replacement with MonoBehaviour monitoring. |
 | `WarAbilityPatch.cs` | Modifications to war battles/abilities (Experimental). |
 | `GameDetection.cs` | Detects current game state/context (referenced in recent refactors). |
 
@@ -77,5 +82,12 @@
 ## ⚠️ Known Complexities
 
 - **Texture Caching**: The system relies heavily on `TextureMemoryCachePatch` and `CustomTexturePatch` working in tandem. Modifying one often requires checking the other.
-- **IL2CPP Limitations**: Use `Il2CppInterop` patterns for MonoBehaviours (`SavePointSpriteMonitor`).
+- **IL2CPP Limitations**: Use `Il2CppInterop` patterns for MonoBehaviours (`SavePointSpriteMonitor`, `CowMonitor`, `DragonMonitor`).
 - **Config Flags**: Almost all patches are guarded by `ModConfiguration` flags in `Plugin.cs`. Always check config before implementation.
+- **UI Refresh Patterns**: Some UI elements (like MenuTopPartyStatus) require forced refresh via GameObject toggle to trigger texture replacement. This is handled in `GameObjectPatch.cs` via `UIMainMenu.Open` patch.
+
+## 🆕 Recent Additions (2026-01-31)
+
+- **MenuTopPartyStatus Fix**: Integrated UI refresh pattern into `GameObjectPatch.cs` that hooks `UIMainMenu.Open` to force `TopMenuPartyList` refresh, ensuring party status background textures are applied correctly.
+- **SpriteAtlasPatch**: Enhanced sprite atlas texture replacement system for UI elements.
+- **Preload System**: Extended bath texture preloading pattern to MenuTopPartyStatus for instant texture replacement.
