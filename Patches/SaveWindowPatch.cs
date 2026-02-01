@@ -49,6 +49,59 @@ namespace PKCore.Patches
                     }
                 }
 
+                // Replace Img_Line_No with custom colored version
+                Transform set01 = __instance.transform.Find("Set01");
+                if (set01 != null)
+                {
+                    Transform imgLineNo = set01.Find("Img_Line_No");
+                    if (imgLineNo != null)
+                    {
+                        // Disable original
+                        imgLineNo.gameObject.SetActive(false);
+                        
+                        // Check if we already created replacement
+                        if (set01.Find("Img_Line_No_Custom") == null)
+                        {
+                            // Get original Image component for reference
+                            Image originalImage = imgLineNo.GetComponent<Image>();
+                            RectTransform originalRect = imgLineNo.GetComponent<RectTransform>();
+                            int originalSiblingIndex = imgLineNo.GetSiblingIndex();
+                            
+                            // Create replacement
+                            GameObject customLineNo = new GameObject("Img_Line_No_Custom");
+                            customLineNo.transform.SetParent(set01, false);
+                            
+                            // Set sibling index to match original (so it renders in same order)
+                            customLineNo.transform.SetSiblingIndex(originalSiblingIndex);
+                            
+                            // Copy RectTransform properties
+                            RectTransform newRect = customLineNo.AddComponent<RectTransform>();
+                            if (originalRect != null)
+                            {
+                                newRect.anchorMin = originalRect.anchorMin;
+                                newRect.anchorMax = originalRect.anchorMax;
+                                newRect.anchoredPosition = originalRect.anchoredPosition;
+                                newRect.sizeDelta = originalRect.sizeDelta;
+                                newRect.pivot = originalRect.pivot;
+                                newRect.localScale = originalRect.localScale;
+                                newRect.localPosition = originalRect.localPosition;
+                                newRect.localRotation = originalRect.localRotation;
+                            }
+                            
+                            // Add Image component with custom color
+                            Image newImage = customLineNo.AddComponent<Image>();
+                            if (originalImage != null && originalImage.sprite != null)
+                            {
+                                newImage.sprite = originalImage.sprite;
+                            }
+                            newImage.color = isSuikoden1 
+                                ? new Color(0.1f, 0.1f, 0.3f, 1f)  // Dark blue
+                                : new Color(0.3f, 0.15f, 0.05f, 1f); // Dark brown
+                            newImage.raycastTarget = false;
+                        }
+                    }
+                }
+
                 if (Plugin.Config.DetailedTextureLog.Value)
                 {
                     // Processed save window
@@ -90,6 +143,13 @@ namespace PKCore.Patches
 
                         TryInsertBackground(window01.gameObject, isSuikoden1);
 
+                        // Adjust Panel position
+                        Transform panel = window01.Find("Panel");
+                        if (panel != null)
+                        {
+                            panel.localPosition = new Vector3(0f, -21.6f, 0f);
+                        }
+
                         // Adjust Scrollbar Vertical
                         // Path: Window01/Panel/Panel/Scrollbar Vertical
                         Transform scrollbar = window01.Find("Panel/Panel/Scrollbar Vertical");
@@ -100,6 +160,7 @@ namespace PKCore.Patches
                             scrollbar.localScale = new Vector3(1.8f, 0.9f, 1f);
 
                         }
+
                     }
                     else
                     {
@@ -138,24 +199,30 @@ namespace PKCore.Patches
                 // Creating custom background
             }
 
-            // Modify the default HD Remaster Img_bg to black with 20% alpha
+            // Scale and recolor the default HD Remaster Img_bg
             Transform imgBg = saveLoadWindow.transform.Find("Img_bg");
             if (imgBg != null)
             {
-                imgBg.gameObject.SetActive(false);
+                imgBg.localScale = new Vector3(1f, 0.9f, 1f);
+                Image bgImage = imgBg.GetComponent<Image>();
+                if (bgImage != null)
+                {
+                    bgImage.color = new Color(0f, 0f, 0f, 0.5f); // Black with 50% opacity
+                }
                 if (Plugin.Config.DetailedTextureLog.Value)
                 {
-
+                    Plugin.Log.LogDebug("[SaveWindowPatch] Scaled and recolored Img_bg");
                 }
             }
             
+            // Scale Img_Flame
             Transform imgFlame = saveLoadWindow.transform.Find("Img_Flame");
             if (imgFlame != null)
             {
-                imgFlame.gameObject.SetActive(false);
+                imgFlame.localScale = new Vector3(1f, 0.9f, 1f);
                 if (Plugin.Config.DetailedTextureLog.Value)
                 {
-
+                    Plugin.Log.LogDebug("[SaveWindowPatch] Scaled Img_Flame");
                 }
             }
 
