@@ -65,22 +65,30 @@ public class TextDatabasePatch
             
         // Check for Speaker Override by ID
         string speakerKey = $"{id}:{index}";
-        string speakerName = NPCPortraitPatch.GetSpeakerOverride(speakerKey);
+        string speakerData = NPCPortraitPatch.GetSpeakerOverride(speakerKey);
         
-        if (!string.IsNullOrEmpty(speakerName))
+        if (!string.IsNullOrEmpty(speakerData))
         {
-            // Inject the tag at the start of the text
-            // The text might already have a tag if we used DialogOverrides, but this postfix handles the ID-based SpeakerOverrides case
-            // If we used DialogOverrides, we already have the custom text.
-            // But if we didn't, we want to add the tag to the current text.
-            
-            // Avoid double tagging if the text already starts with a speaker tag that matches
-            if (!__result.StartsWith($"<speaker:{speakerName}>"))
+            // Parse to separate character name from expression (e.g., "Luca|blood" -> "Luca", "blood")
+            // Keep full string for portrait system, but only inject character name in text
+            string displayName = speakerData;
+            if (speakerData.Contains("|"))
             {
-                 __result = $"<speaker:{speakerName}>{__result}";
+                displayName = speakerData.Split('|')[0].Trim();
+            }
+            
+            // Inject the tag with FULL speaker data (includes expression for portrait loading)
+            // but the display name in the game will be clean
+            string speakerTag = $"<speaker:{speakerData}>";
+            
+            // Avoid double tagging
+            if (!__result.StartsWith(speakerTag))
+            {
+                 __result = $"{speakerTag}{__result}";
                  
                  if (Plugin.Config.LogTextIDs.Value)
-                    Plugin.Log.LogInfo($"[TextDebug] Injected Speaker: {speakerKey} -> {speakerName}");
+                    Plugin.Log.LogInfo($"[TextDebug] Injected Speaker: {speakerKey} -> {displayName}" + 
+                        (speakerData.Contains("|") ? $" (variant: {speakerData.Split('|')[1]})" : ""));
             }
         }
     }
@@ -108,16 +116,27 @@ public class TextDatabasePatch
             return;
             
         string speakerKey = $"{id}:{index}";
-        string speakerName = NPCPortraitPatch.GetSpeakerOverride(speakerKey);
+        string speakerData = NPCPortraitPatch.GetSpeakerOverride(speakerKey);
         
-        if (!string.IsNullOrEmpty(speakerName))
+        if (!string.IsNullOrEmpty(speakerData))
         {
-            if (!__result.StartsWith($"<speaker:{speakerName}>"))
+            // Parse to separate character name from expression
+            string displayName = speakerData;
+            if (speakerData.Contains("|"))
             {
-                 __result = $"<speaker:{speakerName}>{__result}";
+                displayName = speakerData.Split('|')[0].Trim();
+            }
+            
+            // Inject full speaker tag (with expression for portrait system)
+            string speakerTag = $"<speaker:{speakerData}>";
+            
+            if (!__result.StartsWith(speakerTag))
+            {
+                 __result = $"{speakerTag}{__result}";
                  
                  if (Plugin.Config.LogTextIDs.Value)
-                    Plugin.Log.LogInfo($"[TextDebug] Injected Speaker: {speakerKey} -> {speakerName}");
+                    Plugin.Log.LogInfo($"[TextDebug] Injected Speaker: {speakerKey} -> {displayName}" + 
+                        (speakerData.Contains("|") ? $" (variant: {speakerData.Split('|')[1]})" : ""));
             }
         }
     }

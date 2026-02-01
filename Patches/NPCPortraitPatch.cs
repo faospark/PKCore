@@ -36,6 +36,9 @@ public class NPCPortraitPatch
     private static List<PortraitEntry> portraitCache = new List<PortraitEntry>();
     private static Sprite cachedPortraitSprite = null; // Cache the Hero's portrait sprite for reuse
     
+    // Store full speaker name with expression for use in Postfix
+    private static string lastSpeakerWithExpression = null;
+    
     // --- Dialog Replacement System ---
     private static Dictionary<string, string> dialogReplacements = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
     private static string dialogOverridesPath;
@@ -145,6 +148,9 @@ public class NPCPortraitPatch
     /// </summary>
     public static void Initialize()
     {
+        // Initialize PortraitVariants system first
+        PortraitVariants.Initialize();
+        
         // Create NPCPortraits folders following the same structure as CustomTexturePatch
         // GSD1/NPCPortraits/, GSD2/NPCPortraits/, and root NPCPortraits/ for shared
         string texturesPath = Path.Combine(BepInEx.Paths.GameRootPath, "PKCore", "Textures");
@@ -368,50 +374,18 @@ public class NPCPortraitPatch
     
     /// <summary>
     /// Load portrait texture from PNG file
-    /// Priority: GSD1/NPCPortraits/ > GSD2/NPCPortraits/ > NPCPortraits/
+    /// Uses PortraitVariants system for variant support and directory searching
     /// </summary>
-    private static Texture2D LoadPortraitTexture(string npcName)
+    private static Texture2D LoadPortraitTexture(string npcName, string expression = null)
     {
-        string texturesPath = Path.Combine(BepInEx.Paths.GameRootPath, "PKCore", "Textures");
-        string filePath = null;
-        
-        // Try GSD1 folder first
-        string gsd1Path = Path.Combine(texturesPath, "GSD1", "NPCPortraits", $"{npcName}.png");
-        if (File.Exists(gsd1Path))
-        {
-            filePath = gsd1Path;
-            if (Plugin.Config.DetailedTextureLog.Value)
-                Plugin.Log.LogInfo($"[NPCPortrait] Using GSD1 portrait: {npcName}");
-        }
-        
-        // Try GSD2 folder second
-        if (filePath == null)
-        {
-            string gsd2Path = Path.Combine(texturesPath, "GSD2", "NPCPortraits", $"{npcName}.png");
-            if (File.Exists(gsd2Path))
-            {
-                filePath = gsd2Path;
-                if (Plugin.Config.DetailedTextureLog.Value)
-                    Plugin.Log.LogInfo($"[NPCPortrait] Using GSD2 portrait: {npcName}");
-            }
-        }
-        
-        // Fallback to shared folder
-        if (filePath == null)
-        {
-            string sharedPath = Path.Combine(portraitsPath, $"{npcName}.png");
-            if (File.Exists(sharedPath))
-            {
-                filePath = sharedPath;
-                if (Plugin.Config.DetailedTextureLog.Value)
-                    Plugin.Log.LogInfo($"[NPCPortrait] Using shared portrait: {npcName}");
-            }
-        }
+        // Use PortraitVariants system to find the portrait file
+        string filePath = PortraitVariants.GetPortraitPath(npcName, expression);
         
         if (filePath == null)
         {
             if (Plugin.Config.DetailedTextureLog.Value)
-                Plugin.Log.LogWarning($"[NPCPortrait] Portrait file not found: {npcName}");
+                Plugin.Log.LogWarning($"[NPCPortrait] Portrait file not found: {npcName}" + 
+                    (expression != null ? $" ({expression})" : ""));
             return null;
         }
         
@@ -557,7 +531,17 @@ public class NPCPortraitPatch
                 string newName = match.Groups[1].Value;
                 Plugin.Log.LogInfo($"[NPCPortrait] Found speaker tag! Overriding '{name}' with '{newName}'");
                 
-                name = newName;
+                // Store full name with expression for Postfix
+                lastSpeakerWithExpression = newName;
+                
+                // Parse to get display name only (remove expression)
+                string displayName = newName;
+                if (newName.Contains("|"))
+                {
+                    displayName = newName.Split('|')[0].Trim();
+                }
+                
+                name = displayName; // Set to display name for UI
                 message = message.Replace(match.Value, "").TrimStart(); // Remove tag and potential leading space
                 
                 // Force portrait lookup by clearing existing faceImage
@@ -696,9 +680,15 @@ public class NPCPortraitPatch
         if (string.IsNullOrEmpty(name))
             return;
         
-        string key = name.ToLower();
+        // Use stored full name with expression if available, otherwise parse current name
+        string fullName = lastSpeakerWithExpression ?? name;
+        lastSpeakerWithExpression = null; // Clear after use
+        
+        // Parse name for expression variants (e.g., "Luca|blood")
+        var (characterName, expression) = PortraitVariants.ParseSpeakerString(fullName);
+        string key = characterName.ToLower();
             
-        Plugin.Log.LogInfo($"[NPCPortrait] Postfix - Attempting to inject portrait for '{name}' directly into Img_Face");
+        Plugin.Log.LogInfo($"[NPCPortrait] Postfix - Attempting to inject portrait for '{characterName}'{(expression != null ? $" ({expression})" : "")} directly into Img_Face");
         
         try
         {
@@ -802,12 +792,12 @@ public class NPCPortraitPatch
                 }
             }
             
-            // Load custom texture (or fp_129 as fallback)
-            Texture2D customTexture = LoadPortraitTexture(key);
+            // Load custom texture with variant support (or fp_129 as fallback)
+            Texture2D customTexture = LoadPortraitTexture(characterName, expression);
             if (customTexture == null)
             {
                 // Use fp_129.png as placeholder
-                customTexture = LoadPortraitTexture("fp_129");
+                customTexture = LoadPortraitTexture("fp_129", null);
                 if (customTexture == null)
                 {
                     Plugin.Log.LogError($"[NPCPortrait] Failed to load custom texture or fp_129 fallback");
