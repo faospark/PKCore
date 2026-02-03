@@ -170,7 +170,7 @@ public sealed class ModConfiguration
             "- PS4: 'PlayStation', 'PlayStation4', 'DS4', 'PS4' (_01 suffix)\n" +
             "- PS5: 'PlayStation5', 'DualSense', 'PS5' (_02 suffix)\n" +
             "- /Generic/PC: 'Generic', 'PC', 'Keyboard' (_00 suffix)\n" +
-            "- XboxNative: 'XboxNative' (_03 suffix - use with custom textures)\n" +
+            "- Xbox: 'Xbox' (_03 suffix - use with custom textures)\n" +
             "- Switch: 'Switch', 'Nintendo' (_04 suffix - use with custom textures)\n" +
             "- Custom: 'Custom' (_05 suffix - use with custom textures)\n" +
             "Only applies if ForceControllerPrompts is enabled."
@@ -242,14 +242,14 @@ public sealed class ModConfiguration
         ColoredIntroAndFlashbacks = _config.Bind(
             "Suikoden 2",
             "ColoredIntroAndFlashbacks",
-            false,
+            true,
             "Enable colored intro and flashback sequences for Suikoden 2. When enabled, disables the CustomPostEffect component to restore color to these scenes."
         );
 
         EnableWarAbilityMod = _config.Bind(
             "Suikoden 2",
             "EnableWarAbilityMod",
-            false,
+            true,
             "Enable war battle ability modification. Allows you to customize character abilities in Suikoden 2's war battles. Wont appear on the game menu of Apple but will have an effect on battle. Base is already boosted but can be further configures in PKCore/Config/war_abilities.json"
         );
 
@@ -284,8 +284,8 @@ public sealed class ModConfiguration
         SMAAQuality = _config.Bind(
             "Graphics",
             "SMAAQuality",
-            "High",
-            "SMAA anti-aliasing quality Mainly for battle effects. Options: Off, Low, Medium, High. Higher quality = better visuals but lower performance."
+            "Low",
+            "SMAA anti-aliasing quality. Options: Off, Low, Medium, High. NOTE: 'Low' often provides the best visual quality for this game - higher settings add temporal sampling that can cause blur. Recommended: Low."
         );
 
         EnableTextureManifestCache = _config.Bind(

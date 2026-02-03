@@ -5,7 +5,8 @@ using UnityEngine.Rendering.PostProcessing;
 namespace PKCore.Patches
 {
     /// <summary>
-    /// Enables real SMAA (Subpixel Morphological Anti-Aliasing) using the game's post-processing system
+    /// Enables real SMAA (Subpixel Morphological Anti-Aliasing) using the game's post-processing system.
+    /// NOTE: 'Low' quality often provides the best results - higher settings add temporal sampling that can blur sprites.
     /// </summary>
     [HarmonyPatch]
     public class SMAAPatch
