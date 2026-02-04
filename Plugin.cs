@@ -164,6 +164,13 @@ public class Plugin : BasePlugin
             ResolutionPatch.Initialize();
         }
 
+        // World Map Effects patch
+        if (Config.DisableWorldMapClouds.Value)
+        {
+            Log.LogInfo("Applying World Map Effects patches (Disable Clouds)...");
+            harmony.PatchAll(typeof(WorldMapEffectsPatch));
+        }
+
         // Sprite Post-Processing patch
         if (Config.DisableSpritePostProcessing.Value)
         {

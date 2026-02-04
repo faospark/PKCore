@@ -52,6 +52,10 @@ public sealed class ModConfiguration
 
     // War Ability Mod
     public ConfigEntry<bool> EnableWarAbilityMod { get; private set; }
+    
+    // World Map Settings
+    public ConfigEntry<bool> DisableWorldMapClouds { get; private set; }
+    public ConfigEntry<bool> DisableWorldMapSunrays { get; private set; }
 
     // Suikoden 1 UI Settings
     public ConfigEntry<bool> S1ScaledDownWorldMap { get; private set; }
@@ -251,6 +255,20 @@ public sealed class ModConfiguration
             "EnableWarAbilityMod",
             true,
             "Enable war battle ability modification. Allows you to customize character abilities in Suikoden 2's war battles. Wont appear on the game menu of Apple but will have an effect on battle. Base is already boosted but can be further configures in PKCore/Config/war_abilities.json"
+        );
+
+        DisableWorldMapClouds = _config.Bind(
+            "Visual",
+            "DisableWorldMapClouds",
+            true,
+            "Disable cloud effects on the world map for Suikoden 1 and 2. Removes 'sm_wk_cloud' objects for a clearer view."
+        );
+
+        DisableWorldMapSunrays = _config.Bind(
+            "Visual",
+            "DisableWorldMapSunrays",
+            true,
+            "Disable sunray glow effects on the world map for Suikoden 1 and 2. Removes 'sunLight_Glow1' objects for a cleaner view."
         );
 
         S1ScaledDownWorldMap = _config.Bind(
