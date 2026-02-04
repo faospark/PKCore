@@ -171,8 +171,8 @@ namespace PKCore.Patches
                                     {
                                         // Apply game-specific color
                                         handleImage.color = isSuikoden1 
-                                            ? new Color(0f, 1f, 1f, 1f)  // Cyan
-                                            : new Color(1f, 1f, 0.6f, 1f); // Light yellow
+                                            ? new Color(1f, 1f, 1f, 1f)  // white
+                                            : new Color(1f, 1f, 1f, 1f); // white
                                     }
                                 }
                             }
