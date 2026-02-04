@@ -27,8 +27,6 @@ public sealed class ModConfiguration
 
     // Custom Texture Settings
     public ConfigEntry<bool> EnableCustomTextures { get; private set; }
-    public ConfigEntry<bool> LogReplaceableTextures { get; private set; }
-    public ConfigEntry<bool> LogTexturePaths { get; private set; }
     public ConfigEntry<bool> DetailedTextureLog { get; private set; }
     public ConfigEntry<bool> LoadLauncherUITextures { get; private set; }
     public ConfigEntry<bool> EnableProjectKyaroSprites { get; private set; }
@@ -87,6 +85,8 @@ public sealed class ModConfiguration
     public HiddenConfigEntry<bool> LogExistingMapObjects { get; private set; }
     public HiddenConfigEntry<bool> EnableDialogOverrides { get; private set; }
     public HiddenConfigEntry<float> SpriteMipmapBias { get; private set; }
+    public HiddenConfigEntry<bool> LogReplaceableTextures { get; private set; }
+    public HiddenConfigEntry<bool> LogTexturePaths { get; private set; }
 
 
     public ModConfiguration(ConfigFile config)
@@ -318,20 +318,6 @@ public sealed class ModConfiguration
             "Log all text ID lookups to the console. Enable this to find the ID of dialog lines you want to replace. WARNING: Creates a lot of log output."
         );
 
-        LogReplaceableTextures = _config.Bind(
-            "zz - Diagnostics",
-            "LogReplaceableTextures",
-            false,
-            "Log all textures that could be replaced. Each texture name is logged only once. Useful for discovering which textures you can customize."
-        );
-
-        LogTexturePaths = _config.Bind(
-            "zz - Diagnostics",
-            "LogTexturePaths",
-            false,
-            "Include GameObject hierarchy paths in texture logs. Enable for detailed debugging to see exactly which UI elements use which textures."
-        );
-
         DetailedTextureLog = _config.Bind(
             "zz - Diagnostics",
             "DetailedTextureLog",
@@ -364,6 +350,8 @@ public sealed class ModConfiguration
         DebugCustomObjects = new HiddenConfigEntry<bool>(false);
         LogExistingMapObjects = new HiddenConfigEntry<bool>(false);
         SpriteMipmapBias = new HiddenConfigEntry<float>(-0.5f);
+        LogReplaceableTextures = new HiddenConfigEntry<bool>(false);
+        LogTexturePaths = new HiddenConfigEntry<bool>(false);
 
     }
 }

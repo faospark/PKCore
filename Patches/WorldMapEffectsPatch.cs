@@ -5,9 +5,13 @@ using System;
 namespace PKCore.Patches;
 
 /// <summary>
-/// Patch to disable world map effects like clouds
-/// Suikoden 1: AppRoot/Map/MapBackGround/b_data(Clone)/Rot/Scroll/Scaler/sm_wk_cloud
-/// Suikoden 2: bgManagerHD/wb(Clone)/Rot/Scroll/Scaler/sm_wk_cloud
+/// Patch to disable world map effects like clouds and sunrays
+/// Clouds:
+///   Suikoden 1: AppRoot/Map/MapBackGround/b_data(Clone)/Rot/Scroll/Scaler/sm_wk_cloud
+///   Suikoden 2: bgManagerHD/wb(Clone)/Rot/Scroll/Scaler/sm_wk_cloud
+/// Sunrays:
+///   Suikoden 1: AppRoot/Map/MapBackGround/b_data(Clone)/eff_world_sunLight
+///   Suikoden 2: bgManagerHD/wb(Clone)/eff_world_sunLight
 /// </summary>
 public static class WorldMapEffectsPatch
 {
@@ -37,7 +41,7 @@ public static class WorldMapEffectsPatch
                 return;
             }
             
-            if (__instance.name == "sunLight_Glow1" && Plugin.Config.DisableWorldMapSunrays.Value)
+            if (__instance.name == "eff_world_sunLight" && Plugin.Config.DisableWorldMapSunrays.Value)
             {
                 __instance.SetActive(false);
                 LogEffectDisabled(__instance, "Sunray", "Direct Activation");
@@ -73,7 +77,7 @@ public static class WorldMapEffectsPatch
                      }
                      
                      // Disable sunrays
-                     if (Plugin.Config.DisableWorldMapSunrays.Value && t.name == "sunLight_Glow1" && t.gameObject.activeSelf)
+                     if (Plugin.Config.DisableWorldMapSunrays.Value && t.name == "eff_world_sunLight" && t.gameObject.activeSelf)
                      {
                          t.gameObject.SetActive(false);
                          LogEffectDisabled(t.gameObject, "Sunray", "Parent Activation");
