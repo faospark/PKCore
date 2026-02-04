@@ -701,7 +701,7 @@ public partial class CustomTexturePatch
 
         // Preload bath and save point sprites
         PreloadBathSprites();
-        PreloadSavePointSprites();
+        // PreloadSavePointSprites(); // Not necessary - on-demand loading works fine
     }
 
     /// <summary>
