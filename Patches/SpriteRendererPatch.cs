@@ -128,7 +128,7 @@ public partial class CustomTexturePatch
                 
                 if (!shouldSkipReplacementLog)
                 {
-                    if (Plugin.Config.DetailedTextureLog.Value)
+                    if (Plugin.Config.DetailedLogs.Value)
                     {
                         // Include GameObject path in detailed logs
                         Plugin.Log.LogInfo($"[SpriteRendererPatch] Replaced sprite: {originalName} (from {objectPath})");

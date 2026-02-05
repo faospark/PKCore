@@ -277,7 +277,7 @@ public static class PortraitVariants
             string fullPath = Path.Combine(dir, filename);
             if (File.Exists(fullPath))
             {
-                if (Plugin.Config.DetailedTextureLog.Value)
+                if (Plugin.Config.DetailedLogs.Value)
                 {
                     string relativePath = fullPath.Replace(Path.Combine(BepInEx.Paths.GameRootPath, "PKCore", "Textures"), "Textures");
                     Plugin.Log.LogInfo($"[PortraitVariants] Found: {relativePath}");
@@ -315,11 +315,11 @@ public static class PortraitVariants
                 string variantPath = FindPortraitPath(variantFileName);
                 if (variantPath != null)
                 {
-                    if (Plugin.Config.DetailedTextureLog.Value)
+                    if (Plugin.Config.DetailedLogs.Value)
                         Plugin.Log.LogInfo($"[PortraitVariants] Using variant: {characterName} ({expression}) -> {variantFileName}");
                     return variantPath;
                 }
-                else if (Plugin.Config.DetailedTextureLog.Value)
+                else if (Plugin.Config.DetailedLogs.Value)
                 {
                     Plugin.Log.LogWarning($"[PortraitVariants] Variant not found: {variantFileName}");
                 }
@@ -330,12 +330,12 @@ public static class PortraitVariants
         string defaultPath = FindPortraitPath(portraitFile);
         if (defaultPath != null)
         {
-            if (Plugin.Config.DetailedTextureLog.Value)
+            if (Plugin.Config.DetailedLogs.Value)
                 Plugin.Log.LogInfo($"[PortraitVariants] Using default: {characterName} -> {portraitFile}");
             return defaultPath;
         }
         
-        if (Plugin.Config.DetailedTextureLog.Value)
+        if (Plugin.Config.DetailedLogs.Value)
             Plugin.Log.LogWarning($"[PortraitVariants] Portrait not found: {characterName} (mapped to {portraitFile})");
         
         return null;

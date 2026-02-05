@@ -210,7 +210,7 @@ public class MenuScalePatch
         
         if (!isTargetUI) return;
         
-        if (Plugin.Config.DetailedTextureLog.Value)
+        if (Plugin.Config.DetailedLogs.Value)
         {
             Plugin.Log.LogInfo($"[MenuScale] Detected UI activation: {objectName}");
         }

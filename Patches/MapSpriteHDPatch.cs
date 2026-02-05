@@ -43,7 +43,7 @@ namespace PKCore.Patches
                     {
                         mat.mainTexture = customTexture;
                         
-                        if (Plugin.Config.DetailedTextureLog.Value)
+                        if (Plugin.Config.DetailedLogs.Value)
                         {
                             Plugin.Log.LogInfo($"Replaced MapSpriteHD texture: {textureName}");
                         }
@@ -59,7 +59,7 @@ namespace PKCore.Patches
                 string spriteName = originalSprite.name;
                 
                 // Log for diagnostics
-                if (Plugin.Config.DetailedTextureLog.Value)
+                if (Plugin.Config.DetailedLogs.Value)
                 {
                     // Only log if it's NOT a generic atlas texture name (to avoid frame spam)
                     if (!spriteName.Contains("atlas", System.StringComparison.OrdinalIgnoreCase))
@@ -74,7 +74,7 @@ namespace PKCore.Patches
                 {
                     spriteRenderer.sprite = customSprite;
                     
-                    if (Plugin.Config.DetailedTextureLog.Value)
+                    if (Plugin.Config.DetailedLogs.Value)
                     {
                         Plugin.Log.LogInfo($"Replaced MapSpriteHD sprite: {spriteName}");
                     }
