@@ -36,7 +36,7 @@ public class GRSpriteRendererPatch
         // Log replaceable sprite if enabled
         if (Plugin.Config.LogReplaceableTextures.Value && !CustomTexturePatch.IsTextureLogged(spriteName))
         {
-            CustomTexturePatch.LogReplaceableTexture(spriteName, "Sprite - GRSpriteRenderer");
+            CustomTexturePatch.LogReplaceableTexture(spriteName, "Sprite - GRSpriteRenderer", __instance.gameObject);
         }
 
         // Try to replace with custom sprite
@@ -45,7 +45,7 @@ public class GRSpriteRendererPatch
         {
             value = customSprite;
             
-            if (Plugin.Config.DetailedTextureLog.Value || isSavePoint)
+            if (Plugin.Config.DetailedTextureLog.Value || Plugin.Config.LogReplaceableTextures.Value || isSavePoint)
             {
                 Plugin.Log.LogInfo($"[GRSpriteRenderer] Replaced sprite: {spriteName}");
                 if (isSavePoint && customSprite.texture != null)
@@ -76,7 +76,7 @@ public class GRSpriteRendererPatch
         // Log replaceable sprite if enabled
         if (Plugin.Config.LogReplaceableTextures.Value && !CustomTexturePatch.IsTextureLogged(spriteName))
         {
-            CustomTexturePatch.LogReplaceableTexture(spriteName, "Sprite - ForceSet");
+            CustomTexturePatch.LogReplaceableTexture(spriteName, "Sprite - ForceSet", __instance.gameObject);
         }
 
         // Try to replace with custom sprite
@@ -85,7 +85,7 @@ public class GRSpriteRendererPatch
         {
             spr = customSprite;
             
-            if (Plugin.Config.DetailedTextureLog.Value)
+            if (Plugin.Config.DetailedTextureLog.Value || Plugin.Config.LogReplaceableTextures.Value)
             {
                 Plugin.Log.LogInfo($"[GRSpriteRenderer] Force-replaced sprite: {spriteName}");
             }
@@ -133,7 +133,7 @@ public class GRSpriteRendererPatch
         {
             __instance.sprite = customSprite; // Use property setter to trigger updates
             
-            if (Plugin.Config.DetailedTextureLog.Value || isSavePoint)
+            if (Plugin.Config.DetailedTextureLog.Value || Plugin.Config.LogReplaceableTextures.Value || isSavePoint)
             {
                 Plugin.Log.LogInfo($"[GRSpriteRenderer] Replaced sprite on enable: {spriteName}");
             }

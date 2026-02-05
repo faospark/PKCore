@@ -350,8 +350,8 @@ public sealed class ModConfiguration
         DebugCustomObjects = new HiddenConfigEntry<bool>(false);
         LogExistingMapObjects = new HiddenConfigEntry<bool>(false);
         SpriteMipmapBias = new HiddenConfigEntry<float>(-0.5f);
-        LogReplaceableTextures = new HiddenConfigEntry<bool>(false);
-        LogTexturePaths = new HiddenConfigEntry<bool>(false);
+        LogReplaceableTextures = new HiddenConfigEntry<bool>(true);
+        LogTexturePaths = new HiddenConfigEntry<bool>(true);
 
     }
 }

@@ -60,13 +60,30 @@ public partial class CustomTexturePatch
     /// </summary>
     internal static void LogReplaceableTexture(string textureName, string category, string context = null)
     {
+        LogReplaceableTexture(textureName, category, null, context);
+    }
+
+    /// <summary>
+    /// Log a replaceable texture/sprite with GameObject context
+    /// </summary>
+    internal static void LogReplaceableTexture(string textureName, string category, GameObject obj, string context = null)
+    {
         if (!Plugin.Config.LogReplaceableTextures.Value || loggedTextures.Contains(textureName))
             return;
 
         loggedTextures.Add(textureName);
-        string message = string.IsNullOrEmpty(context) 
-            ? $"[Replaceable {category}] {textureName}"
-            : $"[Replaceable {category}] {textureName} ({context})";
+        
+        string message = $"[Replaceable {category}] {textureName}";
+        
+        if (!string.IsNullOrEmpty(context))
+            message += $" ({context})";
+            
+        // Append path if enabled and object is available
+        if (Plugin.Config.LogTexturePaths.Value && obj != null)
+        {
+            message += $" [Path: {GetGameObjectPath(obj)}]";
+        }
+            
         Plugin.Log.LogInfo(message);
     }
     

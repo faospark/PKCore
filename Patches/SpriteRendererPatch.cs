@@ -92,17 +92,16 @@ public partial class CustomTexturePatch
         }
         
         // Log replaceable textures if enabled (only once per texture)
+        // Log replaceable textures if enabled (only once per texture)
         if (Plugin.Config.LogReplaceableTextures.Value && !loggedTextures.Contains(originalName))
         {
-            loggedTextures.Add(originalName);
+            string context = null;
             if (isBathBackground || isBgManager)
             {
-                Plugin.Log.LogInfo($"[Replaceable Sprite] {originalName} (from {objectPath})");
+                context = $"from {objectPath}";
             }
-            else
-            {
-                Plugin.Log.LogInfo($"[Replaceable Sprite] {originalName}");
-            }
+            
+            LogReplaceableTexture(originalName, "Sprite", __instance.gameObject, context);
         }
         
         // Try to load custom sprite replacement
@@ -128,9 +127,9 @@ public partial class CustomTexturePatch
                 
                 if (!shouldSkipReplacementLog)
                 {
-                    if (Plugin.Config.DetailedTextureLog.Value)
+                    if (Plugin.Config.DetailedTextureLog.Value || Plugin.Config.LogReplaceableTextures.Value)
                     {
-                        // Include GameObject path in detailed logs
+                        // Include GameObject path in detailed logs or if explicitly enabled
                         Plugin.Log.LogInfo($"[SpriteRendererPatch] Replaced sprite: {originalName} (from {objectPath})");
                     }
                     else if (isBathBackground || isBgManager)

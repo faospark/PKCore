@@ -53,7 +53,16 @@ public partial class CustomTexturePatch
                     
                     if (!shouldSkipLog)
                     {
-                        Plugin.Log.LogDebug($"Replaced texture: {textureName}");
+                        // If LogReplaceableTextures is on, show replacement confirmation at INFO level
+                        if (Plugin.Config.LogReplaceableTextures.Value)
+                        {
+                            Plugin.Log.LogInfo($"[Replaced Texture - Atlas] {textureName}");
+                        }
+                        else
+                        {
+                            // Otherwise keep it as debug
+                            Plugin.Log.LogDebug($"Replaced texture: {textureName}");
+                        }
                     }
                 }
                 
