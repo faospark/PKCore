@@ -68,7 +68,8 @@ public partial class CustomTexturePatch
     /// </summary>
     internal static void LogReplaceableTexture(string textureName, string category, GameObject obj, string context = null)
     {
-        if (!Plugin.Config.LogReplaceableTextures.Value || loggedTextures.Contains(textureName))
+        // Only log if DetailedTextureLog is enabled AND internal switch is on
+        if (!Plugin.Config.DetailedTextureLog.Value || !Plugin.Config.LogReplaceableTextures.Value || loggedTextures.Contains(textureName))
             return;
 
         loggedTextures.Add(textureName);
