@@ -335,8 +335,18 @@ public static class PortraitVariants
             return defaultPath;
         }
         
+        // FALLBACK: If default is missing (e.g. vanilla asset), try to find fp_219 (Question Mark) from Textures
+        // This handles cases where user defined a variant but the file is missing
+        string fallbackPath = FindPortraitPath("fp_219");
+        if (fallbackPath != null)
+        {
+             if (Plugin.Config.DetailedLogs.Value)
+                Plugin.Log.LogWarning($"[PortraitVariants] Portrait file missing for {characterName}, falling back to fp_219 (Question Mark)");
+             return fallbackPath;
+        }
+
         if (Plugin.Config.DetailedLogs.Value)
-            Plugin.Log.LogWarning($"[PortraitVariants] Portrait not found: {characterName} (mapped to {portraitFile})");
+            Plugin.Log.LogWarning($"[PortraitVariants] Portrait not found and fallback failed: {characterName} (mapped to {portraitFile})");
         
         return null;
     }
