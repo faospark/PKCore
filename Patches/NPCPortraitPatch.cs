@@ -707,17 +707,24 @@ public class NPCPortraitPatch
             {
                 Plugin.Log.LogWarning("[NPCPortrait] Face_Pos not found - creating it");
                 
-                // Find Command_Layout
-                Transform commandLayout = uiSet.Find("All_Select/Img_BG/Command_Layout");
-                if (commandLayout == null)
+                // Find Command_Layout (S2) or fallback to Img_BG (S1?)
+                Transform parentTransform = uiSet.Find("All_Select/Img_BG/Command_Layout");
+                
+                if (parentTransform == null)
                 {
-                    Plugin.Log.LogError("[NPCPortrait] Command_Layout not found - cannot create Face_Pos");
+                    Plugin.Log.LogInfo("[NPCPortrait] Command_Layout not found - trying Img_BG");
+                    parentTransform = uiSet.Find("All_Select/Img_BG");
+                }
+
+                if (parentTransform == null)
+                {
+                    Plugin.Log.LogError("[NPCPortrait] Neither Command_Layout nor Img_BG found - cannot create Face_Pos");
                     return;
                 }
                 
                 // Create Face_Pos GameObject
                 GameObject facePosObj = new GameObject("Face_Pos");
-                facePosObj.transform.SetParent(commandLayout, false);
+                facePosObj.transform.SetParent(parentTransform, false);
                 
                 // Add RectTransform (required for UI)
                 RectTransform facePosRect = facePosObj.AddComponent<RectTransform>();
@@ -743,7 +750,7 @@ public class NPCPortraitPatch
                 imgFaceComponent.raycastTarget = false;
                 
                 facePos = facePosObj.transform;
-                Plugin.Log.LogInfo("[NPCPortrait] ✓ Created Face_Pos and Img_Face");
+                Plugin.Log.LogInfo($"[NPCPortrait] ✓ Created Face_Pos and Img_Face attached to {parentTransform.name}");
             }
             Plugin.Log.LogInfo($"[NPCPortrait] ✓ Found Face_Pos, Active: {facePos.gameObject.activeSelf}");
             

@@ -22,6 +22,12 @@ public partial class CustomTexturePatch
 
         string originalName = value.name;
         
+        // NEW: Ignore atlas (sactx) sprites immediately.
+        // These are handled by SpriteAtlasPatch which intercepts Sprite.texture getter.
+        // Replacing them here blindly causes "Mesh.uv out of bounds" errors.
+        if (originalName.StartsWith("sactx-")) 
+            return;
+        
         // DIAGNOSTIC: ALWAYS log save point sprites to see if Animator calls this
         bool isSavePoint = originalName.Contains("savePoint", StringComparison.OrdinalIgnoreCase);
         if (isSavePoint)
@@ -107,13 +113,7 @@ public partial class CustomTexturePatch
         // Try to load custom sprite replacement
         if (Plugin.Config.EnableCustomTextures.Value)
         {
-            // NEW: Ignore atlas (sactx) sprites here in SpriteRenderer patch.
-            // These are handled by SpriteAtlasPatch which intercepts Sprite.texture getter
-            // and replaces the underlying texture while preserving sprite properties.
-            // Replacing them here blindly often causes "Mesh.uv out of bounds" errors because the new Sprite
-            // has different packing parameters than what the Renderer expects for the atlas.
-            if (originalName.StartsWith("sactx-")) 
-                return;
+
 
             Sprite customSprite = LoadCustomSprite(originalName, value);
             if (customSprite != null)
