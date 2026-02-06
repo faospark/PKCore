@@ -26,7 +26,7 @@ namespace PKCore.Patches
                 {
                     if (material.mainTexture != replacement)
                     {
-                        if (Plugin.Config.DetailedTextureLog.Value)
+                        if (Plugin.Config.DetailedLogs.Value)
                             Plugin.Log.LogInfo($"[MapTexturePatch] Replaced texture for material: {matName}");
                         
                         material.mainTexture = replacement;

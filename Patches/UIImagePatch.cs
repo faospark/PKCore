@@ -49,7 +49,7 @@ public partial class CustomTexturePatch
             return;
         
         // Log replaceable UI sprites if enabled
-        if (Plugin.Config.LogReplaceableTextures.Value && !loggedTextures.Contains(originalName))
+        if (Plugin.Config.DetailedLogs.Value && Plugin.Config.LogReplaceableTextures.Value && !loggedTextures.Contains(originalName))
         {
             loggedTextures.Add(originalName);
             string objectPath = GetGameObjectPath(__instance.gameObject);
@@ -61,7 +61,7 @@ public partial class CustomTexturePatch
         if (customSprite != null)
         {
             // Suppress spammy replacement log even in detailed mode
-            // if (Plugin.Config.DetailedTextureLog.Value)
+            // if (Plugin.Config.DetailedLogs.Value)
             // {
             //     string objectPath = GetGameObjectPath(__instance.gameObject);
             //     Plugin.Log.LogInfo($"[UI Image] Replaced sprite: {originalName} on {objectPath}");

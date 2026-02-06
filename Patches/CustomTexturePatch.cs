@@ -68,8 +68,8 @@ public partial class CustomTexturePatch
     /// </summary>
     internal static void LogReplaceableTexture(string textureName, string category, GameObject obj, string context = null)
     {
-        // Only log if DetailedTextureLog is enabled AND internal switch is on
-        if (!Plugin.Config.DetailedTextureLog.Value || !Plugin.Config.LogReplaceableTextures.Value || loggedTextures.Contains(textureName))
+        // Only log if DetailedLogs is enabled AND internal switch is on
+        if (!Plugin.Config.DetailedLogs.Value || !Plugin.Config.LogReplaceableTextures.Value || loggedTextures.Contains(textureName))
             return;
 
         loggedTextures.Add(textureName);
@@ -154,7 +154,7 @@ public partial class CustomTexturePatch
         if (currentInstanceID == lastBathBGInstanceID)
             return -1;
 
-        if (Plugin.Config.DetailedTextureLog.Value)
+        if (Plugin.Config.DetailedLogs.Value)
         {
             Plugin.Log.LogInfo($"[CustomTexturePatch] New BathBG instance detected (ID: {currentInstanceID}, previous: {lastBathBGInstanceID})");
         }
@@ -177,7 +177,7 @@ public partial class CustomTexturePatch
                     {
                         sr.sprite = customSprite;
                         
-                        if (Plugin.Config.DetailedTextureLog.Value)
+                        if (Plugin.Config.DetailedLogs.Value)
                         {
                             Plugin.Log.LogInfo($"[CustomTexturePatch] Replaced bath sprite: {spriteName} in new BathBG instance");
                         }
@@ -233,7 +233,7 @@ public partial class CustomTexturePatch
         // Block GSD2 textures when in GSD1
         if (currentGame == "GSD1" && isGSD2Path)
         {
-            if (Plugin.Config.DetailedTextureLog.Value)
+            if (Plugin.Config.DetailedLogs.Value)
                 Plugin.Log.LogInfo($"[Isolation] Blocked GSD2 texture in GSD1: {Path.GetFileName(filePath)}");
             return false;
         }
@@ -241,7 +241,7 @@ public partial class CustomTexturePatch
         // Block GSD1 textures when in GSD2
         if (currentGame == "GSD2" && isGSD1Path)
         {
-            if (Plugin.Config.DetailedTextureLog.Value)
+            if (Plugin.Config.DetailedLogs.Value)
                 Plugin.Log.LogInfo($"[Isolation] Blocked GSD1 texture in GSD2: {Path.GetFileName(filePath)}");
             return false;
         }
@@ -445,7 +445,7 @@ public partial class CustomTexturePatch
         {
             if (textureName.Contains("m_gat") || textureName.Contains("Summon"))
             {
-                if (Plugin.Config.DetailedTextureLog.Value)
+                if (Plugin.Config.DetailedLogs.Value)
                     Plugin.Log.LogDebug($"[ReplaceInPlace] No match for: {textureName} (Lookup: {lookupName}, Game: {currentGame})");
             }
             return false;
@@ -483,7 +483,7 @@ public partial class CustomTexturePatch
                     UnityEngine.Object.DontDestroyOnLoad(originalTexture);
                     loaded = true;
                     
-                    if (Plugin.Config.DetailedTextureLog.Value)
+                    if (Plugin.Config.DetailedLogs.Value)
                     {
                         Plugin.Log.LogInfo($"[CustomTexturePatch] Replaced raw DDS texture in-place: {textureName} ({ddsTexture.width}x{ddsTexture.height}, {ddsTexture.format})");
                     }
@@ -525,7 +525,7 @@ public partial class CustomTexturePatch
             UnityEngine.Object.DontDestroyOnLoad(originalTexture);
             
             bool shouldSkipLog = textureName.StartsWith("sactx") || filePath.ToLower().Contains("characters");
-            if (!shouldSkipLog && Plugin.Config.DetailedTextureLog.Value)
+            if (!shouldSkipLog && Plugin.Config.DetailedLogs.Value)
             {
                 Plugin.Log.LogInfo($"[CustomTexturePatch] Replaced raw texture in-place: {textureName} ({originalTexture.width}x{originalTexture.height})");
             }
@@ -676,7 +676,7 @@ public partial class CustomTexturePatch
         }
         
         sw.Stop();
-        if (Plugin.Config.DetailedTextureLog.Value)
+        if (Plugin.Config.DetailedLogs.Value)
         {
             Plugin.Log.LogInfo($"[CustomTexturePatch] Indexed {texturePathIndex.Count} textures from {allFiles.Length} files in {sw.ElapsedMilliseconds}ms");
         }
@@ -709,7 +709,7 @@ public partial class CustomTexturePatch
         // Clear runtime texture cache to remove any old textures from memory
         customTextureCache.Clear();
         
-        if (Plugin.Config.DetailedTextureLog.Value)
+        if (Plugin.Config.DetailedLogs.Value)
         {
             Plugin.Log.LogInfo($"[CustomTexturePatch] Indexed {texturePathIndex.Count} custom texture(s) ready to use");
         }
@@ -742,7 +742,7 @@ public partial class CustomTexturePatch
     /// </summary>
     private static void LogPersistentTextureSummary(string sceneName)
     {
-        if (!Plugin.Config.DetailedTextureLog.Value) return;
+        if (!Plugin.Config.DetailedLogs.Value) return;
         
         var persistentTextureNames = customTextureCache.Keys.Where(IsPersistentKey).ToList();
         var persistentSpriteNames = customSpriteCache.Keys.Where(IsPersistentKey).ToList();
@@ -811,7 +811,7 @@ public partial class CustomTexturePatch
             customSpriteCache.Remove(key);
         }
 
-        if ((texturesCleared > 0 || spritesCleared > 0) && Plugin.Config.DetailedTextureLog.Value)
+        if ((texturesCleared > 0 || spritesCleared > 0) && Plugin.Config.DetailedLogs.Value)
         {
             Plugin.Log.LogInfo($"[Memory] Cleared {texturesCleared} textures and {spritesCleared} sprites on scene transition to {scene.name}");
         }

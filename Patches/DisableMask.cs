@@ -25,12 +25,12 @@ namespace PKCore.Patches
             
             if (_excludedMasks.Count > 0)
             {
-                if (Plugin.Config.DetailedTextureLog.Value)
+                if (Plugin.Config.DetailedLogs.Value)
                     Plugin.Log.LogInfo($"[DisableMask] Initialized - will replace all mask textures EXCEPT: {string.Join(", ", _excludedMasks)}");
             }
             else
             {
-                if (Plugin.Config.DetailedTextureLog.Value)
+                if (Plugin.Config.DetailedLogs.Value)
                     Plugin.Log.LogInfo("[DisableMask] Initialized - will replace all mask textures found in PKCore/Textures");
             }
         }
@@ -61,7 +61,7 @@ namespace PKCore.Patches
                     maskTexture.name = $"{maskName}_Replacement";
                     UnityEngine.Object.DontDestroyOnLoad(maskTexture);
                     _maskTextures[maskName] = maskTexture;
-                    if (Plugin.Config.DetailedTextureLog.Value)
+                    if (Plugin.Config.DetailedLogs.Value)
                         Plugin.Log.LogInfo($"[DisableMask] Loaded replacement texture for '{maskName}': {maskTexture.width}x{maskTexture.height}");
                     return maskTexture;
                 }
@@ -75,6 +75,8 @@ namespace PKCore.Patches
             return null;
         }
 
+        private static System.Collections.Generic.HashSet<string> _loggedItems = new System.Collections.Generic.HashSet<string>();
+
         /// <summary>
         /// Search for and replace mask textures in Image materials
         /// </summary>
@@ -86,13 +88,17 @@ namespace PKCore.Patches
                 return;
             }
 
-            if (Plugin.Config.LogReplaceableTextures.Value)
+            // Only log high-level search if DetailedLogs is enabled
+            bool detailedLog = Plugin.Config.DetailedLogs.Value;
+
+            if (detailedLog && !_loggedItems.Contains($"Search:{faceObject.name}"))
+            {
                 Plugin.Log.LogInfo($"[DisableMask] Searching in: {faceObject.name}");
+                _loggedItems.Add($"Search:{faceObject.name}");
+            }
 
             // Search all Image components
             var allImages = faceObject.GetComponentsInChildren<Image>(true);
-            if (Plugin.Config.LogReplaceableTextures.Value)
-                Plugin.Log.LogInfo($"[DisableMask] Found {allImages.Length} Image components to check");
             
             foreach (var image in allImages)
             {
@@ -100,20 +106,20 @@ namespace PKCore.Patches
                 if (image.material != null)
                 {
                     string materialName = image.material.name;
-                    if (Plugin.Config.LogReplaceableTextures.Value)
+                    string imageKey = $"{image.gameObject.name}:{materialName}";
+
+                    if (detailedLog && !_loggedItems.Contains($"Img:{imageKey}"))
+                    {
                         Plugin.Log.LogInfo($"[DisableMask] Image '{image.gameObject.name}' uses material: {materialName}");
+                        _loggedItems.Add($"Img:{imageKey}");
+                    }
                     
                     // Check if it's a face material or any material with mask properties
                     if (materialName.Contains("UI_Message_Face") || materialName.Contains("Face"))
                     {
-                        if (Plugin.Config.LogReplaceableTextures.Value)
-                            Plugin.Log.LogInfo($"[DisableMask] Found face material: {materialName}");
-                        
                         // Log all texture properties for debugging
                         var shader = image.material.shader;
                         int propertyCount = shader.GetPropertyCount();
-                        if (Plugin.Config.LogReplaceableTextures.Value)
-                            Plugin.Log.LogInfo($"[DisableMask] Material has {propertyCount} properties:");
                         
                         for (int i = 0; i < propertyCount; i++)
                         {
@@ -122,20 +128,21 @@ namespace PKCore.Patches
                             {
                                 string propName = shader.GetPropertyName(i);
                                 var tex = image.material.GetTexture(propName);
-                                string texName = tex != null ? tex.name : "null";
-                                if (Plugin.Config.LogReplaceableTextures.Value)
-                                    Plugin.Log.LogInfo($"[DisableMask]   Texture property '{propName}': {texName}");
                                 
                                 // If we find a mask texture
                                 if (tex != null && (tex.name.Contains("Face_Mask") || tex.name.Contains("_Mask") || propName == "_Mask_Map"))
                                 {
                                     string maskTextureName = tex.name;
+                                    string replacementKey = $"{image.gameObject.GetInstanceID()}:{propName}:{maskTextureName}";
                                     
                                     // Check if this mask is excluded
                                     if (_excludedMasks.Contains(maskTextureName))
                                     {
-                                        if (Plugin.Config.LogReplaceableTextures.Value)
+                                        if (detailedLog && !_loggedItems.Contains($"Skip:{maskTextureName}"))
+                                        {
                                             Plugin.Log.LogInfo($"[DisableMask] Skipping excluded mask: '{maskTextureName}'");
+                                            _loggedItems.Add($"Skip:{maskTextureName}");
+                                        }
                                         continue;
                                     }
                                     
@@ -145,13 +152,22 @@ namespace PKCore.Patches
                                     if (replacementTexture != null)
                                     {
                                         image.material.SetTexture(propName, replacementTexture);
-                                        if (Plugin.Config.DetailedTextureLog.Value)
-                                            Plugin.Log.LogInfo($"[DisableMask] ✓ Replaced '{maskTextureName}' in property '{propName}'");
+                                        
+                                        // Always log successful replacement if DetailedLogs is on, 
+                                        // but only once per image instance to avoid spam on re-enable
+                                        if (detailedLog && !_loggedItems.Contains($"Replace:{replacementKey}"))
+                                        {
+                                            Plugin.Log.LogInfo($"[DisableMask] ✓ Replaced '{maskTextureName}' in property '{propName}' for {image.gameObject.name}");
+                                            _loggedItems.Add($"Replace:{replacementKey}");
+                                        }
                                     }
                                     else
                                     {
-                                        if (Plugin.Config.LogReplaceableTextures.Value)
+                                        if (detailedLog && !_loggedItems.Contains($"Missing:{maskTextureName}"))
+                                        {
                                             Plugin.Log.LogInfo($"[DisableMask] No replacement texture found for '{maskTextureName}'");
+                                            _loggedItems.Add($"Missing:{maskTextureName}");
+                                        }
                                     }
                                 }
                             }
@@ -168,7 +184,7 @@ namespace PKCore.Patches
         [HarmonyPostfix]
         public static void Initialize_Postfix(UIMessage __instance)
         {
-            if (Plugin.Config.DetailedTextureLog.Value)
+            if (Plugin.Config.DetailedLogs.Value)
                 Plugin.Log.LogInfo("[DisableMask] UIMessage.Initialize called");
             
             if (__instance.windowObject != null)
@@ -184,8 +200,11 @@ namespace PKCore.Patches
         [HarmonyPostfix]
         public static void SetFaceImage_Postfix(UIMessage __instance)
         {
-            if (Plugin.Config.LogReplaceableTextures.Value)
-                Plugin.Log.LogInfo("[DisableMask] SetFaceImage called");
+            if (Plugin.Config.DetailedLogs.Value && !_loggedItems.Contains("SetFaceImage"))
+            {
+                Plugin.Log.LogInfo("[DisableMask] SetFaceImage called (logging suppressed for future calls)");
+                _loggedItems.Add("SetFaceImage");
+            }
             
             if (__instance.windowObject != null)
             {
@@ -200,8 +219,11 @@ namespace PKCore.Patches
         [HarmonyPostfix]
         public static void SetFaceImageClassic_Postfix(UIMessage __instance)
         {
-            if (Plugin.Config.LogReplaceableTextures.Value)
-                Plugin.Log.LogInfo("[DisableMask] SetFaceImageClassic called");
+            if (Plugin.Config.DetailedLogs.Value && !_loggedItems.Contains("SetFaceImageClassic"))
+            {
+                Plugin.Log.LogInfo("[DisableMask] SetFaceImageClassic called (logging suppressed for future calls)");
+                _loggedItems.Add("SetFaceImageClassic");
+            }
             
             if (__instance.windowObject != null)
             {
@@ -216,8 +238,11 @@ namespace PKCore.Patches
         [HarmonyPostfix]
         public static void PlayOpenAnimation_Postfix(UIMessage __instance)
         {
-            if (Plugin.Config.LogReplaceableTextures.Value)
-                Plugin.Log.LogInfo("[DisableMask] PlayOpenAnimation called");
+            if (Plugin.Config.DetailedLogs.Value && !_loggedItems.Contains("PlayOpenAnimation"))
+            {
+                Plugin.Log.LogInfo("[DisableMask] PlayOpenAnimation called (logging suppressed for future calls)");
+                _loggedItems.Add("PlayOpenAnimation");
+            }
             
             if (__instance.windowObject != null)
             {

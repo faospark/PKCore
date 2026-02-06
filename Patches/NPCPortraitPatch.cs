@@ -160,7 +160,7 @@ public class NPCPortraitPatch
         if (!Directory.Exists(portraitsPath))
         {
             Directory.CreateDirectory(portraitsPath);
-            if (Plugin.Config.DetailedTextureLog.Value)
+            if (Plugin.Config.DetailedLogs.Value)
                 Plugin.Log.LogInfo($"Created shared NPCPortraits directory at: {portraitsPath}");
         }
         
@@ -169,7 +169,7 @@ public class NPCPortraitPatch
         if (!Directory.Exists(gsd1PortraitsPath))
         {
             Directory.CreateDirectory(gsd1PortraitsPath);
-            if (Plugin.Config.DetailedTextureLog.Value)
+            if (Plugin.Config.DetailedLogs.Value)
                 Plugin.Log.LogInfo($"Created GSD1 NPCPortraits directory at: {gsd1PortraitsPath}");
         }
         
@@ -177,12 +177,12 @@ public class NPCPortraitPatch
         if (!Directory.Exists(gsd2PortraitsPath))
         {
             Directory.CreateDirectory(gsd2PortraitsPath);
-            if (Plugin.Config.DetailedTextureLog.Value)
+            if (Plugin.Config.DetailedLogs.Value)
                 Plugin.Log.LogInfo($"Created GSD2 NPCPortraits directory at: {gsd2PortraitsPath}");
         }
         
         // Diagnostic: Test loading various portrait sprite names (only if detailed logging enabled)
-        if (Plugin.Config.DetailedTextureLog.Value)
+        if (Plugin.Config.DetailedLogs.Value)
         {
             Plugin.Log.LogInfo("Testing portrait sprite names...");
             
@@ -235,7 +235,7 @@ public class NPCPortraitPatch
         // Load dialog overrides
         LoadDialogOverrides();
         
-        if (Plugin.Config.DetailedTextureLog.Value)
+        if (Plugin.Config.DetailedLogs.Value)
             Plugin.Log.LogInfo("NPC Portrait System Ready!");
             
         // Subscribe to game change events for lazy reloading
@@ -274,7 +274,7 @@ public class NPCPortraitPatch
                 string portraitName = Path.GetFileNameWithoutExtension(filePath);
                 portraitNames.Add(portraitName);
                 
-                if (Plugin.Config.DetailedTextureLog.Value)
+                if (Plugin.Config.DetailedLogs.Value)
                     Plugin.Log.LogInfo($"Found GSD1 portrait: {portraitName}");
             }
         }
@@ -291,7 +291,7 @@ public class NPCPortraitPatch
                 {
                     portraitNames.Add(portraitName);
                     
-                    if (Plugin.Config.DetailedTextureLog.Value)
+                    if (Plugin.Config.DetailedLogs.Value)
                         Plugin.Log.LogInfo($"Found GSD2 portrait: {portraitName}");
                 }
             }
@@ -306,7 +306,7 @@ public class NPCPortraitPatch
             {
                 portraitNames.Add(portraitName);
                 
-                if (Plugin.Config.DetailedTextureLog.Value)
+                if (Plugin.Config.DetailedLogs.Value)
                     Plugin.Log.LogInfo($"Found shared portrait: {portraitName}");
             }
         }
@@ -317,7 +317,7 @@ public class NPCPortraitPatch
             portraitCache.Add(new PortraitEntry(name.ToLower(), null));
         }
         
-        if (Plugin.Config.DetailedTextureLog.Value)
+        if (Plugin.Config.DetailedLogs.Value)
         {
             Plugin.Log.LogInfo($"Preloaded {portraitCache.Count} custom NPC portrait(s)");
         }
@@ -361,7 +361,7 @@ public class NPCPortraitPatch
             // Cache it for use
             cachedPortraitSprite = baseSprite;
             
-            if (Plugin.Config.DetailedTextureLog.Value)
+            if (Plugin.Config.DetailedLogs.Value)
             {
                 Plugin.Log.LogInfo($"[NPCPortrait] ✓ Preloaded base portrait sprite fp_129 ({baseTexture.width}x{baseTexture.height})");
             }
@@ -383,7 +383,7 @@ public class NPCPortraitPatch
         
         if (filePath == null)
         {
-            if (Plugin.Config.DetailedTextureLog.Value)
+            if (Plugin.Config.DetailedLogs.Value)
                 Plugin.Log.LogWarning($"[NPCPortrait] Portrait file not found: {npcName}" + 
                     (expression != null ? $" ({expression})" : ""));
             return null;
@@ -404,7 +404,7 @@ public class NPCPortraitPatch
                 
                 UnityEngine.Object.DontDestroyOnLoad(texture);
                 
-                if (Plugin.Config.DetailedTextureLog.Value)
+                if (Plugin.Config.DetailedLogs.Value)
                     Plugin.Log.LogInfo($"[NPCPortrait] ✓ Loaded portrait texture: {npcName} ({texture.width}x{texture.height})");
                 
                 return texture;
@@ -504,7 +504,7 @@ public class NPCPortraitPatch
     [HarmonyPrefix]
     public static void OpenMessageWindow_Prefix(ref Sprite faceImage, ref string name, ref string message)
     {
-        if (Plugin.Config.LogReplaceableTextures.Value)
+        if (Plugin.Config.DetailedLogs.Value && Plugin.Config.LogReplaceableTextures.Value)
             Plugin.Log.LogInfo($"[NPCPortrait] OpenMessageWindow called - Name: '{name}', HasFaceImage: {faceImage != null}");
         
 
@@ -553,7 +553,7 @@ public class NPCPortraitPatch
         // If there's an existing portrait, capture it for reuse!
         if (faceImage != null)
         {
-            if (Plugin.Config.LogReplaceableTextures.Value)
+            if (Plugin.Config.DetailedLogs.Value && Plugin.Config.LogReplaceableTextures.Value)
                 Plugin.Log.LogInfo($"[NPCPortrait] Capturing portrait sprite: {faceImage.name}, texture: {faceImage.texture.name}");
             cachedPortraitSprite = faceImage;
             return;
@@ -672,7 +672,7 @@ public class NPCPortraitPatch
         // Only try to inject if there's no existing portrait
         if (faceImage != null)
         {
-            if (Plugin.Config.LogReplaceableTextures.Value)
+            if (Plugin.Config.DetailedLogs.Value && Plugin.Config.LogReplaceableTextures.Value)
                 Plugin.Log.LogInfo($"[NPCPortrait] Postfix - '{name}' already has portrait, skipping");
             return;
         }
