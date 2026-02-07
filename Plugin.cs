@@ -40,6 +40,7 @@ public class Plugin : BasePlugin
         try
         {
             Il2CppInterop.Runtime.Injection.ClassInjector.RegisterTypeInIl2Cpp<SavePointSpriteMonitor>();
+            Il2CppInterop.Runtime.Injection.ClassInjector.RegisterTypeInIl2Cpp<ReactionMonitor>();
 
 
         }
@@ -298,6 +299,9 @@ public class Plugin : BasePlugin
             Log.LogInfo("Initializing War Ability Modification...");
             WarAbilityPatch.Initialize(Log);
         }
+
+        // Reaction Monitor (MapChara/r_action trigger)
+        ReactionMonitor.Initialize();
 
     }
 }

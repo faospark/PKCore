@@ -376,15 +376,15 @@ public class NPCPortraitPatch
     /// Load portrait texture from PNG file
     /// Uses PortraitVariants system for variant support and directory searching
     /// </summary>
-    private static Texture2D LoadPortraitTexture(string npcName, string expression = null)
+    public static Texture2D LoadPortraitTexture(string characterName, string expression = null)
     {
         // Use PortraitVariants system to find the portrait file
-        string filePath = PortraitVariants.GetPortraitPath(npcName, expression);
+        string filePath = PortraitVariants.GetPortraitPath(characterName, expression);
         
         if (filePath == null)
         {
             if (Plugin.Config.DetailedLogs.Value)
-                Plugin.Log.LogWarning($"[NPCPortrait] Portrait file not found: {npcName}" + 
+                Plugin.Log.LogWarning($"[NPCPortrait] Portrait file not found: {characterName}" + 
                     (expression != null ? $" ({expression})" : ""));
             return null;
         }
@@ -397,7 +397,7 @@ public class NPCPortraitPatch
             
             if (ImageConversion.LoadImage(texture, fileData))
             {
-                texture.name = npcName;
+                texture.name = characterName;
                 texture.filterMode = FilterMode.Bilinear;
                 texture.wrapMode = TextureWrapMode.Clamp;
                 texture.anisoLevel = 4;
@@ -405,20 +405,20 @@ public class NPCPortraitPatch
                 UnityEngine.Object.DontDestroyOnLoad(texture);
                 
                 if (Plugin.Config.DetailedLogs.Value)
-                    Plugin.Log.LogInfo($"[NPCPortrait] ✓ Loaded portrait texture: {npcName} ({texture.width}x{texture.height})");
+                    Plugin.Log.LogInfo($"[NPCPortrait] ✓ Loaded portrait texture: {characterName} ({texture.width}x{texture.height})");
                 
                 return texture;
             }
             else
             {
-                Plugin.Log.LogError($"[NPCPortrait] Failed to decode image data for: {npcName}");
+                Plugin.Log.LogError($"[NPCPortrait] Failed to decode image data for: {characterName}");
                 UnityEngine.Object.Destroy(texture);
                 return null;
             }
         }
         catch (System.Exception ex)
         {
-            Plugin.Log.LogError($"[NPCPortrait] Error loading portrait {npcName}: {ex.Message}");
+            Plugin.Log.LogError($"[NPCPortrait] Error loading portrait {characterName}: {ex.Message}");
             return null;
         }
     }
