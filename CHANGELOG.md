@@ -5,6 +5,25 @@ All notable changes to PKCore (formerly PKextended) will be documented in this f
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026.01.2] - 2026-02-07
+
+### Added
+
+- **Reaction Portrait UI**: Enhanced visual presentation with fade-in animation, removed purple background, and fixed dimensions (300x300 at x:636.85, y:-262.34).
+
+### Changed
+
+- **Log Cleanup**: Suppressed `DisableMask` log spam; messages now only appear when `DetailedTextureLog` is enabled.
+- **Jowy Disguise**: Reverted multi-character support for Jowy's disguise.
+
+### Fixed
+
+- **Hidden Config**: Fixed CS0029 compilation error in `ModConfiguration.cs`.
+
+### Removed
+
+- **Dialog Chaining**: Removed dialog chaining functionality (Interceptor Pattern).
+
 ## [2026.01.1] - 2026-02-05
 
 ### Changed
