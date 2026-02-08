@@ -288,6 +288,10 @@ public partial class CustomTexturePatch
     [HarmonyPrefix]
     public static void Material_set_mainTexture_Prefix(Material __instance, ref Texture value)
     {
+        // Skip materials without _MainTex property (custom shaders like GR/Pinhole)
+        if (__instance == null || !__instance.HasProperty("_MainTex"))
+            return;
+
         if (value == null || !Plugin.Config.EnableCustomTextures.Value)
             return;
 
@@ -316,6 +320,10 @@ public partial class CustomTexturePatch
     [HarmonyPostfix]
     public static void Material_get_mainTexture_Postfix(Material __instance, ref Texture __result)
     {
+        // Skip materials without _MainTex property (custom shaders like GR/Pinhole)
+        if (__instance == null || !__instance.HasProperty("_MainTex"))
+            return;
+
         if (__result == null || !Plugin.Config.EnableCustomTextures.Value)
             return;
 

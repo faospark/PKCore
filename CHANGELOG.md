@@ -5,6 +5,8 @@ All notable changes to PKCore (formerly PKextended) will be documented in this f
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+> **Note**: This changelog primarily documents changes specific to PK Core. Version numbers may not align with the Project Kyaro Suite releases on Nexus Mods, as PK Core development may progress independently.
+
 ## [2026.01.2] - 2026-02-07
 
 ### Added
@@ -70,8 +72,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added - Performance & Advanced Systems
 
-- **Native DDS Support**: Load pre-compressed `.dds` files (BC1/BC3/BC7) for faster load times and zero runtime stuttering.
-- **Runtime Compression**: All PNG/JPG custom textures are automatically compressed to BC1/BC3 at runtime to save VRAM.
+- **Native DDS Support**: Load pre-compressed `.dds` files (BC1/BC3/BC7) for reduced VRAM usage and faster load times.
+- **Manifest Caching**: XML-based texture index cache system dramatically reduces startup time.
 - **SMAA Anti-Aliasing**: High-quality **Subpixel Morphological Anti-Aliasing** can now be applied to the main camera.
 - **Experimental Object Insertion**: Framework to add entirely new static objects to scenes via JSON configuration (`fixed_objects.json`).
 - **Config Folder Management**: All local configuration JSONs (War stats, Dialog overrides) now reside in `PKCore/Config/`.

@@ -2,6 +2,8 @@
 
 PKCore includes a sophisticated caching and optimization system designed to handle large texture packs (like Project Kyaro) without compromising game startup times or runtime performance.
 
+**Note:** Both Suikoden I and II are supported for texture replacement. NPC portrait injection for Suikoden I is deferred for future implementation.
+
 ## 1. Texture Manifest Caching
 
 Scanning thousands of custom PNG files every time the game starts can significantly delay the "Press Start" screen. PKCore solves this with the **Texture Manifest Cache**.
@@ -40,8 +42,9 @@ For the absolute best performance, PKCore supports pre-compressed **DDS** files.
 
 - **Fastest Loading**: DDS files are already in the GPU's native format. They skip expensive runtime processing entirely.
 - **In-Place Replacement**: PKCore performs "Low-Level In-Place Replacement" for DDS files, copying raw pixel data directly into the game's original texture memory. This preserves all game references while swapping the visual content.
-- **Priority**: `.dds` files take priority over `.png` if both valid files exist in the same priority layer.
-- **Formats Supported**: BC1 (DXT1) for opaque textures, BC3 (DXT5) for textures with transparency.
+- **Priority**: `.dds` files take priority over `.png`/`.jpg`/`.tga` if multiple valid files exist in the same priority layer.
+- **Formats Supported**: BC1 (DXT1) for opaque textures, BC3 (DXT5) for textures with transparency, BC7 for high-quality compression.
+- **Other Formats**: PKCore also supports `.png`, `.jpg`, `.jpeg`, and `.tga` image files.
 
 ## 4. Intelligent Scene-Based Memory Caching
 
@@ -78,16 +81,21 @@ PKCore features a "Smart Memory" management system that tracks custom textures a
 PKCore supports the following recommended folder structure:
 ```
 PKCore/Textures/
-├── *.png, *.dds          # Base game textures (lowest priority)
-├── GSD1/                 # Suikoden 1 specific textures (medium priority)
-├── GSD2/                 # Suikoden 2 specific textures (medium priority)
-├── 00-Mods/              # GLOBAL OVERRIDES (Highest Priority)
-│   ├── Launcher-Mod/     # Custom launcher UI
-│   ├── Minimal-UI-Mod/   # Minimal UI textures
-│   └── PKS1/, PKS2/      # Project Kyaro sprites
-├── NPCPortraits/         # Custom NPC portrait images
-└── SavePoint/            # Save point orb color variants
+├── *.png, *.dds, *.tga, *.jpg    # Base game textures (lowest priority)
+├── GSD1/                         # Suikoden 1 specific textures (medium priority)
+│   └── [AnyFolder]/              # S1 game-specific textures
+├── GSD2/                         # Suikoden 2 specific textures (medium priority)
+│   ├── NPCPortraits/             # S2 custom NPC portraits (recursive search)
+│   └── [AnyFolder]/              # S2 game-specific textures
+├── 00-Mods/                      # GLOBAL OVERRIDES (Highest Priority)
+│   ├── Launcher-Mod/             # Custom launcher UI
+│   ├── Minimal-UI-Mod/           # Minimal UI textures
+│   └── PKS1/, PKS2/              # Project Kyaro sprites
+├── NPCPortraits/                 # Shared custom NPC portraits (S2 only - fallback)
+└── SavePoint/                    # Save point orb color variants
 ```
+
+**Note:** NPC portrait injection currently works for Suikoden II only. GSD1 folders support all other texture types.
 
 ***
 *Note: The Texture Manifest Cache is located in `PKCore/Cache/`. To reset all caches, simple delete the `Cache` folder and restart the game.*

@@ -1,25 +1,67 @@
 # PKCore - Project Kyaro Core
 
 **By faospark**
-**Current Version: 2026.1.0**
+**Current Version: 2026.2.0**
 
-The **core DLL component** for **[Project Kyaro](https://www.nexusmods.com/suikoden1and2hdremaster/mods/6)** that provides a variety of features such as texture replacement framework, sprite smoothing, anti-aliasing, graphical and visual enhancement, and some gameplay enhancement for **Suikoden I & II HD Remaster**. As 2026, PKExtended has been Transformed to PKCore as this is now the backbone of Project Kyaro . Special K has now been removed as a Dependecy . 
+The **core DLL component** for **[Project Kyaro](https://www.nexusmods.com/suikoden1and2hdremaster/mods/6)** that provides a variety of features such as texture replacement framework, sprite smoothing, anti-aliasing, graphical and visual enhancement, and some gameplay enhancement for **Suikoden I & II HD Remaster**. As 2026, PKExtended has been Transformed to PKCore as this is now the backbone of Project Kyaro . Special K has now been removed as a Dependecy .
 
 > **Note**: This repository contains the **source code for the PKCore.dll** file. The complete Project Kyaro mod package (including upscaled textures) is available on [Nexus Mods](https://www.nexusmods.com/suikoden1and2hdremaster/mods/6).
 
-## Requirements
-
-- **BepInEx 6.0.0-pre.2 IL2CPP**
-- **Suikoden I & II HD Remaster** (U`nity 2022.3.28f1)
-- **Highly Recommended**: [Suikoden Fix](https://github.com/d3xMachina/BepInEx.Suikoden) for best experience
-
 ## Features
 
-### Custom Texture Replacement (PNG & DDS)
+
+**[Can Be Toggled]**
+
+* Re-Texture Framework
+* Upscaled Smooth Sprites (can be toggled off)
+* Sprite Filtering and Anti-Aliasing (SMAA)
+* NPC Portraits Framework
+* Comprehensive Portrait Variant Support
+* Colored Intros and Flashbacks
+* Boosted War Battles (S2)
+* Button Controller Prompt Support (expanded to include more options)
+* Alternative Launcher (based on unused in‑game assets)
+* Minimal UI
+* Classic‑ish Save Menu UI
+* Disable Dialogue Portrait Mask
+* Scaled‑Down Dialogue Box
+* Scaled‑Down Menu
+* Customizable Save Point Crystal Color
+* Disable White Save Point Glow (reduces the washed‑out look of the crystal)
+* Disable World Map Clouds
+* Disable World Map Sun Rays
+* Scaled‑Down World Map of Suikoden 1
+* Alternative Run Animation for Tir (Project Kyaro sprites)
+* Restore Bamboo Fence on Mercenary Fortress
+
+**[Performance Features]**
+
+* Texture Manifest Cache
+* Texture Memory Caching
+* Resolution Scaling
+
+**[Baked In]**
+
+* Added Headquarters Signage (S1)
+* Fixed Backgrounds with Bad Baked DOF (S2)
+* Fixed Inconsistent Telescope on HQ (S2)
+* Replaced Low‑Quality Upscaled Doors in the Inn Area (S2)
+
+**[Utility]**
+
+* Borderless Mode
+* Show Mouse Cursor
+
+**[Additionals from Nexus Bundle]**
+
+* Restore the Dash in the Letter “Z” via Custom Font
+* Alternate CRC Bypass for Version 1.0.4
+
+
 
 Replace game textures with custom PNG or DDS files in `BepInEx/plugins/PKCore/Textures/`. Use `00-Mods/` subfolder for highest priority custom mods.
 
-**Performance Optimization**: Built-in BC1/BC3 runtime compression and manifest caching dramatically improve boot times and eliminate runtime stuttering. See **[Caching.md](Caching.md)** for technical details.
+**Performance Optimization**: Built-in manifest caching dramatically improves boot times. DDS format support allows pre-compressed textures (BC1/BC3/BC7) for reduced VRAM usage and faster loading.
 
 ### Advanced Customization
 
@@ -30,9 +72,12 @@ Replace game textures with custom PNG or DDS files in `BepInEx/plugins/PKCore/Te
 - **Controller Prompt Override**: Force specific button icons (Xbox/PS4/PS5/Switch) regardless of detected controller.
 - **Experimental Object Insertion**: Add new static objects to scenes via configuration.
 
-### Sprite Smoothing & Anti-Aliasing (SMAA)
 
-Designed for **Project Kyaro's upscaled sprites** - adds granular texture filtering with 4 quality levels (High/Medium/Low/Off) and mipmap bias control. Now includes native **SMAA (Subpixel Morphological Anti-Aliasing)** for the smoothest possible edges.
+## Requirements
+
+- **BepInEx 6.0.0-pre.2 IL2CPP**
+- **Suikoden I & II HD Remaster** (U`nity 2022.3.28f1)
+- **Highly Recommended**: [Suikoden Fix](https://github.com/d3xMachina/BepInEx.Suikoden) for best experience
 
 ## Installation
 
@@ -43,19 +88,6 @@ Designed for **Project Kyaro's upscaled sprites** - adds granular texture filter
 ## Configuration
 
 Config file auto-generates at `BepInEx\config\faospark.pkcore.cfg` on first launch.
-
-**Latest (v2.1.0):**
-
-- **Native DDS Support**: Load pre-compressed DDS files for faster loading.
-- **Runtime Compression**: Automatic BC1/BC3 compression for PNGs.
-- **SMAA Anti-Aliasing**: High-quality edge smoothing for the main camera.
-- **S2 Summon Replacement**: Support for replacing summon effect textures.
-- **NPC Portraits**: Inject custom portraits into the dialog system.
-- **War Battle Modding**: Configurable stats for Suikoden 2 war battles.
-- **UI scaling**: Presets for dialog box and menu sizes.
-- **Save Point Customization**: Choose from 5 color variants (blue/red/yellow/pink/green) and disable glow effect
-- **Config-Aware Manifest Cache**: Texture index automatically rebuilds when config settings change
-- **Texture Variant System**: Centralized texture variant handling in TextureOptions.cs
 
 ## Migration Guide (PKextended → PKCore)
 
@@ -70,7 +102,6 @@ If you have **PKextended.dll** or Older Versions of Project Kyaro installed from
 2. **Config File** (optional - will auto-generate):
 
    - New config: `BepInEx/config/faospark.pkcore.cfg`
-   - You can copy your old settings to the new file, or let it regenerate with defaults
 
 ## Development
 
