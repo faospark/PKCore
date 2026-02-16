@@ -335,7 +335,7 @@ LogTextIDs = true
 ### Logging
 Enable detailed logs in mod config:
 ```
-[NPCPortrait] Found: GSD2/NPCPortraits/fp_140_blood.png
+[PotraitSystem] Found: GSD2/NPCPortraits/fp_140_blood.png
 [PortraitVariants] Using variant: Luca (blood) -> fp_140_blood.png
 [PortraitVariants] Using default: Bonaparte -> bonaparte.png
 [DialogPatch] message:1002160039 - Speaker: Luca|laugh1 - Text: "Hahaha!"

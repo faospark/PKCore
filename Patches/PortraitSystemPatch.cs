@@ -129,7 +129,7 @@ public class PortraitSystemPatch
             {
                 if (image.sprite != null && image.gameObject.name.Contains("Face"))
                 {
-                    Plugin.Log.LogInfo($"[NPCPortrait] Found potential portrait sprite: {image.gameObject.name}");
+                    Plugin.Log.LogInfo($"[PotraitSystem] Found potential portrait sprite: {image.gameObject.name}");
                     cachedPortraitSprite = image.sprite;
                     return cachedPortraitSprite;
                 }
@@ -137,7 +137,7 @@ public class PortraitSystemPatch
         }
         catch (System.Exception ex)
         {
-            Plugin.Log.LogError($"[NPCPortrait] Error finding Hero portrait: {ex.Message}");
+            Plugin.Log.LogError($"[PotraitSystem] Error finding Hero portrait: {ex.Message}");
         }
         
         return null;
@@ -241,7 +241,7 @@ public class PortraitSystemPatch
         // Subscribe to game change events for lazy reloading
         GameDetection.OnGameChanged += (newGame) => 
         {
-            Plugin.Log.LogInfo($"[NPCPortrait] Event received: Game changed to {newGame}. Reloading portraits...");
+            Plugin.Log.LogInfo($"[PotraitSystem] Event received: Game changed to {newGame}. Reloading portraits...");
             PreloadPortraits();
         };
     }
@@ -340,7 +340,7 @@ public class PortraitSystemPatch
             
             if (baseTexture == null)
             {
-                Plugin.Log.LogWarning("[NPCPortrait] Failed to load fp_129 from persistent textures - custom portraits may not work");
+                Plugin.Log.LogWarning("[PotraitSystem] Failed to load fp_129 from persistent textures - custom portraits may not work");
                 return;
             }
             
@@ -363,12 +363,12 @@ public class PortraitSystemPatch
             
             if (Plugin.Config.DetailedLogs.Value)
             {
-                Plugin.Log.LogInfo($"[NPCPortrait] ✓ Preloaded base portrait sprite fp_129 ({baseTexture.width}x{baseTexture.height})");
+                Plugin.Log.LogInfo($"[PotraitSystem] ✓ Preloaded base portrait sprite fp_129 ({baseTexture.width}x{baseTexture.height})");
             }
         }
         catch (System.Exception ex)
         {
-            Plugin.Log.LogError($"[NPCPortrait] Failed to preload base portrait sprite: {ex.Message}");
+            Plugin.Log.LogError($"[PotraitSystem] Failed to preload base portrait sprite: {ex.Message}");
         }
     }
     
@@ -384,7 +384,7 @@ public class PortraitSystemPatch
         if (filePath == null)
         {
             if (Plugin.Config.DetailedLogs.Value)
-                Plugin.Log.LogWarning($"[NPCPortrait] Portrait file not found: {characterName}" + 
+                Plugin.Log.LogWarning($"[PotraitSystem] Portrait file not found: {characterName}" + 
                     (expression != null ? $" ({expression})" : ""));
             return null;
         }
@@ -405,20 +405,20 @@ public class PortraitSystemPatch
                 UnityEngine.Object.DontDestroyOnLoad(texture);
                 
                 if (Plugin.Config.DetailedLogs.Value)
-                    Plugin.Log.LogInfo($"[NPCPortrait] ✓ Loaded portrait texture: {characterName} ({texture.width}x{texture.height})");
+                    Plugin.Log.LogInfo($"[PotraitSystem] ✓ Loaded portrait texture: {characterName} ({texture.width}x{texture.height})");
                 
                 return texture;
             }
             else
             {
-                Plugin.Log.LogError($"[NPCPortrait] Failed to decode image data for: {characterName}");
+                Plugin.Log.LogError($"[PotraitSystem] Failed to decode image data for: {characterName}");
                 UnityEngine.Object.Destroy(texture);
                 return null;
             }
         }
         catch (System.Exception ex)
         {
-            Plugin.Log.LogError($"[NPCPortrait] Error loading portrait {characterName}: {ex.Message}");
+            Plugin.Log.LogError($"[PotraitSystem] Error loading portrait {characterName}: {ex.Message}");
             return null;
         }
     }
@@ -453,7 +453,7 @@ public class PortraitSystemPatch
             Sprite testSprite = UnityEngine.Resources.Load<Sprite>("fp_001");
             if (testSprite != null)
             {
-                Plugin.Log.LogInfo($"[NPCPortrait] Showing fp_001 placeholder for NPC without portrait: {npcName}");
+                Plugin.Log.LogInfo($"[PotraitSystem] Showing fp_001 placeholder for NPC without portrait: {npcName}");
                 return testSprite;
             }
             return null;
@@ -464,7 +464,7 @@ public class PortraitSystemPatch
         
         if (baseSprite == null)
         {
-            Plugin.Log.LogError("[NPCPortrait] Failed to load base sprite fp_001 from game resources");
+            Plugin.Log.LogError("[PotraitSystem] Failed to load base sprite fp_001 from game resources");
             return null;
         }
         
@@ -473,7 +473,7 @@ public class PortraitSystemPatch
         
         if (customTexture == null)
         {
-            Plugin.Log.LogError($"[NPCPortrait] Failed to load custom texture for: {npcName}");
+            Plugin.Log.LogError($"[PotraitSystem] Failed to load custom texture for: {npcName}");
             return null;
         }
         
@@ -485,12 +485,12 @@ public class PortraitSystemPatch
             baseSprite.texture.SetPixels(customTexture.GetPixels());
             baseSprite.texture.Apply(true, false);
             
-            Plugin.Log.LogInfo($"[NPCPortrait] Swapped fp_001 texture for: {npcName}");
+            Plugin.Log.LogInfo($"[PotraitSystem] Swapped fp_001 texture for: {npcName}");
             return baseSprite;
         }
         catch (System.Exception ex)
         {
-            Plugin.Log.LogError($"[NPCPortrait] Failed to swap texture: {ex.Message}");
+            Plugin.Log.LogError($"[PotraitSystem] Failed to swap texture: {ex.Message}");
             return null;
         }
     }
@@ -505,7 +505,7 @@ public class PortraitSystemPatch
     public static void OpenMessageWindow_Prefix(ref Sprite faceImage, ref string name, ref string message)
     {
         if (Plugin.Config.DetailedLogs.Value && Plugin.Config.LogReplaceableTextures.Value)
-            Plugin.Log.LogInfo($"[NPCPortrait] OpenMessageWindow called - Name: '{name}', HasFaceImage: {faceImage != null}");
+            Plugin.Log.LogInfo($"[PotraitSystem] OpenMessageWindow called - Name: '{name}', HasFaceImage: {faceImage != null}");
         
 
 
@@ -516,7 +516,7 @@ public class PortraitSystemPatch
             string paramsClean = message.Trim();
             if (dialogReplacements.TryGetValue(paramsClean, out string replacement))
             {
-                Plugin.Log.LogInfo($"[NPCPortrait] Applying dialog override: '{paramsClean.Substring(0, Math.Min(20, paramsClean.Length))}...' -> '{replacement.Substring(0, Math.Min(20, replacement.Length))}...'");
+                Plugin.Log.LogInfo($"[PotraitSystem] Applying dialog override: '{paramsClean.Substring(0, Math.Min(20, paramsClean.Length))}...' -> '{replacement.Substring(0, Math.Min(20, replacement.Length))}...'");
                 message = replacement;
             }
         }
@@ -529,7 +529,7 @@ public class PortraitSystemPatch
             if (match.Success)
             {
                 string newName = match.Groups[1].Value;
-                Plugin.Log.LogInfo($"[NPCPortrait] Found speaker tag! Overriding '{name}' with '{newName}'");
+                Plugin.Log.LogInfo($"[PotraitSystem] Found speaker tag! Overriding '{name}' with '{newName}'");
                 
                 // Store full name with expression for Postfix
                 lastSpeakerWithExpression = newName;
@@ -554,7 +554,7 @@ public class PortraitSystemPatch
         if (faceImage != null)
         {
             if (Plugin.Config.DetailedLogs.Value && Plugin.Config.LogReplaceableTextures.Value)
-                Plugin.Log.LogInfo($"[NPCPortrait] Capturing portrait sprite: {faceImage.name}, texture: {faceImage.texture.name}");
+                Plugin.Log.LogInfo($"[PotraitSystem] Capturing portrait sprite: {faceImage.name}, texture: {faceImage.texture.name}");
             cachedPortraitSprite = faceImage;
             return;
         }
@@ -582,7 +582,7 @@ public class PortraitSystemPatch
         // If we don't have one cached yet, load fp_129 from persistent textures
         if (cachedPortraitSprite == null)
         {
-            Plugin.Log.LogInfo($"[NPCPortrait] No cached portrait sprite yet - loading fp_129 as base template");
+            Plugin.Log.LogInfo($"[PotraitSystem] No cached portrait sprite yet - loading fp_129 as base template");
             
             // Try to load fp_129 texture (should be in persistent cache from CustomTexturePersist)
             Texture2D baseTexture = LoadPortraitTexture("fp_129");
@@ -603,22 +603,22 @@ public class PortraitSystemPatch
                 UnityEngine.Object.DontDestroyOnLoad(baseTexture);
                 
                 cachedPortraitSprite = baseSprite;
-                Plugin.Log.LogInfo($"[NPCPortrait] ✓ Created and cached base portrait sprite from fp_129 ({baseTexture.width}x{baseTexture.height})");
+                Plugin.Log.LogInfo($"[PotraitSystem] ✓ Created and cached base portrait sprite from fp_129 ({baseTexture.width}x{baseTexture.height})");
             }
             else
             {
-                Plugin.Log.LogWarning($"[NPCPortrait] Failed to load fp_129 - custom portrait for '{name}' cannot be displayed");
+                Plugin.Log.LogWarning($"[PotraitSystem] Failed to load fp_129 - custom portrait for '{name}' cannot be displayed");
                 return;
             }
         }
         
-        Plugin.Log.LogInfo($"[NPCPortrait] Using cached portrait sprite for '{name}'");
+        Plugin.Log.LogInfo($"[PotraitSystem] Using cached portrait sprite for '{name}'");
         
         // Load custom texture
         Texture2D customTexture = LoadPortraitTexture(key);
         if (customTexture == null)
         {
-            Plugin.Log.LogError($"[NPCPortrait] Failed to load custom texture for: {name}");
+            Plugin.Log.LogError($"[PotraitSystem] Failed to load custom texture for: {name}");
             return;
         }
         
@@ -653,11 +653,11 @@ public class PortraitSystemPatch
             UnityEngine.Object.DontDestroyOnLoad(customTexture);
             
             faceImage = newSprite;
-            Plugin.Log.LogInfo($"[NPCPortrait] Created and injected new sprite for: {name}");
+            Plugin.Log.LogInfo($"[PotraitSystem] Created and injected new sprite for: {name}");
         }
         catch (System.Exception ex)
         {
-            Plugin.Log.LogError($"[NPCPortrait] Failed to create sprite: {ex.Message}");
+            Plugin.Log.LogError($"[PotraitSystem] Failed to create sprite: {ex.Message}");
         }
     }
     
@@ -673,7 +673,7 @@ public class PortraitSystemPatch
         if (faceImage != null)
         {
             if (Plugin.Config.DetailedLogs.Value && Plugin.Config.LogReplaceableTextures.Value)
-                Plugin.Log.LogInfo($"[NPCPortrait] Postfix - '{name}' already has portrait, skipping");
+                Plugin.Log.LogInfo($"[PotraitSystem] Postfix - '{name}' already has portrait, skipping");
             return;
         }
             
@@ -688,7 +688,7 @@ public class PortraitSystemPatch
         var (characterName, expression) = PortraitVariants.ParseSpeakerString(fullName);
         string key = characterName.ToLower();
             
-        Plugin.Log.LogInfo($"[NPCPortrait] Postfix - Attempting to inject portrait for '{characterName}'{(expression != null ? $" ({expression})" : "")} directly into Img_Face");
+        Plugin.Log.LogInfo($"[PotraitSystem] Postfix - Attempting to inject portrait for '{characterName}'{(expression != null ? $" ({expression})" : "")} directly into Img_Face");
         
         try
         {
@@ -697,28 +697,28 @@ public class PortraitSystemPatch
             Transform uiSet = __instance.transform.Find("UI_Set");
             if (uiSet == null)
             {
-                Plugin.Log.LogWarning("[NPCPortrait] UI_Set not found");
+                Plugin.Log.LogWarning("[PotraitSystem] UI_Set not found");
                 return;
             }
-            Plugin.Log.LogInfo("[NPCPortrait] ✓ Found UI_Set");
+            Plugin.Log.LogInfo("[PotraitSystem] ✓ Found UI_Set");
             
             Transform facePos = uiSet.Find("All_Select/Img_BG/Command_Layout/Face_Pos");
             if (facePos == null)
             {
-                Plugin.Log.LogWarning("[NPCPortrait] Face_Pos not found - creating it");
+                Plugin.Log.LogWarning("[PotraitSystem] Face_Pos not found - creating it");
                 
                 // Find Command_Layout (S2) or fallback to Img_BG (S1?)
                 Transform parentTransform = uiSet.Find("All_Select/Img_BG/Command_Layout");
                 
                 if (parentTransform == null)
                 {
-                    Plugin.Log.LogInfo("[NPCPortrait] Command_Layout not found - trying Img_BG");
+                    Plugin.Log.LogInfo("[PotraitSystem] Command_Layout not found - trying Img_BG");
                     parentTransform = uiSet.Find("All_Select/Img_BG");
                 }
 
                 if (parentTransform == null)
                 {
-                    Plugin.Log.LogError("[NPCPortrait] Neither Command_Layout nor Img_BG found - cannot create Face_Pos");
+                    Plugin.Log.LogError("[PotraitSystem] Neither Command_Layout nor Img_BG found - cannot create Face_Pos");
                     return;
                 }
                 
@@ -750,25 +750,25 @@ public class PortraitSystemPatch
                 imgFaceComponent.raycastTarget = false;
                 
                 facePos = facePosObj.transform;
-                Plugin.Log.LogInfo($"[NPCPortrait] ✓ Created Face_Pos and Img_Face attached to {parentTransform.name}");
+                Plugin.Log.LogInfo($"[PotraitSystem] ✓ Created Face_Pos and Img_Face attached to {parentTransform.name}");
             }
-            Plugin.Log.LogInfo($"[NPCPortrait] ✓ Found Face_Pos, Active: {facePos.gameObject.activeSelf}");
+            Plugin.Log.LogInfo($"[PotraitSystem] ✓ Found Face_Pos, Active: {facePos.gameObject.activeSelf}");
             
             Transform imgFaceTransform = facePos.Find("Img_Face");
             if (imgFaceTransform == null)
             {
-                Plugin.Log.LogError("[NPCPortrait] Img_Face not found even after creation attempt");
+                Plugin.Log.LogError("[PotraitSystem] Img_Face not found even after creation attempt");
                 return;
             }
-            Plugin.Log.LogInfo($"[NPCPortrait] ✓ Found Img_Face, Active: {imgFaceTransform.gameObject.activeSelf}");
+            Plugin.Log.LogInfo($"[PotraitSystem] ✓ Found Img_Face, Active: {imgFaceTransform.gameObject.activeSelf}");
             
             var imgFace = imgFaceTransform.GetComponent<UnityEngine.UI.Image>();
             if (imgFace == null)
             {
-                Plugin.Log.LogWarning("[NPCPortrait] Img_Face Image component not found");
+                Plugin.Log.LogWarning("[PotraitSystem] Img_Face Image component not found");
                 return;
             }
-            Plugin.Log.LogInfo($"[NPCPortrait] ✓ Found Image component, Current sprite: {(imgFace.sprite != null ? imgFace.sprite.name : "null")}");
+            Plugin.Log.LogInfo($"[PotraitSystem] ✓ Found Image component, Current sprite: {(imgFace.sprite != null ? imgFace.sprite.name : "null")}");
             
             // Get sprite dimensions - try cached sprite first, then use fp_219.png as fallback
             Vector2 spritePivot;
@@ -778,7 +778,7 @@ public class PortraitSystemPatch
             {
                 spritePivot = cachedPortraitSprite.pivot;
                 pixelsPerUnit = cachedPortraitSprite.pixelsPerUnit;
-                Plugin.Log.LogInfo("[NPCPortrait] Using cached sprite settings");
+                Plugin.Log.LogInfo("[PotraitSystem] Using cached sprite settings");
             }
             else
             {
@@ -788,14 +788,14 @@ public class PortraitSystemPatch
                 {
                     spritePivot = new Vector2(0.5f, 0.5f);
                     pixelsPerUnit = 100f;
-                    Plugin.Log.LogInfo($"[NPCPortrait] Using fp_129.png as base template");
+                    Plugin.Log.LogInfo($"[PotraitSystem] Using fp_129.png as base template");
                 }
                 else
                 {
                     // Ultimate fallback - use standard portrait settings
                     spritePivot = new Vector2(0.5f, 0.5f);
                     pixelsPerUnit = 100f;
-                    Plugin.Log.LogWarning("[NPCPortrait] Using default sprite settings");
+                    Plugin.Log.LogWarning("[PotraitSystem] Using default sprite settings");
                 }
             }
             
@@ -807,14 +807,14 @@ public class PortraitSystemPatch
                 customTexture = LoadPortraitTexture("fp_129", null);
                 if (customTexture == null)
                 {
-                    Plugin.Log.LogError($"[NPCPortrait] Failed to load custom texture or fp_129 fallback");
+                    Plugin.Log.LogError($"[PotraitSystem] Failed to load custom texture or fp_129 fallback");
                     return;
                 }
-                Plugin.Log.LogInfo($"[NPCPortrait] Using fp_129.png as placeholder portrait");
+                Plugin.Log.LogInfo($"[PotraitSystem] Using fp_129.png as placeholder portrait");
             }
             else
             {
-                Plugin.Log.LogInfo($"[NPCPortrait] ✓ Loaded custom texture: {customTexture.width}x{customTexture.height}");
+                Plugin.Log.LogInfo($"[PotraitSystem] ✓ Loaded custom texture: {customTexture.width}x{customTexture.height}");
             }
             
             // Create new sprite using actual texture dimensions
@@ -849,12 +849,12 @@ public class PortraitSystemPatch
             // Set the sprite
             imgFace.sprite = newSprite;
             
-            Plugin.Log.LogInfo($"[NPCPortrait] ✓✓✓ Successfully injected portrait into Img_Face for '{name}'!");
+            Plugin.Log.LogInfo($"[PotraitSystem] ✓✓✓ Successfully injected portrait into Img_Face for '{name}'!");
         }
 
         catch (System.Exception ex)
         {
-            Plugin.Log.LogError($"[NPCPortrait] Error in postfix: {ex.Message}\n{ex.StackTrace}");
+            Plugin.Log.LogError($"[PotraitSystem] Error in postfix: {ex.Message}\n{ex.StackTrace}");
         }
     }
 
@@ -943,11 +943,11 @@ public class PortraitSystemPatch
             imgFace.gameObject.SetActive(true);
             imgFace.sprite = newSprite;
             
-            Plugin.Log.LogInfo($"[NPCPortrait] Manual injection successful for: {name}");
+            Plugin.Log.LogInfo($"[PotraitSystem] Manual injection successful for: {name}");
         }
         catch (Exception ex)
         {
-            Plugin.Log.LogError($"[NPCPortrait] Manual injection failed: {ex.Message}");
+            Plugin.Log.LogError($"[PotraitSystem] Manual injection failed: {ex.Message}");
         }
     }
     
@@ -960,7 +960,7 @@ public class PortraitSystemPatch
     public static void SetCharacterFace_Prefix(UIMessageWindow __instance, ref Sprite sprite)
     {
         string speakerName = __instance.speakerName;
-        Plugin.Log.LogInfo($"[NPCPortrait] SetCharacterFace called - SpeakerName: '{speakerName}', HasSprite: {sprite != null}");
+        Plugin.Log.LogInfo($"[PotraitSystem] SetCharacterFace called - SpeakerName: '{speakerName}', HasSprite: {sprite != null}");
         
         // If there's already a sprite, don't override it
         if (sprite != null)
@@ -980,7 +980,7 @@ public class PortraitSystemPatch
         }
         else
         {
-            Plugin.Log.LogInfo($"[NPCPortrait] No custom portrait found for: '{speakerName}'");
+            Plugin.Log.LogInfo($"[PotraitSystem] No custom portrait found for: '{speakerName}'");
         }
     }
 }

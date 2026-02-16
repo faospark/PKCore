@@ -30,6 +30,25 @@ namespace PKCore.Patches
         private const string DEFAULT_S1_HQ = "Liberation";
 
         /// <summary>
+        /// Initialize SaveDataProcessor and subscribe to game change events.
+        /// </summary>
+        public static void Initialize()
+        {
+            GameDetection.OnGameChanged += OnGameSceneChanged;
+        }
+
+        /// <summary>
+        /// Called when the game scene changes (entering GSD1/GSD2 gameplay).
+        /// </summary>
+        private static void OnGameSceneChanged(string gameId)
+        {
+            if (gameId == "GSD1" || gameId == "GSD2")
+            {
+                Plugin.Log.LogInfo($"[SaveDataProcessor] Names: S2='{s_s2ProtagonistName}', S1='{s_s1ProtagonistName}', S2HQ='{s_s2HQName}', S1HQ='{s_s1HQName}'");
+            }
+        }
+
+        /// <summary>
         /// Check if Suikoden Fix's EditSavePatch is active.
         /// </summary>
         private static bool IsSuikodenFixActive()

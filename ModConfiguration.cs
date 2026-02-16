@@ -34,7 +34,7 @@ public sealed class ModConfiguration
 
     // NPC Portrait Settings
     public ConfigEntry<bool> LogTextIDs { get; private set; }
-    public ConfigEntry<bool> EnableNPCPortraits { get; private set; }
+    public ConfigEntry<bool> EnablePortraitSystem { get; private set; }
 
 
     // Save Point Settings
@@ -225,9 +225,9 @@ public sealed class ModConfiguration
         );
 
         // Game Specific
-        EnableNPCPortraits = _config.Bind(
+        EnablePortraitSystem = _config.Bind(
             "05 Game : Suikoden 2",
-            "EnableNPCPortraits",
+            "EnablePortraitSystem",
             true,
             "Enable custom NPC portrait injection. Place PNG files in PKCore/NPCPortraits/ (in game root folder) named after the NPC (e.g., Ace.png, Yuri.png). Case-insensitive. For now Full Support of S2 and Partial S1"
         );

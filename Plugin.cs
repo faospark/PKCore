@@ -181,7 +181,7 @@ public class Plugin : BasePlugin
         }
 
         // NPC Portrait Injection
-        if (Config.EnableNPCPortraits.Value)
+        if (Config.EnablePortraitSystem.Value)
         {
             Log.LogInfo("Applying NPC Portrait patches...");
             harmony.PatchAll(typeof(PortraitSystemPatch));
@@ -197,6 +197,7 @@ public class Plugin : BasePlugin
             // Apply SaveDataProcessor for protagonist/HQ name placeholder replacement
             Log.LogInfo("Applying SaveDataProcessor patches...");
             harmony.PatchAll(typeof(SaveDataProcessor));
+            SaveDataProcessor.Initialize();
         }
 
 
