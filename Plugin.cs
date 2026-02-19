@@ -41,6 +41,7 @@ public class Plugin : BasePlugin
         {
             Il2CppInterop.Runtime.Injection.ClassInjector.RegisterTypeInIl2Cpp<SavePointSpriteMonitor>();
             Il2CppInterop.Runtime.Injection.ClassInjector.RegisterTypeInIl2Cpp<S2CookOffPortraitMonitor>();
+            Il2CppInterop.Runtime.Injection.ClassInjector.RegisterTypeInIl2Cpp<CovertMissionPortraitMonitor>();
 
 
         }
@@ -323,6 +324,10 @@ public class Plugin : BasePlugin
 
         // Reaction Monitor (MapChara/r_action trigger)
         S2CookOffPortraitMonitor.Initialize();
+        
+        // Covert Mission Portrait Monitor
+        harmony.PatchAll(typeof(CovertMissionPortraitMonitor));
+        CovertMissionPortraitMonitor.Initialize();
 
     }
 }
