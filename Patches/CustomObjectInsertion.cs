@@ -64,6 +64,8 @@ public class CustomObjectInsertion
         harmony.PatchAll(typeof(RefleshObjectPatch));
         harmony.PatchAll(typeof(MapBGManagerHDCachePatch));
         harmony.PatchAll(typeof(MapBGManagerHDSetMapPatch));
+        harmony.PatchAll(typeof(EventConCachePatch));
+        harmony.PatchAll(typeof(EventConConstructorPatch));
     }
 
     // Called by MapBGManagerHDCachePatch to cache the instance
@@ -847,6 +849,37 @@ public static class MapBGManagerHDCachePatch
         CustomObjectInsertion.SetMapBGManagerInstance(__instance);
         if (Plugin.Config.DetailedLogs.Value)
             Plugin.Log.LogInfo($"[Custom Objects] Cached MapBGManagerHD instance from Load() Postfix");
+    }
+}
+
+// Patch to cache the active EVENTCON globally during its main loop.
+// EVENTCON contains the MACHIDAT, which contains EVENTDAT and the native EVENT_OBJ arrays.
+[HarmonyPatch(typeof(EVENTCON), "EventMain")]
+public static class EventConCachePatch
+{
+    public static EVENTCON ActiveEventCon;
+
+    [HarmonyPostfix]
+    public static void Postfix(EVENTCON __instance)
+    {
+        if (__instance != null && ActiveEventCon != __instance)
+        {
+            ActiveEventCon = __instance;
+        }
+    }
+}
+
+// Hook the constructor as well to ensure it's available before the first frame ticks
+[HarmonyPatch(typeof(EVENTCON), MethodType.Constructor)]
+public static class EventConConstructorPatch
+{
+    [HarmonyPostfix]
+    public static void Postfix(EVENTCON __instance)
+    {
+        if (__instance != null)
+        {
+            EventConCachePatch.ActiveEventCon = __instance;
+        }
     }
 }
 

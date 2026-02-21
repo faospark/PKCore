@@ -174,97 +174,62 @@ public static class ObjectDiscovery
 
     private static void DiscoverNativeEventObjects(GameObject sceneRoot, List<DiscoveredObject> objects)
     {
-        // Find MAPEVDAT component anywhere on the scene root or its children.
-        // The game stores it as a MonoBehaviour component, accessible via reflection.
-        MAPEVDAT mapEvDat = FindMapEvDat(sceneRoot);
-
-        if (mapEvDat == null)
+        var activeCon = PKCore.Patches.EventConCachePatch.ActiveEventCon;
+        if (activeCon == null)
         {
-            Plugin.Log.LogWarning($"[ObjectDiscovery] No MAPEVDAT component found on '{sceneRoot.name}'. Native object discovery skipped.");
+            Plugin.Log.LogWarning($"[ObjectDiscovery] Active EVENTCON not found. Native object discovery skipped.");
             return;
         }
 
-        var eventObjs = mapEvDat.eventobj;
-        if (eventObjs == null)
+        var mdat = activeCon.mdat;
+        if (mdat == null || mdat.eventdata == null || mdat.eventdata.mapeventdat == null)
         {
-            Plugin.Log.LogWarning($"[ObjectDiscovery] MAPEVDAT.eventobj is null.");
+            Plugin.Log.LogWarning($"[ObjectDiscovery] Active EVENTCON has no valid MACHIDAT/EVENTDAT.");
             return;
         }
 
-        Plugin.Log.LogInfo($"[ObjectDiscovery] Reading {eventObjs.Length} native EVENT_OBJ entries from MAPEVDAT...");
+        var mapEvents = mdat.eventdata.mapeventdat;
+        int totalEventCount = 0;
 
-        for (int i = 0; i < eventObjs.Length; i++)
+        foreach (var mapData in mapEvents)
         {
-            EVENT_OBJ e = eventObjs[i];
-            if (e == null) continue;
+            var eventObjs = mapData.eventobj;
+            if (eventObjs == null) continue;
 
-            string label = GetObjectTypeLabel(e.otyp);
-
-            objects.Add(new DiscoveredObject
+            for (int i = 0; i < eventObjs.Length; i++)
             {
-                Name = $"Native_{i:D3}_{label}",
-                NativeIndex = i,
-                ObjectType = e.otyp,
-                Disp = e.disp,
-                Speed = e.spd,
-                WalkType = e.wt,
-                AnimationNo = e.ano,
-                InteractType = e.ityp,
-                FaceNo = e.fpno,
-                RenderGroup = e.ozok,
-                Priority = e.pri,
-                NativeX = e.x,
-                NativeY = e.y,
-                NativeW = e.w,
-                NativeH = e.h,
-                // Mark as native (no Unity position or texture)
-                Position = new Vector3Config { X = e.x, Y = e.y, Z = 0 },
-                IsInteractable = e.ityp > 0,
-            });
-        }
+                EVENT_OBJ e = eventObjs[i];
+                if (e == null) continue;
 
-        Plugin.Log.LogInfo($"[ObjectDiscovery] Added {eventObjs.Length} native objects.");
-    }
+                string label = GetObjectTypeLabel(e.otyp);
 
-    /// <summary>
-    /// Finds the MAPEVDAT component by searching the scene hierarchy.
-    /// MAPEVDAT may be on a MonoBehaviour attached to the root or a child GameObject.
-    /// </summary>
-    private static MAPEVDAT FindMapEvDat(GameObject sceneRoot)
-    {
-        // Try directly on the root first
-        var direct = TryGetMAPEVDAT(sceneRoot);
-        if (direct != null) return direct;
+                objects.Add(new DiscoveredObject
+                {
+                    Name = $"Native_ev{totalEventCount:D3}_{label}",
+                    NativeIndex = totalEventCount,
+                    ObjectType = e.otyp,
+                    Disp = e.disp,
+                    Speed = e.spd,
+                    WalkType = e.wt,
+                    AnimationNo = e.ano,
+                    InteractType = e.ityp,
+                    FaceNo = e.fpno,
+                    RenderGroup = e.ozok,
+                    Priority = e.pri,
+                    NativeX = e.x,
+                    NativeY = e.y,
+                    NativeW = e.w,
+                    NativeH = e.h,
+                    // Mark as native (no Unity position or texture)
+                    Position = new Vector3Config { X = e.x, Y = e.y, Z = 0 },
+                    IsInteractable = e.ityp > 0,
+                });
 
-        // Walk all children (broad search)
-        for (int i = 0; i < sceneRoot.transform.childCount; i++)
-        {
-            var child = sceneRoot.transform.GetChild(i);
-            var result = TryGetMAPEVDAT(child.gameObject);
-            if (result != null) return result;
-
-            // One level deeper (e.g. "MapRoot/data/MAPEVDAT")
-            for (int j = 0; j < child.childCount; j++)
-            {
-                var grandchild = child.GetChild(j);
-                result = TryGetMAPEVDAT(grandchild.gameObject);
-                if (result != null) return result;
+                totalEventCount++;
             }
         }
 
-        return null;
-    }
-
-    private static MAPEVDAT TryGetMAPEVDAT(GameObject go)
-    {
-        try
-        {
-            return go.GetComponent<MAPEVDAT>();
-        }
-        catch
-        {
-            return null;
-        }
+        Plugin.Log.LogInfo($"[ObjectDiscovery] Added {totalEventCount} native objects from EVENTCON.MACHIDAT.");
     }
 
     // ─── Helpers ────────────────────────────────────────────────────────────────
