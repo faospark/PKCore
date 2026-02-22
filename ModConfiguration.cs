@@ -284,13 +284,6 @@ public sealed class ModConfiguration
             )
         );
 
-        EnableBorderlessWindow = _config.Bind(
-            "Utilty",
-            "EnableBorderlessWindow",
-            false,
-            "Enable borderless fullscreen window mode. Provides instant alt-tab switching and better multi-monitor support."
-        );
-
         ShowMouseCursor = _config.Bind(
             "Utilty",
             "ShowMouseCursor",

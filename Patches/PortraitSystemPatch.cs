@@ -235,8 +235,8 @@ public class PortraitSystemPatch
         // Load dialog overrides
         LoadDialogOverrides();
 
-        if (Plugin.Config.DetailedLogs.Value)
-            Plugin.Log.LogInfo("NPC Portrait System Ready!");
+        // if (Plugin.Config.DetailedLogs.Value)
+        //     Plugin.Log.LogInfo("NPC Portrait System Ready!");
 
         // Subscribe to game change events for lazy reloading
         GameDetection.OnGameChanged += (newGame) =>
@@ -361,10 +361,10 @@ public class PortraitSystemPatch
             // Cache it for use
             cachedPortraitSprite = baseSprite;
 
-            if (Plugin.Config.DetailedLogs.Value)
-            {
-                Plugin.Log.LogInfo($"[PotraitSystem] ✓ Preloaded base portrait sprite fp_129 ({baseTexture.width}x{baseTexture.height})");
-            }
+            // if (Plugin.Config.DetailedLogs.Value)
+            // {
+            //     Plugin.Log.LogInfo($"[PotraitSystem] ✓ Preloaded base portrait sprite fp_129 ({baseTexture.width}x{baseTexture.height})");
+            // }
         }
         catch (System.Exception ex)
         {
