@@ -229,6 +229,15 @@ public class CustomObjectInsertion
                 Plugin.Log.LogWarning($"[Custom Objects] No 'object' folder found in {sceneRoot.name} — parenting to scene root.");
             }
 
+            // Create a "Custom" group folder under the target folder
+            GameObject customGroup = new GameObject("Custom");
+            customGroup.transform.SetParent(objectFolder);
+            customGroup.transform.localPosition = Vector3.zero;
+            customGroup.transform.localScale = Vector3.one;
+            customGroup.transform.localRotation = Quaternion.identity;
+
+            Transform customFolder = customGroup.transform;
+
             // Try to find the MapBGManagerHD directly from the scene root's parent
             object activeManager = _currentMapBGManager;
             if (activeManager == null)
@@ -257,7 +266,7 @@ public class CustomObjectInsertion
             }
 
             // Spawn visual GameObjects for all custom objects in this map
-            CreateCustomObjectsForMap(mapId, objectFolder, activeManager);
+            CreateCustomObjectsForMap(mapId, customFolder, activeManager);
 
             _processedScenes.Add(sceneRoot.GetInstanceID());
         }
@@ -457,6 +466,11 @@ public class CustomObjectInsertion
             // This is critical because the map might render on a specific layer (e.g. "Background")
             // preventing our object from being seen if it's on "Default"
             var siblingSr = parent.GetComponentInChildren<SpriteRenderer>();
+            if (siblingSr == null && parent.parent != null)
+            {
+                siblingSr = parent.parent.GetComponentInChildren<SpriteRenderer>();
+            }
+
             if (siblingSr != null)
             {
                 // Copy the GameObject Layer (Physics/Rendering Layer) from sibling
