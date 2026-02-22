@@ -51,8 +51,7 @@
 | `TextDatabasePatch.cs` | Intercepts text retrieval, often used in tandem with NPC portraits. |
 | `SavePointPatch.cs` | Enhancements to save point logic and interaction. |
 | `BathTexturePatch.cs` | Specific handling for bath background textures with preloading system. |
-| `CowTexturePatch.cs` | Animated cow texture replacement with continuous monitoring (Suikoden 1 Gregminster). |
-| `DragonPatch.cs` | Dragon sprite texture replacement with MonoBehaviour monitoring. |
+| `AnimatedTexturePatch.cs` | Generalized animated sprite texture replacement with continuous monitoring (e.g. cows, dragons). |
 | `WarAbilityPatch.cs` | Modifications to war battles/abilities (Experimental). |
 | `GameDetection.cs` | Detects current game state/context (referenced in recent refactors). |
 

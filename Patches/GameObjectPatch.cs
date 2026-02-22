@@ -91,11 +91,8 @@ public partial class CustomTexturePatch
 
                     string spriteName = sr.sprite.name;
 
-                    // Check and attach Dragon monitor if applicable
-                    DragonPatch.CheckAndAttachMonitor(sr.gameObject);
-
-                    // Check and attach Cow monitor if applicable
-                    CowTexturePatch.CheckAndAttachMonitor(sr.gameObject);
+                    // Check and attach Animated Texture monitor if applicable (Dragon, Cow, etc)
+                    AnimatedTexturePatch.CheckAndAttachMonitor(sr.gameObject);
 
                     // Skip save point sprites - they're handled in SavePointPatch.cs
                     if (spriteName.Contains("savePoint", StringComparison.OrdinalIgnoreCase))
@@ -129,11 +126,8 @@ public partial class CustomTexturePatch
 
                     string spriteName = gr.sprite.name;
 
-                    // Check and attach Dragon monitor if applicable
-                    DragonPatch.CheckAndAttachMonitor(gr.gameObject);
-
-                    // Check and attach Cow monitor if applicable
-                    CowTexturePatch.CheckAndAttachMonitor(gr.gameObject);
+                    // Check and attach Animated Texture monitor if applicable (Dragon, Cow, etc)
+                    AnimatedTexturePatch.CheckAndAttachMonitor(gr.gameObject);
 
                     _processedSpriteInstances.Add(instanceId);
                 }

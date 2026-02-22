@@ -30,12 +30,12 @@ public class Plugin : BasePlugin
 
         // Force immediate exit on quit to prevent Alt+F4 hangs (Unity 2022/BepInEx 6 issue)
         Application.SetStackTraceLogType(LogType.Error, StackTraceLogType.None);
-        Application.quitting += (System.Action)(() => 
+        Application.quitting += (System.Action)(() =>
         {
             Log.LogInfo("Shutting down... forcing process exit.");
             System.Diagnostics.Process.GetCurrentProcess().Kill();
         });
-        
+
         // Register custom MonoBehaviours for IL2CPP
         try
         {
@@ -50,27 +50,27 @@ public class Plugin : BasePlugin
         {
             Log.LogError($"Failed to register custom monitors: {ex.Message}");
         }
-        
+
         // Create a MonoBehaviour to handle the Update loop (since BasePlugin doesn't have Update)
         // Initialize early so patches can use it
         try
         {
             Il2CppInterop.Runtime.Injection.ClassInjector.RegisterTypeInIl2Cpp<PkCoreMainLoop>();
-            
+
             var obj = new GameObject("PkCoreMainLoop");
             GameObject.DontDestroyOnLoad(obj);
             var component = obj.AddComponent<PkCoreMainLoop>();
             obj.hideFlags = HideFlags.HideAndDontSave;
-            
+
             PkCoreMainLoop.Instance = component;
-            
+
             Log.LogInfo("Initialized PkCoreMainLoop for Update events.");
         }
         catch (System.Exception ex)
         {
             Log.LogError($"Failed to register PkCoreMainLoop: {ex.Message}");
         }
-        
+
         ApplyPatches();
 
         Log.LogInfo("PKCore loaded successfully!");
@@ -111,7 +111,7 @@ public class Plugin : BasePlugin
             Log.LogInfo($"Applying Sprite Filtering patches (Enabled: {Config.SpriteFilteringEnabled.Value})...");
             harmony.PatchAll(typeof(SpriteFilteringPatch));
             SpriteFilteringPatch.Initialize();
-       }
+        }
 
         // Mouse Cursor Visibility (for debugging)
         if (Config.ShowMouseCursor.Value)
@@ -138,22 +138,22 @@ public class Plugin : BasePlugin
             {
                 Log.LogInfo("Applying Custom Texture patches (logging only)...");
             }
-            
+
             harmony.PatchAll(typeof(CustomTexturePatch));
 
             // Patch for Save Window custom background
             harmony.PatchAll(typeof(SaveWindowPatch));
-            
+
             // Apply GRSpriteRenderer patches for better sprite interception
             harmony.PatchAll(typeof(GRSpriteRendererPatch));
             GRSpriteRendererPatch.Initialize();
-            
+
             // Apply Unity SpriteRenderer patches for standard Unity sprites
             harmony.PatchAll(typeof(UnitySpriteRendererPatch));
             UnitySpriteRendererPatch.Initialize();
 
 
-            
+
             // Suikozu reactive patch (GSD2 world map)
             // IL2CPP registration is now lazy-loaded when first map is opened
             harmony.PatchAll(typeof(SuikozuPatch));
@@ -161,18 +161,18 @@ public class Plugin : BasePlugin
             // NOTE: BGManagerHD_Load_Patch is part of BathTexturePatch in this version
             // Log.LogInfo("Applying BGManagerHD.Load patch ...");
             // CustomTexturePatch.BGManagerHD_Load_Patch.Initialize(harmony);
-            
+
             if (Config.DetailedLogs.Value)
             {
                 Log.LogInfo("Applying Native Map Texture patches...");
             }
             harmony.PatchAll(typeof(MapTexturePatch));
-            
-            
+
+
             // GameObject activation patches are part of CustomTexturePatch (already applied above)
             // This handles Dragon, Cow, and Suikozu monitor attachment
         }
-        
+
         // Resolution patch
         if (Config.EnableResolutionScaling.Value && Config.ResolutionScale.Value != 1.0f)
         {
@@ -203,13 +203,13 @@ public class Plugin : BasePlugin
             harmony.PatchAll(typeof(PortraitSystemPatch));
             PortraitSystemPatch.Initialize();
         }
-        
+
         // Dialog Text ID interceptor and placeholder replacement (independent of NPC portraits)
         if (Config.EnableDialogOverrides.Value || Config.LogTextIDs.Value)
         {
             Log.LogInfo("Applying TextDatabase patches...");
             harmony.PatchAll(typeof(TextDatabasePatch));
-            
+
             // Apply SaveDataProcessor for protagonist/HQ name placeholder replacement
             Log.LogInfo("Applying SaveDataProcessor patches...");
             harmony.PatchAll(typeof(SaveDataProcessor));
@@ -237,18 +237,9 @@ public class Plugin : BasePlugin
         {
             if (Config.DetailedLogs.Value)
             {
-                Log.LogInfo("Applying Dragon Sprite patches...");
+                Log.LogInfo("Applying Animated Texture patches...");
             }
-            DragonPatch.Initialize();
-        }
-
-        if (Config.EnableCustomTextures.Value)
-        {
-             if (Config.DetailedLogs.Value)
-             {
-                Log.LogInfo("Applying Cow texture patches...");
-             }
-             CowTexturePatch.Initialize();
+            AnimatedTexturePatch.Initialize();
         }
 
         // Disable CustomPostEffect for colored intro/flashbacks (Suikoden 2)
@@ -293,13 +284,13 @@ public class Plugin : BasePlugin
         // Replaces _Mask_Map textures with corresponding files from PKCore/Textures
         // Build exclusion list based on config
         var excludedMasks = new System.Collections.Generic.HashSet<string>();
-        
+
         if (!Config.DisablePortraitDialogMaskPortraitDialog.Value)
         {
             // If DisablePortraitDialogMaskPortraitDialog is OFF, exclude Face_Mask_01
             excludedMasks.Add("Face_Mask_01");
         }
-        
+
         if (Config.DetailedLogs.Value)
         {
             Log.LogInfo("Applying Mask Replacement System...");
@@ -325,11 +316,11 @@ public class Plugin : BasePlugin
 
         // Reaction Monitor (MapChara/r_action trigger)
         S2CookOffPortraitMonitor.Initialize();
-        
+
         // Covert Mission Portrait Monitor
         harmony.PatchAll(typeof(CovertMissionPortraitMonitor));
         CovertMissionPortraitMonitor.Initialize();
-        
+
         // War Room BG Patch
         WarRoomBGPatch.Initialize();
 
