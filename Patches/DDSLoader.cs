@@ -15,6 +15,7 @@ public static class DDSLoader
     
     /// <summary>
     /// Load a DDS file from a byte array as a pre-compressed texture
+    /// Automatically pads dimensions to multiples of 4 if needed (required for DDS compressed formats)
     /// </summary>
     public static Texture2D LoadDDSFromBytes(byte[] ddsBytes, string textureName = null)
     {
@@ -33,6 +34,17 @@ public static class DDSLoader
             {
                 Plugin.Log.LogError($"Invalid DDS data{(textureName != null ? $" for {textureName}" : "")}");
                 return null;
+            }
+            
+            // Validate and pad dimensions to multiples of 4 (required for DDS compressed formats)
+            int originalWidth = header.Width;
+            int originalHeight = header.Height;
+            header.Width = RoundUpTo4(header.Width);
+            header.Height = RoundUpTo4(header.Height);
+            
+            if (originalWidth != header.Width || originalHeight != header.Height)
+            {
+                Plugin.Log.LogWarning($"DDS texture {textureName ?? "unknown"}: dimensions {originalWidth}x{originalHeight} are not multiples of 4. Padding to {header.Width}x{header.Height}.");
             }
             
             // Create texture with appropriate format
@@ -140,6 +152,15 @@ public static class DDSLoader
     {
         byte[] bytes = System.BitConverter.GetBytes(fourCC);
         return System.Text.Encoding.ASCII.GetString(bytes);
+    }
+    
+    /// <summary>
+    /// Round up a dimension to the nearest multiple of 4 (required for DDS compressed formats)
+    /// </summary>
+    private static int RoundUpTo4(int value)
+    {
+        int remainder = value % 4;
+        return remainder == 0 ? value : value + (4 - remainder);
     }
     
     /// <summary>
