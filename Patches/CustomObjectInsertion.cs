@@ -29,20 +29,20 @@ public class CustomObjectInsertion
     // Path to the JSON file - trying multiple locations
     private static string GetConfigPath()
     {
-        // 0. Try GameRoot/PKCore/CustomObjects/objects.json (User Preference)
-        string gameRootPath = Path.Combine(Paths.GameRootPath, "PKCore", "CustomObjects", "objects.json");
+        // 0. Try GameRoot/PKCore/Config/CustomObjectTexture.json (User Preference)
+        string gameRootPath = Path.Combine(Paths.GameRootPath, "PKCore", "Config", "CustomObjectTexture.json");
         if (File.Exists(gameRootPath))
         {
             // Plugin.Log.LogInfo($"[Custom Objects] Found config in GameRoot: {gameRootPath}");
             return gameRootPath;
         }
 
-        // 1. Try PKCore/CustomObjects/objects.json (standard BepInEx)
-        string path = Path.Combine(Paths.PluginPath, "PKCore", "CustomObjects", "objects.json");
+        // 1. Try PKCore/Config/CustomObjectTexture.json (standard BepInEx)
+        string path = Path.Combine(Paths.PluginPath, "PKCore", "Config", "CustomObjectTexture.json");
         if (File.Exists(path)) return path;
 
-        // 2. Try PKCore/CustomObjects/ExistingMapObjects.json (fallback/dev)
-        path = Path.Combine(Paths.PluginPath, "PKCore", "CustomObjects", "ExistingMapObjects.json");
+        // 2. Try PKCore/CustomObjects/objects.json (fallback/legacy)
+        path = Path.Combine(Paths.PluginPath, "PKCore", "CustomObjects", "objects.json");
         if (File.Exists(path)) return path;
 
         return null;
@@ -80,7 +80,7 @@ public class CustomObjectInsertion
             string configPath = GetConfigPath();
             if (string.IsNullOrEmpty(configPath))
             {
-                Plugin.Log.LogWarning("[Custom Objects] No objects.json found. Searched: GameRoot/PKCore/CustomObjects/objects.json");
+                Plugin.Log.LogWarning("[Custom Objects] No CustomObjectTexture.json found. Searched: GameRoot/PKCore/Config/CustomObjectTexture.json, PKCore/Config/CustomObjectTexture.json");
                 return;
             }
 

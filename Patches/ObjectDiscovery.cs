@@ -296,7 +296,7 @@ public static class ObjectDiscovery
     {
         try
         {
-            string outputPath = Path.Combine(BepInEx.Paths.GameRootPath, "PKCore", "CustomObjects", "ExistingMapObjects.json");
+            string outputPath = Path.Combine(BepInEx.Paths.GameRootPath, "PKCore", "Debug", "DebugExistingMapObjects.json");
             string directory = Path.GetDirectoryName(outputPath);
             if (!Directory.Exists(directory))
                 Directory.CreateDirectory(directory);

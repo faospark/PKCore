@@ -30,9 +30,6 @@ public class TextDatabasePatch
         
         if (replacement != null)
         {
-            // Replace placeholders in override text
-            replacement = PlaceholderReplacer.ReplacePlaceholders(replacement);
-            
             if (Plugin.Config.LogTextIDs.Value)
                 Plugin.Log.LogInfo($"[TextDebug] Applying Override: [{key}] -> \"{replacement}\"");
                 
@@ -94,9 +91,6 @@ public class TextDatabasePatch
                         (speakerData.Contains("|") ? $" (variant: {speakerData.Split('|')[1]})" : ""));
             }
         }
-        
-        // 3. Replace placeholders in all text (overrides and originals)
-        __result = PlaceholderReplacer.ReplacePlaceholders(__result);
     }
 
 
@@ -145,8 +139,5 @@ public class TextDatabasePatch
                         (speakerData.Contains("|") ? $" (variant: {speakerData.Split('|')[1]})" : ""));
             }
         }
-        
-        // 3. Replace placeholders in all text (overrides and originals)
-        __result = PlaceholderReplacer.ReplacePlaceholders(__result);
     }
 }
