@@ -1,10 +1,12 @@
-# Placeholder Text Replacement
+# Suikoden 2 Dialog Text Placeholders Guide
 
-PKCore automatically replaces special text placeholders in dialogs with actual names from your save file.
+This document serves as a reference for the special text placeholders and formatting characters used natively in Suikoden 2's dialog files.
 
-## Supported Placeholders
+## Support Placeholders
 
-### Character Name Placeholders
+### Character and Location Name Placeholders
+
+These special string sequences are used in the game's text to dynamically insert names based on the player's current save data.
 
 | Placeholder | Replaced With | Example |
 |-------------|---------------|---------|
@@ -16,124 +18,67 @@ PKCore automatically replaces special text placeholders in dialogs with actual n
 
 ### Native Text Formatting
 
-The game uses special characters for formatting dialog text:
+The game uses several special characters to format how dialog text is displayed on screen:
 
 | Character | Function | Usage |
 |-----------|----------|-------|
-| `∠` | Line break | Forces text to continue on next line within dialog |
-| `∨` | Page break | Waits for player input before continuing dialog |
-| `◎` | Choice line | Marks a line where user input/choice is needed |
+| `∠` | Line break | Forces text to continue on the next line within the dialog box |
+| `∨` | Page break | Pauses text rendering and waits for player input before continuing |
+| `◎` | Choice line | Marks a line where a user input/choice is presented |
 
-**Example with line breaks:**
-```
-"Welcome to ♂①, ♂㈱!∠This is your new home."
-```
-
-**Result:**
-```
-Welcome to Dunan, Riou!
-This is your new home.
-```
-
-**Example with page break:**
-```
-"The result is ∨5 points."
-```
-
-**Result:**
-```
-The result is [Player presses button]
-5 points.
-```
-
-**Example with choice line:**
-```
-"What will you do?◎ Attack◎ Defend◎ Run"
-```
-
-**Result:**
-```
-What will you do?
- > Attack
-   Defend
-   Run
-```
-
-> **Note:** These formatting characters are part of the game's native text format and are automatically handled by the game engine.
-
-## How It Works
-
-1. **Load Save File** - When you load a save, PKCore extracts custom names
-2. **Automatic Replacement** - All dialog text is processed automatically
-3. **No Configuration** - Feature is always enabled, no setup required
-
-## Examples
+## Examples of Usage
 
 ### Basic Name Replacement
 
 **Original dialog text:**
-```
+```text
 "Welcome to ♂①, ♂㈱!"
 ```
 
-**After replacement (with your save data):**
-```
+**In-game Result:**
+```text
 "Welcome to Dunan, Riou!"
 ```
 
 ### With Line Breaks
 
 **Original dialog text:**
-```
+```text
 "♂㈱, welcome to ♂①!∠Your journey begins here."
 ```
 
-**After replacement:**
-```
+**In-game Result:**
+```text
 Riou, welcome to Dunan!
 Your journey begins here.
 ```
 
-## Default Names
+### With Page Break
 
-If no save is loaded or names are missing, these defaults are used:
-
-- S2 Protagonist: "Hero"
-- S1 Protagonist: "Tir"
-- S2 HQ: "Dunan"
-- S1 HQ: "Liberation"
-
-## Technical Details
-
-### Save Data Fields
-
-Names are extracted from these save file fields:
-
-- `bozu_name` → S2 protagonist
-- `macd_name` → S1 protagonist (save transfer)
-- `base_name` → S2 HQ
-- `m_base_name` → S1 HQ (save transfer)
-
-### Debug Logging
-
-Enable `LogTextIDs` in the config to see replacement logs:
-
-```
-[TextDebug] Replaced placeholders in [msg_001:5]
-[SaveDataProcessor] Names refreshed - S2 Hero: 'Riou', S1 Hero: 'Tir'
+**Original dialog text:**
+```text
+"The result is ∨5 points."
 ```
 
-## Troubleshooting
+**In-game Result:**
+```text
+The result is [Player presses button]
+5 points.
+```
 
-**Q: Placeholders not being replaced?**
-- Ensure you've loaded a save file
-- Check that names are set in your save
-- Enable debug logging to verify
+### With Choice Lines
 
-**Q: Wrong names appearing?**
-- Reload your save file
-- Check save data is not corrupted
+**Original dialog text:**
+```text
+"What will you do?◎ Attack◎ Defend◎ Run"
+```
 
-**Q: Want to disable this feature?**
-- This feature cannot be disabled (it's core functionality)
-- Names will always use defaults if save data unavailable
+**In-game Result:**
+```text
+What will you do?
+ > Attack
+   Defend
+   Run
+```
+
+> **Note:** These formatting characters are part of the original game's native text format and are handled automatically by the Suikoden 2 engine when rendering dialog boxes.
