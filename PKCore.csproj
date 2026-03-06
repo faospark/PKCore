@@ -108,6 +108,10 @@
       <HintPath>$(GamePath)\BepInEx\interop\DOTween.dll</HintPath>
       <Private>false</Private>
     </Reference>
+    <Reference Include="DOTween.Modules">
+      <HintPath>$(GamePath)\BepInEx\interop\DOTween.Modules.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
     <Reference Include="Unity.TextMeshPro">
       <HintPath>$(GamePath)\BepInEx\interop\Unity.TextMeshPro.dll</HintPath>
       <Private>false</Private>
@@ -182,6 +186,24 @@
     </Reference>
     <Reference Include="Unity.ResourceManager">
       <HintPath>$(GamePath)\BepInEx\interop\Unity.ResourceManager.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    
+    <!-- CriWare Audio interops -->
+    <Reference Include="CriMw.CriWare.Vp9.Runtime">
+      <HintPath>$(GamePath)\BepInEx\interop\CriMw.CriWare.Vp9.Runtime.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="CriMw.CriWare.Assets.Addressables.Runtime">
+      <HintPath>$(GamePath)\BepInEx\interop\CriMw.CriWare.Assets.Addressables.Runtime.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="CriMw.CriWare.Assets.Runtime">
+      <HintPath>$(GamePath)\BepInEx\interop\CriMw.CriWare.Assets.Runtime.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="CriMw.CriWare.Runtime">
+      <HintPath>$(GamePath)\BepInEx\interop\CriMw.CriWare.Runtime.dll</HintPath>
       <Private>false</Private>
     </Reference>
   </ItemGroup>

@@ -79,6 +79,7 @@ public class Plugin : BasePlugin
     public void Update()
     {
         Patches.GameDetection.Update();
+        Patches.PSPLauncherPatch.Update();
         AssetLoader.Update();
     }
 
@@ -215,8 +216,6 @@ public class Plugin : BasePlugin
             harmony.PatchAll(typeof(SaveDataProcessor));
         }
 
-
-
         // ARCHIVED: MapBGManagerHD Object Diagnostics (moved to ObjectReserve folder)
         // if (Config.EnableObjectDiagnostics.Value)
         // {
@@ -304,6 +303,14 @@ public class Plugin : BasePlugin
             EnableDebugMenu2.Initialize();
         }
 
+        // Sound File Redirect
+        if (Config.EnableSoundRedirect.Value)
+        {
+            Log.LogInfo("Applying Sound Redirect patch...");
+            SoundRedirectPatch.Initialize();
+            harmony.PatchAll(typeof(SoundRedirectPatch));
+        }
+
         // War Ability Modification (Experimental)
         if (Config.EnableWarAbilityMod.Value)
         {
@@ -324,6 +331,11 @@ public class Plugin : BasePlugin
         // War Room BG Patch
         WarRoomBGPatch.Initialize();
 
+        // PSP Launcher Patch
+
+
+        // PSP Launcher Patch
+        // Now handled by Update loop instead of Harmony postfix
     }
 }
 

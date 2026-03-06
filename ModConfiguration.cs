@@ -62,6 +62,9 @@ public sealed class ModConfiguration
     public ConfigEntry<string> ScaledDownMenu { get; private set; }
     public ConfigEntry<string> SMAAQuality { get; private set; }
 
+    // Sound Settings
+    public ConfigEntry<bool> EnableSoundRedirect { get; private set; }
+
     // Performance Settings
     public ConfigEntry<bool> EnableTextureManifestCache { get; private set; }
     public ConfigEntry<bool> EnableMemoryCaching { get; private set; }
@@ -250,6 +253,13 @@ public sealed class ModConfiguration
             "EnableWarAbilityMod",
             true,
             "Enable war battle ability modification. Allows you to customize character abilities in Suikoden 2's war battles. Wont appear on the game menu of Apple but will have an effect on battle. Base is already boosted but can be further configures in PKCore/Config/S2WarAbilities.json"
+        );
+
+        EnableSoundRedirect = _config.Bind(
+            "03 Sound",
+            "EnableSoundRedirect",
+            true,
+            "Enable custom sound file replacement. Place .acb and .awb files in {GameRoot}/PKCore/Sound/ mirroring the original Sound folder structure (e.g. PKCore/Sound/BGM2/BATTLE1.acb). Any file present there will replace the original."
         );
 
         // Performance section - all performance related settings
