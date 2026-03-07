@@ -68,7 +68,7 @@ public static class PSPLauncherPatch
                         if (old != null) UnityEngine.Object.Destroy(old.gameObject);
                     }
                     bool dummy = false;
-                    TryInsertGalleryBg(galleryMovies, desired, ref dummy, new Vector2(1920, 1080), new Vector2(0, 11f));
+                    TryInsertGalleryBg(galleryMovies, desired, ref dummy, new Vector2(1920, 1080), new Vector2(0, 12f));
                     _currentMoviesBgName = desired;
                 }
             }
@@ -335,6 +335,51 @@ public static class PSPLauncherPatch
                 {
                     bgImage.color = new Color(0.1f, 0.345f, 0.922f, 1f);
                     Plugin.Log.LogInfo("[PSPLauncherPatch] Set bg color on UI_Bg_02(Clone)/bg.");
+                }
+            }
+        }
+
+        // Handle UI_Com_Footer
+        GameObject uiFooter = GameObject.Find("UI_Root/UI_Canvas_Root/UI_Com_Footer(Clone)");
+        if (uiFooter != null)
+        {
+            Transform imgBg = uiFooter.transform.Find("Img_Bg");
+            if (imgBg != null)
+            {
+                // Disable the original Img_Bg Image component but keep the GameObject active for hierarchy
+                Image originalBgImg = imgBg.GetComponent<Image>();
+                if (originalBgImg != null && originalBgImg.enabled)
+                {
+                    originalBgImg.enabled = false;
+                    Plugin.Log.LogInfo("[PSPLauncherPatch] Disabled Image component on Img_Bg.");
+                }
+
+                // Disable child Img_Bg object inside Img_Bg
+                Transform nestedImgBg = imgBg.Find("Img_Bg");
+                if (nestedImgBg != null && nestedImgBg.gameObject.activeSelf)
+                {
+                    nestedImgBg.gameObject.SetActive(false);
+                    Plugin.Log.LogInfo("[PSPLauncherPatch] Disabled nested Img_Bg on UI_Com_Footer(Clone)/Img_Bg.");
+                }
+
+                if (imgBg.Find("footerbg") == null)
+                {
+                    GameObject footerBgGO = new GameObject("footerbg");
+                    footerBgGO.transform.SetParent(imgBg, false);
+                    footerBgGO.transform.SetSiblingIndex(0); // Put it behind everything
+
+                    RectTransform footerBgRt = footerBgGO.AddComponent<RectTransform>();
+                    footerBgRt.anchorMin = new Vector2(0f, 0f);
+                    footerBgRt.anchorMax = new Vector2(1f, 0f); // Stretch horizontally, pivot to bottom vertical
+                    footerBgRt.pivot = new Vector2(0.5f, 0f);
+                    footerBgRt.sizeDelta = new Vector2(0f, 105f); // 150f is the height. Change this number to adjust height!
+                    footerBgRt.anchoredPosition = Vector2.zero;
+
+                    Image footerBgImg = footerBgGO.AddComponent<Image>();
+                    footerBgImg.color = new Color(0f, 0f, 0f, 0.7f); // Black with 50% alpha
+                    footerBgImg.raycastTarget = false;
+
+                    Plugin.Log.LogInfo("[PSPLauncherPatch] footerbg placeholder inserted into Img_Bg.");
                 }
             }
         }
