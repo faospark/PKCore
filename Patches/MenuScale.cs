@@ -75,15 +75,25 @@ public class MenuScalePatch
             }
         }
 
-        // Config: Apply scale and position
-        Transform config = uiCanvasRoot.Find("UI_Config_01(Clone)") ?? uiCanvasRoot.Find("UI_Config_01");
-        if (config != null)
+        // Config: Apply scale and position (handles both 01 and 02)
+        Transform config01 = uiCanvasRoot.Find("UI_Config_01(Clone)") ?? uiCanvasRoot.Find("UI_Config_01");
+        if (config01 != null)
         {
             Vector3 targetScale = new Vector3(0.8f, 0.8f, 1f);
             Vector3 targetPosition = new Vector3(0f, 86.4f, 0f);
-            config.DOKill();
-            config.DOScale(targetScale, 0.2f).SetEase(Ease.OutCubic);
-            config.DOLocalMove(targetPosition, 0.2f).SetEase(Ease.OutCubic);
+            config01.DOKill();
+            config01.DOScale(targetScale, 0.2f).SetEase(Ease.OutCubic);
+            config01.DOLocalMove(targetPosition, 0.2f).SetEase(Ease.OutCubic);
+        }
+
+        Transform config02 = uiCanvasRoot.Find("UI_Config_02(Clone)") ?? uiCanvasRoot.Find("UI_Config_02");
+        if (config02 != null)
+        {
+            Vector3 targetScale = new Vector3(0.8f, 0.8f, 1f);
+            Vector3 targetPosition = new Vector3(0f, 86.4f, 0f);
+            config02.DOKill();
+            config02.DOScale(targetScale, 0.2f).SetEase(Ease.OutCubic);
+            config02.DOLocalMove(targetPosition, 0.2f).SetEase(Ease.OutCubic);
         }
 
         // Battle Result: Apply scale and position to Result_layout child
@@ -198,6 +208,7 @@ public class MenuScalePatch
                          objectName.Contains("UI_Com_Header") ||
                          objectName.Contains("UI_Com_BackLog") ||
                          objectName.Contains("UI_Config_01") ||
+                         objectName.Contains("UI_Config_02") ||
                          objectName.Contains("UI_Com_Footer") ||
                          objectName.StartsWith("TopMenu") ||
                          objectName.StartsWith("ItemMenu") ||

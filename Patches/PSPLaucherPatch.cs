@@ -12,6 +12,8 @@ public static class PSPLauncherPatch
     private static bool _bgCreated = false;
     private static bool _soundsBgCreated = false;
     private static string _currentMoviesBgName = null;
+    private static Texture2D _moviesBgTex = null;
+    private static Texture2D _eventsBgTex = null;
 
     // How long (seconds) it takes the overlay to travel across the screen
     private const float OverlayScrollDuration = 12f;
@@ -23,6 +25,8 @@ public static class PSPLauncherPatch
             _bgCreated = false;
             _soundsBgCreated = false;
             _currentMoviesBgName = null;
+            _moviesBgTex = null;
+            _eventsBgTex = null;
             return;
         }
 
@@ -55,10 +59,20 @@ public static class PSPLauncherPatch
                 var imgSelectEvents = GameObject.Find("UI_Root/UI_Canvas_Root/GalleryParent/UI_Gallery_Top01(Clone)/Scroll View/Viewport/Content/UI_Gallery_Button_Set (2)/Img_Select");
 
                 string desired = null;
+                Texture2D desiredTex = null;
+
                 if (imgSelectMovies != null && imgSelectMovies.activeSelf)
+                {
                     desired = "PSPGalleryMoviesBg";
+                    if (_moviesBgTex == null) _moviesBgTex = CustomTexturePatch.LoadCustomTexture(desired);
+                    desiredTex = _moviesBgTex;
+                }
                 else if (imgSelectEvents != null && imgSelectEvents.activeSelf)
+                {
                     desired = "PSPGalleryEventsBg";
+                    if (_eventsBgTex == null) _eventsBgTex = CustomTexturePatch.LoadCustomTexture(desired);
+                    desiredTex = _eventsBgTex;
+                }
 
                 if (desired != null && desired != _currentMoviesBgName)
                 {
@@ -68,7 +82,7 @@ public static class PSPLauncherPatch
                         if (old != null) UnityEngine.Object.Destroy(old.gameObject);
                     }
                     bool dummy = false;
-                    TryInsertGalleryBg(galleryMovies, desired, ref dummy, new Vector2(1920, 1080), new Vector2(0, 12f));
+                    TryInsertGalleryBg(galleryMovies, desired, ref dummy, new Vector2(1920, 1080), new Vector2(0, 12f), desiredTex);
                     _currentMoviesBgName = desired;
                 }
             }
@@ -223,6 +237,48 @@ public static class PSPLauncherPatch
                     Plugin.Log.LogInfo("[PSPLauncherPatch] Disabled title on menu_gs1/all/body.");
                 }
 
+                Transform gs1Pic = gs1Body.Find("pic");
+                if (gs1Pic != null)
+                {
+                    gs1Pic.gameObject.SetActive(false);
+                    Plugin.Log.LogInfo("[PSPLauncherPatch] Disabled pic on menu_gs1/all/body.");
+                }
+
+                if (gs1Body.Find("UI_Top_Title_BG_GSD1") == null)
+                {
+                    Texture2D bgTex1 = CustomTexturePatch.LoadCustomTexture("UI_Top_Title_BG_GSD1");
+                    if (bgTex1 != null)
+                    {
+                        GameObject bgGO1 = new GameObject("UI_Top_Title_BG_GSD1");
+                        bgGO1.transform.SetParent(gs1Body, false);
+                        
+                        Transform efc1 = gs1Body.Find("efc_active");
+                        if (efc1 != null)
+                            bgGO1.transform.SetSiblingIndex(efc1.GetSiblingIndex() + 1);
+                        else
+                            bgGO1.transform.SetAsFirstSibling();
+
+                        RectTransform bgRt1 = bgGO1.AddComponent<RectTransform>();
+                        bgRt1.anchorMin = new Vector2(0.5f, 0.5f);
+                        bgRt1.anchorMax = new Vector2(0.5f, 0.5f);
+                        bgRt1.pivot = new Vector2(0.5f, 0.5f);
+                        bgRt1.sizeDelta = new Vector2(bgTex1.width, bgTex1.height);
+                        bgRt1.localPosition = new Vector3(-11f, 256.5577f, 0f);
+                        bgRt1.localScale = new Vector3(0.9f, 0.9f, 1f);
+
+                        Image bgImg1 = bgGO1.AddComponent<Image>();
+                        bgImg1.sprite = Sprite.Create(bgTex1, new Rect(0, 0, bgTex1.width, bgTex1.height), new Vector2(0.5f, 0.5f), 100f);
+                        bgImg1.color = Color.white;
+                        bgImg1.raycastTarget = false;
+
+                        Plugin.Log.LogInfo("[PSPLauncherPatch] UI_Top_Title_BG_GSD1 inserted into menu_gs1/all/body.");
+                    }
+                    else
+                    {
+                        Plugin.Log.LogWarning("[PSPLauncherPatch] UI_Top_Title_BG_GSD1 texture not found. Place UI_Top_Title_BG_GSD1.png in PKCore/Textures/.");
+                    }
+                }
+
                 if (gs1Body.Find("PSPSuikoden1Logo") == null)
                 {
                     Texture2D logoTex = CustomTexturePatch.LoadCustomTexture("PSPSuikoden1Logo");
@@ -276,6 +332,48 @@ public static class PSPLauncherPatch
                 {
                     gs2Title.gameObject.SetActive(false);
                     Plugin.Log.LogInfo("[PSPLauncherPatch] Disabled title on menu_gs2/all/body.");
+                }
+
+                Transform gs2Pic = gs2Body.Find("pic");
+                if (gs2Pic != null)
+                {
+                    gs2Pic.gameObject.SetActive(false);
+                    Plugin.Log.LogInfo("[PSPLauncherPatch] Disabled pic on menu_gs2/all/body.");
+                }
+
+                if (gs2Body.Find("UI_Top_Title_BG_GSD2") == null)
+                {
+                    Texture2D bgTex2 = CustomTexturePatch.LoadCustomTexture("UI_Top_Title_BG_GSD2");
+                    if (bgTex2 != null)
+                    {
+                        GameObject bgGO2 = new GameObject("UI_Top_Title_BG_GSD2");
+                        bgGO2.transform.SetParent(gs2Body, false);
+                        
+                        Transform efc2 = gs2Body.Find("efc_active");
+                        if (efc2 != null)
+                            bgGO2.transform.SetSiblingIndex(efc2.GetSiblingIndex() + 1);
+                        else
+                            bgGO2.transform.SetAsFirstSibling();
+
+                        RectTransform bgRt2 = bgGO2.AddComponent<RectTransform>();
+                        bgRt2.anchorMin = new Vector2(0.5f, 0.5f);
+                        bgRt2.anchorMax = new Vector2(0.5f, 0.5f);
+                        bgRt2.pivot = new Vector2(0.5f, 0.5f);
+                        bgRt2.sizeDelta = new Vector2(bgTex2.width, bgTex2.height);
+                        bgRt2.localPosition = new Vector3(-3.9999f, 236.2321f, 0f);
+                        bgRt2.localScale = new Vector3(0.9f, 0.9f, 1f);
+
+                        Image bgImg2 = bgGO2.AddComponent<Image>();
+                        bgImg2.sprite = Sprite.Create(bgTex2, new Rect(0, 0, bgTex2.width, bgTex2.height), new Vector2(0.5f, 0.5f), 100f);
+                        bgImg2.color = Color.white;
+                        bgImg2.raycastTarget = false;
+
+                        Plugin.Log.LogInfo("[PSPLauncherPatch] UI_Top_Title_BG_GSD2 inserted into menu_gs2/all/body.");
+                    }
+                    else
+                    {
+                        Plugin.Log.LogWarning("[PSPLauncherPatch] UI_Top_Title_BG_GSD2 texture not found. Place UI_Top_Title_BG_GSD2.png in PKCore/Textures/.");
+                    }
                 }
 
                 if (gs2Body.Find("PSPSuikoden2Logo") == null)
@@ -387,7 +485,7 @@ public static class PSPLauncherPatch
         _bgCreated = true;
     }
 
-    private static void TryInsertGalleryBg(GameObject parent, string textureName, ref bool createdFlag, Vector2 fixedSize = default, Vector2 anchoredPos = default)
+    private static void TryInsertGalleryBg(GameObject parent, string textureName, ref bool createdFlag, Vector2 fixedSize = default, Vector2 anchoredPos = default, Texture2D preloadedTex = null)
     {
         if (parent.transform.Find(textureName) != null)
         {
@@ -395,7 +493,7 @@ public static class PSPLauncherPatch
             return;
         }
 
-        Texture2D tex = CustomTexturePatch.LoadCustomTexture(textureName);
+        Texture2D tex = preloadedTex != null ? preloadedTex : CustomTexturePatch.LoadCustomTexture(textureName);
         if (tex == null)
         {
             Plugin.Log.LogWarning($"[PSPLauncherPatch] {textureName} texture not found. Place {textureName}.png in PKCore/Textures/.");
