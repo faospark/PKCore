@@ -1101,6 +1101,26 @@ public class PortraitSystemPatch
 
                 sprite = newSprite;
                 Plugin.Log.LogInfo($"[PotraitSystem] ✓ Injected mapped portrait '{s1MappedPortrait}' directly to sprite parameter");
+
+                // Face_Pos may still be inactive because OpenMessageWindow fired before LastTextId was set.
+                // Activate it now so the portrait is actually visible.
+                try
+                {
+                    Transform uiSet2 = __instance.transform.Find("UI_Set");
+                    Transform facePos2 = uiSet2?.Find("All_Select/Img_BG/Command_Layout/Face_Pos");
+                    if (facePos2 != null && !facePos2.gameObject.activeSelf)
+                    {
+                        facePos2.gameObject.SetActive(true);
+                        Transform imgFace2 = facePos2.Find("Img_Face");
+                        if (imgFace2 != null) imgFace2.gameObject.SetActive(true);
+                        Plugin.Log.LogInfo("[PotraitSystem] S1: Activated Face_Pos via SetCharacterFace");
+                    }
+                }
+                catch (Exception faceEx)
+                {
+                    Plugin.Log.LogWarning($"[PotraitSystem] S1: Could not activate Face_Pos: {faceEx.Message}");
+                }
+
                 return;
             }
             else
