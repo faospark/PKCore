@@ -44,8 +44,10 @@ public class PortraitSystemPatch
     private static string dialogOverridesPath;
 
     // --- Speaker Injection System ---
-    private static Dictionary<string, string> speakerOverrides = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-    private static string speakerOverridesPath;
+    private static Dictionary<string, string> s1SpeakerOverrides = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+    private static Dictionary<string, string> s2SpeakerOverrides = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+    private static string s1SpeakerOverridesPath;
+    private static string s2SpeakerOverridesPath;
 
     // Tracks whether WE activated Name_Set (vs the game activating it for a native name).
     // We must never deactivate a Name_Set the game owns.
@@ -60,7 +62,8 @@ public class PortraitSystemPatch
             Directory.CreateDirectory(configDir);
 
         dialogOverridesPath = Path.Combine(configDir, "DialogOverrides.json");
-        speakerOverridesPath = Path.Combine(configDir, "SpeakerOverrides.json");
+        s1SpeakerOverridesPath = Path.Combine(configDir, "S1SpeakerOverrides.json");
+        s2SpeakerOverridesPath = Path.Combine(configDir, "S2SpeakerOverrides.json");
 
         // Load Dialog Overrides using AssetLoader (Sync for initialization)
         var loaded = AssetLoader.LoadJsonAsync<Dictionary<string, string>>(dialogOverridesPath).Result;
@@ -69,17 +72,22 @@ public class PortraitSystemPatch
             dialogReplacements = new Dictionary<string, string>(loaded, StringComparer.OrdinalIgnoreCase);
         }
 
-        // Load Speaker Overrides
-        var loadedSpeakers = AssetLoader.LoadJsonAsync<Dictionary<string, string>>(speakerOverridesPath).Result;
-        if (loadedSpeakers != null)
+        // Load S1 Speaker Overrides
+        var loadedS1Speakers = AssetLoader.LoadJsonAsync<Dictionary<string, string>>(s1SpeakerOverridesPath).Result;
+        if (loadedS1Speakers != null)
         {
-            speakerOverrides = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-            // ... (keep the range expansion logic)
-            foreach (var kvp in loadedSpeakers)
-            {
-                // ... (simplified for this call, keeping original expansion logic in place)
-                speakerOverrides[kvp.Key] = kvp.Value;
-            }
+            s1SpeakerOverrides = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            foreach (var kvp in loadedS1Speakers)
+                s1SpeakerOverrides[kvp.Key] = kvp.Value;
+        }
+
+        // Load S2 Speaker Overrides
+        var loadedS2Speakers = AssetLoader.LoadJsonAsync<Dictionary<string, string>>(s2SpeakerOverridesPath).Result;
+        if (loadedS2Speakers != null)
+        {
+            s2SpeakerOverrides = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            foreach (var kvp in loadedS2Speakers)
+                s2SpeakerOverrides[kvp.Key] = kvp.Value;
         }
     }
 
@@ -98,14 +106,27 @@ public class PortraitSystemPatch
     }
 
     /// <summary>
-    /// Get a speaker override by ID key
+    /// Get a speaker override by ID key. Routes to S1SpeakerOverrides.json or S2SpeakerOverrides.json
+    /// based on the currently active game, preventing message ID collisions between the two games.
+    /// When in the Main scene (launcher/shared), both dictionaries are checked (S1 first).
     /// </summary>
     public static string GetSpeakerOverride(string key)
     {
-        if (speakerOverrides == null || speakerOverrides.Count == 0)
+        if (GameDetection.IsMain())
+        {
+            // Main scene: check S1 first, then S2
+            if (s1SpeakerOverrides != null && s1SpeakerOverrides.TryGetValue(key, out string s1Name))
+                return s1Name;
+            if (s2SpeakerOverrides != null && s2SpeakerOverrides.TryGetValue(key, out string s2Name))
+                return s2Name;
+            return null;
+        }
+
+        var dict = GameDetection.IsGSD1() ? s1SpeakerOverrides : s2SpeakerOverrides;
+        if (dict == null || dict.Count == 0)
             return null;
 
-        if (speakerOverrides.TryGetValue(key, out string speakerName))
+        if (dict.TryGetValue(key, out string speakerName))
             return speakerName;
 
         return null;
@@ -729,7 +750,7 @@ public class PortraitSystemPatch
     /// <summary>
     /// S1 portrait injection. Priority order:
     ///   1. Native portrait already active — leave it alone.
-    ///   2. SpeakerOverrides.json mapping — uses the speaker name as the texture filename
+    ///   2. S1SpeakerOverrides.json mapping — uses the speaker name as the texture filename
     ///      (e.g. "Elf Village Chief" -> looks for "Elf Village Chief.png" in NPCPortraits/).
     /// </summary>
     private static void S1_InjectPortrait(Transform uiSet, string textId)
@@ -741,7 +762,7 @@ public class PortraitSystemPatch
             return;
         }
 
-        // Resolve texture key from SpeakerOverrides.json (name part used as PNG filename)
+        // Resolve texture key from S1SpeakerOverrides.json (name part used as PNG filename)
         string textureKey = null;
         string source = null;
 
@@ -751,7 +772,7 @@ public class PortraitSystemPatch
             textureKey = speakerData.Contains("|")
                 ? speakerData.Split('|')[0].Trim()
                 : speakerData;
-            source = "SpeakerOverrides.json";
+            source = "S1SpeakerOverrides.json";
         }
 
         if (string.IsNullOrEmpty(textureKey))
@@ -1274,7 +1295,7 @@ public class PortraitSystemPatch
         string speakerName = __instance.speakerName;
         Plugin.Log.LogInfo($"[PotraitSystem] SetCharacterFace called - SpeakerName: '{speakerName}', HasSprite: {sprite != null}");
 
-        // S1: resolve portrait texture key from SpeakerOverrides.json (name part used as PNG filename)
+        // S1: resolve portrait texture key from S1SpeakerOverrides.json (name part used as PNG filename)
         string textId = TextDatabasePatch.LastTextId;
         string s1SpeakerData = GetSpeakerOverride(textId);
         string s1MappedPortrait = !string.IsNullOrEmpty(s1SpeakerData)

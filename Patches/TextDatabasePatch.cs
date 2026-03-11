@@ -49,7 +49,7 @@ public class TextDatabasePatch
         return true; // Continue execution
     }
 
-    // Postfix for Speaker Injection (SpeakerOverrides.json)
+    // Postfix for Speaker Injection (S1SpeakerOverrides.json / S2SpeakerOverrides.json)
     // Runs AFTER SuikodenFix, so we perform injection on the final text (whether fixed or original)
     // Priority.Last ensures we run after SuikodenFix's potential Postfix (though they likely use Prefix)
     [HarmonyPatch(typeof(TextMasterData), nameof(TextMasterData.GetSystemText))]
