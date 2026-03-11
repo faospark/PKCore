@@ -741,14 +741,6 @@ public class PortraitSystemPatch
             return;
         }
 
-        // Native portrait already present — leave it alone
-        if (facePos.gameObject.activeSelf)
-        {
-            if (Plugin.Config.DetailedLogs.Value)
-                Plugin.Log.LogInfo("[PotraitSystem] S1: Face_Pos already active, leaving it alone");
-            return;
-        }
-
         // Resolve texture key from SpeakerOverrides.json (name part used as PNG filename)
         string textureKey = null;
         string source = null;
@@ -764,6 +756,13 @@ public class PortraitSystemPatch
 
         if (string.IsNullOrEmpty(textureKey))
         {
+            // No custom mapping — leave any native portrait alone
+            if (facePos.gameObject.activeSelf)
+            {
+                if (Plugin.Config.DetailedLogs.Value)
+                    Plugin.Log.LogInfo("[PotraitSystem] S1: Face_Pos already active and no custom mapping, leaving it alone");
+                return;
+            }
             if (Plugin.Config.DetailedLogs.Value)
                 Plugin.Log.LogInfo($"[PotraitSystem] S1: no portrait mapping for '{textId}'");
             return;
