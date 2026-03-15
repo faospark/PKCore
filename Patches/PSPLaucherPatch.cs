@@ -118,24 +118,6 @@ public static class PSPLauncherPatch
                 if (scrollView != null) scrollView.localScale = new Vector3(0.8f, 0.8f, 1f);
             }
         }
-
-        {
-            var launcherCanvas = GameObject.Find("Launcher_Root_Variant(Clone)/Launcher_Root_UI/UI_Canvas");
-            if (launcherCanvas != null)
-            {
-                var config01 = launcherCanvas.transform.Find("UI_Config_01");
-                if (config01 == null) config01 = launcherCanvas.transform.Find("UI_Config_01(Clone)");
-                if (config01 != null) config01.localScale = new Vector3(0.8f, 0.8f, 1f);
-
-                var config02 = launcherCanvas.transform.Find("UI_Config_02");
-                if (config02 == null) config02 = launcherCanvas.transform.Find("UI_Config_02(Clone)");
-                if (config02 != null) config02.localScale = new Vector3(0.8f, 0.8f, 1f);
-
-                var langSelect = launcherCanvas.transform.Find("LangSelectWindow");
-                if (langSelect == null) langSelect = launcherCanvas.transform.Find("LangSelectWindow(Clone)");
-                if (langSelect != null) langSelect.localScale = new Vector3(0.8f, 0.8f, 1f);
-            }
-        }
     }
 
     private static void TryInsertBackground(GameObject launcherRoot)

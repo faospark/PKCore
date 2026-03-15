@@ -231,6 +231,30 @@ public class MenuScalePatch
     }
     
     /// <summary>
+    /// Applies config/lang-select scaling for the PSP Launcher scene.
+    /// Called each frame from PSPLauncherPatch.Update() while in the Main scene.
+    /// </summary>
+    public static void ApplyLauncherConfigScaling()
+    {
+        if (Plugin.Config.ScaledDownMenu.Value.ToLower() != "true") return;
+
+        var launcherCanvas = GameObject.Find("Launcher_Root_Variant(Clone)/Launcher_Root_UI/UI_Canvas");
+        if (launcherCanvas == null) return;
+
+        var config01 = launcherCanvas.transform.Find("UI_Config_01");
+        if (config01 == null) config01 = launcherCanvas.transform.Find("UI_Config_01(Clone)");
+        if (config01 != null) { config01.localScale = new Vector3(0.8f, 0.8f, 1f); config01.localPosition = new Vector3(config01.localPosition.x, 86.4f, config01.localPosition.z); }
+
+        var config02 = launcherCanvas.transform.Find("UI_Config_02");
+        if (config02 == null) config02 = launcherCanvas.transform.Find("UI_Config_02(Clone)");
+        if (config02 != null) { config02.localScale = new Vector3(0.8f, 0.8f, 1f); config02.localPosition = new Vector3(config02.localPosition.x, 86.4f, config02.localPosition.z); }
+
+        var langSelect = launcherCanvas.transform.Find("LangSelectWindow");
+        if (langSelect == null) langSelect = launcherCanvas.transform.Find("LangSelectWindow(Clone)");
+        if (langSelect != null) { langSelect.localScale = new Vector3(0.8f, 0.8f, 1f); langSelect.localPosition = new Vector3(langSelect.localPosition.x, 86.4f, langSelect.localPosition.z); }
+    }
+
+    /// <summary>
     /// Check if a Container object is the footer container we care about
     /// </summary>
     private static bool IsFooterContainer(GameObject container)
