@@ -235,7 +235,7 @@ Some abilities are defined in game code but may not function:
 | 33           | Miklotov  | 11  | 6   | SP_MOUNT                    |
 | 34           | Camus     | 9   | 8   | SP_MOUNT                    |
 | 16           | Shin      | 0   | 0   | SP_CRITICAL                 |
-| 94           | (Unknown) | 0   | 0   | SP_SEE_THROUGH              |
+| 94           | Jess      | 0   | 0   | SP_SEE_THROUGH              |
 | 3348         | Freed Y   | 6   | 7   | None                        |
 | 93           | Huan      | 0   | 0   | SP_MEDICAL2                 |
 | 23           | Tuta      | 0   | 0   | SP_MEDICAL1                 |
