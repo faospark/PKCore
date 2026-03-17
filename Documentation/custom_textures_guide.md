@@ -20,17 +20,11 @@ PKCore's custom texture system allows you to replace any game texture with your 
 The mod matches textures by **filename**. When the game requests a texture, PKCore looks for an exact filename match first.
 
 **File Naming:**
-- **Exact match (recommended)**: Most textures use the full Unity-generated name:
+- **Exact match (required)**: Textures use the full Unity-generated name:
   ```
   sactx-0-128x128-Uncompressed-ail_field_00_atlas-0bfc7460.png
   ```
-  This includes the resolution, compression, base name, and content hash.
-  
-- **Simplified names (fallback)**: If no exact match is found, the system automatically strips the `sactx-` prefix and hash:
-  ```
-  sactx-0-128x128-Uncompressed-m_gat1_00_atlas-b4ac1ef3  →  m_gat1_00_atlas
-  ```
-  This allows you to use simplified names like `m_gat1_00_atlas.png` for convenience.
+  This includes the resolution, compression, base name, and content hash. The filename must match exactly.
 
 **Special Features:**
 - **Controller prompts**: Supports variant suffixes for different controller types:
@@ -111,18 +105,21 @@ PKCore/00-Mods/
 ### Example Complete Structure
 
 ```
-BepInEx/PKCore/Textures/
-├── window_main.png              ← Base: Works in both games
-├── GSD1/
-│   ├── s1_hero_portrait.png     ← Only loads in Suikoden 1
-│   └── castle_bg.png
-├── GSD2/
-│   ├── s2_hero_portrait.png     ← Only loads in Suikoden 2
-│   └── castle_bg.png            ← Different version for S2
+PKCore/
+├── Textures/
+│   ├── window_main.png              ← Base: Works in both games
+│   ├── GSD1/
+│   │   ├── s1_hero_portrait.png     ← Only loads in Suikoden 1
+│   │   └── castle_bg.png
+│   └── GSD2/
+│       ├── s2_hero_portrait.png     ← Only loads in Suikoden 2
+│       └── castle_bg.png            ← Different version for S2
 └── 00-Mods/
-    ├── custom_window.png        ← User mod: Overrides window_main.png
-    └── GSD2/
-        └── castle_bg.png        ← User mod for S2: Highest priority
+    └── MyMod/
+        └── Textures/
+            ├── custom_window.png        ← User mod: Overrides window_main.png
+            └── GSD2/
+                └── castle_bg.png        ← User mod for S2: Highest priority
 ```
 
 ---
@@ -175,27 +172,14 @@ The easiest way is to check what's already in your `PKCore/Textures` folder:
 ```
 Get-ChildItem "PKCore/Textures" -Recurse -File | Select-Object Name
 ```
-Most textures (83%) use complete Unity-generated names with `sactx-` prefix and hash.
+Most textures use complete Unity-generated names with the `sactx-` prefix and hash.
 
 **Method 2: Enable Logging**
 1. Edit `BepInEx/config/faospark.pkcore.cfg`
 2. Set `LogReplaceableTextures = true`
 3. Launch the game and check the BepInEx console or log file
 4. You'll see entries like: `[Replaceable Texture] sactx-0-128x128-Uncompressed-texture_name-a1b2c3d4`
-
-**MetFind Original Name**: Check your existing `PKCore/Textures` folder or use logging to get the exact texture name
-2. **Export Original**: Use AssetStudio/AssetRipper to extract the original texture (optional)
-3. **Edit**: Use Photoshop, GIMP, Aseprite, or your preferred image editor
-4. **Maintain Aspect Ratio**: PKCore auto-scales textures, but matching original resolution is recommended
-5. **Save**: Export as PNG (transparency) or DDS (performance)
-6. **Name Exactly**: Use the COMPLETE filename from step 1:
-   ```
-   sactx-0-128x128-Uncompressed-ail_field_00_atlas-0bfc7460.png
-   ```
-   Or use simplified name (system will match via fallback):
-   ```
-   ail_field_00_atlas.png
-   ```
+5. Use this **exact** name (including the `sactx-` prefix and hash) as your filename.
 ### Creating Your Custom Texture
 
 1. **Export Original**: Use AssetStudio/AssetRipper to extract the original texture
@@ -208,9 +192,9 @@ Most textures (83%) use complete Unity-generated names with `sactx-` prefix and 
 
 1. Place the file in the appropriate folder:
    ```
-   PKCore/Textures/00-Mods/your_texture.png     ← Generic
-   PKCore/Textures/00-Mods/GSD1/your_texture.png ← Suikoden 1 only
-   PKCore/Textures/00-Mods/GSD2/your_texture.png ← Suikoden 2 only
+   PKCore/00-Mods/MyMod/Textures/your_texture.png      ← Generic
+   PKCore/00-Mods/MyMod/Textures/GSD1/your_texture.png ← Suikoden 1 only
+   PKCore/00-Mods/MyMod/Textures/GSD2/your_texture.png ← Suikoden 2 only
    ```
 2. Launch the game
 3. Check the log for confirmation: `Replaced texture: your_texture`
@@ -229,8 +213,7 @@ Some textures support conditional variants based on configuration:
 - `button_a_02.png` → PlayStation 5 (DualSense)
 - `button_a_03.png` → Xbox (native)
 - `button_a_04.png` → Switch/Nintendo
-- `button_a_05.png` → Custom (user-defined)
-
+  
 The system automatically selects the correct variant based on your config setting.
 
 **Save Point Colors:**
@@ -259,14 +242,17 @@ The system automatically selects the correct variant based on your config settin
 Prevents Suikoden 1 textures from appearing in Suikoden 2 and vice versa:
 
 ```
-PKCore/Textures/
-├── GSD1/
-│   └── hero.png      ← Only loads in Suikoden 1
-├── GSD2/
-│   └── hero.png      ← Only loads in Suikoden 2
+PKCore/
+├── Textures/
+│   ├── GSD1/
+│   │   └── hero.png      ← Only loads in Suikoden 1
+│   └── GSD2/
+│       └── hero.png      ← Only loads in Suikoden 2
 └── 00-Mods/
-    └── GSD1/
-        └── hero.png  ← User override for S1 only
+    └── MyMod/
+        └── Textures/
+            └── GSD1/
+                └── hero.png  ← User override for S1 only
 ```
 
 **How It Works:**
@@ -477,7 +463,7 @@ The `AssetLoader.cs` module provides centralized, high-performance texture loadi
 1. Enable logging and find texture name: `portrait_tir_00`
 2. Create your custom portrait in Photoshop (match original dimensions)
 3. Save as `portrait_tir_00.png`
-4. Place in `PKCore/Textures/00-Mods/GSD1/portrait_tir_00.png`
+4. Place in `PKCore/00-Mods/BetterPortraits/Textures/GSD1/portrait_tir_00.png`
 5. Launch game and verify replacement
 
 ### Example 2: Add Custom Controller Prompts
@@ -485,7 +471,7 @@ The `AssetLoader.cs` module provides centralized, high-performance texture loadi
 **Goal**: Use custom Xbox button icons
 
 1. Create button icons: `button_a_03.png`, `button_b_03.png`, etc.
-2. Place in `PKCore/Textures/00-Mods/`
+2. Place in `PKCore/00-Mods/MyMod/Textures/`
 3. Set `ControllerPromptType = Xbox` in config (maps to `_03` suffix)
 4. Set `ForceControllerPrompts = true` to always show Xbox prompts
 
@@ -508,7 +494,7 @@ The `AssetLoader.cs` module provides centralized, high-performance texture loadi
    - Format: BC1 (DXT1) for opaque backgrounds
    - Mipmaps: Yes
 5. Save as `bg_castle_exterior.dds`
-6. Place in `PKCore/Textures/00-Mods/GSD2/bg_castle_exterior.dds`
+6. Place in `PKCore/00-Mods/MyMod/Textures/GSD2/bg_castle_exterior.dds`
 
 ---
 

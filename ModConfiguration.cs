@@ -220,6 +220,14 @@ public sealed class ModConfiguration
             true,
             "Disable sunray glow effects on the world map for Suikoden 1 and 2. Set to false to keep the original sunray glow effects."
         );
+        
+       BetterLauncherBGM = _config.Bind(
+            "03 General",
+            "BetterLauncherBGM",
+            true,
+            "Enable Better Launcher BGM mod. Loads sound files from PKCore/00-Mods/Better-Launcher-BGM-Mod/Sound/ to replace the launcher music. Requires EnableSoundRedirect to be true."
+        );        
+        
         // Game Specific
         S1ScaledDownWorldMap = _config.Bind(
             "04 Game : Suikoden 1",
@@ -240,7 +248,7 @@ public sealed class ModConfiguration
             "05 Game : Suikoden 2",
             "EnablePortraitSystem",
             true,
-            "Enable custom NPC portrait injection. Place PNG files in PKCore/NPCPortraits/ (in game root folder) named after the NPC (e.g., Ace.png, Yuri.png). Case-insensitive. For now Full Support of S2 and Partial S1"
+            "Enable custom NPC portrait injection. Place PNG files in PKCore/Textures/NPCPortraits/ named after the NPC (e.g., Ace.png, Yuri.png). Use GSD1/ or GSD2/ subfolders for game-specific portraits. Case-insensitive. Supports both Suikoden I and II."
         );
 
         MercFortFence = _config.Bind(
@@ -266,12 +274,7 @@ public sealed class ModConfiguration
 
   
 
-        BetterLauncherBGM = _config.Bind(
-            "03 Sound",
-            "BetterLauncherBGM",
-            true,
-            "Enable Better Launcher BGM mod. Loads sound files from PKCore/00-Mods/Better-Launcher-BGM-Mod/Sound/ to replace the launcher music. Requires EnableSoundRedirect to be true."
-        );
+
 
         // Performance section - all performance related settings
         EnableTextureManifestCache = _config.Bind(

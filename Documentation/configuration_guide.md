@@ -21,13 +21,22 @@ This document outlines all available configuration options for PKCore layout in 
 
 | Setting                       |  Type  |    Default    | Description                                                                   |
 | :------------------------------ | :------: | :-------------: | :------------------------------------------------------------------------------ |
-| **ControllerPromptType**      | string | `PlayStation` | Controller type:`PlayStation`, `Xbox`, `Switch`, `Generic`. (Always enabled). |
+| **ControllerPromptType**      | string | `PlayStation` | Controller type for button prompts. Aliases: `PlayStation`/`PS4`/`DS4` (PS4), `PlayStation5`/`PS5`/`DualSense` (PS5), `Xbox` (Xbox), `Switch`/`Nintendo` (Switch), `Generic`/`PC`/`Keyboard` (keyboard icons). Always active. |
 | **LoadLauncherUITextures**    |  bool  |    `true`    | Load custom launcher UI textures based on unused game assets.                 |
 | **MinimalUI**                 |  bool  |    `true`    | Load minimal UI textures.                                                     |
 | **ClassicSaveWindow**         |  bool  |    `true`    | Use PSX-style Save/Load window for a nostalgic feel.                          |
-| **DisablePortraitDialogMaskPortraitDialog** |  bool  |    `false`    | Remove the`Face_Mask_01` overlay on portraits in dialog windows.              |
+| **DisablePortraitDialogMaskPortraitDialog** |  bool  |    `false`    | Remove the `Face_Mask_01` overlay on portraits in dialog windows.              |
 | **ScaleDownDialogBox**        |  bool  |    `true`    | Compact dialog box (80% size) with adjusted position.                         |
 | **ScaledDownMenu**            | string |    `true`    | Main menu layout scaled down to 80% with adjusted position.                   |
+| **PSPLauncher**               |  bool  |    `false`   | Enable the PSP-inspired launcher skin.                                        |
+
+## [03 Sound]
+
+**Sound Overrides**
+
+| Setting                | Type | Default | Description                                                                                          |
+| :--------------------- | :----: | :-------: | :---------------------------------------------------------------------------------------------------- |
+| **BetterLauncherBGM** | bool | `true`  | Load replacement launcher music from `PKCore/00-Mods/Better-Launcher-BGM-Mod/Sound/`. |
 
 ## [03 General]
 
@@ -36,7 +45,7 @@ This document outlines all available configuration options for PKCore layout in 
 
 | Setting                    |  Type  |  Default  | Description                                                      |
 | :--------------------------- | :------: | :---------: | :----------------------------------------------------------------- |
-| **SavePointColor**         | string | `default` | Save point orb color (`blue`, `red`, `green`, `default`, etc.).  |
+| **SavePointColor**         | string | `default` | Save point orb color. Options: `blue`, `red`, `yellow`, `pink`, `green`, `cyan`, `white`, `dark`, `purple`, `navy`, `default`. Place variants in `Textures/SavePoint/` as `t_obj_savePoint_ball_<color>.png`. |
 | **DisableSavePointGlow**   |  bool  |  `true`  | Disable glow effect on save point orbs to prevent color washout. |
 | **DisableWorldMapClouds**  |  bool  |  `true`  | Disable cloud effects on the world map.                          |
 | **DisableWorldMapSunrays** |  bool  |  `true`  | Disable sunray glow effects on the world map.                    |
@@ -58,7 +67,7 @@ This document outlines all available configuration options for PKCore layout in 
 
 | Setting                       |  Type  |  Default  | Description                                                           |
 | :------------------------------ | :------: | :---------: | :---------------------------------------------------------------------- |
-| **EnablePortraitSystem**        |  bool  |  `true`  | Enable custom NPC portrait injection system.                          |
+| **EnablePortraitSystem**        |  bool  |  `true`  | Enable custom NPC portrait injection. Supports both Suikoden I and II. Place portraits in `PKCore/Textures/GSD1/NPCPortraits/` (S1) or `GSD2/NPCPortraits/` (S2). |
 | **MercFortFence**             | string | `default` | Mercenary Fortress fence texture variant (`default`, `bamboo`, etc.). |
 | **ColoredIntroAndFlashbacks** |  bool  |  `true`  | Restore color to intro and flashback sequences.                       |
 | **EnableWarAbilityMod**       |  bool  |  `true`  | Enable war battle ability customization via`S2WarAbilities.json`.      |
@@ -80,20 +89,22 @@ This document outlines all available configuration options for PKCore layout in 
 **Tools & Window Management**
 
 
-| Setting                    | Type | Default | Description                                             |
-| :--------------------------- | :----: | :-------: | :-------------------------------------------------------- |
-| **EnableBorderlessWindow** | bool | `false` | Enable borderless fullscreen window mode.               |
-| **ShowMouseCursor**        | bool | `false` | Show mouse cursor in game window. Useful for debugging. |
+| Setting             | Type | Default | Description                                             |
+| :------------------ | :----: | :-------: | :------------------------------------------------------- |
+| **ShowMouseCursor** | bool | `false` | Show mouse cursor in game window. Useful for debugging. |
+
+> **Note:** Borderless window mode has been removed. Use the `-popupwindow` Unity launch argument instead.
 
 ## [zz - Diagnostics]
 
 **Debugging Options**
 
 
-| Setting          | Type | Default | Description                                                            |
+| Setting                    | Type | Default | Description                                                                        |
 | :----------------- | :----: | :-------: | :----------------------------------------------------------------------- |
-| **LogTextIDs**   | bool | `false` | Log text lookups to console. Useful for finding dialog IDs. (Verbose!) |
-| **DetailedLogs** | bool | `false` | Enable detailed logging for texture replacements.                      |
+| **LogTextIDs**            | bool | `false` | Log text lookups to console. Useful for finding dialog IDs to use in `S2SpeakerOverrides.json`. (Verbose!) |
+| **DetailedLogs**          | bool | `false` | Enable detailed logging for texture replacements and patch activity.               |
+| **LogReplaceableTextures**| bool | `false` | Log every intercepted texture name at runtime. Use this to discover names for custom replacements. Independent of `DetailedLogs`. |
 
 ## [zz - Experimental]
 

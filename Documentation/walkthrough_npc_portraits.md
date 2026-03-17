@@ -4,7 +4,7 @@
 
 The NPC Portrait System allows custom portrait injection for NPCs that don't have portraits in the base game. It features a flexible directory search system, character name mapping, expression variants, and automatic game-specific detection.
 
-**Note:** Currently supports **Suikoden II only**. Suikoden I support is deferred for future implementation.
+**Note:** Full support for both **Suikoden I** and **Suikoden II**.
 
 ---
 
@@ -33,16 +33,21 @@ The NPC Portrait System allows custom portrait injection for NPCs that don't hav
 The system searches **recursively** through all folders under `PKCore/Textures/` with the following priority:
 
 **Priority Order:**
-1. **GSD2 folders** (highest priority) - All folders under `GSD2/` and subdirectories
-2. **GSD1 folders** (medium priority - deferred) - All folders under `GSD1/` and subdirectories  
+1. **GSD1 folders** (highest priority) - All folders under `GSD1/` and subdirectories
+2. **GSD2 folders** (medium priority) - All folders under `GSD2/` and subdirectories
 3. **Root folders** (lowest priority) - All folders directly under `Textures/` and subdirectories
+
+> **Important:** This priority is determined by insertion order — the system iterates directories in the order above and returns the **first file match found**. There is no runtime game filtering here. Unlike the main texture system (`CustomTexturePatch`), the portrait system does **not** block GSD1 portraits from loading in Suikoden 2 or vice versa. Game-specific isolation is **by convention**: keep S1 portraits in `GSD1/` and S2 portraits in `GSD2/`. If the same filename exists in both, the GSD1 version will always win regardless of which game is active.
 
 ### Example Layouts
 
 **Simple Layout:**
 ```
 PKCore/Textures/
-├── GSD2/NPCPortraits/          ← Suikoden II portraits (primary)
+├── GSD1/NPCPortraits/          ← Suikoden I portraits
+│   ├── tir_portrait.png
+│   └── gremio_portrait.png
+├── GSD2/NPCPortraits/          ← Suikoden II portraits
 │   ├── fp_140.png              ← Luca Blight base portrait
 │   ├── fp_140_laugh1.png       ← Luca laughing
 │   ├── fp_140_shout.png        ← Luca shouting
@@ -62,13 +67,13 @@ PKCore/Textures/
 └── SharedAssets/           ← Works! (lowest priority)
 ```
 
-**Note:** GSD1 folders exist in the structure but S1 support is currently deferred.
+**Note:** GSD1 folders are fully searched. Both S1 and S2 portrait support are fully active.
 
 **Key Points:**
 - ✅ Use ANY folder names - no specific naming required
 - ✅ Nest folders as deep as you want
-- ✅ Place portraits anywhere under `Textures/GSD2/` (S2 active) or `Textures/GSD1/` (S1 deferred)
-- ✅ Game-specific folders always override shared folders
+- ✅ Place portraits anywhere under `Textures/GSD2/` (S2) or `Textures/GSD1/` (S1)
+- ⚠️ Game-specific isolation is **by convention** — always use the correct GSD1/GSD2 folder to avoid portraits bleeding across games
 
 ---
 
@@ -162,8 +167,8 @@ Use pipe syntax `|` to specify expressions:
 2. **Map name:** `"Luca"` → `"fp_140"` (via PortraitMappings.json)
 3. **Try variant:** `"fp_140"` + `"blood"` → `"fp_140_blood.png"` (via PortraitVariants.json)
 4. **Search directories (priority order):**
+   - GSD1 folders (recursively) ← **Highest priority**
    - GSD2 folders (recursively) ← **Primary for S2**
-   - GSD1 folders (recursively) ← Deferred
    - Root folders (recursively)
 5. **If variant not found:** Fall back to default `fp_140.png`
 6. **If default not found:** Fall back to `fp_219.png` (question mark)
@@ -222,7 +227,7 @@ Replaces dialog text:
 - `GameDetection.OnGameChanged` event triggers
 - Portraits automatically reload with new priority
 - Game-specific folders take precedence
-- **Note:** S2 fully supported, S1 support deferred
+- **Note:** Both S1 and S2 fully supported
 
 ---
 
@@ -299,7 +304,7 @@ Textures/GSD2/NPCPortraits/fp_140_bloodfinal.png
 
 **Enable logging in BepInEx config:**
 ```
-[NPCPortraits]
+[zz - Diagnostics]
 LogTextIDs = true
 ```
 
@@ -363,13 +368,14 @@ Existing portraits will continue working - just move them to the recommended str
 
 ## Current Implementation Status
 
+✅ **Suikoden I** - Fully implemented and active
+- Portrait injection working
+- Expression variants supported
+- Dialog and speaker overrides functional
+
 ✅ **Suikoden II** - Fully implemented and active
 - Portrait injection working
 - Expression variants supported (see Luca Blight example)
 - Dialog and speaker overrides functional
 - Example configs available in game directory
 
-⏳ **Suikoden I** - Deferred for future implementation
-- Directory structure exists but S1 detection/loading paused
-- Focus on S2 feature completion first
-- Will be activated in future update
