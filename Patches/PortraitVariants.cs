@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using BepInEx.Unity.IL2CPP;
 
 namespace PKCore.Patches;
@@ -17,6 +18,12 @@ public static class PortraitVariants
 
     // Portrait filename → Expression variants (e.g., "fp_053" → {"angry": "fp_053_angry.png"})
     private static Dictionary<string, Dictionary<string, string>> portraitVariants = new Dictionary<string, Dictionary<string, string>>();
+
+    // Game-specific overrides from 00-Mods GSD1/ or GSD2/ subfolders
+    private static Dictionary<string, string> gsd1PortraitMappings = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+    private static Dictionary<string, string> gsd2PortraitMappings = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+    private static Dictionary<string, Dictionary<string, string>> gsd1PortraitVariants = new Dictionary<string, Dictionary<string, string>>();
+    private static Dictionary<string, Dictionary<string, string>> gsd2PortraitVariants = new Dictionary<string, Dictionary<string, string>>();
 
     private static string configDir;
     private static string portraitMappingsPath;
@@ -90,6 +97,7 @@ public static class PortraitVariants
 
         LoadPortraitMappings();
         LoadPortraitVariants();
+        LoadPortraitFilesFromMods();
 
         isInitialized = true;
         // Plugin.Log.LogInfo($"[PortraitVariants] System initialized - searching {portraitDirectories.Count} directories");
@@ -144,6 +152,82 @@ public static class PortraitVariants
         catch (Exception ex)
         {
             Plugin.Log.LogError($"[PortraitVariants] Error loading portrait variants: {ex.Message}");
+        }
+    }
+
+    /// <summary>
+    /// Scans PKCore/00-Mods/&lt;ModName&gt;/ for PortraitMappings.json and PortraitVariants.json.
+    /// Supports GSD1/ and GSD2/ subfolders for game-specific loading.
+    /// Mods processed in alphabetical order; alphabetically-last mod wins on key conflicts.
+    /// Folder conventions:
+    ///   00-Mods/&lt;ModName&gt;/PortraitMappings.json         — both games
+    ///   00-Mods/&lt;ModName&gt;/GSD1/PortraitMappings.json    — GSD1 only
+    ///   00-Mods/&lt;ModName&gt;/GSD2/PortraitMappings.json    — GSD2 only
+    ///   00-Mods/&lt;ModName&gt;/PortraitVariants.json         — both games
+    ///   00-Mods/&lt;ModName&gt;/GSD1/PortraitVariants.json    — GSD1 only
+    ///   00-Mods/&lt;ModName&gt;/GSD2/PortraitVariants.json    — GSD2 only
+    /// </summary>
+    private static void LoadPortraitFilesFromMods()
+    {
+        string modsRoot = Path.Combine(BepInEx.Paths.GameRootPath, "PKCore", "00-Mods");
+        if (!Directory.Exists(modsRoot)) return;
+
+        var modDirs = Directory.GetDirectories(modsRoot)
+            .OrderBy(d => d, StringComparer.OrdinalIgnoreCase);
+
+        foreach (var modDir in modDirs)
+        {
+            string modName = Path.GetFileName(modDir);
+
+            // PortraitMappings
+            MergeMappingsFromFile(Path.Combine(modDir, "PortraitMappings.json"), portraitMappings, modName);
+            MergeMappingsFromFile(Path.Combine(modDir, "GSD1", "PortraitMappings.json"), gsd1PortraitMappings, modName + "/GSD1");
+            MergeMappingsFromFile(Path.Combine(modDir, "GSD2", "PortraitMappings.json"), gsd2PortraitMappings, modName + "/GSD2");
+
+            // PortraitVariants
+            MergeVariantsFromFile(Path.Combine(modDir, "PortraitVariants.json"), portraitVariants, modName);
+            MergeVariantsFromFile(Path.Combine(modDir, "GSD1", "PortraitVariants.json"), gsd1PortraitVariants, modName + "/GSD1");
+            MergeVariantsFromFile(Path.Combine(modDir, "GSD2", "PortraitVariants.json"), gsd2PortraitVariants, modName + "/GSD2");
+        }
+    }
+
+    private static void MergeMappingsFromFile(string filePath, Dictionary<string, string> target, string logLabel)
+    {
+        if (!File.Exists(filePath)) return;
+        try
+        {
+            var loaded = AssetLoader.LoadJsonAsync<Dictionary<string, string>>(filePath).Result;
+            if (loaded == null || loaded.Count == 0) return;
+            foreach (var kvp in loaded)
+                target[kvp.Key] = kvp.Value;
+            Plugin.Log.LogInfo($"[PortraitVariants] [{logLabel}] Loaded {loaded.Count} mappings from {Path.GetFileName(filePath)}");
+        }
+        catch (Exception ex)
+        {
+            Plugin.Log.LogError($"[PortraitVariants] Error loading {filePath}: {ex.Message}");
+        }
+    }
+
+    private static void MergeVariantsFromFile(string filePath, Dictionary<string, Dictionary<string, string>> target, string logLabel)
+    {
+        if (!File.Exists(filePath)) return;
+        try
+        {
+            var loaded = AssetLoader.LoadJsonAsync<Dictionary<string, Dictionary<string, string>>>(filePath).Result;
+            if (loaded == null || loaded.Count == 0) return;
+            foreach (var kvp in loaded)
+            {
+                if (!target.ContainsKey(kvp.Key))
+                    target[kvp.Key] = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+                // Deep-merge: add/overwrite individual expression keys
+                foreach (var expr in kvp.Value)
+                    target[kvp.Key][expr.Key] = expr.Value;
+            }
+            Plugin.Log.LogInfo($"[PortraitVariants] [{logLabel}] Loaded {loaded.Count} variant sets from {Path.GetFileName(filePath)}");
+        }
+        catch (Exception ex)
+        {
+            Plugin.Log.LogError($"[PortraitVariants] Error loading {filePath}: {ex.Message}");
         }
     }
 
@@ -221,13 +305,20 @@ public static class PortraitVariants
     }
 
     /// <summary>
-    /// Convert character name to portrait filename using mappings
-    /// Falls back to using the name itself if no mapping exists
+    /// Convert character name to portrait filename using mappings.
+    /// GSD-specific overrides (from 00-Mods GSD1/ or GSD2/ subfolders) take priority.
+    /// Falls back to using the name itself if no mapping exists.
     /// </summary>
     public static string GetPortraitFilename(string characterName)
     {
         if (string.IsNullOrEmpty(characterName))
             return null;
+
+        string currentGame = GameDetection.GetCurrentGame();
+        if (currentGame == "GSD1" && gsd1PortraitMappings.TryGetValue(characterName, out var gsd1mapped))
+            return gsd1mapped;
+        if (currentGame == "GSD2" && gsd2PortraitMappings.TryGetValue(characterName, out var gsd2mapped))
+            return gsd2mapped;
 
         if (portraitMappings.TryGetValue(characterName, out var mappedFile))
             return mappedFile;
@@ -237,19 +328,26 @@ public static class PortraitVariants
     }
 
     /// <summary>
-    /// Get variant filename for a portrait and expression
-    /// Returns null if variant doesn't exist
+    /// Get variant filename for a portrait and expression.
+    /// GSD-specific overrides (from 00-Mods GSD1/ or GSD2/ subfolders) take priority.
+    /// Returns null if variant doesn't exist.
     /// </summary>
     public static string GetVariantFilename(string portraitFile, string expression)
     {
         if (string.IsNullOrEmpty(portraitFile) || string.IsNullOrEmpty(expression))
             return null;
 
+        string currentGame = GameDetection.GetCurrentGame();
+        if (currentGame == "GSD1" && gsd1PortraitVariants.TryGetValue(portraitFile, out var gsd1vars) &&
+            gsd1vars.TryGetValue(expression, out var gsd1varFile))
+            return gsd1varFile;
+        if (currentGame == "GSD2" && gsd2PortraitVariants.TryGetValue(portraitFile, out var gsd2vars) &&
+            gsd2vars.TryGetValue(expression, out var gsd2varFile))
+            return gsd2varFile;
+
         if (portraitVariants.TryGetValue(portraitFile, out var variants) &&
             variants.TryGetValue(expression, out var variantFileName))
-        {
             return variantFileName;
-        }
 
         return null;
     }
@@ -378,7 +476,12 @@ public static class PortraitVariants
         Plugin.Log.LogInfo("[PortraitVariants] Reloading configuration...");
         portraitMappings.Clear();
         portraitVariants.Clear();
+        gsd1PortraitMappings.Clear();
+        gsd2PortraitMappings.Clear();
+        gsd1PortraitVariants.Clear();
+        gsd2PortraitVariants.Clear();
         LoadPortraitMappings();
         LoadPortraitVariants();
+        LoadPortraitFilesFromMods();
     }
 }

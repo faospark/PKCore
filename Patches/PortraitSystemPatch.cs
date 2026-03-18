@@ -4,6 +4,7 @@ using System.Text.RegularExpressions;
 using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json;
 using System.Text.Encodings.Web;
 using Share.UI.Window;
@@ -49,6 +50,10 @@ public class PortraitSystemPatch
     private static string s1SpeakerOverridesPath;
     private static string s2SpeakerOverridesPath;
 
+    // --- Game-specific Dialog Replacements (from 00-Mods GSD1/ or GSD2/ subfolders) ---
+    private static Dictionary<string, string> gsd1DialogReplacements = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+    private static Dictionary<string, string> gsd2DialogReplacements = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+
     // Tracks whether WE activated Name_Set (vs the game activating it for a native name).
     // We must never deactivate a Name_Set the game owns.
     private static bool s_nameSetActivatedByUs = false;
@@ -89,13 +94,85 @@ public class PortraitSystemPatch
             foreach (var kvp in loadedS2Speakers)
                 s2SpeakerOverrides[kvp.Key] = kvp.Value;
         }
+
+        // Load overrides from 00-Mods (highest priority — overrides Config/ files)
+        LoadDialogOverridesFromMods();
     }
 
     /// <summary>
-    /// Get a dialog override by key (can be text or ID:Index)
+    /// Scans PKCore/00-Mods/&lt;ModName&gt;/ for dialog and speaker override JSON files.
+    /// Supports GSD1/ and GSD2/ subfolders for game-specific loading.
+    /// Mods are processed in alphabetical order; alphabetically-last mod wins on key conflicts.
+    /// Folder conventions:
+    ///   00-Mods/&lt;ModName&gt;/DialogOverrides.json          — both games
+    ///   00-Mods/&lt;ModName&gt;/GSD1/DialogOverrides.json     — GSD1 only
+    ///   00-Mods/&lt;ModName&gt;/GSD2/DialogOverrides.json     — GSD2 only
+    ///   00-Mods/&lt;ModName&gt;/S1SpeakerOverrides.json       — GSD1 speakers
+    ///   00-Mods/&lt;ModName&gt;/S2SpeakerOverrides.json       — GSD2 speakers
+    ///   00-Mods/&lt;ModName&gt;/GSD1/S1SpeakerOverrides.json  — GSD1 speakers (alternate location)
+    ///   00-Mods/&lt;ModName&gt;/GSD2/S2SpeakerOverrides.json  — GSD2 speakers (alternate location)
+    /// </summary>
+    private static void LoadDialogOverridesFromMods()
+    {
+        string modsRoot = Path.Combine(BepInEx.Paths.GameRootPath, "PKCore", "00-Mods");
+        if (!Directory.Exists(modsRoot)) return;
+
+        var modDirs = Directory.GetDirectories(modsRoot)
+            .OrderBy(d => d, StringComparer.OrdinalIgnoreCase);
+
+        foreach (var modDir in modDirs)
+        {
+            string modName = Path.GetFileName(modDir);
+
+            // Shared DialogOverrides (both games)
+            MergeJsonIntoDict(Path.Combine(modDir, "DialogOverrides.json"), dialogReplacements, modName);
+
+            // GSD1-specific dialog overrides
+            MergeJsonIntoDict(Path.Combine(modDir, "GSD1", "DialogOverrides.json"), gsd1DialogReplacements, modName + "/GSD1");
+
+            // GSD2-specific dialog overrides
+            MergeJsonIntoDict(Path.Combine(modDir, "GSD2", "DialogOverrides.json"), gsd2DialogReplacements, modName + "/GSD2");
+
+            // S1 Speaker overrides (root or GSD1 subfolder)
+            MergeJsonIntoDict(Path.Combine(modDir, "S1SpeakerOverrides.json"), s1SpeakerOverrides, modName);
+            MergeJsonIntoDict(Path.Combine(modDir, "GSD1", "S1SpeakerOverrides.json"), s1SpeakerOverrides, modName + "/GSD1");
+
+            // S2 Speaker overrides (root or GSD2 subfolder)
+            MergeJsonIntoDict(Path.Combine(modDir, "S2SpeakerOverrides.json"), s2SpeakerOverrides, modName);
+            MergeJsonIntoDict(Path.Combine(modDir, "GSD2", "S2SpeakerOverrides.json"), s2SpeakerOverrides, modName + "/GSD2");
+        }
+    }
+
+    /// <summary>
+    /// Load a JSON dictionary file and merge its entries into <paramref name="target"/>.
+    /// Silently skips if the file does not exist.
+    /// </summary>
+    private static void MergeJsonIntoDict(string filePath, Dictionary<string, string> target, string logLabel)
+    {
+        if (!File.Exists(filePath)) return;
+
+        var loaded = AssetLoader.LoadJsonAsync<Dictionary<string, string>>(filePath).Result;
+        if (loaded == null || loaded.Count == 0) return;
+
+        foreach (var kvp in loaded)
+            target[kvp.Key] = kvp.Value;
+
+        Plugin.Log.LogInfo($"[TextOverride] [{logLabel}] Loaded {loaded.Count} entries from {Path.GetFileName(filePath)}");
+    }
+
+    /// <summary>
+    /// Get a dialog override by key (can be text or ID:Index).
+    /// Game-specific overrides (GSD1/GSD2 subfolders in 00-Mods) take priority over shared ones.
     /// </summary>
     public static string GetDialogOverride(string key)
     {
+        // Game-specific overrides take priority over the shared dictionary
+        string currentGame = GameDetection.GetCurrentGame();
+        if (currentGame == "GSD1" && gsd1DialogReplacements.TryGetValue(key, out string gsd1val))
+            return gsd1val;
+        if (currentGame == "GSD2" && gsd2DialogReplacements.TryGetValue(key, out string gsd2val))
+            return gsd2val;
+
         if (dialogReplacements == null || dialogReplacements.Count == 0)
             return null;
 
