@@ -62,6 +62,7 @@ public sealed class ModConfiguration
     public ConfigEntry<string> ScaledDownMenu { get; private set; }
     public ConfigEntry<string> SMAAQuality { get; private set; }
     public ConfigEntry<bool> PSPLauncher { get; private set; }
+    public ConfigEntry<bool> EnhancedGallery { get; private set; }
 
     // Sound Settings
     public HiddenConfigEntry<bool> EnableSoundRedirect { get; private set; }
@@ -191,6 +192,13 @@ public sealed class ModConfiguration
             "PSPLauncher",
             false,
             "Enable the PSP inspired Launcher."
+        );
+
+        EnhancedGallery = _config.Bind(
+            "02 User Interface",
+            "EnhancedGallery",
+            false,
+            "Enable enhanced gallery backgrounds. Replaces Movies, Events, and Sounds gallery backgrounds with custom textures (PSPGalleryMoviesBg.png, PSPGalleryEventsBg.png, PSPGallerySoundsBg.png)."
         );
 
         SavePointColor = _config.Bind(

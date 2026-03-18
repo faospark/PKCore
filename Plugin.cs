@@ -81,6 +81,8 @@ public class Plugin : BasePlugin
         Patches.GameDetection.Update();
         if (Config.PSPLauncher.Value)
             Patches.PSPLauncherPatch.Update();
+        if (Config.EnhancedGallery.Value)
+            Patches.PSPGalleryEnhanced.Update();
         Patches.MenuScalePatch.ApplyLauncherConfigScaling();
         AssetLoader.Update();
     }
