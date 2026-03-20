@@ -34,6 +34,7 @@ public sealed class ModConfiguration
 
     // NPC Portrait Settings
     public ConfigEntry<bool> LogTextIDs { get; private set; }
+    public ConfigEntry<bool> DumpTextDatabase { get; private set; }
     public ConfigEntry<bool> EnablePortraitSystem { get; private set; }
 
 
@@ -329,6 +330,13 @@ public sealed class ModConfiguration
             "LogTextIDs",
             false,
             "Log all text ID lookups to the console. Enable this to find the ID of dialog lines you want to replace. WARNING: Creates a lot of log output."
+        );
+
+        DumpTextDatabase = _config.Bind(
+            "zz - Diagnostics",
+            "DumpTextDatabase",
+            false,
+            "Accumulate all text IDs and content seen at runtime and save them to PKCore/Debug/TextDB_GSD1.json and TextDB_GSD2.json. Files are additive across sessions and use the same format as DialogOverrides.json."
         );
 
         DetailedLogs = _config.Bind(

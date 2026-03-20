@@ -210,10 +210,15 @@ public class Plugin : BasePlugin
         }
 
         // Dialog Text ID interceptor and placeholder replacement (independent of NPC portraits)
-        if (Config.EnableDialogOverrides.Value || Config.LogTextIDs.Value)
+        if (Config.EnableDialogOverrides.Value || Config.LogTextIDs.Value || Config.DumpTextDatabase.Value)
         {
             Log.LogInfo("Applying TextDatabase patch...");
             harmony.PatchAll(typeof(TextDatabasePatch));
+            TextDatabasePatch.Initialize();
+
+            // Ensure dialog override files are loaded even when EnablePortraitSystem is false
+            if (Config.EnableDialogOverrides.Value)
+                PortraitSystemPatch.LoadDialogOverrides();
 
             // Apply SaveDataProcessor for protagonist/HQ name placeholder replacement
             Log.LogInfo("Applying SaveDataProcessor patch...");

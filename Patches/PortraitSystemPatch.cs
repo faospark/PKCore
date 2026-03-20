@@ -54,12 +54,21 @@ public class PortraitSystemPatch
     private static Dictionary<string, string> gsd1DialogReplacements = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
     private static Dictionary<string, string> gsd2DialogReplacements = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
+    private static bool _dialogOverridesLoaded = false;
+
     // Tracks whether WE activated Name_Set (vs the game activating it for a native name).
     // We must never deactivate a Name_Set the game owns.
     private static bool s_nameSetActivatedByUs = false;
 
-    private static void LoadDialogOverrides()
+    /// <summary>
+    /// Load all dialog/speaker override JSON files from Config/ and 00-Mods/.
+    /// Safe to call multiple times — only loads once unless forceReload is true.
+    /// </summary>
+    public static void LoadDialogOverrides(bool forceReload = false)
     {
+        if (_dialogOverridesLoaded && !forceReload) return;
+        _dialogOverridesLoaded = true;
+
         string baseDir = Path.Combine(BepInEx.Paths.GameRootPath, "PKCore");
         string configDir = Path.Combine(baseDir, "Config");
 
