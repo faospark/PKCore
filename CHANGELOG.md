@@ -4,6 +4,43 @@ All notable changes to PKCore (formerly PKextended) will be documented in this f
 
 > **Note**: This changelog primarily documents changes specific to PKCore. Version numbers may not align with the Project Kyaro Suite releases on NexusMods, as PKCore development may progress independently.
 
+## [2026.03.22] - 2026-03-22
+
+### Release Highlights
+
+- [PSPLauncher] Recreation of the PSP Launcher UI as a new configuration option (off by default).
+- [EnhancedGallery] Better Gallery UI inspired by the PSP Launcher, provided as a separate option so users can still use it even if they do not prefer the PSP Launcher UI.
+- Added non-destructive Background Music replacement support so users can swap music without modifying original files. Place files under `PKCore\\00-Mods\\MyCustom-Sound-Mod\\Sound`.
+- [BetterLauncherBGM] Replaces launcher ambient music with Suikoden 2's adventure start theme. This serves as a sample mod for the new sound replacement feature (on by default).
+- The `00-Mods` folder has been enhanced and moved to the root of PKCore for easier access and visibility.
+- `00-Mods` support has been expanded beyond texture mods to include texture, sound, dialog, and war battle customization mods that users can create and share.
+- Suikoden 1 is now fully supported by the Portrait System, with a different implementation approach from Suikoden 2 due to game design differences.
+
+### General Changes / Patches
+
+- Restructured PKCore folders: `00-Mods` is now at the PKCore root and supports more than texture mods.
+- Added new configuration files and folders to support the new features and structural changes.
+- Moved Suikoden 2 war battle folder to PKS2 so it can be disabled.
+- Added dialog override loading split per game to prevent possible Message ID collisions between Suikoden 1 and Suikoden 2.
+- Transferred portions of the Reworded+ mod into PKCore, specifically for menus and objects.
+- Converted selected textures to `.dds` format to improve performance.
+- Renamed `DisablePortraitDialogMaskPortraitDialog` to `DisablePortraitDialogMask`.
+
+### Suikoden 1 Changes / Patches
+
+- Added the ability to display names in any Suikoden 1 dialog so significant NPCs without names can show names in dialog boxes.
+- Added Suikoden 1 portrait logic fixes so named characters can show portraits in extra dialogs or when their names change based on plot progression (example: Kanaan and Viktor dialogs that previously had no portraits).
+- Added portraits for Grady, Assassin, Rosh, Elder Dwarf, Elven Elder, Imperial Guard, and Zombie.
+- For this mod's naming: Iga is the Assassin, Durin is Elder Dwarf, Soveliss is Elven Elder, and Andie is the Zombie.
+- [Location] Magician's Island received a foliage makeover.
+- [Location] Dragon's Den had one unnecessary mask removed for improved area visibility.
+- [Project Kyaro Sprites] Revised a significant number of sprites, including face/side profile updates, restored missing 1v1 sprite for Teo, and fixed Kasios' instrument-playing sprite.
+
+### Suikoden 2 Changes / Patches
+
+- Added portraits for Mr. Gin's character states.
+- [Project Kyaro Sprites] Revised sprites for young Riou, Jowy, and Nanami.
+
 ## [2026.02.2] - 2026-02-17
 
 Added
