@@ -152,7 +152,24 @@ public static class AssetLoader
     {
         if (filePath.EndsWith(".dds", StringComparison.OrdinalIgnoreCase))
         {
-            return DDSLoader.LoadDDSFromBytes(fileData, assetName);
+            Texture2D texture = DDSLoader.LoadDDSFromBytes(fileData, assetName);
+            if (texture == null)
+                return null;
+
+            texture.name = assetName + (context != null ? $"_{context}" : "");
+
+            bool isWindowUI = CustomTexturePatch.IsWindowUITexture(assetName, filePath);
+            bool isMap = filePath.Contains("Maps", StringComparison.OrdinalIgnoreCase);
+            bool useBilinear = Plugin.Config.SpriteFilteringEnabled.Value || !isMap;
+
+            texture.filterMode = (isWindowUI || (isMap && !useBilinear)) ? FilterMode.Point : FilterMode.Bilinear;
+            texture.wrapMode = TextureWrapMode.Clamp;
+            texture.anisoLevel = (isWindowUI || (isMap && !useBilinear)) ? 0 : 4;
+
+            texture.Apply(false, false);
+
+            UnityEngine.Object.DontDestroyOnLoad(texture);
+            return texture;
         }
         else
         {

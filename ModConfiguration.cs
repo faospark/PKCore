@@ -15,7 +15,7 @@ public sealed class ModConfiguration
 
     // Visual Settings
     public ConfigEntry<bool> DisableSpritePostProcessing { get; private set; }
-    public ConfigEntry<bool> DisablePortraitDialogMaskPortraitDialog { get; private set; }
+    public ConfigEntry<bool> DisablePortraitDialogMask { get; private set; }
 
     // Display Settings
     public ConfigEntry<bool> EnableBorderlessWindow { get; private set; }
@@ -167,9 +167,9 @@ public sealed class ModConfiguration
             "Mimics the feel of the PSX version of Save/Load window for Both Games giving the save/load window a more nostalgic feel instead of the very generic looking window"
         );
 
-        DisablePortraitDialogMaskPortraitDialog = _config.Bind(
+        DisablePortraitDialogMask = _config.Bind(
             "02 User Interface",
-            "DisablePortraitDialogMaskPortraitDialog",
+            "DisablePortraitDialogMask",
             false,
             "Disable the Face_Mask_01 texture overlay on character portraits in dialog windows. This removes the mask effect that appears on portrait displays during conversations."
         );
@@ -192,21 +192,21 @@ public sealed class ModConfiguration
             "02 User Interface",
             "PSPLauncher",
             false,
-            "Enable the PSP inspired Launcher."
+            "Enable the PSP inspired Launcher. Off by default."
         );
 
         EnhancedGallery = _config.Bind(
             "02 User Interface",
             "EnhancedGallery",
-            false,
-            "Enable enhanced gallery backgrounds. Replaces Movies, Events, and Sounds gallery backgrounds with custom textures (PSPGalleryMoviesBg.png, PSPGalleryEventsBg.png, PSPGallerySoundsBg.png)."
+            true,
+            "Enable enhanced gallery backgrounds. Replaces Movies, Events, and Sounds gallery backgrounds with custom textures Inspired by the PSP version."
         );
 
         SavePointColor = _config.Bind(
             "03 General",
             "SavePointColor",
             "default",
-            "Save point orb color. Options: blue, red, yellow, pink, green, cyan, white, dark, purple, navy, default. Place color variants in Textures/SavePoint/ folder as 't_obj_savePoint_ball_<color>.png'."
+            "Save point orb color. Options: black, blue, cyan, green, navy, pink, purple, red, white, yellow, default, random. 'random' picks a new color each room/scene entry.Note some Save Points are hardcoded by the game and will not change."
         );
 
         DisableSavePointGlow = _config.Bind(
@@ -280,9 +280,6 @@ public sealed class ModConfiguration
             true,
             "Enable war battle ability modification. Allows you to customize character abilities in Suikoden 2's war battles. Wont appear on the game menu of Apple but will have an effect on battle. Base is already boosted but can be further configures in PKCore/Config/S2WarAbilities.json"
         );
-
-  
-
 
 
         // Performance section - all performance related settings

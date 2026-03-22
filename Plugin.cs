@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace PKCore;
 
-[BepInPlugin("faospark.pkcore", "PKCore", "2026.01.0")]
+[BepInPlugin("faospark.pkcore", "PKCore", "2026.03.22")]
 [BepInDependency("d3xMachina.suikoden_fix", BepInDependency.DependencyFlags.SoftDependency)]
 [BepInDependency("faospark.SquidFam", BepInDependency.DependencyFlags.SoftDependency)]
 public class Plugin : BasePlugin
@@ -293,9 +293,9 @@ public class Plugin : BasePlugin
         // Build exclusion list based on config
         var excludedMasks = new System.Collections.Generic.HashSet<string>();
 
-        if (!Config.DisablePortraitDialogMaskPortraitDialog.Value)
+        if (!Config.DisablePortraitDialogMask.Value)
         {
-            // If DisablePortraitDialogMaskPortraitDialog is OFF, exclude Face_Mask_01
+            // If DisablePortraitDialogMask is OFF, exclude Face_Mask_01
             excludedMasks.Add("Face_Mask_01");
         }
 

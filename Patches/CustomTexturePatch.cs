@@ -633,6 +633,9 @@ public partial class CustomTexturePatch
         {
             Plugin.Log.LogInfo($"Custom texture system ready ({texturePathIndex.Count} variants available)");
         }
+
+        // Initialize save point color state early so first room can use Random mode immediately.
+        RefreshSavePointColorForRoomEntry(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
         
         // Register for scene loaded to clear caches
         UnityEngine.SceneManagement.SceneManager.sceneLoaded += (Action<UnityEngine.SceneManagement.Scene, UnityEngine.SceneManagement.LoadSceneMode>)OnSceneLoaded;
@@ -687,6 +690,9 @@ public partial class CustomTexturePatch
     {
         if (mode == UnityEngine.SceneManagement.LoadSceneMode.Additive)
             return;
+
+        // In Random mode, choose a new save point color whenever entering a new room/scene.
+        RefreshSavePointColorForRoomEntry(scene.name);
 
         // Log persistent textures BEFORE clearing
         LogPersistentTextureSummary(scene.name);

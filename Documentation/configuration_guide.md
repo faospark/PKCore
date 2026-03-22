@@ -25,7 +25,7 @@ This document outlines all available configuration options for PKCore layout in 
 | **LoadLauncherUITextures**    |  bool  |    `true`    | Load custom launcher UI textures based on unused game assets.                 |
 | **MinimalUI**                 |  bool  |    `true`    | Load minimal UI textures.                                                     |
 | **ClassicSaveWindow**         |  bool  |    `true`    | Use PSX-style Save/Load window for a nostalgic feel.                          |
-| **DisablePortraitDialogMaskPortraitDialog** |  bool  |    `false`    | Remove the `Face_Mask_01` overlay on portraits in dialog windows.              |
+| **DisablePortraitDialogMask** |  bool  |    `false`    | Remove the `Face_Mask_01` overlay on portraits in dialog windows.              |
 | **ScaleDownDialogBox**        |  bool  |    `true`    | Compact dialog box (80% size) with adjusted position.                         |
 | **ScaledDownMenu**            | string |    `true`    | Main menu layout scaled down to 80% with adjusted position.                   |
 | **PSPLauncher**               |  bool  |    `false`   | Enable the PSP-inspired launcher skin.                                        |
@@ -45,7 +45,7 @@ This document outlines all available configuration options for PKCore layout in 
 
 | Setting                    |  Type  |  Default  | Description                                                      |
 | :--------------------------- | :------: | :---------: | :----------------------------------------------------------------- |
-| **SavePointColor**         | string | `default` | Save point orb color. Options: `blue`, `red`, `yellow`, `pink`, `green`, `cyan`, `white`, `dark`, `purple`, `navy`, `default`. Place variants in `Textures/SavePoint/` as `t_obj_savePoint_ball_<color>.png`. |
+| **SavePointColor**         | string | `default` | Save point orb color. Options: `black`, `blue`, `cyan`, `green`, `navy`, `pink`, `purple`, `red`, `white`, `yellow`, `default`, `random`. `random` selects a new color each room/scene entry. Place variants in `Textures/SavePoint/` as `t_obj_savePoint_ball_<color>.png`. |
 | **DisableSavePointGlow**   |  bool  |  `true`  | Disable glow effect on save point orbs to prevent color washout. |
 | **DisableWorldMapClouds**  |  bool  |  `true`  | Disable cloud effects on the world map.                          |
 | **DisableWorldMapSunrays** |  bool  |  `true`  | Disable sunray glow effects on the world map.                    |

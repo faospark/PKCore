@@ -47,9 +47,9 @@ public static class TextureOptions
         // Save Point Orb colors
         if (textureName == "t_obj_savePoint_ball")
         {
-            string colorSuffix = Plugin.Config.SavePointColor.Value.ToLower();
+            string colorSuffix = CustomTexturePatch.GetActiveSavePointColorVariant();
             
-            if (colorSuffix == "default")
+            if (colorSuffix == "default" || colorSuffix == "random")
                 return textureName;
 
             if (!string.IsNullOrEmpty(colorSuffix))

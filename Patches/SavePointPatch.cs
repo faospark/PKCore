@@ -12,6 +12,111 @@ namespace PKCore.Patches;
 public partial class CustomTexturePatch
 {
     private static bool _loggedSavePointColor = false;
+    private static string _activeSavePointColorVariant;
+
+    private static readonly string[] SavePointColorVariants =
+    {
+        "black", "blue", "cyan", "green", "navy", "pink", "purple", "red", "white", "yellow"
+    };
+
+    /// <summary>
+    /// Returns the currently active save point color variant.
+    /// In Random mode this value is selected per room/scene entry.
+    /// </summary>
+    internal static string GetActiveSavePointColorVariant()
+    {
+        string configured = Plugin.Config.SavePointColor.Value?.Trim();
+        if (string.IsNullOrEmpty(configured))
+            return "default";
+
+        if (configured.Equals("random", StringComparison.OrdinalIgnoreCase))
+        {
+            if (string.IsNullOrEmpty(_activeSavePointColorVariant))
+                SelectRandomSavePointColor();
+
+            return _activeSavePointColorVariant;
+        }
+
+        if (configured.Equals("dark", StringComparison.OrdinalIgnoreCase))
+            return "black";
+
+        return configured.ToLowerInvariant();
+    }
+
+    /// <summary>
+    /// Refresh save point color state when entering a new room/scene.
+    /// </summary>
+    internal static void RefreshSavePointColorForRoomEntry(string roomName)
+    {
+        if (!Plugin.Config.SavePointColor.Value.Equals("random", StringComparison.OrdinalIgnoreCase))
+            return;
+
+        SelectRandomSavePointColor();
+        ClearSavePointVariantCaches();
+
+        if (Plugin.Config.DetailedLogs.Value)
+        {
+            Plugin.Log.LogInfo($"[SavePoint Color] Room '{roomName}' selected: {_activeSavePointColorVariant}");
+        }
+    }
+
+    /// <summary>
+    /// Pick a random save point color variant.
+    /// Tries to avoid repeating the previous color when possible.
+    /// </summary>
+    private static void SelectRandomSavePointColor()
+    {
+        string previous = _activeSavePointColorVariant;
+        string next = SavePointColorVariants[UnityEngine.Random.Range(0, SavePointColorVariants.Length)];
+
+        if (SavePointColorVariants.Length > 1 &&
+            !string.IsNullOrEmpty(previous) &&
+            next.Equals(previous, StringComparison.OrdinalIgnoreCase))
+        {
+            next = SavePointColorVariants[UnityEngine.Random.Range(0, SavePointColorVariants.Length)];
+        }
+
+        _activeSavePointColorVariant = next;
+        _loggedSavePointColor = false;
+    }
+
+    /// <summary>
+    /// Clears only save point-related texture/sprite caches so Random mode can swap variants.
+    /// </summary>
+    private static void ClearSavePointVariantCaches()
+    {
+        var textureKeys = new System.Collections.Generic.List<string>();
+        foreach (var key in customTextureCache.Keys)
+        {
+            if (key.StartsWith("t_obj_savePoint_ball", StringComparison.OrdinalIgnoreCase))
+                textureKeys.Add(key);
+        }
+
+        foreach (var key in textureKeys)
+        {
+            if (customTextureCache.TryGetValue(key, out Texture2D tex) && tex)
+                UnityEngine.Object.Destroy(tex);
+
+            customTextureCache.Remove(key);
+        }
+
+        var spriteKeys = new System.Collections.Generic.List<string>();
+        foreach (var key in customSpriteCache.Keys)
+        {
+            if (key.StartsWith("t_obj_savePoint_ball", StringComparison.OrdinalIgnoreCase))
+                spriteKeys.Add(key);
+        }
+
+        foreach (var key in spriteKeys)
+        {
+            if (customSpriteCache.TryGetValue(key, out Sprite sprite) && sprite)
+                UnityEngine.Object.Destroy(sprite);
+
+            customSpriteCache.Remove(key);
+        }
+
+        preloadedSavePointSprites.Clear();
+    }
 
     /// <summary>
     /// Intercept Resources.Load<Sprite>() to replace save point animation frames
@@ -144,10 +249,11 @@ public partial class CustomTexturePatch
         if (!spriteName.StartsWith("t_obj_savePoint_ball_"))
             return null;
 
-        // Check if we have the atlas texture
-        if (!texturePathIndex.ContainsKey("t_obj_savePoint_ball"))
+        // Check if we have the atlas texture (including selected color variant)
+        string atlasLookupName = TextureOptions.GetTextureNameWithVariant("t_obj_savePoint_ball");
+        if (!texturePathIndex.ContainsKey(atlasLookupName))
         {
-            Plugin.Log.LogWarning($"[SavePoint] Atlas texture 't_obj_savePoint_ball' not found in texture index");
+            Plugin.Log.LogWarning($"[SavePoint] Atlas texture '{atlasLookupName}' not found in texture index");
             return null;
         }
 
@@ -221,7 +327,7 @@ public partial class CustomTexturePatch
 
             if (Plugin.Config.DetailedLogs.Value && !_loggedSavePointColor)
             {
-                string color = Plugin.Config.SavePointColor.Value;
+                string color = GetActiveSavePointColorVariant();
                 Plugin.Log.LogInfo($"[SavePoint] Custom {color} created and cached");
                 _loggedSavePointColor = true;
             }

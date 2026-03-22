@@ -112,7 +112,7 @@ Removed
 
 #### Visual Improvements
 
-- **Portrait Mask Removal**: Option to disable the Face_Mask_01 overlay on character portraits (`DisablePortraitDialogMaskPortraitDialog`), providing a cleaner look for custom portraits.
+- **Portrait Mask Removal**: Option to disable the Face_Mask_01 overlay on character portraits (`DisablePortraitDialogMask`), providing a cleaner look for custom portraits.
 - **Colored Intro and Flashbacks**: Restores full color to Suikoden 2's intro and flashback sequences by disabling the game's sepia/monochrome filter.
 - **Classic Save Window**: Mimic the feel of the PSX version with a simpler, fullscreen Save/Load interface for Suikoden 2.
 - **Save Point Customization**: Choose from 5 color variants and optionally disable the glow effect.
