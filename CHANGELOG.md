@@ -2,9 +2,6 @@
 
 All notable changes to PKCore (formerly PKextended) will be documented in this file.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-
 > **Note**: This changelog primarily documents changes specific to PKCore. Version numbers may not align with the Project Kyaro Suite releases on NexusMods, as PKCore development may progress independently.
 
 ## [2026.02.2] - 2026-02-17
@@ -440,3 +437,6 @@ Format: `[MAJOR.MINOR.PATCH]`
 - **Removed**: Removed features
 - **Fixed**: Bug fixes
 - **Security**: Security vulnerability fixes
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).

@@ -271,6 +271,9 @@ public class Plugin : BasePlugin
             harmony.PatchAll(typeof(S1WorldMapScaleUIPatch));
         }
 
+        // Disable specific va4_04 map objects (Suikoden 1) - always active
+        harmony.PatchAll(typeof(S1DisableObjectsPatch));
+
         // Apply Voice Acting Patch (Text-to-Speech)
 
 

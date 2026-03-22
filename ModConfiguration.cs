@@ -286,7 +286,7 @@ public sealed class ModConfiguration
         EnableTextureManifestCache = _config.Bind(
             "Performance",
             "EnableTextureManifestCache",
-            true,
+            false,
             "Enable texture manifest caching for faster startup. Caches the texture index to skip re-scanning the Textures folder on every launch. Disable if you're actively adding/removing textures and want changes detected immediately."
         );
 
