@@ -4,7 +4,7 @@ All notable changes to PKCore (formerly PKextended) will be documented in this f
 
 > **Note**: This changelog primarily documents changes specific to PKCore. Version numbers may not align with the Project Kyaro Suite releases on NexusMods, as PKCore development may progress independently.
 
-## [2026.03.22] - 2026-03-22
+## [2026.03.01] - 2026-03-22
 
 ### Release Highlights
 
@@ -63,7 +63,7 @@ Removed
 
 * Texture file name sanitation, which previously caused collisions with files that had identical names once stripped with hash and prefix.
 * Redundant`ReactionMonitor`
-* Borderless Patch now replaced by a recommendation to use -popupwindow 
+* Borderless Patch now replaced by a recommendation to use -popupwindow
 
 ## [2026.02.0] - 2026-02-09
 
