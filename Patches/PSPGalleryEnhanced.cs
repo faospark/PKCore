@@ -14,6 +14,16 @@ public static class PSPGalleryEnhanced
     private static string _currentMoviesBgName = null;
     private static Texture2D _moviesBgTex = null;
     private static Texture2D _eventsBgTex = null;
+    private static Texture2D _gallery02ImgPicTex01 = null;
+    private static Texture2D _gallery02ImgPicTex02 = null;
+    private static Texture2D _gallery02ImgPicTex03 = null;
+    private static Texture2D _gallery02ImgPicTex04 = null;
+
+    private const string Gallery02ImgPicPath = "UI_Root/UI_Canvas_Root/GalleryParent/UI_Gallery_02(Clone)/Img_Pic";
+    private const string Gallery02Button1SelectPath = "UI_Root/UI_Canvas_Root/GalleryParent/UI_Gallery_02(Clone)/Btn_Set01/Button_1/Img_Select";
+    private const string Gallery02Button2SelectPath = "UI_Root/UI_Canvas_Root/GalleryParent/UI_Gallery_02(Clone)/Btn_Set01/Button_2/Img_Select";
+    private const string GalleryTopButton3SelectPath = "UI_Root/UI_Canvas_Root/GalleryParent/UI_Gallery_Top01(Clone)/Scroll View/Viewport/Content/UI_Gallery_Button_Set (3)/Img_Select";
+    private const string GalleryTopButton4SelectPath = "UI_Root/UI_Canvas_Root/GalleryParent/UI_Gallery_Top01(Clone)/Scroll View/Viewport/Content/UI_Gallery_Button_Set (4)/Img_Select";
 
     public static void Update()
     {
@@ -23,8 +33,14 @@ public static class PSPGalleryEnhanced
             _currentMoviesBgName = null;
             _moviesBgTex = null;
             _eventsBgTex = null;
+            _gallery02ImgPicTex01 = null;
+            _gallery02ImgPicTex02 = null;
+            _gallery02ImgPicTex03 = null;
+            _gallery02ImgPicTex04 = null;
             return;
         }
+
+        TryReplaceGallery02ImgPicSprite();
 
         // UI_Bg_02(Clone): disable Line and bg_gradation, recolor bg
         GameObject uiBg02 = GameObject.Find("UI_Root/UI_Canvas_Root/UI_Bg_02(Clone)");
@@ -171,6 +187,82 @@ public static class PSPGalleryEnhanced
                 if (scrollView != null) scrollView.localScale = new Vector3(0.8f, 0.8f, 1f);
             }
         }
+    }
+
+    private static void TryReplaceGallery02ImgPicSprite()
+    {
+        GameObject imgPicObj = GameObject.Find(Gallery02ImgPicPath);
+        if (imgPicObj == null)
+            return;
+
+        Image img = imgPicObj.GetComponent<Image>();
+        if (img == null)
+            return;
+
+        GameObject topButton3Select = GameObject.Find(GalleryTopButton3SelectPath);
+        GameObject topButton4Select = GameObject.Find(GalleryTopButton4SelectPath);
+
+        bool isTopButton3Active = topButton3Select != null && topButton3Select.activeSelf;
+        bool isTopButton4Active = topButton4Select != null && topButton4Select.activeSelf;
+        if (!isTopButton3Active && !isTopButton4Active)
+            return;
+
+        GameObject button1Select = GameObject.Find(Gallery02Button1SelectPath);
+        GameObject button2Select = GameObject.Find(Gallery02Button2SelectPath);
+
+        bool isButton1Active = button1Select != null && button1Select.activeSelf;
+        bool isButton2Active = button2Select != null && button2Select.activeSelf;
+
+        string targetTextureName = null;
+        Texture2D targetTexture = null;
+
+        if (isTopButton3Active && isButton1Active)
+        {
+            targetTextureName = "UI_Bg_Img01_001_01";
+            if (_gallery02ImgPicTex01 == null)
+                _gallery02ImgPicTex01 = CustomTexturePatch.LoadCustomTexture(targetTextureName);
+            targetTexture = _gallery02ImgPicTex01;
+        }
+        else if (isTopButton3Active && isButton2Active)
+        {
+            targetTextureName = "UI_Bg_Img01_001_02";
+            if (_gallery02ImgPicTex02 == null)
+                _gallery02ImgPicTex02 = CustomTexturePatch.LoadCustomTexture(targetTextureName);
+            targetTexture = _gallery02ImgPicTex02;
+        }
+        else if (isTopButton4Active && isButton1Active)
+        {
+            targetTextureName = "UI_Bg_Img01_002_01";
+            if (_gallery02ImgPicTex03 == null)
+                _gallery02ImgPicTex03 = CustomTexturePatch.LoadCustomTexture(targetTextureName);
+            targetTexture = _gallery02ImgPicTex03;
+        }
+        else if (isTopButton4Active && isButton2Active)
+        {
+            targetTextureName = "UI_Bg_Img01_002_02";
+            if (_gallery02ImgPicTex04 == null)
+                _gallery02ImgPicTex04 = CustomTexturePatch.LoadCustomTexture(targetTextureName);
+            targetTexture = _gallery02ImgPicTex04;
+        }
+        else
+        {
+            return;
+        }
+
+        if (targetTexture == null)
+        {
+            Plugin.Log.LogWarning($"[PSPGalleryEnhanced] {targetTextureName} texture not found. Place {targetTextureName}.png in PKCore/Textures/.");
+            return;
+        }
+
+        string currentName = img.sprite != null ? img.sprite.name : null;
+        if (currentName == targetTextureName)
+            return;
+
+        img.sprite = Sprite.Create(targetTexture, new Rect(0, 0, targetTexture.width, targetTexture.height), new Vector2(0.5f, 0.5f), 100f);
+
+        if (Plugin.Config.DetailedLogs.Value)
+            Plugin.Log.LogInfo($"[PSPGalleryEnhanced] Replaced Img_Pic sprite to {targetTextureName}");
     }
 
     private static void TryInsertGalleryBg(GameObject parent, string textureName, ref bool createdFlag, Vector2 fixedSize = default, Vector2 anchoredPos = default, Texture2D preloadedTex = null)
