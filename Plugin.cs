@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace PKCore;
 
-[BepInPlugin("faospark.pkcore", "PKCore", "2026.03.22")]
+[BepInPlugin("faospark.pkcore", "PKCore", "2026.03.01")]
 [BepInDependency("d3xMachina.suikoden_fix", BepInDependency.DependencyFlags.SoftDependency)]
 [BepInDependency("faospark.SquidFam", BepInDependency.DependencyFlags.SoftDependency)]
 public class Plugin : BasePlugin
