@@ -9,6 +9,7 @@ namespace PKCore.Patches;
 /// Targets:
 /// - AppRoot/Map/MapBackGround/va4_04(Clone)/object/large/
 /// - AppRoot/Map/MapBackGround/vf1_08(Clone)/mask/
+/// - AppRoot/Map/MapBackGround/vf4_00(Clone)/object/ (texture adjustments)
 /// </summary>
 public static class S1DisableObjectsPatch
 {
@@ -43,7 +44,8 @@ public static class S1DisableObjectsPatch
 
         bool isVa404 = __instance.name.Equals("va4_04(Clone)");
         bool isVf108 = __instance.name.Equals("vf1_08(Clone)");
-        if (!isVa404 && !isVf108)
+        bool isVf400 = __instance.name.Equals("vf4_00(Clone)");
+        if (!isVa404 && !isVf108 && !isVf400)
             return;
 
         try
@@ -55,6 +57,9 @@ public static class S1DisableObjectsPatch
 
             if (isVf108)
                 DisableVf108MaskObject(__instance);
+
+            if (isVf400)
+                AdjustVf400Objects(__instance);
         }
         finally
         {
@@ -116,5 +121,30 @@ public static class S1DisableObjectsPatch
             maskObject.gameObject.SetActive(false);
 
         Plugin.Log.LogInfo($"[S1DisableObjects] Disabled {Vf108MaskObjectName} in vf1_08/mask/");
+    }
+
+    private static void AdjustVf400Objects(GameObject mapRoot)
+    {
+        Transform objectFolder = mapRoot.transform.Find("object");
+        if (objectFolder == null)
+        {
+            Plugin.Log.LogWarning("[S1DisableObjects] Could not find 'object' folder in vf4_00(Clone)");
+            return;
+        }
+
+        Transform targetObject = objectFolder.Find("t_vf2_11_obj_flower");
+        if (targetObject == null)
+        {
+            Plugin.Log.LogWarning("[S1DisableObjects] Could not find 't_vf2_11_obj_flower' in vf4_00(Clone)/object");
+            return;
+        }
+
+        // Apply scale: 0.5 0.5 1
+        targetObject.localScale = new Vector3(0.5f, 0.5f, 1f);
+
+        // Apply local position: -74.1563 271.7982 0
+        targetObject.localPosition = new Vector3(-74.1563f, 271.7982f, 0f);
+
+        Plugin.Log.LogInfo("[S1DisableObjects] Adjusted t_vf2_11_obj_flower in vf4_00/object/ - Scale: (0.5, 0.5, 1), Position: (-74.1563, 271.7982, 0)");
     }
 }
