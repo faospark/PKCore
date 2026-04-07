@@ -28,7 +28,7 @@ public static class TextureOptions
 
         // Disable minimal UI textures
         if (!Plugin.Config.MinimalUI.Value && 
-            filePath.Contains("minimal", StringComparison.OrdinalIgnoreCase))
+            filePath.Contains("\\Minimal-UI\\", StringComparison.OrdinalIgnoreCase))
             return false;
 
         // Add more filters here as needed:

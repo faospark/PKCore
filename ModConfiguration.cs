@@ -157,7 +157,7 @@ public sealed class ModConfiguration
             "02 User Interface",
             "MinimalUI",
             true,
-            "Load minimal UI textures. Set to false to skip loading textures with 'minimal' in the path."
+            "Enable minimal UI texture variants. When false, any custom texture whose path contains 'minimal' will be skipped."
         );
 
         ClassicSaveWindow = _config.Bind(

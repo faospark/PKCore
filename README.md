@@ -70,7 +70,7 @@ Replace game textures with custom PNG or DDS files in `BepInEx/plugins/PKCore/Te
 
 - **Placeholder Text Replacement**: Automatic replacement of protagonist and HQ name placeholders in dialogs. See [Placeholder Text Guide](Documentation/PlaceholderText.md).
 - **NPC Portraits**: Inject custom high-resolution portraits for any NPC.
-- **War Battle Modding**: Customize character stats and abilities in Suikoden 2 war battles via JSON.
+- **War Battle Modding**: Customize character stats, abilities, and subunit bonus values in Suikoden 2 war battles via JSON.
 - **UI Scaling**: Presets for dialog box size and menu layout scaling.
 - **Classic UI**: Revert Suikoden 2 save windows to the classic PSX look.
 - **Controller Prompt Override**: Force specific button icons (Xbox/PS4/PS5/Switch) regardless of detected controller.

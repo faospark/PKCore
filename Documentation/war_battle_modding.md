@@ -46,7 +46,9 @@ D:\SteamLibrary\steamapps\common\Suikoden I and II HD Remaster\PKCore\Config\S2W
       "name": "Riou",
       "abilities": ["SP_SHINING_SHIELD", "SP_MOUNT"],
       "attack": 12,
-      "defense": 12
+      "defense": 12,
+      "bonusAttack": 3,
+      "bonusDefense": 2
     }
   }
 }
@@ -93,8 +95,10 @@ Apply abilities to **all characters** in war battles:
 Each character entry can customize:
 
 - **Abilities** (up to 3 with mod - normally limited to 2)
-- **Attack** stat
-- **Defense** stat
+- **Attack** stat (base stat)
+- **Defense** stat (base stat)
+- **Bonus Attack** from subunits/composition via `bonusAttack`
+- **Bonus Defense** from subunits/composition via `bonusDefense`
 - **Name** (for documentation only, not used by game)
 
 #### Full Syntax
@@ -104,7 +108,9 @@ Each character entry can customize:
   "name": "Riou",
   "abilities": ["SP_SHINING_SHIELD", "SP_MOUNT"],
   "attack": 12,
-  "defense": 12
+  "defense": 12,
+  "bonusAttack": 3,
+  "bonusDefense": 2
 }
 ```
 
@@ -138,6 +144,30 @@ Each character entry can customize:
 
 - Unspecified ability slots default to `SP_NONE`
 - Stats remain unchanged if not specified
+
+### Assist / Composition Bonus Stats
+
+These optional fields are best used for adjusting the extra assist/composition bonus applied to a war unit during battle. `bonusAttack` and `bonusDefense` are assist/composition bonuses, not strictly “subunit-only” fields.
+
+- `bonusAttack` → sets the unit's assist attack bonus
+- `bonusDefense` → sets the unit's assist defense bonus
+
+Example:
+
+```json
+"90": {
+  "name": "Shu",
+  "bonusAttack": 2,
+  "bonusDefense": 3
+}
+```
+
+**Important:**
+
+- `attack` and `defense` change the unit's **base stats**
+- `bonusAttack` and `bonusDefense` change the **extra assist/composition bonus** used in actual war battles
+- These bonuses are applied in `Patches/WarAbilityPatch.cs` by setting `assist_attack` and `assist_defense`
+- The underlying game fields live in `IL2CPP/WAR_CHARA_TYPE.cs`
 
 ---
 
