@@ -249,7 +249,7 @@ public sealed class ModConfiguration
             "04 Game : Suikoden 1",
             "TirRunTexture",
             "default",
-            "Texture variant for Tir running animation (shu_field_01_atlas). Options: default, alt. 'alt' will look for '..._alt.png'. ONLY FOR PROJECT KYARO SPRITES"
+            "Texture variant for Tir running animation. Options: default, alt, pixel. 'alt' is for Smooth Sprite variant and looks for '..._alt.png'. 'pixel' is for Pixel Sprite variant and looks for '..._pixel.png'. Now supports with Project Kyaro Sprites off"
         );
 
         // Game Specific

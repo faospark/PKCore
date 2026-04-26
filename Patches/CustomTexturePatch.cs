@@ -435,11 +435,12 @@ public partial class CustomTexturePatch
             if (!loaded)
                 return false;
 
-            // Window-UI textures use Point filtering to prevent seams
+            // Window-UI and pixel-art textures use Point filtering
             bool isWindowUI = IsWindowUITexture(textureName, filePath);
-            originalTexture.filterMode = isWindowUI ? FilterMode.Point : FilterMode.Bilinear;
+            bool isPixel = textureName.EndsWith("_pixel", StringComparison.OrdinalIgnoreCase);
+            originalTexture.filterMode = (isWindowUI || isPixel) ? FilterMode.Point : FilterMode.Bilinear;
             originalTexture.wrapMode = TextureWrapMode.Clamp;
-            originalTexture.anisoLevel = isWindowUI ? 0 : 4;
+            originalTexture.anisoLevel = (isWindowUI || isPixel) ? 0 : 4;
             
             originalTexture.Apply(true, false);
             

@@ -72,7 +72,7 @@ public static class TextureOptions
         if (textureName == "sactx-0-256x256-Uncompressed-shu_field_01_atlas-959a6bf2" || 
             textureName == "shu_field_01_atlas")
         {
-             // Check if user wants the alt version
+             // Check if user wants the alt/pixel version
              string tirVariant = Plugin.Config.TirRunTexture.Value.ToLower();
              
              if (tirVariant == "default")
@@ -90,6 +90,21 @@ public static class TextureOptions
                  else if (Plugin.Config.DetailedLogs.Value)
                  {
                      Plugin.Log.LogWarning($"[TirRun] Alt variant '{altName}' not found, using default");
+                 }
+             }
+
+             if (tirVariant == "pixel")
+             {
+                 string pixelName = $"{textureName}_pixel";
+                 if (CustomTexturePatch.texturePathIndex.ContainsKey(pixelName))
+                 {
+                     if (Plugin.Config.DetailedLogs.Value)
+                         Plugin.Log.LogInfo($"[TirRun] Using pixel variant: {pixelName}");
+                     return pixelName;
+                 }
+                 else if (Plugin.Config.DetailedLogs.Value)
+                 {
+                     Plugin.Log.LogWarning($"[TirRun] Pixel variant '{pixelName}' not found, using default");
                  }
              }
         }
