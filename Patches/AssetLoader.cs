@@ -161,7 +161,7 @@ public static class AssetLoader
             bool isWindowUI = CustomTexturePatch.IsWindowUITexture(assetName, filePath);
             bool isMap = filePath.Contains("Maps", StringComparison.OrdinalIgnoreCase);
             bool useBilinear = Plugin.Config.SpriteFilteringEnabled.Value || !isMap;
-            bool isPixel = assetName.EndsWith("_pixel", StringComparison.OrdinalIgnoreCase);
+            bool isPixel = CustomTexturePatch.IsPixelTexture(assetName, filePath);
 
             texture.filterMode = (isWindowUI || isPixel || (isMap && !useBilinear)) ? FilterMode.Point : FilterMode.Bilinear;
             texture.wrapMode = TextureWrapMode.Clamp;
@@ -182,7 +182,7 @@ public static class AssetLoader
                 bool isWindowUI = CustomTexturePatch.IsWindowUITexture(assetName, filePath);
                 bool isMap = filePath.Contains("Maps", StringComparison.OrdinalIgnoreCase);
                 bool useBilinear = Plugin.Config.SpriteFilteringEnabled.Value || !isMap;
-                bool isPixel = assetName.EndsWith("_pixel", StringComparison.OrdinalIgnoreCase);
+                bool isPixel = CustomTexturePatch.IsPixelTexture(assetName, filePath);
 
                 texture.filterMode = (isWindowUI || isPixel || (isMap && !useBilinear)) ? FilterMode.Point : FilterMode.Bilinear;
                 texture.wrapMode = TextureWrapMode.Clamp;

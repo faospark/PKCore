@@ -183,6 +183,33 @@ public partial class CustomTexturePatch
         
         return false;
     }
+
+    /// <summary>
+    /// Check if a texture should use pixel-art filtering.
+    /// Matches explicit _pixel suffixes and any parent folder whose name starts with "pixel".
+    /// </summary>
+    internal static bool IsPixelTexture(string textureName, string filePath)
+    {
+        if (!string.IsNullOrEmpty(textureName) &&
+            textureName.EndsWith("_pixel", StringComparison.OrdinalIgnoreCase))
+            return true;
+
+        if (string.IsNullOrEmpty(filePath))
+            return false;
+
+        string directoryPath = Path.GetDirectoryName(filePath);
+        if (string.IsNullOrEmpty(directoryPath))
+            return false;
+
+        string[] segments = directoryPath.Split(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+        foreach (string segment in segments)
+        {
+            if (segment.StartsWith("pixel", StringComparison.OrdinalIgnoreCase))
+                return true;
+        }
+
+        return false;
+    }
     
     /// <summary>
     /// Check if a file path is allowed to be loaded for the current game.
@@ -437,7 +464,7 @@ public partial class CustomTexturePatch
 
             // Window-UI and pixel-art textures use Point filtering
             bool isWindowUI = IsWindowUITexture(textureName, filePath);
-            bool isPixel = textureName.EndsWith("_pixel", StringComparison.OrdinalIgnoreCase);
+            bool isPixel = IsPixelTexture(textureName, filePath);
             originalTexture.filterMode = (isWindowUI || isPixel) ? FilterMode.Point : FilterMode.Bilinear;
             originalTexture.wrapMode = TextureWrapMode.Clamp;
             originalTexture.anisoLevel = (isWindowUI || isPixel) ? 0 : 4;
