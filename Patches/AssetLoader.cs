@@ -108,9 +108,18 @@ public static class AssetLoader
     public static async Task<Texture2D> LoadTextureAsync(string assetName, string context = null)
     {
         // 1. Resolve Path from the global index
-        if (!CustomTexturePatch.texturePathIndex.TryGetValue(assetName, out string filePath))
+        string filePath = null;
+        if (assetName != null && (assetName.StartsWith("GameAssets/", StringComparison.OrdinalIgnoreCase) || assetName.StartsWith("GameAssets\\", StringComparison.OrdinalIgnoreCase)))
         {
-            return null;
+            CustomTexturePatch.pathTextureIndex.TryGetValue(assetName, out filePath);
+        }
+
+        if (filePath == null)
+        {
+            if (!CustomTexturePatch.texturePathIndex.TryGetValue(assetName, out filePath))
+            {
+                return null;
+            }
         }
 
         try
@@ -133,8 +142,17 @@ public static class AssetLoader
     /// </summary>
     public static Texture2D LoadTextureSync(string assetName, string context = null)
     {
-        if (!CustomTexturePatch.texturePathIndex.TryGetValue(assetName, out string filePath))
-            return null;
+        string filePath = null;
+        if (assetName != null && (assetName.StartsWith("GameAssets/", StringComparison.OrdinalIgnoreCase) || assetName.StartsWith("GameAssets\\", StringComparison.OrdinalIgnoreCase)))
+        {
+            CustomTexturePatch.pathTextureIndex.TryGetValue(assetName, out filePath);
+        }
+
+        if (filePath == null)
+        {
+            if (!CustomTexturePatch.texturePathIndex.TryGetValue(assetName, out filePath))
+                return null;
+        }
 
         try
         {

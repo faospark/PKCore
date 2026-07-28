@@ -22,6 +22,16 @@ public partial class CustomTexturePatch
     internal static Dictionary<string, Sprite> customSpriteCache = new Dictionary<string, Sprite>(StringComparer.OrdinalIgnoreCase);
     internal static Dictionary<string, Texture2D> customTextureCache = new Dictionary<string, Texture2D>(StringComparer.OrdinalIgnoreCase);
     internal static Dictionary<string, string> texturePathIndex = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase); // Maps texture name -> full file path
+    internal static Dictionary<string, string> pathTextureIndex = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase); // Maps GameAssets path key -> full file path
+
+    internal static string NormalizeAddressToPathKey(string address)
+    {
+        if (string.IsNullOrEmpty(address)) return null;
+        string key = address.Replace('\\', '/');
+        if (key.StartsWith("Assets/", StringComparison.OrdinalIgnoreCase))
+            key = key.Substring(7); // strip "Assets/"
+        return key;
+    }
     
     // Tracking for persistent textures that shouldn't be cleared on scene change
     internal static HashSet<string> persistentTextures = new HashSet<string> { "window_", "t_obj_savePoint_ball", "sactx" };
@@ -280,8 +290,14 @@ public partial class CustomTexturePatch
             }
         }
 
+        string assetAddress = null;
+        if (originalSprite != null)
+        {
+            AssetAddressTracker.TryGetAddress(originalSprite, originalSprite.texture, out assetAddress);
+        }
+
         // Load texture
-        Texture2D texture = LoadCustomTexture(spriteName);
+        Texture2D texture = LoadCustomTexture(spriteName, assetAddress);
         if (texture == null)
             return null;
 
@@ -317,9 +333,9 @@ public partial class CustomTexturePatch
     }
 
     /// <summary>
-    /// Load a custom texture from image file
+    /// Load a custom texture from image file, optionally resolving by addressable assetAddress
     /// </summary>
-    internal static Texture2D LoadCustomTexture(string textureName)
+    internal static Texture2D LoadCustomTexture(string textureName, string assetAddress = null)
     {
         if (string.IsNullOrEmpty(textureName)) return null;
 
@@ -332,29 +348,45 @@ public partial class CustomTexturePatch
                 customTextureCache.Remove(textureName);
         }
 
-        // 1. Try with original name (and its variants)
-        string lookupName = TextureOptions.GetTextureNameWithVariant(textureName);
-
-        // Try game-specific texture first (GSD1: or GSD2: prefix)
-        string currentGame = GameDetection.GetCurrentGame();
+        string resolvedPath = null;
         string targetKey = null;
 
-        if (currentGame == "GSD1" || currentGame == "GSD2")
+        // Try path-based resolution first
+        if (!string.IsNullOrEmpty(assetAddress))
         {
-            string gameSpecificKey = $"{currentGame}:{lookupName}";
-            if (texturePathIndex.ContainsKey(gameSpecificKey))
-                targetKey = gameSpecificKey;
+            string pathKey = NormalizeAddressToPathKey(assetAddress);
+            if (pathKey != null && pathTextureIndex.TryGetValue(pathKey, out string filePath))
+            {
+                resolvedPath = filePath;
+                targetKey = pathKey;
+            }
         }
 
-        if (targetKey == null && texturePathIndex.ContainsKey(lookupName))
-            targetKey = lookupName;
+        if (resolvedPath == null)
+        {
+            // 1. Try with original name (and its variants)
+            string lookupName = TextureOptions.GetTextureNameWithVariant(textureName);
 
-        if (targetKey == null) return null;
+            // Try game-specific texture first (GSD1: or GSD2: prefix)
+            string currentGame = GameDetection.GetCurrentGame();
 
-        // Verify the resolved path is allowed for current game
-        if (!texturePathIndex.TryGetValue(targetKey, out string resolvedPath))
-            return null;
-            
+            if (currentGame == "GSD1" || currentGame == "GSD2")
+            {
+                string gameSpecificKey = $"{currentGame}:{lookupName}";
+                if (texturePathIndex.ContainsKey(gameSpecificKey))
+                    targetKey = gameSpecificKey;
+            }
+
+            if (targetKey == null && texturePathIndex.ContainsKey(lookupName))
+                targetKey = lookupName;
+
+            if (targetKey == null) return null;
+
+            // Verify the resolved path is allowed for current game
+            if (!texturePathIndex.TryGetValue(targetKey, out resolvedPath))
+                return null;
+        }
+
         if (!IsPathAllowedForCurrentGame(resolvedPath))
             return null;
 
@@ -368,41 +400,53 @@ public partial class CustomTexturePatch
         }
 
         return null;
-
     }
 
-    /// <summary>
-    /// Replace texture pixels in-place (preserves references)
-    /// </summary>
     internal static bool ReplaceTextureInPlace(Texture2D originalTexture, string textureName)
     {
         if (originalTexture == null || string.IsNullOrEmpty(textureName))
             return false;
 
+        string filePath = null;
         string targetKey = null;
-        string lookupName = TextureOptions.GetTextureNameWithVariant(textureName);
 
-        string currentGame = GameDetection.GetCurrentGame();
-
-        // 1. Try exact match (and game-specific version)
-        if (currentGame == "GSD1" || currentGame == "GSD2")
+        // Try path-based resolution first
+        string assetAddress = null;
+        if (AssetAddressTracker.TryGetAddress(null, originalTexture, out assetAddress))
         {
-            string gameKey = $"{currentGame}:{lookupName}";
-            if (texturePathIndex.ContainsKey(gameKey))
-                targetKey = gameKey;
+            string pathKey = NormalizeAddressToPathKey(assetAddress);
+            if (pathKey != null && pathTextureIndex.TryGetValue(pathKey, out string pathFile))
+            {
+                filePath = pathFile;
+                targetKey = pathKey;
+            }
         }
 
-        if (targetKey == null && texturePathIndex.ContainsKey(lookupName))
-            targetKey = lookupName;
-
-        if (targetKey == null || !texturePathIndex.TryGetValue(targetKey, out string filePath))
+        if (filePath == null)
         {
-            if (textureName.Contains("m_gat") || textureName.Contains("Summon"))
+            string lookupName = TextureOptions.GetTextureNameWithVariant(textureName);
+            string currentGame = GameDetection.GetCurrentGame();
+
+            // 1. Try exact match (and game-specific version)
+            if (currentGame == "GSD1" || currentGame == "GSD2")
             {
-                if (Plugin.Config.DetailedLogs.Value)
-                    Plugin.Log.LogDebug($"[ReplaceInPlace] No match for: {textureName} (Lookup: {lookupName}, Game: {currentGame})");
+                string gameKey = $"{currentGame}:{lookupName}";
+                if (texturePathIndex.ContainsKey(gameKey))
+                    targetKey = gameKey;
             }
-            return false;
+
+            if (targetKey == null && texturePathIndex.ContainsKey(lookupName))
+                targetKey = lookupName;
+
+            if (targetKey == null || !texturePathIndex.TryGetValue(targetKey, out filePath))
+            {
+                if (textureName.Contains("m_gat") || textureName.Contains("Summon"))
+                {
+                    if (Plugin.Config.DetailedLogs.Value)
+                        Plugin.Log.LogDebug($"[ReplaceInPlace] No match for: {textureName} (Lookup: {lookupName}, Game: {currentGame})");
+                }
+                return false;
+            }
         }
 
         // Verify the resolved path is allowed for current game
@@ -508,6 +552,7 @@ public partial class CustomTexturePatch
     private static void BuildTextureIndex()
     {
         texturePathIndex.Clear();
+        pathTextureIndex.Clear();
         
         if (!Directory.Exists(customTexturesPath))
             return;
@@ -532,7 +577,24 @@ public partial class CustomTexturePatch
             : Array.Empty<string>();
         string[] allFiles = textureFiles.Concat(modsFiles).ToArray();
         
-
+        // Helper to extract path key relative to GameAssets
+        string ExtractGameAssetsPathKey(string filePath)
+        {
+            string normalized = filePath.Replace('\\', '/');
+            const string marker = "/GameAssets/";
+            int idx = normalized.IndexOf(marker, StringComparison.OrdinalIgnoreCase);
+            if (idx >= 0)
+            {
+                string pathKey = normalized.Substring(idx + 1);
+                int dotIdx = pathKey.LastIndexOf('.');
+                if (dotIdx > 0)
+                {
+                    pathKey = pathKey.Substring(0, dotIdx);
+                }
+                return pathKey;
+            }
+            return null;
+        }
         
         // Helper to add texture to index with priority
         void AddToIndex(string path, string key, bool allowOverride)
@@ -543,6 +605,16 @@ public partial class CustomTexturePatch
             if (allowOverride || !texturePathIndex.ContainsKey(key))
             {
                 texturePathIndex[key] = path;
+            }
+
+            // Also add to pathTextureIndex if under GameAssets
+            string pathKey = ExtractGameAssetsPathKey(path);
+            if (!string.IsNullOrEmpty(pathKey))
+            {
+                if (allowOverride || !pathTextureIndex.ContainsKey(pathKey))
+                {
+                    pathTextureIndex[pathKey] = path;
+                }
             }
         }
 

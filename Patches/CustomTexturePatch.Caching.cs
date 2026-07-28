@@ -27,20 +27,38 @@ public partial class CustomTexturePatch
         public int FileCount; // Number of texture files indexed
         public string ConfigHash; // Hash of texture-related config settings
         public List<ManifestEntry> Entries = new List<ManifestEntry>();
+        public List<ManifestEntry> PathEntries = new List<ManifestEntry>();
 
-        public void FromDictionary(Dictionary<string, string> dict)
+        public void FromDictionary(Dictionary<string, string> dict, Dictionary<string, string> pathDict)
         {
             Entries.Clear();
             foreach (var kvp in dict)
             {
                 Entries.Add(new ManifestEntry { Key = kvp.Key, Value = kvp.Value });
             }
+
+            PathEntries.Clear();
+            foreach (var kvp in pathDict)
+            {
+                PathEntries.Add(new ManifestEntry { Key = kvp.Key, Value = kvp.Value });
+            }
         }
 
         public Dictionary<string, string> ToDictionary()
         {
-            var dict = new Dictionary<string, string>();
+            var dict = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
             foreach (var entry in Entries)
+            {
+                if (!dict.ContainsKey(entry.Key))
+                    dict.Add(entry.Key, entry.Value);
+            }
+            return dict;
+        }
+
+        public Dictionary<string, string> ToPathDictionary()
+        {
+            var dict = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            foreach (var entry in PathEntries)
             {
                 if (!dict.ContainsKey(entry.Key))
                     dict.Add(entry.Key, entry.Value);
@@ -71,7 +89,7 @@ public partial class CustomTexturePatch
     private static string ComputeConfigHash()
     {
         // Manifest version - increment to force a cache rebuild when indexing logic changes
-        string manifestVersion = "2.2"; 
+        string manifestVersion = "3.0"; 
 
         // Combine all texture-impacting config values into a string
         string configString = string.Join("|", 
@@ -137,9 +155,10 @@ public partial class CustomTexturePatch
                     manifest.Entries.Count > 0)
                 {
                     texturePathIndex = manifest.ToDictionary();
+                    pathTextureIndex = manifest.ToPathDictionary();
                     if (Plugin.Config.DetailedLogs.Value)
                     {
-                        Plugin.Log.LogInfo($"✓ Loaded texture index from cache ({texturePathIndex.Count} textures, {manifest.FileCount} files)");
+                        Plugin.Log.LogInfo($"✓ Loaded texture index from cache ({texturePathIndex.Count} textures, {pathTextureIndex.Count} paths, {manifest.FileCount} files)");
                     }
                     return true;
                 }
@@ -170,10 +189,10 @@ public partial class CustomTexturePatch
         {
             TextureManifest manifest = new TextureManifest
             {
-                FileCount = texturePathIndex.Count,
+                FileCount = texturePathIndex.Count + pathTextureIndex.Count,
                 ConfigHash = ComputeConfigHash()
             };
-            manifest.FromDictionary(texturePathIndex);
+            manifest.FromDictionary(texturePathIndex, pathTextureIndex);
 
             XmlSerializer serializer = new XmlSerializer(typeof(TextureManifest));
             using (FileStream stream = new FileStream(manifestPath, FileMode.Create))
