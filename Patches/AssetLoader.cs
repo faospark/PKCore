@@ -199,21 +199,35 @@ public static class AssetLoader
     }
 
     /// <summary>
-    /// Read a JSON file asynchronously and deserialize it.
+    /// Read a JSON file and deserialize it synchronously.
     /// </summary>
-    public static async Task<T> LoadJsonAsync<T>(string filePath)
+    public static T LoadJsonSync<T>(string filePath)
     {
         if (!File.Exists(filePath)) return default;
 
         try
         {
-            string json = await Task.Run(() => File.ReadAllText(filePath));
-            return System.Text.Json.JsonSerializer.Deserialize<T>(json);
+            string json = File.ReadAllText(filePath);
+            var options = new System.Text.Json.JsonSerializerOptions
+            {
+                ReadCommentHandling = System.Text.Json.JsonCommentHandling.Skip,
+                AllowTrailingCommas = true
+            };
+            return System.Text.Json.JsonSerializer.Deserialize<T>(json, options);
         }
         catch (Exception ex)
         {
             Plugin.Log.LogError($"[AssetLoader] JSON error in {Path.GetFileName(filePath)}: {ex.Message}");
             return default;
         }
+    }
+
+    /// <summary>
+    /// Read a JSON file asynchronously and deserialize it.
+    /// </summary>
+    [Obsolete("Use LoadJsonSync instead to avoid Unity thread deadlocks")]
+    public static Task<T> LoadJsonAsync<T>(string filePath)
+    {
+        return Task.FromResult(LoadJsonSync<T>(filePath));
     }
 }

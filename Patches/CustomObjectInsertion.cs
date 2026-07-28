@@ -86,7 +86,7 @@ public class CustomObjectInsertion
 
             // objects.json format: { "mapId": [ {...}, {...} ], "mapId2": [...] }
             // Load as flat dictionary directly
-            var rawDict = AssetLoader.LoadJsonAsync<Dictionary<string, List<DiscoveredObject>>>(configPath).Result;
+            var rawDict = AssetLoader.LoadJsonSync<Dictionary<string, List<DiscoveredObject>>>(configPath);
             if (rawDict != null && rawDict.Count > 0)
             {
                 _loadedObjects = rawDict;

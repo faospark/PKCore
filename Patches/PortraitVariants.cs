@@ -116,7 +116,7 @@ public static class PortraitVariants
 
         try
         {
-            var loaded = AssetLoader.LoadJsonAsync<Dictionary<string, string>>(portraitMappingsPath).Result;
+            var loaded = AssetLoader.LoadJsonSync<Dictionary<string, string>>(portraitMappingsPath);
             if (loaded != null)
             {
                 portraitMappings = new Dictionary<string, string>(loaded, StringComparer.OrdinalIgnoreCase);
@@ -142,7 +142,7 @@ public static class PortraitVariants
 
         try
         {
-            var loaded = AssetLoader.LoadJsonAsync<Dictionary<string, Dictionary<string, string>>>(portraitVariantsPath).Result;
+            var loaded = AssetLoader.LoadJsonSync<Dictionary<string, Dictionary<string, string>>>(portraitVariantsPath);
             if (loaded != null)
             {
                 portraitVariants = loaded;
@@ -196,7 +196,7 @@ public static class PortraitVariants
         if (!File.Exists(filePath)) return;
         try
         {
-            var loaded = AssetLoader.LoadJsonAsync<Dictionary<string, string>>(filePath).Result;
+            var loaded = AssetLoader.LoadJsonSync<Dictionary<string, string>>(filePath);
             if (loaded == null || loaded.Count == 0) return;
             foreach (var kvp in loaded)
                 target[kvp.Key] = kvp.Value;
@@ -213,7 +213,7 @@ public static class PortraitVariants
         if (!File.Exists(filePath)) return;
         try
         {
-            var loaded = AssetLoader.LoadJsonAsync<Dictionary<string, Dictionary<string, string>>>(filePath).Result;
+            var loaded = AssetLoader.LoadJsonSync<Dictionary<string, Dictionary<string, string>>>(filePath);
             if (loaded == null || loaded.Count == 0) return;
             foreach (var kvp in loaded)
             {

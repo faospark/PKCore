@@ -56,9 +56,15 @@ public class PortraitSystemPatch
 
     private static bool _dialogOverridesLoaded = false;
 
+    // Tracks the current active message window.
+    public static UIMessageWindow ActiveMessageWindow = null;
+
     // Tracks whether WE activated Name_Set (vs the game activating it for a native name).
     // We must never deactivate a Name_Set the game owns.
     private static bool s_nameSetActivatedByUs = false;
+
+    // Tracks whether WE activated Face_Pos (vs the game activating it natively).
+    private static bool s_portraitActivatedByUs = false;
 
     /// <summary>
     /// Load all dialog/speaker override JSON files from Config/ and 00-Mods/.
@@ -80,14 +86,14 @@ public class PortraitSystemPatch
         s2SpeakerOverridesPath = Path.Combine(configDir, "S2SpeakerOverrides.json");
 
         // Load Dialog Overrides using AssetLoader (Sync for initialization)
-        var loaded = AssetLoader.LoadJsonAsync<Dictionary<string, string>>(dialogOverridesPath).Result;
+        var loaded = AssetLoader.LoadJsonSync<Dictionary<string, string>>(dialogOverridesPath);
         if (loaded != null)
         {
             dialogReplacements = new Dictionary<string, string>(loaded, StringComparer.OrdinalIgnoreCase);
         }
 
         // Load S1 Speaker Overrides
-        var loadedS1Speakers = AssetLoader.LoadJsonAsync<Dictionary<string, string>>(s1SpeakerOverridesPath).Result;
+        var loadedS1Speakers = AssetLoader.LoadJsonSync<Dictionary<string, string>>(s1SpeakerOverridesPath);
         if (loadedS1Speakers != null)
         {
             s1SpeakerOverrides = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
@@ -96,7 +102,7 @@ public class PortraitSystemPatch
         }
 
         // Load S2 Speaker Overrides
-        var loadedS2Speakers = AssetLoader.LoadJsonAsync<Dictionary<string, string>>(s2SpeakerOverridesPath).Result;
+        var loadedS2Speakers = AssetLoader.LoadJsonSync<Dictionary<string, string>>(s2SpeakerOverridesPath);
         if (loadedS2Speakers != null)
         {
             s2SpeakerOverrides = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
@@ -160,7 +166,7 @@ public class PortraitSystemPatch
     {
         if (!File.Exists(filePath)) return;
 
-        var loaded = AssetLoader.LoadJsonAsync<Dictionary<string, string>>(filePath).Result;
+        var loaded = AssetLoader.LoadJsonSync<Dictionary<string, string>>(filePath);
         if (loaded == null || loaded.Count == 0) return;
 
         foreach (var kvp in loaded)
@@ -191,6 +197,30 @@ public class PortraitSystemPatch
         return null;
     }
 
+    private static bool TryGetSpeaker(Dictionary<string, string> dict, string key, out string value)
+    {
+        if (dict.TryGetValue(key, out value))
+            return true;
+
+        // Fallback for S1: if key is "text_gsd1_<lang>:<index>" or "text_add_<lang>:<index>", also try "message:<index>"
+        if (key != null && key.Contains(":"))
+        {
+            int colonIndex = key.IndexOf(':');
+            string prefix = key.Substring(0, colonIndex);
+            string suffix = key.Substring(colonIndex); // includes the colon
+
+            if (prefix.StartsWith("text_gsd1_", StringComparison.OrdinalIgnoreCase) || 
+                prefix.StartsWith("text_add_", StringComparison.OrdinalIgnoreCase))
+            {
+                string fallbackKey = "message" + suffix;
+                if (dict.TryGetValue(fallbackKey, out value))
+                    return true;
+            }
+        }
+
+        return false;
+    }
+
     /// <summary>
     /// Get a speaker override by ID key. Routes to S1SpeakerOverrides.json or S2SpeakerOverrides.json
     /// based on the currently active game, preventing message ID collisions between the two games.
@@ -201,9 +231,9 @@ public class PortraitSystemPatch
         if (GameDetection.IsMain())
         {
             // Main scene: check S1 first, then S2
-            if (s1SpeakerOverrides != null && s1SpeakerOverrides.TryGetValue(key, out string s1Name))
+            if (s1SpeakerOverrides != null && TryGetSpeaker(s1SpeakerOverrides, key, out string s1Name))
                 return s1Name;
-            if (s2SpeakerOverrides != null && s2SpeakerOverrides.TryGetValue(key, out string s2Name))
+            if (s2SpeakerOverrides != null && TryGetSpeaker(s2SpeakerOverrides, key, out string s2Name))
                 return s2Name;
             return null;
         }
@@ -212,7 +242,7 @@ public class PortraitSystemPatch
         if (dict == null || dict.Count == 0)
             return null;
 
-        if (dict.TryGetValue(key, out string speakerName))
+        if (TryGetSpeaker(dict, key, out string speakerName))
             return speakerName;
 
         return null;
@@ -611,8 +641,9 @@ public class PortraitSystemPatch
     [HarmonyPatch(typeof(UIMessageWindow), nameof(UIMessageWindow.OpenMessageWindow))]
     [HarmonyPatch(new[] { typeof(Sprite), typeof(string), typeof(string), typeof(Vector3), typeof(bool) })]
     [HarmonyPrefix]
-    public static void OpenMessageWindow_Prefix(ref Sprite faceImage, ref string name, ref string message)
+    public static void OpenMessageWindow_Prefix(UIMessageWindow __instance, ref Sprite faceImage, ref string name, ref string message)
     {
+        ActiveMessageWindow = __instance;
         if (Plugin.Config.DetailedLogs.Value)
             Plugin.Log.LogInfo($"[PotraitSystem] OpenMessageWindow called - Name: '{name}', HasFaceImage: {faceImage != null}");
 
@@ -778,6 +809,7 @@ public class PortraitSystemPatch
     [HarmonyPostfix]
     public static void OpenMessageWindow_Postfix(UIMessageWindow __instance, Sprite faceImage, string name)
     {
+        ActiveMessageWindow = __instance;
         // Only try to inject if there's no existing portrait
         if (faceImage != null)
         {
@@ -809,6 +841,7 @@ public class PortraitSystemPatch
     [HarmonyPostfix]
     public static void OpenMessageWindow_S1_Postfix(UIMessageWindow __instance)
     {
+        ActiveMessageWindow = __instance;
         // Use LastMessageTextId (only set by GetSystemTextEx/dialogue text) rather than
         // LastTextId which can be overwritten by any UI text lookup between the message
         // text fetch and OpenMessageWindow firing.
@@ -830,6 +863,31 @@ public class PortraitSystemPatch
         catch (Exception ex)
         {
             Plugin.Log.LogError($"[PotraitSystem] S1: postfix failed - {ex.Message}");
+        }
+    }
+
+    /// <summary>
+    /// Called in real-time when dialogue text is loaded.
+    /// This handles speaker name/portrait swaps for subsequent lines in a conversation.
+    /// </summary>
+    public static void OnDialogueLineFetched(string textId)
+    {
+        if (ActiveMessageWindow == null) return;
+
+        try
+        {
+            Transform uiSet = ActiveMessageWindow.transform.Find("UI_Set");
+            if (uiSet == null) return;
+
+            // Update custom portrait if mapping exists (or deactivate it)
+            S1_InjectPortrait(uiSet, textId);
+
+            // Update speaker name panel if override exists (or deactivate it)
+            S1_InjectSpeakerName(uiSet, textId);
+        }
+        catch (Exception ex)
+        {
+            Plugin.Log.LogError($"[PortraitSystem] S1: OnDialogueLineFetched failed - {ex.Message}");
         }
     }
 
@@ -863,15 +921,14 @@ public class PortraitSystemPatch
 
         if (string.IsNullOrEmpty(textureKey))
         {
-            // No custom mapping — leave any native portrait alone
-            if (facePos.gameObject.activeSelf)
+            // If WE activated the custom portrait, and there is no override for this line,
+            // we must deactivate it so it doesn't bleed into the next dialogue.
+            if (s_portraitActivatedByUs && facePos.gameObject.activeSelf)
             {
-                if (Plugin.Config.DetailedLogs.Value)
-                    Plugin.Log.LogInfo("[PotraitSystem] S1: Face_Pos already active and no custom mapping, leaving it alone");
-                return;
+                facePos.gameObject.SetActive(false);
+                Plugin.Log.LogInfo("[PotraitSystem] S1: Deactivated Face_Pos (no override for this dialogue)");
             }
-            if (Plugin.Config.DetailedLogs.Value)
-                Plugin.Log.LogInfo($"[PotraitSystem] S1: no portrait mapping for '{textId}'");
+            s_portraitActivatedByUs = false;
             return;
         }
 
@@ -885,6 +942,7 @@ public class PortraitSystemPatch
         }
 
         facePos.gameObject.SetActive(true);
+        s_portraitActivatedByUs = true;
         Transform imgFaceTransform = facePos.Find("Img_Face");
         if (imgFaceTransform == null)
         {
@@ -1002,6 +1060,22 @@ public class PortraitSystemPatch
         if (!GameDetection.IsGSD1())
             return;
 
+        string textId = TextDatabasePatch.LastMessageTextId ?? TextDatabasePatch.LastTextId;
+        if (!string.IsNullOrEmpty(textId))
+        {
+            string speakerData = GetSpeakerOverride(textId);
+            if (!string.IsNullOrEmpty(speakerData))
+            {
+                string displayName = speakerData.Contains("|")
+                    ? speakerData.Split('|')[0].Trim()
+                    : speakerData;
+                name = displayName;
+                s_nameSetActivatedByUs = true;
+                Plugin.Log.LogInfo($"[S1Speaker] AddNameText: overriding name with '{displayName}' (text ID '{textId}')");
+                return;
+            }
+        }
+
         // If the game already assigned a speaker name, mark the panel as game-owned and leave it
         if (!string.IsNullOrEmpty(name))
         {
@@ -1011,29 +1085,6 @@ public class PortraitSystemPatch
             return;
         }
 
-        string textId = TextDatabasePatch.LastTextId;
-        if (string.IsNullOrEmpty(textId))
-        {
-            if (Plugin.Config.DetailedLogs.Value)
-                Plugin.Log.LogInfo("[S1Speaker] AddNameText: no LastTextId available, skipping");
-            return;
-        }
-
-        string speakerData = GetSpeakerOverride(textId);
-        if (string.IsNullOrEmpty(speakerData))
-        {
-            if (Plugin.Config.DetailedLogs.Value)
-                Plugin.Log.LogInfo($"[S1Speaker] AddNameText: no override for '{textId}'");
-            return;
-        }
-
-        // Strip expression variant if present (e.g. "McDohl|smile" -> "McDohl")
-        string displayName = speakerData.Contains("|")
-            ? speakerData.Split('|')[0].Trim()
-            : speakerData;
-
-        Plugin.Log.LogInfo($"[S1Speaker] AddNameText: injecting '{displayName}' for text ID '{textId}'");
-        name = displayName;
     }
 
     /// <summary>
@@ -1382,7 +1433,7 @@ public class PortraitSystemPatch
         Plugin.Log.LogInfo($"[PotraitSystem] SetCharacterFace called - SpeakerName: '{speakerName}', HasSprite: {sprite != null}");
 
         // S1: resolve portrait texture key from S1SpeakerOverrides.json (name part used as PNG filename)
-        string textId = TextDatabasePatch.LastTextId;
+        string textId = TextDatabasePatch.LastMessageTextId ?? TextDatabasePatch.LastTextId;
         string s1SpeakerData = GetSpeakerOverride(textId);
         string s1MappedPortrait = !string.IsNullOrEmpty(s1SpeakerData)
             ? (s1SpeakerData.Contains("|") ? s1SpeakerData.Split('|')[0].Trim() : s1SpeakerData)

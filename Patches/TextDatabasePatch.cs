@@ -165,6 +165,22 @@ public class TextDatabasePatch
 
         LastTextId = $"{id}:{index}";
 
+        bool isDialogue = (id != null && (
+            id.Equals("message", StringComparison.OrdinalIgnoreCase) ||
+            id.Equals("add_message", StringComparison.OrdinalIgnoreCase) ||
+            id.StartsWith("text_gsd1_", StringComparison.OrdinalIgnoreCase) ||
+            id.StartsWith("text_add_", StringComparison.OrdinalIgnoreCase)
+        ));
+
+        if (isDialogue)
+        {
+            LastMessageTextId = $"{id}:{index}";
+            if (GameDetection.IsGSD1())
+            {
+                PortraitSystemPatch.OnDialogueLineFetched(LastMessageTextId);
+            }
+        }
+
         // Accumulate for persistent text DB dump
         string currentGame = GameDetection.GetCurrentGame();
         int gsdNum = currentGame == "GSD1" ? 1 : currentGame == "GSD2" ? 2 : 0;
@@ -251,7 +267,22 @@ public class TextDatabasePatch
         }
 
         LastTextId = $"{id}:{index}";
-        LastMessageTextId = $"{id}:{index}"; // dedicated tracker — not polluted by UI text lookups
+
+        bool isDialogue = (id != null && (
+            id.Equals("message", StringComparison.OrdinalIgnoreCase) ||
+            id.Equals("add_message", StringComparison.OrdinalIgnoreCase) ||
+            id.StartsWith("text_gsd1_", StringComparison.OrdinalIgnoreCase) ||
+            id.StartsWith("text_add_", StringComparison.OrdinalIgnoreCase)
+        ));
+
+        if (isDialogue)
+        {
+            LastMessageTextId = $"{id}:{index}"; // dedicated tracker — not polluted by UI text lookups
+            if (GameDetection.IsGSD1())
+            {
+                PortraitSystemPatch.OnDialogueLineFetched(LastMessageTextId);
+            }
+        }
 
         // Accumulate for persistent text DB dump
         if (gsd == 1 || gsd == 2)
