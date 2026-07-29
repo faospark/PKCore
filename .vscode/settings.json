@@ -1,0 +1,4 @@
+{
+  "dotnet.defaultSolution": "PKCore.sln",
+  "omnisharp.defaultLaunchSolution": "PKCore.sln"
+}
