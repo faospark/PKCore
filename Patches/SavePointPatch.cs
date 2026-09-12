@@ -48,7 +48,7 @@ public partial class CustomTexturePatch
     /// </summary>
     internal static void RefreshSavePointColorForRoomEntry(string roomName)
     {
-        if (!Plugin.Config.SavePointColor.Value.Equals("random", StringComparison.OrdinalIgnoreCase))
+        if (!string.Equals(Plugin.Config.SavePointColor.Value, "random", StringComparison.OrdinalIgnoreCase))
             return;
 
         SelectRandomSavePointColor();

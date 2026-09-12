@@ -15,24 +15,28 @@ public static class TextureOptions
     /// </summary>
     public static bool ShouldLoadTexture(string filePath)
     {
+        string normalizedPath = filePath.Replace('\\', '/');
+
         // Disable launcher UI textures
         if (!Plugin.Config.LoadLauncherUITextures.Value && 
-            filePath.Contains("Launcher-Mod", StringComparison.OrdinalIgnoreCase))
+            (normalizedPath.Contains("Launcher-Mod", StringComparison.OrdinalIgnoreCase) ||
+             normalizedPath.Contains("/launcher/", StringComparison.OrdinalIgnoreCase) ||
+             normalizedPath.EndsWith("/launcher", StringComparison.OrdinalIgnoreCase)))
             return false;
 
         // Disable Project Kyaro textures
         if (!Plugin.Config.EnableProjectKyaroSprites.Value && 
-            (filePath.Contains("\\PKS1\\", StringComparison.OrdinalIgnoreCase) ||
-             filePath.Contains("\\PKS2\\", StringComparison.OrdinalIgnoreCase)))
+            (normalizedPath.Contains("PKS1", StringComparison.OrdinalIgnoreCase) ||
+             normalizedPath.Contains("PKS2", StringComparison.OrdinalIgnoreCase)))
             return false;
 
         // Disable minimal UI textures
         if (!Plugin.Config.MinimalUI.Value && 
-            filePath.Contains("\\Minimal-UI\\", StringComparison.OrdinalIgnoreCase))
+            normalizedPath.Contains("minimal", StringComparison.OrdinalIgnoreCase))
             return false;
 
         // Add more filters here as needed:
-        // if (filePath.Contains("\\yourfolder\\", StringComparison.OrdinalIgnoreCase))
+        // if (normalizedPath.Contains("/yourfolder/", StringComparison.OrdinalIgnoreCase))
         //     return false;
 
         return true; // Load the texture
@@ -73,7 +77,7 @@ public static class TextureOptions
             textureName == "shu_field_01_atlas")
         {
              // Check if user wants the alt/pixel version
-             string tirVariant = Plugin.Config.TirRunTexture.Value.ToLower();
+             string tirVariant = Plugin.Config.TirRunTexture.Value?.Trim().ToLowerInvariant() ?? "default";
              
              if (tirVariant == "default")
                  return textureName;
@@ -116,7 +120,7 @@ public static class TextureOptions
             textureName == "t_vb02_00_obj_fence04")
         {
              // Check if user wants a variant
-             string fenceVariant = Plugin.Config.MercFortFence.Value.ToLower();
+             string fenceVariant = Plugin.Config.MercFortFence.Value?.Trim().ToLowerInvariant() ?? "default";
              
              if (fenceVariant == "default" || string.IsNullOrEmpty(fenceVariant))
                  return textureName;
