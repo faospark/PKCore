@@ -5,4 +5,7 @@
 - **NEVER** run manual `Copy-Item` or file copy commands to the game folder. Running `dotnet build` is sufficient.
 
 ## Grounding
-- Always ground game mechanics, methods, fields, and data in the local decompiled source code at `d:\Appz\Suisource\GSD2\GSD2`.
+- Always ground game mechanics, methods, fields, and data in the local decompiled source code across the following workspaces:
+  - **Suikoden I**: `d:\Appz\Suisource\GSD1` (`d:\Appz\Suisource\GSD1\GSD1`)
+  - **Suikoden II**: `d:\Appz\Suisource\GSD2` (`d:\Appz\Suisource\GSD2\GSD2`)
+  - **Shared / Engine Core**: `d:\Appz\Suisource\GSDShare` (`d:\Appz\Suisource\GSDShare\GSDShare`)
