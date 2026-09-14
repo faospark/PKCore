@@ -307,14 +307,14 @@ public sealed class ModConfiguration
             "05 Game : Suikoden 2",
             "EnableCharacterRangeOverrides",
             true,
-            "Enable custom character battle range overrides for Suikoden 2 (e.g. Medium range Kasumi, Luc, Mazus, Viki, Gantetsu, Badeaux)."
+            "Enable custom character battle range overrides for Suikoden 2 (e.g. Medium range Kasumi, Luc, Mazus, Viki, Gantetsu, Badeaux, Sierra)."
         );
 
         S2CharacterRangeOverrides = _config.Bind(
             "05 Game : Suikoden 2",
             "S2CharacterRangeOverrides",
-            "Kasumi:M, Luc:M, Mazus:M, Viki:M, Gantetsu:M, Badeaux:M",
-            "Comma-separated list of character range overrides for Suikoden 2 in 'Character:Range' format (e.g. 'Kasumi:M, Luc:M, Mazus:M, Viki:M, Gantetsu:M, Badeaux:M'). Range values: S (Short), M (Medium), L (Long)."
+            "Kasumi:M, Luc:M, Mazus:M, Viki:M, Gantetsu:M, Badeaux:M, Sierra:M",
+            "Comma-separated list of character range overrides for Suikoden 2 in 'Character:Range' format (e.g. 'Kasumi:M, Luc:M, Mazus:M, Viki:M, Gantetsu:M, Badeaux:M, Sierra:M'). Range values: S (Short), M (Medium), L (Long)."
         );
 
 

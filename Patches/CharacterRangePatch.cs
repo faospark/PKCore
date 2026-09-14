@@ -28,7 +28,8 @@ public static class CharacterRangePatch
         { "mazus", new[] { 50, 61 } }, { "msm", new[] { 50, 61 } },
         { "viki", new[] { 4, 55 } }, { "wig", new[] { 4, 55 } }, { "wiki", new[] { 4, 55 } },
         { "gantetsu", new[] { 60, 70, 71, 137 } }, { "gentetsu", new[] { 60, 70, 71, 137 } }, { "jij", new[] { 60, 70, 71, 137 } }, { "gsu", new[] { 60, 70, 71, 137 } },
-        { "badeaux", new[] { 51, 52, 71, 72 } }, { "uni", new[] { 51, 52, 71, 72 } }
+        { "badeaux", new[] { 51, 52, 71, 72 } }, { "uni", new[] { 51, 52, 71, 72 } },
+        { "sierra", new[] { 44, 45, 46 } }, { "siera", new[] { 44, 45, 46 } }, { "sie", new[] { 44, 45, 46 } }
     };
 
     private static readonly string[] RangeLetters = { "S", "M", "L" };
@@ -90,7 +91,7 @@ public static class CharacterRangePatch
             string configStr = Plugin.Config?.S2CharacterRangeOverrides?.Value;
             if (string.IsNullOrWhiteSpace(configStr) || configStr.Equals("default", StringComparison.OrdinalIgnoreCase))
             {
-                configStr = "Kasumi:M, Luc:M, Mazus:M, Viki:M, Gantetsu:M, Badeaux:M";
+                configStr = "Kasumi:M, Luc:M, Mazus:M, Viki:M, Gantetsu:M, Badeaux:M, Sierra:M";
             }
 
             ParseConfigString(configStr);
@@ -107,7 +108,7 @@ public static class CharacterRangePatch
 
     private static void ApplyFallbackDefaults()
     {
-        ParseConfigString("Kasumi:M, Luc:M, Mazus:M, Viki:M, Gantetsu:M, Badeaux:M");
+        ParseConfigString("Kasumi:M, Luc:M, Mazus:M, Viki:M, Gantetsu:M, Badeaux:M, Sierra:M");
     }
 
     private static void ParseConfigString(string configStr)
