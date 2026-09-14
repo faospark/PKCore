@@ -48,7 +48,7 @@ namespace PKCore.Patches
         private static System.Collections.Generic.Dictionary<string, Texture2D> _maskTextures = new System.Collections.Generic.Dictionary<string, Texture2D>();
 
         /// <summary>
-        /// Load a mask texture from PKCore/Textures by name
+        /// Load a mask texture from PKCore/Textures or 00-Mods by name (supports DDS and PNG)
         /// </summary>
         private static Texture2D LoadMaskTexture(string maskName)
         {
@@ -56,29 +56,13 @@ namespace PKCore.Patches
             if (_maskTextures.ContainsKey(maskName))
                 return _maskTextures[maskName];
 
-            string maskPath = System.IO.Path.Combine(
-                BepInEx.Paths.GameRootPath,
-                "PKCore", "Textures", $"{maskName}.png"
-            );
-
-            if (System.IO.File.Exists(maskPath))
+            Texture2D maskTexture = CustomTexturePatch.LoadCustomTexture(maskName);
+            if (maskTexture != null)
             {
-                byte[] fileData = System.IO.File.ReadAllBytes(maskPath);
-                Texture2D maskTexture = new Texture2D(2, 2, TextureFormat.RGBA32, false);
-                
-                if (ImageConversion.LoadImage(maskTexture, fileData))
-                {
-                    maskTexture.name = $"{maskName}_Replacement";
-                    UnityEngine.Object.DontDestroyOnLoad(maskTexture);
-                    _maskTextures[maskName] = maskTexture;
-                    if (Plugin.Config.DetailedLogs.Value)
-                        Plugin.Log.LogInfo($"[DisablePortraitDialogMask] Loaded replacement texture for '{maskName}': {maskTexture.width}x{maskTexture.height}");
-                    return maskTexture;
-                }
-                else
-                {
-                    Plugin.Log.LogError($"[DisablePortraitDialogMask] Failed to load texture data for '{maskName}'");
-                }
+                _maskTextures[maskName] = maskTexture;
+                if (Plugin.Config.DetailedLogs.Value)
+                    Plugin.Log.LogInfo($"[DisablePortraitDialogMask] Loaded replacement texture for '{maskName}': {maskTexture.width}x{maskTexture.height}");
+                return maskTexture;
             }
 
             // Return null if not found - no replacement available

@@ -48,10 +48,24 @@ public static class PortraitVariants
         portraitMappingsPath = Path.Combine(configDir, "PortraitMappings.json");
         portraitVariantsPath = Path.Combine(configDir, "PortraitVariants.json");
 
-        // Discover all portrait directories under Textures (searches recursively)
+        // Discover all portrait directories under Textures and 00-Mods (searches recursively)
         string texturesPath = Path.Combine(BepInEx.Paths.GameRootPath, "PKCore", "Textures");
+        string modsPath = Path.Combine(BepInEx.Paths.GameRootPath, "PKCore", "00-Mods");
 
         portraitDirectories.Clear();
+
+        // 00-Mods folders (highest priority)
+        if (Directory.Exists(modsPath))
+        {
+            foreach (var modDir in Directory.GetDirectories(modsPath))
+            {
+                portraitDirectories.Add(modDir);
+                foreach (var subdir in Directory.GetDirectories(modDir, "*", SearchOption.AllDirectories))
+                {
+                    portraitDirectories.Add(subdir);
+                }
+            }
+        }
 
         // Add all subdirectories under Textures/ that could contain portraits
         // Priority: GSD1 folders first, then GSD2, then root-level folders
@@ -61,6 +75,7 @@ public static class PortraitVariants
             string gsd1Path = Path.Combine(texturesPath, "GSD1");
             if (Directory.Exists(gsd1Path))
             {
+                portraitDirectories.Add(gsd1Path);
                 foreach (var dir in Directory.GetDirectories(gsd1Path, "*", SearchOption.AllDirectories))
                 {
                     portraitDirectories.Add(dir);
@@ -71,6 +86,7 @@ public static class PortraitVariants
             string gsd2Path = Path.Combine(texturesPath, "GSD2");
             if (Directory.Exists(gsd2Path))
             {
+                portraitDirectories.Add(gsd2Path);
                 foreach (var dir in Directory.GetDirectories(gsd2Path, "*", SearchOption.AllDirectories))
                 {
                     portraitDirectories.Add(dir);
@@ -80,7 +96,7 @@ public static class PortraitVariants
             // Root-level folders (lowest priority)
             foreach (var dir in Directory.GetDirectories(texturesPath, "*", SearchOption.TopDirectoryOnly))
             {
-                if (!dir.EndsWith("GSD1") && !dir.EndsWith("GSD2"))
+                if (!dir.EndsWith("GSD1", StringComparison.OrdinalIgnoreCase) && !dir.EndsWith("GSD2", StringComparison.OrdinalIgnoreCase))
                 {
                     portraitDirectories.Add(dir);
                     // Also add subdirectories
@@ -354,17 +370,31 @@ public static class PortraitVariants
 
     /// <summary>
     /// Find portrait file path across all portrait directories
-    /// Searches recursively in ALL folders under PKCore/Textures/
-    /// Priority: GSD1 folders > GSD2 folders > Root folders
+    /// Searches recursively in ALL folders under PKCore/00-Mods/ and PKCore/Textures/
+    /// Priority: .dds > .png > .jpg > .jpeg
     /// </summary>
     public static string FindPortraitPath(string filename)
     {
         if (string.IsNullOrEmpty(filename))
             return null;
 
-        // Ensure .png extension
-        if (!filename.EndsWith(".png", StringComparison.OrdinalIgnoreCase))
-            filename += ".png";
+        string nameWithoutExt = Path.GetFileNameWithoutExtension(filename);
+        string originalExt = Path.GetExtension(filename);
+
+        // Priority: .dds > .png > .jpg > .jpeg
+        var extensionsToTry = new List<string>();
+        if (!string.IsNullOrEmpty(originalExt))
+        {
+            extensionsToTry.Add(originalExt);
+        }
+        if (!extensionsToTry.Contains(".dds", StringComparer.OrdinalIgnoreCase))
+            extensionsToTry.Insert(0, ".dds");
+        if (!extensionsToTry.Contains(".png", StringComparer.OrdinalIgnoreCase))
+            extensionsToTry.Add(".png");
+        if (!extensionsToTry.Contains(".jpg", StringComparer.OrdinalIgnoreCase))
+            extensionsToTry.Add(".jpg");
+        if (!extensionsToTry.Contains(".jpeg", StringComparer.OrdinalIgnoreCase))
+            extensionsToTry.Add(".jpeg");
 
         // Search all directories in priority order
         foreach (var dir in portraitDirectories)
@@ -372,15 +402,18 @@ public static class PortraitVariants
             if (!Directory.Exists(dir))
                 continue;
 
-            string fullPath = Path.Combine(dir, filename);
-            if (File.Exists(fullPath))
+            foreach (var ext in extensionsToTry)
             {
-                if (Plugin.Config.DetailedLogs.Value)
+                string fullPath = Path.Combine(dir, nameWithoutExt + ext);
+                if (File.Exists(fullPath))
                 {
-                    string relativePath = fullPath.Replace(Path.Combine(BepInEx.Paths.GameRootPath, "PKCore", "Textures"), "Textures");
-                    Plugin.Log.LogInfo($"[PortraitVariants] Found: {relativePath}");
+                    if (Plugin.Config.DetailedLogs.Value)
+                    {
+                        string relativePath = fullPath.Replace(Path.Combine(BepInEx.Paths.GameRootPath, "PKCore"), "PKCore");
+                        Plugin.Log.LogInfo($"[PortraitVariants] Found: {relativePath}");
+                    }
+                    return fullPath;
                 }
-                return fullPath;
             }
         }
 
@@ -433,18 +466,8 @@ public static class PortraitVariants
             return defaultPath;
         }
 
-        // FALLBACK: If default is missing (e.g. vanilla asset), try to find fp_219 (Question Mark) from Textures
-        // This handles cases where user defined a variant but the file is missing
-        string fallbackPath = FindPortraitPath("fp_219");
-        if (fallbackPath != null)
-        {
-            if (Plugin.Config.DetailedLogs.Value)
-                Plugin.Log.LogWarning($"[PortraitVariants] Portrait file missing for {characterName}, falling back to fp_219 (Question Mark)");
-            return fallbackPath;
-        }
-
         if (Plugin.Config.DetailedLogs.Value)
-            Plugin.Log.LogWarning($"[PortraitVariants] Portrait not found and fallback failed: {characterName} (mapped to {portraitFile})");
+            Plugin.Log.LogWarning($"[PortraitVariants] Portrait not found on disk: {characterName} (mapped to {portraitFile})");
 
         return null;
     }

@@ -166,6 +166,29 @@ public static class AssetLoader
         }
     }
 
+    /// <summary>
+    /// Load a texture directly from a specific file path (supports DDS, PNG, JPG).
+    /// </summary>
+    public static Texture2D LoadTextureFromFile(string filePath, string assetName = null, string context = null)
+    {
+        if (string.IsNullOrEmpty(filePath) || !File.Exists(filePath))
+            return null;
+
+        if (assetName == null)
+            assetName = Path.GetFileNameWithoutExtension(filePath);
+
+        try
+        {
+            byte[] fileData = File.ReadAllBytes(filePath);
+            return LoadTextureFromBytes(fileData, assetName, filePath, context);
+        }
+        catch (Exception ex)
+        {
+            Plugin.Log.LogError($"[AssetLoader] Failed to load from file {filePath}: {ex.Message}");
+            return null;
+        }
+    }
+
     private static Texture2D LoadTextureFromBytes(byte[] fileData, string assetName, string filePath, string context)
     {
         if (filePath.EndsWith(".dds", StringComparison.OrdinalIgnoreCase))

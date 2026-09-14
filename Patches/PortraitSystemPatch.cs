@@ -379,62 +379,45 @@ public class PortraitSystemPatch
     /// </summary>
     private static void PreloadPortraits()
     {
-        if (!Directory.Exists(portraitsPath))
-            return;
-
         // Clear existing cache to allow reloading
         portraitCache.Clear();
 
         string texturesPath = Path.Combine(BepInEx.Paths.GameRootPath, "PKCore", "Textures");
+        string modsPath = Path.Combine(BepInEx.Paths.GameRootPath, "PKCore", "00-Mods");
 
         // Scan portraits from all directories
         HashSet<string> portraitNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        string[] validExtensions = new[] { ".dds", ".png", ".jpg", ".jpeg" };
 
-        // 1. Scan GSD1 folder
-        string gsd1PortraitsPath = Path.Combine(texturesPath, "GSD1", "NPCPortraits");
-        if (Directory.Exists(gsd1PortraitsPath))
+        void ScanFolder(string folder)
         {
-            string[] gsd1Portraits = Directory.GetFiles(gsd1PortraitsPath, "*.png", SearchOption.TopDirectoryOnly);
-            foreach (string filePath in gsd1Portraits)
+            if (!Directory.Exists(folder)) return;
+            foreach (var file in Directory.GetFiles(folder, "*.*", SearchOption.AllDirectories))
             {
-                string portraitName = Path.GetFileNameWithoutExtension(filePath);
-                portraitNames.Add(portraitName);
-
-                // if (Plugin.Config.DetailedLogs.Value)
-                //     Plugin.Log.LogInfo($"Found GSD1 portrait: {portraitName}");
-            }
-        }
-
-        // 2. Scan GSD2 folder
-        string gsd2PortraitsPath = Path.Combine(texturesPath, "GSD2", "NPCPortraits");
-        if (Directory.Exists(gsd2PortraitsPath))
-        {
-            string[] gsd2Portraits = Directory.GetFiles(gsd2PortraitsPath, "*.png", SearchOption.TopDirectoryOnly);
-            foreach (string filePath in gsd2Portraits)
-            {
-                string portraitName = Path.GetFileNameWithoutExtension(filePath);
-                if (!portraitNames.Contains(portraitName))
+                string ext = Path.GetExtension(file);
+                if (validExtensions.Contains(ext, StringComparer.OrdinalIgnoreCase))
                 {
+                    string portraitName = Path.GetFileNameWithoutExtension(file);
                     portraitNames.Add(portraitName);
-
-                    // if (Plugin.Config.DetailedLogs.Value)
-                    //     Plugin.Log.LogInfo($"Found GSD2 portrait: {portraitName}");
                 }
             }
         }
 
-        // 3. Scan shared folder (fallback for portraits not in game-specific folders)
-        string[] sharedPortraits = Directory.GetFiles(portraitsPath, "*.png", SearchOption.TopDirectoryOnly);
-        foreach (string filePath in sharedPortraits)
+        // 1. Scan game-specific folders (GSD1, GSD2) and root folders
+        if (Directory.Exists(texturesPath))
         {
-            string portraitName = Path.GetFileNameWithoutExtension(filePath);
-            if (!portraitNames.Contains(portraitName))
-            {
-                portraitNames.Add(portraitName);
+            ScanFolder(Path.Combine(texturesPath, "GSD1", "Portraits"));
+            ScanFolder(Path.Combine(texturesPath, "GSD1", "NPCPortraits"));
+            ScanFolder(Path.Combine(texturesPath, "GSD2", "Portraits"));
+            ScanFolder(Path.Combine(texturesPath, "GSD2", "NPCPortraits"));
+            ScanFolder(Path.Combine(texturesPath, "Portraits"));
+            ScanFolder(Path.Combine(texturesPath, "NPCPortraits"));
+        }
 
-                // if (Plugin.Config.DetailedLogs.Value)
-                //     Plugin.Log.LogInfo($"Found shared portrait: {portraitName}");
-            }
+        // 2. Scan 00-Mods folder
+        if (Directory.Exists(modsPath))
+        {
+            ScanFolder(modsPath);
         }
 
         // Populate portrait cache
@@ -499,7 +482,7 @@ public class PortraitSystemPatch
     }
 
     /// <summary>
-    /// Load portrait texture from PNG file
+    /// Load portrait texture from DDS/PNG file
     /// Uses PortraitVariants system for variant support and directory searching
     /// </summary>
     public static Texture2D LoadPortraitTexture(string characterName, string expression = null)
@@ -517,13 +500,11 @@ public class PortraitSystemPatch
 
         try
         {
-            // Load the PNG file directly
-            byte[] fileData = File.ReadAllBytes(filePath);
-            Texture2D texture = new Texture2D(2, 2, TextureFormat.RGBA32, true);
+            // Load DDS or PNG/JPG texture via AssetLoader
+            Texture2D texture = AssetLoader.LoadTextureFromFile(filePath, characterName, null);
 
-            if (ImageConversion.LoadImage(texture, fileData))
+            if (texture != null)
             {
-                texture.name = characterName;
                 texture.filterMode = FilterMode.Bilinear;
                 texture.wrapMode = TextureWrapMode.Clamp;
                 texture.anisoLevel = 4;
@@ -531,14 +512,13 @@ public class PortraitSystemPatch
                 UnityEngine.Object.DontDestroyOnLoad(texture);
 
                 if (Plugin.Config.DetailedLogs.Value)
-                    Plugin.Log.LogInfo($"[PotraitSystem] ✓ Loaded portrait texture: {characterName} ({texture.width}x{texture.height})");
+                    Plugin.Log.LogInfo($"[PotraitSystem] ✓ Loaded portrait texture: {characterName} ({texture.width}x{texture.height}) from {Path.GetFileName(filePath)}");
 
                 return texture;
             }
             else
             {
-                Plugin.Log.LogError($"[PotraitSystem] Failed to decode image data for: {characterName}");
-                UnityEngine.Object.Destroy(texture);
+                Plugin.Log.LogError($"[PotraitSystem] Failed to decode image data for: {characterName} from {filePath}");
                 return null;
             }
         }
@@ -662,18 +642,22 @@ public class PortraitSystemPatch
                 lastSpeakerWithExpression = newName;
 
                 // Parse to get display name only (remove expression)
-                string displayName = newName;
-                if (newName.Contains("|"))
-                {
-                    displayName = newName.Split('|')[0].Trim();
-                }
-
+                string displayName = newName.Contains("|") ? newName.Split('|')[0].Trim() : newName;
                 name = displayName; // Set to display name for UI
                 message = message.Replace(match.Value, "").TrimStart(); // Remove tag and potential leading space
 
-                // Force portrait lookup by clearing existing faceImage
-                // This ensures we look for the new speaker's portrait
-                faceImage = null;
+                // Only clear faceImage if we actually found a custom portrait file to replace it with
+                var (charName, expr) = PortraitVariants.ParseSpeakerString(newName);
+                string customPath = PortraitVariants.GetPortraitPath(charName, expr);
+                if (customPath != null)
+                {
+                    faceImage = null;
+                }
+                else if (faceImage != null)
+                {
+                    if (Plugin.Config.DetailedLogs.Value)
+                        Plugin.Log.LogWarning($"[PotraitSystem] Custom portrait file not found for '{newName}'. Keeping native portrait.");
+                }
             }
         }
 
@@ -1256,22 +1240,18 @@ public class PortraitSystemPatch
                 }
             }
 
-            // Load custom texture with variant support (or fp_129 as fallback)
+            // Load custom texture with variant support
             Texture2D customTexture = LoadPortraitTexture(characterName, expression);
             if (customTexture == null)
             {
-                // Use fp_129.png as placeholder
-                customTexture = LoadPortraitTexture("fp_129", null);
-                if (customTexture == null)
-                {
-                    Plugin.Log.LogError($"[PotraitSystem] Failed to load custom texture or fp_129 fallback");
-                    return;
-                }
-                Plugin.Log.LogInfo($"[PotraitSystem] Using fp_129.png as placeholder portrait");
+                if (Plugin.Config.DetailedLogs.Value)
+                    Plugin.Log.LogWarning($"[PotraitSystem] Custom portrait texture not found for '{characterName}', skipping injection");
+                return;
             }
             else
             {
-                Plugin.Log.LogInfo($"[PotraitSystem] ✓ Loaded custom texture: {customTexture.width}x{customTexture.height}");
+                if (Plugin.Config.DetailedLogs.Value)
+                    Plugin.Log.LogInfo($"[PotraitSystem] ✓ Loaded custom texture: {customTexture.width}x{customTexture.height}");
             }
 
             // Create new sprite using actual texture dimensions

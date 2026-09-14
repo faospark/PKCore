@@ -12,6 +12,32 @@
 - Change log file location : {gameroot}\PKCore\Logs\ChangeLog.txt
 
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Patch Notes - Version: 2026-09-15
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+* This update provides general fixes and enhancements.
+
+----------------------
+: Release Highlights :
+----------------------
+- Added Suikoden 2 Battle Position Adjustments (EnableBattlePositionAdjustments, S2BattlePositionPreset: 
+  'wide', 'widest', 'default') to adjust party spacing so back-row characters do not visually block 
+  front-row characters.
+- Added configurable character weapon range overrides for Suikoden 2 (EnableCharacterRangeOverrides, 
+  S2CharacterRangeOverrides) to allow back-row weapon attacks (defaults: Kasumi, Luc, Mazus, Viki, 
+  Gantetsu, Badeaux, Sierra from Short to Medium range) with live configuration hot-reloading.
+- Fixed an oversight from the previous update where converting textures to .dds format caused custom 
+  portraits and UI masks to stop loading. Added full DDS format support (BC1/BC3/BC7) to the NPC & 
+  Dialogue Portrait System and mask replacement via AssetLoader.
+- Enabled recursive directory searching for portraits across both Portraits/ and NPCPortraits/ 
+  in Textures/GSD1/, Textures/GSD2/, Textures/, and 00-Mods/.
+- Fixed cutscene/Event Viewer portrait fallback so native dialogue portraits are preserved if 
+  a custom emotion/expression variant file is not present on disk.
+- Updated UI mask replacement (DisablePortraitDialogMask) to load custom masks via the unified 
+  texture pipeline supporting both DDS and PNG formats.
+- Deduplicated sprite and mesh texture replacement logging during background manager activations 
+  to eliminate log spam from repeated map assets (e.g. repeated trees).
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 Patch Notes - Version: 2026-09-12
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 * MAKE SURE to delete existing PKCore Folder for this update before you install the new one. 

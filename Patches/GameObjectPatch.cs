@@ -51,6 +51,10 @@ public partial class CustomTexturePatch
                 CustomObjectInsertion.TryCreateCustomObjects(__instance);
             }
 
+            // Track unique texture and sprite names replaced during this activation pass to avoid duplicate log spam
+            var replacedMeshTexturesThisPass = new System.Collections.Generic.HashSet<string>();
+            var replacedSpritesThisPass = new System.Collections.Generic.HashSet<string>();
+
             // Check for MeshRenderers and replace their textures
             var meshRenderers = __instance.GetComponentsInChildren<MeshRenderer>(true);
             foreach (var mr in meshRenderers)
@@ -65,7 +69,7 @@ public partial class CustomTexturePatch
                     {
                         if (ReplaceTextureInPlace(texture, textureName))
                         {
-                            if (Plugin.Config.DetailedLogs.Value)
+                            if (Plugin.Config.DetailedLogs.Value && replacedMeshTexturesThisPass.Add(textureName))
                             {
                                 Plugin.Log.LogInfo($"Replaced MeshRenderer texture on activation: {textureName} (from {objectPath})");
                             }
@@ -104,7 +108,7 @@ public partial class CustomTexturePatch
                         sr.sprite = customSprite;
                         _processedSpriteInstances.Add(instanceId);
 
-                        if (Plugin.Config.DetailedLogs.Value)
+                        if (Plugin.Config.DetailedLogs.Value && replacedSpritesThisPass.Add(spriteName))
                         {
                             Plugin.Log.LogInfo($"Replaced sprite on activation: {spriteName} (from {objectPath})");
                         }

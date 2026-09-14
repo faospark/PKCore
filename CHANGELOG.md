@@ -6,6 +6,9 @@ All notable changes to PKCore (formerly PKextended) are documented in this file.
 
 ## [Unreleased]
 
+- **Battle Position Adjustments (Suikoden II)**:
+  - Added configurable 6-character party formation spacing via `EnableBattlePositionAdjustments` and `S2BattlePositionPreset` (`wide`, `widest`, `default`).
+  - Adjusts front/back row spacing and vertical slot offsets during Suikoden II battles so that back-row characters do not visually obstruct front-row party members.
 - **Character Battle Range Overrides (Suikoden II)**:
   - Added configurable weapon range modification via `S2CharacterRangeOverrides` in `BepInEx/config/faospark.pkcore.cfg` (enabled by `EnableCharacterRangeOverrides`).
   - Default enhancements change **Kasumi, Luc, Mazus, Viki, Gantetsu, Badeaux, and Sierra** from Short (`S`) to Medium (`M`) Range, allowing them to attack with physical weapons directly from the back row.
@@ -15,6 +18,15 @@ All notable changes to PKCore (formerly PKextended) are documented in this file.
   - Removed intrusive `PM_DATA` check postfixes (`AttackCanCheck`, `MokuhyoCanCheck`, `CheckRowFormation`) to eliminate battle state machine freezes, enabling native enemy target selection and animation flow.
 - **Live Configuration Hot-Reloading**:
   - Added real-time event listeners for `SettingChanged` on `S2CharacterRangeOverrides` and `EnableCharacterRangeOverrides`, allowing on-the-fly configuration updates via BepInEx Configuration Manager or UnityExplorer without restarting the game.
+- **DDS Portrait Format & Directory Search (Fix for previous update oversight)**:
+  - Fixed an issue where converting textures to `.dds` format in the previous update caused custom portraits and UI masks to stop loading (previously only `.png` was supported).
+  - Added full DDS format support (BC1/BC3/BC7) to the NPC & Dialogue Portrait System using `AssetLoader`.
+  - Added recursive directory searching across both `Portraits/` and `NPCPortraits/` subfolders within `Textures/GSD1/`, `Textures/GSD2/`, `Textures/`, and `00-Mods/`.
+  - Preserved native in-game portraits in Event Viewer and cutscenes: missing custom emotion/expression variants will no longer overwrite original dialogue faces with question mark fallbacks (`fp_219`).
+- **UI Mask Replacement Pipeline**:
+  - Updated `DisablePortraitDialogMask.cs` to use the unified custom texture pipeline, adding DDS texture support for custom mask replacements.
+- **Activation Log Spam Reduction**:
+  - Deduplicated sprite and mesh texture replacement logging in `GameObjectPatch.cs` during background manager and scene activations to prevent repeated messages for duplicate environment assets (e.g. repeated trees).
 
 ---
 
