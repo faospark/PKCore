@@ -32,16 +32,16 @@ public static class GameDetection
 
         _lastSceneName = sceneName;
 
-        string newGameId = "Main";
-        if (sceneName.Contains("GSD1"))
+        string newGameId = _cachedGameId;
+        if (sceneName.Contains("GSD1", System.StringComparison.OrdinalIgnoreCase))
         {
             newGameId = "GSD1";
         }
-        else if (sceneName.Contains("GSD2"))
+        else if (sceneName.Contains("GSD2", System.StringComparison.OrdinalIgnoreCase))
         {
             newGameId = "GSD2";
         }
-        else if (sceneName.Equals("main", System.StringComparison.OrdinalIgnoreCase))
+        else if (sceneName.Equals("main", System.StringComparison.OrdinalIgnoreCase) || sceneName.Equals("init", System.StringComparison.OrdinalIgnoreCase))
         {
             newGameId = "Main";
         }

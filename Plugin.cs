@@ -83,6 +83,8 @@ public class Plugin : BasePlugin
             Patches.PSPLauncherPatch.Update();
         if (Config.EnhancedGallery.Value)
             Patches.PSPGalleryEnhanced.Update();
+        if (Config.EnableCharacterRangeOverrides.Value)
+            Patches.CharacterRangePatch.Update();
         Patches.MenuScalePatch.ApplyLauncherConfigScaling();
         AssetLoader.Update();
     }
@@ -340,6 +342,13 @@ public class Plugin : BasePlugin
         {
             Log.LogInfo("Applying Battle Position Adjustment patch...");
             BattlePositionPatch.Initialize(harmony);
+        }
+
+        // Character Battle Range Patch (Suikoden 2)
+        if (Config.EnableCharacterRangeOverrides.Value)
+        {
+            Log.LogInfo("Applying Character Range Overrides patch...");
+            CharacterRangePatch.Initialize(harmony);
         }
 
 

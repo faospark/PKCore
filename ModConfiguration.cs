@@ -55,6 +55,9 @@ public sealed class ModConfiguration
     public ConfigEntry<bool> EnableBattlePositionAdjustments { get; private set; }
     public ConfigEntry<string> S2BattlePositionPreset { get; private set; }
 
+    // Suikoden 2 Character Range Override Settings
+    public ConfigEntry<bool> EnableCharacterRangeOverrides { get; private set; }
+
     // World Map Settings
     public ConfigEntry<bool> DisableWorldMapClouds { get; private set; }
     public ConfigEntry<bool> DisableWorldMapSunrays { get; private set; }
@@ -297,6 +300,13 @@ public sealed class ModConfiguration
             "S2BattlePositionPreset",
             "wide",
             "Battle position preset for Suikoden 2. Options: 'default' (vanilla), 'wide' (moderate spacing, front row shifted left), 'widest' (large spacing, high visibility)."
+        );
+
+        EnableCharacterRangeOverrides = _config.Bind(
+            "05 Game : Suikoden 2",
+            "EnableCharacterRangeOverrides",
+            true,
+            "Enable custom character battle range overrides for Suikoden 2 (e.g. Medium range Kasumi, Luc, Mazus, Viki). Configured via PKCore/Config/S2CharacterRanges.json."
         );
 
 
