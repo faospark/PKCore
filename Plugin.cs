@@ -335,6 +335,13 @@ public class Plugin : BasePlugin
             WarAbilityPatch.Initialize(Log);
         }
 
+        // Battle Position Adjustment Patch (Suikoden 2)
+        if (Config.EnableBattlePositionAdjustments.Value)
+        {
+            Log.LogInfo("Applying Battle Position Adjustment patch...");
+            BattlePositionPatch.Initialize(harmony);
+        }
+
 
 
         // Reaction Monitor (MapChara/r_action trigger)

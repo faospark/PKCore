@@ -51,6 +51,10 @@ public sealed class ModConfiguration
     // War Ability Mod
     public ConfigEntry<bool> EnableWarAbilityMod { get; private set; }
 
+    // Suikoden 2 Battle Positioning Settings
+    public ConfigEntry<bool> EnableBattlePositionAdjustments { get; private set; }
+    public ConfigEntry<string> S2BattlePositionPreset { get; private set; }
+
     // World Map Settings
     public ConfigEntry<bool> DisableWorldMapClouds { get; private set; }
     public ConfigEntry<bool> DisableWorldMapSunrays { get; private set; }
@@ -279,6 +283,20 @@ public sealed class ModConfiguration
             "EnableWarAbilityMod",
             true,
             "Enable war battle ability modification. Allows you to customize character abilities in Suikoden 2's war battles. Wont appear on the game menu of Apple but will have an effect on battle. Base is already boosted but can be further configures in PKCore/Config/S2WarAbilities.json"
+        );
+
+        EnableBattlePositionAdjustments = _config.Bind(
+            "05 Game : Suikoden 2",
+            "EnableBattlePositionAdjustments",
+            true,
+            "Adjust the 6 character battle positions in Suikoden 2 so back row characters do not block front row characters."
+        );
+
+        S2BattlePositionPreset = _config.Bind(
+            "05 Game : Suikoden 2",
+            "S2BattlePositionPreset",
+            "wide",
+            "Battle position preset for Suikoden 2. Options: 'default' (vanilla), 'wide' (moderate spacing, front row shifted left), 'widest' (large spacing, high visibility)."
         );
 
 
