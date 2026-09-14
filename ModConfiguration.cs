@@ -57,6 +57,7 @@ public sealed class ModConfiguration
 
     // Suikoden 2 Character Range Override Settings
     public ConfigEntry<bool> EnableCharacterRangeOverrides { get; private set; }
+    public ConfigEntry<string> S2CharacterRangeOverrides { get; private set; }
 
     // World Map Settings
     public ConfigEntry<bool> DisableWorldMapClouds { get; private set; }
@@ -306,7 +307,14 @@ public sealed class ModConfiguration
             "05 Game : Suikoden 2",
             "EnableCharacterRangeOverrides",
             true,
-            "Enable custom character battle range overrides for Suikoden 2 (e.g. Medium range Kasumi, Luc, Mazus, Viki). Configured via PKCore/Config/S2CharacterRanges.json."
+            "Enable custom character battle range overrides for Suikoden 2 (e.g. Medium range Kasumi, Luc, Mazus, Viki, Gantetsu, Badeaux)."
+        );
+
+        S2CharacterRangeOverrides = _config.Bind(
+            "05 Game : Suikoden 2",
+            "S2CharacterRangeOverrides",
+            "Kasumi:M, Luc:M, Mazus:M, Viki:M, Gantetsu:M, Badeaux:M",
+            "Comma-separated list of character range overrides for Suikoden 2 in 'Character:Range' format (e.g. 'Kasumi:M, Luc:M, Mazus:M, Viki:M, Gantetsu:M, Badeaux:M'). Range values: S (Short), M (Medium), L (Long)."
         );
 
 

@@ -146,26 +146,33 @@ The following characters are Stars of Destiny or allies who **cannot** be placed
 PKCore includes a dedicated feature for customizing and modifying any character's battle range in **Suikoden II (HD Remaster)** via `PKCore.Patches.CharacterRangePatch`.
 
 ### 🎯 Default Range Enhancements
-By default, the patch changes 4 key magic and agile combatants from **Short Range (S)** to **Medium Range (M)** so they can attack directly from the back row:
+By default, the patch changes 6 key magic and agile combatants from **Short Range (S)** to **Medium Range (M)** so they can attack directly from the back row:
 * **Kasumi** (`S` ➔ `M`) — Fast ninja wielder who can now strike from the back row without penalty.
 * **Luc** (`S` ➔ `M`) — True Wind Rune mage now able to execute physical staff attacks from the rear row.
 * **Mazus** (`S` ➔ `M`) — High-tier archmage equipped with medium-range staff reach.
 * **Viki** (`S` ➔ `M`) — Teleportation mage who can now assist in physical attacks from the back formation.
+* **Gantetsu (Gentetsu)** (`S` ➔ `M`) — Iron prayer beads spiritual monk able to fight from either row.
+* **Badeaux** (`S` ➔ `M`) — Beast whip fighter able to strike and command monsters from the back row.
 
-### 📝 Configuration (`PKCore/Config/S2CharacterRanges.json`)
-Ranges can be customized at any time using `S2CharacterRanges.json`. You can reference characters by English name, short internal name, or numeric ID:
+### 📝 Configuration (`BepInEx/config/faospark.pkcore.cfg`)
+Ranges can be customized at any time directly in your BepInEx config file under `[05 Game : Suikoden 2]` or via BepInEx Configuration Manager:
 
-```json
-{
-  "_description": "Configure battle range for Suikoden 2 characters. Options: 'S' (Short), 'M' (Medium), 'L' (Long).",
-  "Kasumi": "M",
-  "Luc": "M",
-  "Mazus": "M",
-  "Viki": "M"
-}
+```ini
+[05 Game : Suikoden 2]
+
+## Enable custom character battle range overrides for Suikoden 2.
+# Setting type: Boolean
+# Default value: true
+EnableCharacterRangeOverrides = true
+
+## Comma-separated list of character range overrides in 'Character:Range' format.
+# Setting type: String
+# Default value: Kasumi:M, Luc:M, Mazus:M, Viki:M, Gantetsu:M, Badeaux:M
+S2CharacterRangeOverrides = Kasumi:M, Luc:M, Mazus:M, Viki:M, Gantetsu:M, Badeaux:M
 ```
 
-* **Valid Range Values**: `"S"` (Short), `"M"` (Medium), `"L"` (Long).
+* **Valid Range Values**: `S` (Short), `M` (Medium), `L` (Long).
+* **Format**: Supports character names (e.g. `Kasumi:M`, `Badeaux:M`) or numeric character IDs (e.g. `51:M`, `72:M`).
 
 ### 🔧 Technical Implementation
 The patch synchronizes across both engine code and native memory structures:

@@ -80,14 +80,14 @@ public static class CharacterRangePatch
         { "stallion", new[] { 56 } }, { "stk", new[] { 56 } }, { "sta", new[] { 56 } },
         { "gadget", new[] { 57 } }, { "gjm", new[] { 57 } },
         { "hoi", new[] { 58 } }, { "kyu", new[] { 58 } }, { "hjo", new[] { 58 } },
-        { "gantetsu", new[] { 60 } }, { "jij", new[] { 60 } }, { "gsu", new[] { 60 } },
+        { "gantetsu", new[] { 60, 70, 71, 137 } }, { "gentetsu", new[] { 60, 70, 71, 137 } }, { "jij", new[] { 60, 70, 71, 137 } }, { "gsu", new[] { 60, 70, 71, 137 } },
         { "tirmcdohl", new[] { 62 } }, { "mcdohl", new[] { 62 } }, { "mdo", new[] { 62 } }, { "tir", new[] { 62 } },
         { "vincent", new[] { 63 } }, { "van", new[] { 63 } },
         { "simone", new[] { 64 } }, { "smb", new[] { 64 } },
         { "rulodia", new[] { 67 } }, { "lfi", new[] { 67 } },
         { "meg", new[] { 68 } }, { "mfi", new[] { 68 } },
         { "chuchura", new[] { 70 } }, { "ksd", new[] { 70 } },
-        { "badeaux", new[] { 71 } }, { "uni", new[] { 71 } },
+        { "badeaux", new[] { 51, 52, 71, 72 } }, { "uni", new[] { 51, 52, 71, 72 } },
         { "kasumi", new[] { 72, 73 } }, { "ksm", new[] { 72, 73 } },
         { "mikumiku", new[] { 87 } }, { "rkl", new[] { 87 } },
         { "makumaku", new[] { 88 } }, { "mto", new[] { 88 } },
@@ -135,36 +135,18 @@ public static class CharacterRangePatch
         RangeOverrides.Clear();
         RawNameOverrides.Clear();
 
-        var pkCoreDir = Path.Combine(BepInEx.Paths.GameRootPath, "PKCore");
-        var configDir = Path.Combine(pkCoreDir, "Config");
-        var configPath = Path.Combine(configDir, "S2CharacterRanges.json");
-
         try
         {
-            if (!Directory.Exists(configDir))
+            string configStr = Plugin.Config?.S2CharacterRangeOverrides?.Value;
+            if (string.IsNullOrWhiteSpace(configStr) || configStr.Equals("default", StringComparison.OrdinalIgnoreCase))
             {
-                Directory.CreateDirectory(configDir);
+                configStr = "Kasumi:M, Luc:M, Mazus:M, Viki:M, Gantetsu:M, Badeaux:M";
             }
 
-            // Create default config file if it doesn't exist
-            if (!File.Exists(configPath))
-            {
-                string defaultConfig = @"{
-  ""_description"": ""Configure battle range for Suikoden 2 characters. Options: 'S' (Short), 'M' (Medium), 'L' (Long)."",
-  ""Kasumi"": ""M"",
-  ""Luc"": ""M"",
-  ""Mazus"": ""M"",
-  ""Viki"": ""M""
-}";
-                File.WriteAllText(configPath, defaultConfig);
-                Plugin.Log.LogInfo($"[CharacterRangePatch] Created default configuration file at: {configPath}");
-            }
-
-            string json = File.ReadAllText(configPath);
-            ParseConfigJson(json);
+            ParseConfigString(configStr);
             IsLoaded = true;
 
-            Plugin.Log.LogInfo($"[CharacterRangePatch] Loaded {RangeOverrides.Count} character range overrides.");
+            Plugin.Log.LogInfo($"[CharacterRangePatch] Loaded {RangeOverrides.Count} character range overrides from BepInEx config.");
         }
         catch (Exception ex)
         {
@@ -183,28 +165,31 @@ public static class CharacterRangePatch
         SetRangeForId(61, 1);  // Mazus -> Medium
         SetRangeForId(4, 1);   // Viki -> Medium
         SetRangeForId(55, 1);  // Viki -> Medium
+        SetRangeForId(60, 1);  // Gantetsu -> Medium
+        SetRangeForId(70, 1);  // Gantetsu -> Medium
+        SetRangeForId(71, 1);  // Gantetsu / Badeaux -> Medium
+        SetRangeForId(51, 1);  // Badeaux -> Medium
+        SetRangeForId(52, 1);  // Badeaux -> Medium
+        SetRangeForId(137, 1); // Gantetsu -> Medium
     }
 
-    private static void ParseConfigJson(string json)
+    private static void ParseConfigString(string configStr)
     {
         try
         {
-            var lines = json.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-            foreach (var rawLine in lines)
+            var entries = configStr.Split(new[] { ',', ';', '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (var rawEntry in entries)
             {
-                var line = rawLine.Trim();
-                if (string.IsNullOrEmpty(line) || line.StartsWith("{") || line.StartsWith("}") || line.StartsWith("\"_"))
+                var entry = rawEntry.Trim();
+                if (string.IsNullOrEmpty(entry) || entry.StartsWith("#") || entry.StartsWith("//"))
                     continue;
 
-                if (line.EndsWith(","))
-                    line = line.Substring(0, line.Length - 1).Trim();
-
-                var parts = line.Split(':');
+                var parts = entry.Split(new[] { ':', '=' }, StringSplitOptions.RemoveEmptyEntries);
                 if (parts.Length != 2)
                     continue;
 
-                string key = parts[0].Trim().Trim('"');
-                string val = parts[1].Trim().Trim('"').ToUpperInvariant();
+                string key = parts[0].Trim().Trim('"', '\'');
+                string val = parts[1].Trim().Trim('"', '\'').ToUpperInvariant();
 
                 int rangeValue = val switch
                 {
@@ -237,7 +222,7 @@ public static class CharacterRangePatch
                 }
             }
 
-            // Ensure our target four default if missing from custom json
+            // Ensure our default target characters are registered if not explicitly overridden
             if (!RangeOverrides.ContainsKey(72)) SetRangeForId(72, 1);
             if (!RangeOverrides.ContainsKey(73)) SetRangeForId(73, 1);
             if (!RangeOverrides.ContainsKey(53)) SetRangeForId(53, 1);
@@ -246,10 +231,16 @@ public static class CharacterRangePatch
             if (!RangeOverrides.ContainsKey(61)) SetRangeForId(61, 1);
             if (!RangeOverrides.ContainsKey(4)) SetRangeForId(4, 1);
             if (!RangeOverrides.ContainsKey(55)) SetRangeForId(55, 1);
+            if (!RangeOverrides.ContainsKey(60)) SetRangeForId(60, 1);
+            if (!RangeOverrides.ContainsKey(70)) SetRangeForId(70, 1);
+            if (!RangeOverrides.ContainsKey(71)) SetRangeForId(71, 1);
+            if (!RangeOverrides.ContainsKey(51)) SetRangeForId(51, 1);
+            if (!RangeOverrides.ContainsKey(52)) SetRangeForId(52, 1);
+            if (!RangeOverrides.ContainsKey(137)) SetRangeForId(137, 1);
         }
         catch (Exception ex)
         {
-            Plugin.Log.LogError($"[CharacterRangePatch] Failed parsing config JSON: {ex}");
+            Plugin.Log.LogError($"[CharacterRangePatch] Failed parsing config string: {ex}");
             ApplyFallbackDefaults();
         }
     }
