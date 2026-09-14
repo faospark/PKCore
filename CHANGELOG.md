@@ -9,6 +9,7 @@ All notable changes to PKCore (formerly PKextended) are documented in this file.
 - **Battle Position Adjustments (Suikoden II)**:
   - Added configurable 6-character party formation spacing via `EnableBattlePositionAdjustments` and `S2BattlePositionPreset` (`wide`, `widest`, `default`).
   - Adjusts front/back row spacing and vertical slot offsets during Suikoden II battles so that back-row characters do not visually obstruct front-row party members.
+  - Added `LogBattlePositions` diagnostics setting (disabled by default) to suppress verbose coordinate/offset logs unless explicitly enabled for debugging.
 - **Character Battle Range Overrides (Suikoden II)**:
   - Added configurable weapon range modification via `S2CharacterRangeOverrides` in `BepInEx/config/faospark.pkcore.cfg` (enabled by `EnableCharacterRangeOverrides`).
   - Default enhancements change **Kasumi, Luc, Mazus, Viki, Gantetsu, Badeaux, and Sierra** from Short (`S`) to Medium (`M`) Range, allowing them to attack with physical weapons directly from the back row.

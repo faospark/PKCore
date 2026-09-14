@@ -21,7 +21,7 @@ Patch Notes - Version: 2026-09-15
 ----------------------
 - Added Suikoden 2 Battle Position Adjustments (EnableBattlePositionAdjustments, S2BattlePositionPreset: 
   'wide', 'widest', 'default') to adjust party spacing so back-row characters do not visually block 
-  front-row characters.
+  front-row characters (includes 'LogBattlePositions' diagnostics toggle, off by default).
 - Added configurable character weapon range overrides for Suikoden 2 (EnableCharacterRangeOverrides, 
   S2CharacterRangeOverrides) to allow back-row weapon attacks (defaults: Kasumi, Luc, Mazus, Viki, 
   Gantetsu, Badeaux, Sierra from Short to Medium range) with live configuration hot-reloading.

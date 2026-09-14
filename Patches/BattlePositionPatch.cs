@@ -137,8 +137,11 @@ public static class BattlePositionPatch
                 position.y.seisu = origY + offsetY;
                 position.z.seisu = origZ + offsetZ;
 
-                string preset = Plugin.Config?.S2BattlePositionPreset?.Value ?? "wide";
-                Plugin.Log.LogInfo($"[BattlePositionPatch] Preset '{preset}' Slot {slot} (CharaID {charaID}): ({origX}, {origY}, {origZ}) -> ({position.x.seisu}, {position.y.seisu}, {position.z.seisu}) [Offset: ({offsetX}, {offsetY}, {offsetZ})]");
+                if (Plugin.Config != null && Plugin.Config.LogBattlePositions.Value)
+                {
+                    string preset = Plugin.Config?.S2BattlePositionPreset?.Value ?? "wide";
+                    Plugin.Log.LogInfo($"[BattlePositionPatch] Preset '{preset}' Slot {slot} (CharaID {charaID}): ({origX}, {origY}, {origZ}) -> ({position.x.seisu}, {position.y.seisu}, {position.z.seisu}) [Offset: ({offsetX}, {offsetY}, {offsetZ})]");
+                }
             }
             catch (Exception ex)
             {
@@ -155,7 +158,7 @@ public static class BattlePositionPatch
         {
             try
             {
-                if (!GameDetection.IsGSD2())
+                if (!GameDetection.IsGSD2() || Plugin.Config == null || !Plugin.Config.LogBattlePositions.Value)
                     return;
 
                 var battleWork = GSD2::BATTLE_WORK.Instance;

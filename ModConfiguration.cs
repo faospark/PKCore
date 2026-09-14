@@ -36,6 +36,7 @@ public sealed class ModConfiguration
     public ConfigEntry<bool> LogTextIDs { get; private set; }
     public ConfigEntry<bool> DumpTextDatabase { get; private set; }
     public ConfigEntry<bool> EnablePortraitSystem { get; private set; }
+    public ConfigEntry<bool> LogBattlePositions { get; private set; }
 
 
     // Save Point Settings
@@ -384,6 +385,13 @@ public sealed class ModConfiguration
             "LogReplaceableTextures",
             false,
             "Log all replaceable texture names discovered during gameplay. Useful for identifying texture names to create custom replacements. Independent of DetailedLogs setting."
+        );
+
+        LogBattlePositions = _config.Bind(
+            "zz - Diagnostics",
+            "LogBattlePositions",
+            false,
+            "Log party member coordinates and battle position adjustments to the console on battle start. Useful for diagnosing formation spacing."
         );
 
         // ========================================
