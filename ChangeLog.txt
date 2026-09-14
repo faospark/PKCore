@@ -1,0 +1,309 @@
+  ░██████  ░██                                                       ░██                               
+ ░██   ░██ ░██                                                       ░██                               
+░██        ░████████   ░██████   ░████████   ░████████  ░███████     ░██          ░███████   ░████████ 
+░██        ░██    ░██       ░██  ░██    ░██ ░██    ░██ ░██    ░██    ░██         ░██    ░██ ░██    ░██ 
+░██        ░██    ░██  ░███████  ░██    ░██ ░██    ░██ ░█████████    ░██         ░██    ░██ ░██    ░██ 
+ ░██   ░██ ░██    ░██ ░██   ░██  ░██    ░██ ░██   ░███ ░██           ░██         ░██    ░██ ░██   ░███ 
+  ░██████  ░██    ░██  ░█████░██ ░██    ░██  ░█████░██  ░███████     ░██████████  ░███████   ░█████░██ 
+                                                   ░██                                             ░██ 
+                                             ░███████                                        ░███████  
+                                                                                                       
+======================================================================================================
+- Change log file location : {gameroot}\PKCore\Logs\ChangeLog.txt
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Patch Notes - Version: 2026-09-12
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+* MAKE SURE to delete existing PKCore Folder for this update before you install the new one. 
+There are some changes to the folder structure and some files have been removed.
+
+* This update is a general fix and maintenance release.
+
+----------------------
+: Release Highlights :
+----------------------
+- Introduced LocalizedOverrideMap for managing language-scoped dialog and text replacements and 
+  Refactored language selection handling in LanguageSelectionPatch.cs. For now this means that features
+  such as additional dialog and NPC portraits will be limited to the English language. 
+  This is a temporary measure until I can implement a more robust system for supporting multiple languages.
+  This is also to prevent potential issues with dialog and text replacements in other languages, as the 
+  current system may not handle them correctly.
+- Normalized backslashes (\) to forward slashes (/) in TextureOptions.
+- Fixed MinimalUI = false and LoadLauncherUITextures = false settings by broadening directory pattern 
+  matching (e.g., matching Minimal-UI-Mod, MinimalUI, launcher).
+- Added null-safety guards and string trimming for variant settings (SavePointColor, TirRunTexture, 
+  MercFortFence).
+- Added parsing support for the DX10 extended header (DX10 FourCC marker) in DDSLoader.cs.
+- Enabled loading of modern BC7 (DXGI_FORMAT_BC7_UNORM / BC7_UNORM_SRGB) compressed DDS textures.
+- Replaced Lucy's (Mother of Kent) portrait with a better one for real this time.
+- Replaced overworld sprite library for Suikoden 2 as I felt that they were too compressed and has a 
+  lot of artifacts.
+- Replaced background image in classic save / load window in Suikoden 2 with a better one.
+- Reduced File size by converting more textures to DDS format.
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Patch Notes - Version: 2026-07-28
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+* MAKE SURE to delete existing PKCore Folder for this update before you install the new one. 
+There are some changes to the folder structure and some files have been removed.
+
+* This update is a general fix and then some..
+
+----------------------
+: Release Highlights :
+----------------------
+- Fix Portrait Bug on Suikoden 1 where in some instances the custom portrait, dialog names and dialog 
+  edit do not work. 
+- Added container path Texture resolution.
+- Replaced Lucy's (Mother of Kent) portrait with a better one.
+- Fix NPC in Radat, Kobold , Gregminster and Kyaro not having and upscaled sprite.
+- Fix Bob , Wakaba and LC Chan's missing battle and run sprites.
+- Reduced File size by converting more textures to DDS format.
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Patch Notes - Version: 2026-04-27 to 2026-06-16
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+* MAKE SURE to delete existing PKCore Folder for this update before you install the new one. 
+There are some changes to the folder structure and some files have been removed.
+
+* This update is a general maintenance release. This was supposed to be released earlier but you know
+  Life happened and I had to prioritize other things. 
+
+----------------------
+: Release Highlights :
+----------------------
+- Major Change : Better file size for downloading files . While I initially thought that reverting to
+  The use of PNG is relative now safe because of a better texture pipeline loading system, I realize the
+  improvement is only marginally felt on certain areas of the game. Reverting back to DDS format not 
+  only improves the texture loading speed but also reduces the file size of the mod by a significant 
+  amount when compressed. So were are half of the size or earlier releases. 
+- Added support for _pixel suffix , this is a new feature that allows users to add pixelated versions 
+  of textures for the game provided you have turned of the smooth sprites and delete the xml on the 
+  cache folder.
+- Inline with the update above, The Alternative run animation for Tir now als support the vanilla 
+  pixelated version of the texture. check the config for more details.
+- Some Objects were rescaled on Suikoden 1 to better fit the game world.
+- Fixed typos in some of the portraits such as for Elven Elder Soveliss. 
+- Fixed portrait errors for the Luca Blight ambush in Suikoden 2. 
+- Revised 150+ textures for both games.
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Patch Notes - Version: 2026-03-22
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+* Reverting to this more classic approach for change logs for the time being. The new patch notes 
+  format was a bit too much work to maintain and update, and it also made it harder to quickly scan for 
+  changes. This format is more concise and easier to read, while still providing all the necessary 
+  information about the updates and fixes.
+
+* MAKE SURE to delete existing PKCore Folder for this update before you install the new one. 
+  There are some changes to the folder structure and some files have been removed.
+
+* Change log file is now located in {gameroot}\PKCore\Logs\ChangeLog.txt
+
+----------------------
+: Release Highlights :
+----------------------
+- [PSPLauncher] Recreation of the PSP Launcher UI as a New configuration option. Off by default.
+- [EnhancedGallery] Better Gallery UI , Inspired by the PSP Launcher and I decided to have it as a 
+  separate option so that users can still use it just in case they don't like the PSP Launcher UI.
+- Added Non destructive Background Music Replacement feature allowing users to easily swap out music 
+  without modifying original files. Simply place them at PKCore\00-Mods\MyCustom-Sound-Mod\Sound
+- [BetterLauncherBGM] This replaced the ambient music in the launcher with Suikoden 2's Adventure 
+  start theme. This is essentially a sample mod of the new feature above. On by Default.
+- 00-Mods folder has been further enhanced and is now moved to the root of PKCore for easier access and 
+  visibility. Its functionality has also been expanded to support more than texture mods and can now 
+  accommodate texture, sound mods, dialog moods and war battle customization mods that you as a user 
+  can easily create and share with others.
+- Suikoden 1 now is fully supported by the Portraits System. Implementation is slightly different 
+  from Suikoden 2's as that is the way the game was designed. 
+
+-----------------------------
+: General Changes / Patches :
+-----------------------------
+- PKCore folders have restructured: 00-Mods folder is located at the root of PKCore and can support
+  more than just texture mods. Added new Configuration files and folder to support the new features and 
+  changes. Suikoden 2 war battle textures folder moved to PKS2 so it can be disabled and more.
+- Added functionality of dialog overrides to be split and load independently for each game. This is to 
+  prevent possible collision of Message IDs between the two games.
+- Portions of the mod Reworded+ has been transferred to this mod more specifically for Menus and objects.  
+- Some textures were converted to .DDS format to improve performance.  
+- Renamed DisablePortraitDialogMaskPortraitDialog to DisablePortraitDialogMask cause dang that is long.
+- Fixed collision of names of Custom Portraits. 
+- Added a dialog/text dump feature for future case use. 
+
+--------------------------------
+: Suikoden 1 Changes / Patches :
+--------------------------------
+- Added the ability to add Names on any dialog for Suikoden 1, this is so that not named significant 
+  NPCs can have their names shown on dialog boxes. 
+- Added functionality to Suikoden 1 to fix named characters to have portraits appear for extra dialogs 
+  or when their names are changed based from the plot. Example: Kanaan and Viktor have dialogs that 
+  don't show their portraits at all.
+- Added Portraits Grady, Assassin, Rosh, Elder Dwarf, Elven Elder, Imperial Guard, and the Zombie. 
+  Specifically for this mod, Iga is the name of the Assassin, Elder Dwarf is Durin, Elven Elder is 
+  Soveliss, Andie is the Zombie. 
+- [Location] Magician's Island has a foliage make-over.
+- [Location] Dragon's Den has one of the unnecessary mask removed, this is a better view of the area. 
+- [Project Kyaro Sprites] A significant number of sprite as it's face and side profile revised. Restored 
+  missing 1v1 sprite for Teo and Fixed Kasios' sprite while playing their instrument. 
+  
+--------------------------------
+: Suikoden 2 Changes / Patches :
+-------------------------------- 
+- Added portraits for Mr. Gin's Character States.
+- [Project Kyaro Sprites] revised sprites for young Riou, Jowy and Nanami.
+
+-------------------------------------------------------------------(End Of Patch Notes for 2026-03-22)
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Patch Notes - Version: 2026.02.02 up to 2026.02.26
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+ [ FIX ]
+(") Parsing of text placeholders to reflect custom names of protagonists and
+    headquarters from save files. Caused some bugs for users. No longer needed.
+(") Error on DDS texture not having multiples of 4 as its dimension.
+(") Heal Highlight being inverted on menu.  
+
+ [ ADDED ]
+ ---------------------------------------------------------------------------------------
+(+) Highland Portraits for Riou and Jowy in then covert mission to Highland.
+(+) Alternative Background to Apple's war battle management window - not perfect but can improved later. 
+(+) Missing NPC sprites for both games.
+(+) Details on foliage on Sindar Ruins because a lot of trees lacked details.
+(+) Restored option to toggle LogReplaceableTexture, allowing control over detailed
+    log volume when paired with text logs.
+(+) Default flag portraits for Matilda Knights (Will soon be improved).
+
+ [ IMPROVED ]
+ ---------------------------------------------------------------------------------------
+(^) Restored and improved Suikoden 1 Rebout Upscales for the overworld sprites. 
+(^) Combined patches for Animated Objects for Suikoden 1. 
+(^) Further improved Object Insertion but still not implemented for public to use. 
+(^) Details of Darleen's Portrait.
+(^) Details of Battle Sprites of all Characters of Suikoden 1.
+(^) Details of Project Kyaro Sprite of Tir McDohl in Suikoden 1.
+(^) Faulty Sprite of Hanna in Suikoden. 
+(^) Suikoden 1 Dialog Scaling implementation.
+(^) Log reporting for the custom texture patch now displays actual file index names instead of indexed variants.
+(^) Logging for the custom texture patch has been further refined for clarity.
+
+ [ RENAMED ]
+ ---------------------------------------------------------------------------------------
+(~) NPCPortraits class -> PortraitSystemPatch
+    - Reason: To better reflect its expanded functionality beyond NPC portraits.
+(~) DisableMask -> DisablePortraitDialogMask
+    - Reason: For clearer naming consistency.
+(~) DialogPatch -> DialogBoxScalePatch
+    - Reason: For clearer naming consistency.
+
+ [ REMOVED ]
+ ---------------------------------------------------------------------------------------
+(-) Plenty of really unnecessary logs. 
+(-) Particle System Research cs file as it is no longer of use. 
+(-) Texture file name sanitation. Previously caused collisions with files that had identical names once stripped with hash and prefix.
+(-) Redundant ReactionMonitor. 
+(-) Borderless Windowed Mode. recommend using Steam's -popupwindow launch option instead.
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Patch Notes - Version: 2026-01-31 (2026.01.0)
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+----------------------
+: Release Highlights :
+----------------------
+- [SpriteAtlas Interception] Implemented postfix interception for Unity SpriteAtlas to allow direct 
+  texture replacement for packed sprites using loose files.
+- [MinimalUI] Added MinimalUI boolean configuration option to control minimal UI texture variant loading.
+- [Selective Texture Filtering] Implemented selective loading system for texture mods (Project Kyaro, 
+  Launcher, Minimal UI) via configuration options.
+- [UI Refresh] Improved MenuTopPartyStatus texture replacement with UIMainMenu.Open patch for proper 
+  atlas refresh.
+- [Dialog Scaling] Refactored DialogBoxScale to boolean ScaleDownDialogBox (false = Normal, true = Medium) 
+  for simplified configuration.
+- [Caching] Enhanced cache invalidation logic to include MinimalUI setting for proper texture reloading.
+- [Performance] Added HashSet tracking in TextDatabasePatch to prevent duplicate log entries.
+- [Performance] Streamlined portrait directory scanning and loading logic for better performance.
+- [Asset Loading] Improved core asset loading with better asynchronous operations and DDS support.
+- [Versioning] Adopted year-based versioning format (YYYY.MM.MINOR).
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Patch Notes - Version: 2026-01-23 (2.1.0)
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+----------------------
+: Release Highlights :
+----------------------
+- [Native DDS Support] Load pre-compressed .dds files (BC1/BC3/BC7) for reduced VRAM usage and faster load times.
+- [Manifest Caching] XML-based texture index cache system dramatically reduces startup time.
+- [SMAA Anti-Aliasing] Subpixel Morphological Anti-Aliasing can now be applied to the main camera (SMAAQuality).
+- [Custom NPC Portraits] Inject custom high-resolution portraits for NPCs that don't have them in the base game.
+  Place PNG files in PKCore/NPCPortraits/.
+- [Text & Speaker Overrides] JSON-based system to replace any line of dialogue in the game and inject 
+  custom speaker names using <speaker:Name> tags.
+- [Visual Restorations] Restores full color to Suikoden 2's intro and flashback sequences (ColoredIntroAndFlashbacks).
+- [Classic Save Window] PSX-style fullscreen Save/Load interface for Suikoden 2 (ClassicSaveWindow).
+- [Save Point Customization] Choose from 5 color variants (SavePointColor) and optionally disable the glow effect.
+- [War Battle Modding] Modify character stats and abilities for Suikoden 2 war battles via S2WarAbilities.json.
+- [Texture Variants] Toggle alternate textures for Tir's run cycle (TirRunTexture) and Mercenary Fortress fence (MercFortFence).
+- [UI Customization] Compact dialog box sizing (ScaleDownDialogBox) and compact menu layout (ScaledDownMenu).
+- [Experimental] Framework to add static objects to scenes via fixed_objects.json.
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Patch Notes - Version: 2025-12-23 (2.0.0)
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+----------------------
+: Release Highlights :
+----------------------
+- [Save Point Colors] Added 5 selectable color options for save point orbs (blue, red, yellow, pink, green, default) 
+  with automatic fallback in Textures/SavePoint/t_obj_savePoint_ball_<color>.png.
+- [Save Point Glow] Option to disable the glow effect on save point orbs via DisableSavePointGlow = true.
+- [Config-Aware Manifest Cache] Texture manifest cache now tracks configuration changes (LoadLauncherUITextures, 
+  SavePointColor, EnableProjectKyaroSprites) and automatically rebuilds without manual cache deletion.
+- [Texture Variant System] Added centralized TextureOptions.GetTextureNameWithVariant() method for unified variant lookup.
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Patch Notes - Version: 2025-12-20 (1.6.0)
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+----------------------
+: Release Highlights :
+----------------------
+- [Project Rebranding] Renamed project from PKextended (faospark.pkextended) to PKCore (faospark.pkcore).
+  Updated DLL name to PKCore.dll, config to faospark.pkcore.cfg, and textures to BepInEx/plugins/PKCore/Textures/.
+- [Priority Override System] Added 00-Mods/ root folder with highest priority over base textures, allowing 
+  users to add custom texture mods without modifying base packs.
+- [Logging Optimization] Reduced log spam by logging texture replacements only once per texture.
+- [Concise Startup List] Startup now shows aggregate indexed count instead of enumerating all textures 
+  (detailed list still available when DetailedLogs = true).
+- [Bath Backgrounds] Custom bath backgrounds now support in-game switching.
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Patch Notes - Version: 2025-12-16 (1.5.0 - 1.5.1)
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+----------------------
+: Release Highlights :
+----------------------
+- [PNG Texture Loading] Runtime sprite/texture replacement using PNG, JPG, JPEG, and TGA files under PKCore/Textures/.
+- [Texture Discovery Mode] Enable LogReplaceableTextures to log all detectable sprite names to the console.
+- [Controller Prompt Overrides] Force specific controller button icons regardless of detected controller:
+  PlayStation 4 (_01), PlayStation 5 (_02), and Xbox/Generic (_00).
+- [Smart Minigame Button Cycling] Intelligent button sequence conversion for minigames.
+- [Global Interception] Patched UnityEngine.UI.Image.sprite setter across battles, menus, dialogues, and minigames.
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Patch Notes - Version: 2025-12-01 (1.0.0)
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+----------------------
+: Release Highlights :
+----------------------
+- [Sprite Filtering System] Granular texture filtering options for Project Kyaro HD upscaled sprites:
+  Bilinear, Trilinear, Anisotropic (up to 8x), and Mipmap bias controls (-1.0 to 1.0).
+- [Resolution Scaling] Dynamic internal rendering resolution multiplier (0.5x to 2.0x) without requiring game restarts.
+- [Borderless Window Mode] Fullscreen windowed mode support and native window frame removal.
+- [Sprite Post-Processing Isolation] Selectively disables bloom and vignette distortion on character sprites 
+  to eliminate outline and seam artifacts during battles and exploration.
+======================================================================================================

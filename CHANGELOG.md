@@ -1,479 +1,196 @@
 # Changelog
 
-All notable changes to PKCore (formerly PKextended) will be documented in this file.
+All notable changes to PKCore (formerly PKextended) are documented in this file.
 
-> **Note**: This changelog primarily documents changes specific to PKCore. Version numbers may not align with the Project Kyaro Suite releases on NexusMods, as PKCore development may progress independently.
+---
+
+## [Unreleased]
+
+- **Character Battle Range Overrides (Suikoden II)**:
+  - Added configurable weapon range modification via `S2CharacterRangeOverrides` in `BepInEx/config/faospark.pkcore.cfg` (enabled by `EnableCharacterRangeOverrides`).
+  - Default enhancements change **Kasumi, Luc, Mazus, Viki, Gantetsu, Badeaux, and Sierra** from Short (`S`) to Medium (`M`) Range, allowing them to attack with physical weapons directly from the back row.
+  - Automatically synchronizes `fcommand.range`, `s_phase.arms_range`, `G2_arms_range`, and native `arms_data` memory tables across battle, formation, tavern, and status UI screens.
+  - Resolved party formation warnings (removes red `[X]` / `S` indicator over back-row platforms in Castle Tavern) and displays `M` in the Status menu.
+- **Battle Engine & Targeting Stability**:
+  - Removed intrusive `PM_DATA` check postfixes (`AttackCanCheck`, `MokuhyoCanCheck`, `CheckRowFormation`) to eliminate battle state machine freezes, enabling native enemy target selection and animation flow.
+- **Live Configuration Hot-Reloading**:
+  - Added real-time event listeners for `SettingChanged` on `S2CharacterRangeOverrides` and `EnableCharacterRangeOverrides`, allowing on-the-fly configuration updates via BepInEx Configuration Manager or UnityExplorer without restarting the game.
+
+---
 
 ## [2026.03.01] - 2026-03-22
 
-### Release Highlights
+- **PSP Launcher UI**:
+  - Added `PSPLauncher` configuration option (off by default) to recreate the PSP Launcher interface.
+- **Enhanced Gallery UI**:
+  - Added `EnhancedGallery` configuration option (enabled by default) inspired by the PSP version to replace Movies, Events, and Sounds gallery backgrounds with custom textures independently of the PSP launcher mode.
+- **BGM Replacement System**:
+  - Added non-destructive Background Music replacement support for swapping music without modifying game files.
+  - Place `.acb` / `.awb` audio files under `PKCore/00-Mods/<ModName>/Sound/`.
+- **Better Launcher BGM**:
+  - Included `BetterLauncherBGM` (enabled by default), replacing the launcher ambient music with Suikoden 2's adventure start theme as a reference implementation.
+- **Modular 00-Mods Directory Structure**:
+  - Relocated `00-Mods` to the root of PKCore for enhanced visibility and ease of use.
+  - Expanded mod support beyond textures to include texture, sound, dialogue, and war battle customization packages.
+  - Moved Suikoden 2 war battle assets to `PKS2` to allow individual toggling.
+- **Suikoden 1 Dialogue & Portrait System**:
+  - Full portrait injection support for Suikoden 1 with custom name display in dialog boxes for unnamed NPCs.
+  - Fixed portrait display logic for named characters during story-based name changes (e.g. Kanaan and Viktor dialogue scenes).
+  - Added custom portraits for Grady, Assassin (Iga), Rosh, Elder Dwarf (Durin), Elven Elder (Soveliss), Imperial Guard, and Zombie (Andie).
+  - Split dialogue override loading per game (`TextDB_GSD1` / `TextDB_GSD2`) to prevent cross-game message ID collisions.
+- **Visual & Location Polish**:
+  - Foliage overhaul for Magician's Island.
+  - Removed unnecessary mask overlays in Dragon's Den for improved visibility.
+  - Transferred menu and object strings from Reworded+ into PKCore.
+  - Converted performance-critical textures to `.dds` format.
+  - Renamed `DisablePortraitDialogMaskPortraitDialog` to `DisablePortraitDialogMask`.
+  - Revised Project Kyaro sprites for young Riou, Jowy, Nanami, Teo (1v1 duel sprite), and Kasios (instrument playing).
 
-- [PSPLauncher] Recreation of the PSP Launcher UI as a new configuration option (off by default).
-- [EnhancedGallery] Better Gallery UI inspired by the PSP Launcher, provided as a separate option so users can still use it even if they do not prefer the PSP Launcher UI.
-- Added non-destructive Background Music replacement support so users can swap music without modifying original files. Place files under `PKCore\\00-Mods\\MyCustom-Sound-Mod\\Sound`.
-- [BetterLauncherBGM] Replaces launcher ambient music with Suikoden 2's adventure start theme. This serves as a sample mod for the new sound replacement feature (on by default).
-- The `00-Mods` folder has been enhanced and moved to the root of PKCore for easier access and visibility.
-- `00-Mods` support has been expanded beyond texture mods to include texture, sound, dialog, and war battle customization mods that users can create and share.
-- Suikoden 1 is now fully supported by the Portrait System, with a different implementation approach from Suikoden 2 due to game design differences.
-
-### General Changes / Patches
-
-- Restructured PKCore folders: `00-Mods` is now at the PKCore root and supports more than texture mods.
-- Added new configuration files and folders to support the new features and structural changes.
-- Moved Suikoden 2 war battle folder to PKS2 so it can be disabled.
-- Added dialog override loading split per game to prevent possible Message ID collisions between Suikoden 1 and Suikoden 2.
-- Transferred portions of the Reworded+ mod into PKCore, specifically for menus and objects.
-- Converted selected textures to `.dds` format to improve performance.
-- Renamed `DisablePortraitDialogMaskPortraitDialog` to `DisablePortraitDialogMask`.
-
-### Suikoden 1 Changes / Patches
-
-- Added the ability to display names in any Suikoden 1 dialog so significant NPCs without names can show names in dialog boxes.
-- Added Suikoden 1 portrait logic fixes so named characters can show portraits in extra dialogs or when their names change based on plot progression (example: Kanaan and Viktor dialogs that previously had no portraits).
-- Added portraits for Grady, Assassin, Rosh, Elder Dwarf, Elven Elder, Imperial Guard, and Zombie.
-- For this mod's naming: Iga is the Assassin, Durin is Elder Dwarf, Soveliss is Elven Elder, and Andie is the Zombie.
-- [Location] Magician's Island received a foliage makeover.
-- [Location] Dragon's Den had one unnecessary mask removed for improved area visibility.
-- [Project Kyaro Sprites] Revised a significant number of sprites, including face/side profile updates, restored missing 1v1 sprite for Teo, and fixed Kasios' instrument-playing sprite.
-
-### Suikoden 2 Changes / Patches
-
-- Added portraits for Mr. Gin's character states.
-- [Project Kyaro Sprites] Revised sprites for young Riou, Jowy, and Nanami.
+---
 
 ## [2026.02.2] - 2026-02-17
 
-Added
+- **Dialogue Placeholders**:
+  - Added dynamic parsing of text placeholders to reflect custom names of protagonists and headquarters from save files.
+- **Texture Discovery & Logging**:
+  - Restored `LogReplaceableTextures` configuration toggle to give users control over detailed log volume when logging text IDs.
+  - Custom texture patch logging now outputs exact file index names instead of indexed variants.
+  - Removed obsolete texture filename sanitization that previously caused hash collisions.
+- **Portrait & Mask Refactoring**:
+  - Renamed `NPCPortraits` class to `PortraitSystemPatch` to represent broader functionality.
+  - Renamed `DisableMask` to `DisablePortraitDialogMask` for clarity.
+  - Removed deprecated `ReactionMonitor`.
+- **Window Management**:
+  - Replaced internal borderless window patch with recommendation to use Unity's native `-popupwindow` launch parameter.
+- **Suikoden 1 UI**:
+  - Refined Suikoden 1 dialog scaling calculations.
 
-* Parsing of text placeholders to reflect custom names of protagonists and headquarters from save files.
-* Restored option to toggle`LogReplaceableTexture`, allowing control over detailed log volume when paired with text logs.
-
-Improved
-
-* Suikoden 1 Dialog Scaling implementation
-* Log reporting for the custom texture patch now displays actual file index names instead of indexed variants.
-* Logging for the custom texture patch has been further refined for clarity.
-
-Renamed
-
-* `NPCPortraits` class →`PortraitSystemPatch` to better reflect its expanded functionality beyond NPC portraits.
-* `DisableMask` →`DisablePortraitDialogMask` for clearer naming consistency.
-
-Removed
-
-* Texture file name sanitation, which previously caused collisions with files that had identical names once stripped with hash and prefix.
-* Redundant`ReactionMonitor`
-* Borderless Patch now replaced by a recommendation to use -popupwindow
+---
 
 ## [2026.02.0] - 2026-02-09
 
-### Added
+- **Reaction Portrait UI**:
+  - Enhanced visual presentation with smooth fade-in animation, removed purple background artifact, and standardized dimensions (300x300 at x:636.85, y:-262.34).
+- **Log Spam Reduction**:
+  - Suppressed `DisablePortraitDialogMask` log spam, routing messages only when `DetailedTextureLog` is active.
+  - Coalesced repeated sprite variations in `GRSpriteRenderer` (e.g. `person_vj10_01_XX`) into single aggregated log entries.
+- **Dialogue & Config Fixes**:
+  - Fixed CS0029 compilation error in `ModConfiguration.cs`.
+  - Removed obsolete dialog chaining functionality (Interceptor Pattern).
+  - Reverted experimental multi-character support for Jowy's disguise.
 
-- **Reaction Portrait UI**: Enhanced visual presentation with fade-in animation, removed purple background, and fixed dimensions (300x300 at x:636.85, y:-262.34).
-
-### Changed
-
-- **Log Cleanup**: Suppressed `DisablePortraitDialogMask` log spam; messages now only appear when `DetailedTextureLog` is enabled.
-- **Sprite Logging**: Reduced log spam for `GRSpriteRenderer` by coalescing sprite variations (e.g. `person_vj10_01_XX`) into a single log entry.
-- **Jowy Disguise**: Reverted multi-character support for Jowy's disguise.
-
-### Fixed
-
-- **Hidden Config**: Fixed CS0029 compilation error in `ModConfiguration.cs`.
-
-### Removed
-
-- **Dialog Chaining**: Removed dialog chaining functionality (Interceptor Pattern).
+---
 
 ## [2026.01.1] - 2026-02-05
 
-### Changed
+- **World Map Visual Improvements**:
+  - Disabled `sm_wk_cloud` objects to remove visual clutter and artifacts on the world map.
+  - Corrected sunray glow rendering for consistent lighting.
+- **Configuration Cleanup**:
+  - Moved developer debug options (`LogReplaceableTextures`, `LogTexturePaths`) to internal hidden settings.
+- **Caching Documentation**:
+  - Updated `Caching.md` with technical documentation on priority layers, DDS compression handling, and memory persistence.
 
-- **Configuration Cleanup**: Moved debug options (`LogReplaceableTextures`, `LogTexturePaths`) to hidden settings to declutter the user config file.
-- **Documentation**: Comprehensive update to `Caching.md` detailing technical priority layers, DDS handling, and memory persistence.
-
-### Added
-
-- **World Map Clouds**: Disabled `sm_wk_cloud` objects to remove visual clutter on the world map.
-- **World Map Sunrays**: Corrected sunray effects on the world map for consistent visuals.
+---
 
 ## [2026.01.0] - 2026-01-31
 
-### Added
+- **SpriteAtlas Loose File Interception**:
+  - Implemented postfix interception for Unity SpriteAtlas, allowing runtime replacement of packed sprites using loose external texture files.
+- **Minimal UI & Selective Filtering**:
+  - Added `MinimalUI` boolean option to control minimal UI texture variant loading.
+  - Implemented selective texture filtering system for Project Kyaro, Launcher, and Minimal UI assets.
+  - Enhanced cache invalidation to track `MinimalUI` state.
+- **UI Scaling & Dialog Simplification**:
+  - Refactored `DialogBoxScale` to boolean `ScaleDownDialogBox` (`false` = normal, `true` = 80% compact size).
+  - Improved `MenuTopPartyStatus` texture refresh with `UIMainMenu.Open` hook for proper atlas updating.
+  - Enhanced menu transformation logic and footer container handling.
+- **Performance & Diagnostics**:
+  - Added `HashSet` tracking in `TextDatabasePatch` to eliminate duplicate runtime log entries.
+  - Streamlined portrait directory scanning and loading performance.
+  - Fixed save point replacement log message formatting.
+  - Simplified battle sprite detection in `DisableSpritePostProcessingPatch`.
+  - Upgraded core asset loader with asynchronous operations and DDS support.
+- **Version Numbering**:
+  - Adopted year-based versioning format (`YYYY.MM.MINOR`) for clearer release tracking.
 
-- **SpriteAtlas Support**: Implemented post-fix interception for Unity SpriteAtlas to allow texture replacement for packed sprites using loose files.
-- **MinimalUI Configuration**: New boolean option to control minimal UI texture loading for cleaner game experience.
-- **Revised Texture Filtering System**: Selective loading system for texture mods (Project Kyaro, Launcher, Minimal UI) via configuration options.
-- **Enhanced UI Refresh**: Improved MenuTopPartyStatus texture replacement with UIMainMenu.Open patch for proper atlas refresh.
-
-### Changed
-
-- **Version Numbering**: Updated to year-based versioning format (2026.01.0) for better release tracking.
-- **Dialog System**: Refactored DialogBoxScale to boolean ScaleDownDialogBox (false=Large, true=Medium) for simplified configuration.
-- **Texture Caching**: Enhanced cache invalidation logic to include MinimalUI setting for proper texture reloading.
-- **NPC Portrait Loading**: Streamlined portrait directory scanning and loading logic for better performance.
-
-### Fixed
-
-- **Duplicate Text Logging**: Added HashSet tracking in TextDatabasePatch to prevent duplicate log entries.
-- **Save Point Messages**: Corrected log message formatting for save point sprite replacement.
-- **Battle Sprite Detection**: Simplified and improved battle sprite detection logic in DisableSpritePostProcessingPatch.
-- **War Character Stats**: Enhanced configurable war abilities and character stats system for Suikoden 2.
-
-### Refactored
-
-- **Sprite Filtering Configuration**: Renamed and simplified sprite filtering settings for better clarity.
-- **Menu Transformations**: Enhanced UI menu transformation logic and footer container handling.
-- **Asset Loading System**: Improved core asset loading with better asynchronous operations and DDS support.
+---
 
 ## [2.1.0] - 2026-01-23
 
-### Added - Performance & Advanced Systems
-
-- **Native DDS Support**: Load pre-compressed `.dds` files (BC1/BC3/BC7) for reduced VRAM usage and faster load times.
-- **Manifest Caching**: XML-based texture index cache system dramatically reduces startup time.
-- **SMAA Anti-Aliasing**: High-quality **Subpixel Morphological Anti-Aliasing** can now be applied to the main camera.
-- **Experimental Object Insertion**: Framework to add entirely new static objects to scenes via JSON configuration (`fixed_objects.json`).
-- **Config Folder Management**: All local configuration JSONs (War stats, Dialog overrides) now reside in `PKCore/Config/`.
-
-### Added - Expanded Feature Set
-
-#### Enhanced Dialogue System
-
-- **Custom NPC Portraits**: Inject custom high-resolution portraits for NPCs that don't have them in the base game.
-- **Text & Speaker Overrides**: Advanced JSON-based system to replace any line of dialogue in the game and inject custom speaker names using `<speaker:Name>` tags.
-- **Portraits Storage**: Place PNG files named after the NPC in `PKCore/NPCPortraits/`.
-
-#### Visual Improvements
-
-- **Portrait Mask Removal**: Option to disable the Face_Mask_01 overlay on character portraits (`DisablePortraitDialogMask`), providing a cleaner look for custom portraits.
-- **Colored Intro and Flashbacks**: Restores full color to Suikoden 2's intro and flashback sequences by disabling the game's sepia/monochrome filter.
-- **Classic Save Window**: Mimic the feel of the PSX version with a simpler, fullscreen Save/Load interface for Suikoden 2.
-- **Save Point Customization**: Choose from 5 color variants and optionally disable the glow effect.
-
-#### Specialized Suikoden 2 Support
-
-- **Summon Effect Replacement**: New `SummonMonitor` system proactively replaces textures for summon effects (Eff_tex_Summon_*) which was previously unsupported.
-- **War Battle Modding**: Modify character stats and abilities for Suikoden 2 war battles via `S2WarAbilities.json`.
-- **Texture Variants**: Toggle alternate textures for Tir's run cycle (`TirRunTexture`) and the Mercenary Fortress fence (`MercFortFence`).
-
-#### UI Scaling & Customization
-
-- **Dialog Box Presets**: Adjust dialog window size (Large/Medium/Small) for a less obstructive view.
-- **Menu Layout Scaling**: Smaller layout preset for main game menus (`ScaledDownMenu`).
-- **Borderless Window Mode**: Full support for borderless fullscreen window mode.
-- **Cursor Visibility**: Option to show/hide the system mouse cursor over the game window.
+- **Native DDS Support**:
+  - Pre-compressed `.dds` (BC1/BC3/BC7) texture loading for reduced VRAM usage and faster startup times.
+- **Manifest Caching**:
+  - XML-based texture index cache system dramatically reducing startup loading times.
+- **SMAA Anti-Aliasing**:
+  - High-quality Subpixel Morphological Anti-Aliasing applied to the main camera (`SMAAQuality`).
+- **Custom NPC Portraits & Dialogue Overrides**:
+  - High-resolution portrait injection system for NPCs lacking base-game portraits (`PKCore/NPCPortraits/`).
+  - JSON-based dialogue replacement system with custom speaker injection via `<speaker:Name>` tags.
+- **Visual Enhancements**:
+  - Portrait mask removal (`DisablePortraitDialogMask`) disabling the `Face_Mask_01` overlay.
+  - Restored full color to Suikoden 2 intros and flashbacks (`ColoredIntroAndFlashbacks`).
+  - Classic PSX-style fullscreen Save/Load interface for Suikoden 2 (`ClassicSaveWindow`).
+  - Save point customization with 5 color options (`SavePointColor`) and glow toggle (`DisableSavePointGlow`).
+- **Specialized Suikoden 2 Support**:
+  - `SummonMonitor` system for replacing summon effect textures (`Eff_tex_Summon_*`).
+  - Configurable war battle character stats and abilities via `PKCore/Config/S2WarAbilities.json`.
+  - Texture variants for Tir's running animation (`TirRunTexture`) and Mercenary Fortress fence (`MercFortFence`).
+- **UI Scaling**:
+  - Compact dialog box sizing (`ScaleDownDialogBox`) and compact main menu layout (`ScaledDownMenu`).
+  - Borderless fullscreen window mode and cursor visibility toggle (`ShowMouseCursor`).
+- **Static Object Insertion**:
+  - Framework for inserting static objects into scenes via `fixed_objects.json`.
 
 ---
 
 ## [2.0.0] - 2025-12-23
 
-### Added - Save Point Customization
-
-#### Save Point Color Variants
-
-Choose from 5 color options for save point orbs:
-
-- **Available Colors**: blue, red, yellow, pink, green, default
-- **Configuration**: `SavePointColor = pink` in `[Custom Textures]` section
-- **Implementation**: Texture variant system in `TextureOptions.cs`
-- **Usage**: Place color variants in `Textures/SavePoint/` folder as `t_obj_savePoint_ball_<color>.png`
-- **Automatic Fallback**: If selected color variant not found, uses default texture
-
-#### Save Point Glow Disable
-
-Remove the glow effect from save point orbs:
-
-- **Configuration**: `DisableSavePointGlow = true` (default: enabled)
-- **Implementation**: `SavePointMonitor.cs` disables `Glow_add` GameObject
-- **Benefit**: Cleaner appearance for custom save point textures
-
-### Improved - Manifest Cache System
-
-#### Config-Aware Cache Invalidation
-
-Texture manifest cache now tracks configuration changes:
-
-- **Tracked Settings**: `LoadLauncherUITextures`, `SavePointColor`, `EnableProjectKyaroSprites`
-- **Automatic Rebuild**: Texture index rebuilds when any tracked config setting changes
-- **User Experience**: No more manual cache deletion when changing texture settings
-- **Implementation**: `ConfigHash` field in `TextureManifest` class
-- **Logging**: Shows "Config changed - rebuilding texture index" when settings change
-
-### Added - Texture Variant System
-
-#### Centralized Variant Handling
-
-New `TextureOptions.GetTextureNameWithVariant()` method:
-
-- **Purpose**: Handle texture variants (like save point colors) in one place
-- **Extensible**: Easy to add new texture variant types
-- **Organization**: All texture-related options visible at a glance in `TextureOptions.cs`
+- **Save Point Customization**:
+  - 5 selectable color options (blue, red, yellow, pink, green, default) via `SavePointColor` with automatic fallback.
+  - Option to disable save point orb glow effect via `DisableSavePointGlow`.
+- **Config-Aware Manifest Caching**:
+  - Texture cache tracks configuration changes (`LoadLauncherUITextures`, `SavePointColor`, `EnableProjectKyaroSprites`) and automatically rebuilds without requiring manual file deletion.
+- **Centralized Texture Variant System**:
+  - Added unified `TextureOptions.GetTextureNameWithVariant()` handler for organized texture variant lookup.
 
 ---
 
 ## [1.6.0] - 2025-12-20
 
-### Changed - Project Rebranding
-
-> **⚠️ BREAKING CHANGE**: This release includes a project rename that requires manual migration for existing users.
-
-- **Project Name**: `PKextended` (Project Kyaro Extended) → **`PKCore`** (Project Kyaro Core)
-- **Plugin ID**: `faospark.pkextended` → `faospark.pkcore`
-- **DLL Name**: `PKextended.dll` → `PKCore.dll`
-- **Config File**: `faospark.pkextended.cfg` → `faospark.pkcore.cfg`
-- **Custom Textures Folder**: `BepInEx/plugins/PKextended/Textures/` → `BepInEx/plugins/PKCore/Textures/`
-
-**Migration Steps for Existing Users:**
-
-1. Rename your custom textures folder from `PKextended` to `PKCore` (if you have custom textures)
-2. Remove old `PKextended.dll` from `BepInEx/plugins/`
-3. Add new `PKCore.dll` to `BepInEx/plugins/`
-4. (Optional) Copy settings from old config file to new one, or let it regenerate with defaults
-
-**Rationale:**
-The name "Extended" implied adding new features to the game, but this mod is the **core foundation** for how Project Kyaro works now. Previously, Project Kyaro relied on Special K for texture replacement, but PKCore now provides native BepInEx-based texture replacement, sprite filtering, and visual enhancements. "Core" accurately reflects its role as the essential enhancement suite that powers Project Kyaro.
-
-### Improved
-
-- **Reduced Log Spam**: Texture replacements are now logged only once per texture instead of multiple times when accessed through different code paths
-- **Simplified Texture Loading**: Removed verbose "Replaced texture", "Texture scaling", and "Created and cached sprite" messages - only essential "Loaded and cached" message remains
-- **Concise Texture List**: Startup now shows "Indexed X custom texture(s) ready to use" instead of enumerating all textures (detailed list still available when `DetailedLogs = true`)
-- **Priority Override System**: Added `00-Mods/` folder with highest priority - textures here override base textures, allowing users to add custom texture mods without modifying base packs
-- **New Config Option**: `DetailedLogs` - enables/disables detailed texture logging (replacement confirmations and full texture list on startup). Disable for silent operation.
-
-### Fixed
-
-- **Bath Background In-Game Switcher**: Custom bath backgrounds now work with in-game switching
-  - **Known Limitation**: Visual update requires screen refresh (exit and re-enter bath scene) to display the new custom background immediately. The sprite is replaced in memory correctly, but Unity's render pipeline doesn't automatically redraw until triggered by a scene change or menu interaction.
+- **Project Rebranding**:
+  - Rebranded from `PKextended` (`faospark.pkextended`) to **`PKCore`** (`faospark.pkcore`).
+  - Updated paths: `BepInEx/plugins/PKCore/Textures/` and `PKCore.dll`.
+- **Priority Override System**:
+  - Added `00-Mods/` root folder with highest priority over base textures, allowing modular add-on packs.
+- **Logging Optimizations**:
+  - Deduplicated texture replacement logs to log only once per texture.
+  - Startup shows aggregate indexed count instead of listing every file (detailed list available when `DetailedLogs = true`).
+- **Bath Backgrounds**:
+  - Added support for custom bath background sprite replacement.
 
 ---
 
-## [1.5.1] - 2025-12-16
+## [1.5.0 - 1.5.1] - 2025-12-16
 
-### Added - Custom Texture Replacement System
-
-> **⚠️ IMPORTANT**: This feature has **PARTIAL COVERAGE** and works on certain sprites only, not all game textures.
-
-#### PNG Texture Loading
-
-Replace game sprites/textures with custom PNG files:
-
-- **Works Best For**: Event backgrounds, UI elements, static sprites, bath backgrounds
-- **Limited Support**: Animated UI sprites, character sprites, battle backgrounds
-- **Not Supported**: Summon effects (`Eff_tex_Summon_*.png`)
-- **Legacy Option**: Use with [SpecialK](https://www.special-k.info/) for comprehensive texture replacement including summons
-
-**Supported Formats:**
-
-- PNG, JPG, JPEG, and TGA formats
-- Automatic subfolder scanning for organization
-
-**Usage:**
-
-1. Enable `EnableCustomTextures = true` in config
-2. Place PNG files in `BepInEx/plugins/PKCore/Textures/` (was `PKextended/Textures/` in v1.5.1)
-3. Name files exactly as the original texture (use `LogReplaceableTextures = true` to discover names)
-4. Supports subfolders for organization
-
-#### Priority Override System (Added in v1.6.0)
-
-- **`00-Mods/` folder** has **highest priority** - textures here override base textures
-- Recommended structure:
-  ```
-  Textures/
-  ├── GSD1/              ← Base textures
-  ├── GSD2/              ← Base textures
-  └── 00-Mods/           ← Your custom mods (HIGHEST PRIORITY)
-      ├── MyMod1/
-      └── MyMod2/
-  ```
-- Example: If both `GSD1/launcher_menu_gs1.png` and `00-Mods/MyMod/launcher_menu_gs1.png` exist, the mod version will be used
-- Users can add their own texture mods to `00-Mods/` without modifying base texture packs
-
-#### Texture Discovery Mode
-
-- Enable `LogReplaceableTextures` to see all detectable sprites
-- Each texture logged only once to avoid spam
-- Helps identify which textures can be customized
-- Check BepInEx console for `[Replaceable Sprite]` and `[Replaceable UI Sprite]` messages
-
-#### Scene-Based Detection
-
-- Detects `SpriteRenderer` components (world sprites)
-- Detects `Image` components (UI sprites)
-- Detects `RawImage` components (UI textures)
-
-### Changed
-
-- Suppressed harmless `Addressables.Release` warnings after texture replacement
-- Updated version to 1.5.1
-
-### Technical Details
-
-- **Harmony Patches**: Intercepts sprite/texture setters on multiple components
-- **Caching System**: Loaded textures cached for performance
-- **Index Building**: Maps texture names to file paths for fast lookup
+- **Custom PNG/JPG/TGA Texture Replacement**:
+  - Runtime texture injection for UI elements, event backgrounds, and static sprites.
+  - Automatic subfolder scanning under `PKCore/Textures/`.
+  - Added `LogReplaceableTextures` discovery helper to inspect replaceable sprite names.
+- **Controller Prompt Override System**:
+  - Global button prompt override for PlayStation 4 (`_01`), PlayStation 5 (`_02`), and Xbox/Generic (`_00`).
+  - Patches `UnityEngine.UI.Image.sprite` setter across menus, battles, dialogues, and minigames.
+  - Smart minigame button sequence cycle conversion.
 
 ---
 
-## [1.5.0] - 2025-12-11
+## [1.0.0] - 2025-12-01
 
-### Added - Controller Prompt Override System
-
-Force specific controller button icons regardless of detected controller:
-
-#### Multi-Platform Support
-
-- **PlayStation 4** (DualShock 4): `_01` sprite suffix
-- **PlayStation 5** (DualSense): `_02` sprite suffix
-- **Xbox**: `_00` sprite suffix
-
-#### Flexible Configuration
-
-Accepts multiple string variations:
-
-- **PS4**: "PlayStation", "PlayStation4", "DS4", "PS4"
-- **PS5**: "PlayStation5", "DualSense", "PS5"
-- **Xbox/Generic**: "Xbox", "Generic", "Switch"
-
-#### Features
-
-- **Global Sprite Swapping**: Automatic controller button icon replacement throughout entire game
-  - Patches `UnityEngine.UI.Image.sprite` setter for universal coverage
-  - Works in all UI contexts: battle, menus, dialogue, configuration, minigames
-- **Smart Minigame Button Cycling**: Intelligent button sequence conversion for minigames
-- **Sprite Caching System**: Performance optimization for sprite lookups
-
-### Changed
-
-- **Configuration Structure**: Added new `[Controller]` section with `ForceControllerPrompts` and `ControllerPromptType` settings
-- **Documentation**: Expanded README.md with controller prompt override feature descriptions
-- **Plugin Architecture**: Modular patch system for controller features
-
-### Technical Details
-
-#### Implementation
-
-- **Global Interception**: Harmony prefix patch on `Image.sprite` setter
-- **Pattern Detection**: Automatic detection of controller sprites by `_00/_01/_02` suffix
-- **Suffix Mapping**:
-  - `_00` = Xbox sprites
-  - `_01` = PS4 sprites
-  - `_02` = PS5 sprites
-- **Button Cycle Logic**: Counter-based system for Xbox generic button → PlayStation conversion
-- **Resource Discovery**: Uses `Resources.FindObjectsOfTypeAll<Sprite>()` for sprite loading
-
----
-
-## [1.0.0] - Initial Release
-
-### Added - Core Features
-
-#### Sprite Filtering System
-
-Designed for **Project Kyaro's upscaled sprites** - adds granular texture filtering options:
-
-**Quality Presets:**
-
-- **Level 3 (High)** - Default, recommended for Project Kyaro
-  - Trilinear filtering + 8x Anisotropic filtering
-  - Best quality, smooth appearance
-- **Level 2 (Medium)** - Balanced
-  - Trilinear filtering + 4x Anisotropic filtering
-  - Good quality with better performance
-- **Level 1 (Low)** - Performance
-  - Bilinear filtering + 2x Anisotropic filtering
-  - Faster, slight quality reduction
-- **Level 0 (Off)** - Pure pixel art
-  - No filtering - original pixel art appearance
-  - For base game without upscaled sprites
-
-**Mipmap Bias Control:**
-
-- Fine-tune sharpness (-1.0 to 1.0)
-- Default: -0.5 for sharp, anti-aliased look
-- Prevents white outlines on upscaled sprites
-- Really more about your choice on how you want Project Kyaro Sprites to look
-
-**Global Application:**
-
-- Automatic application to all game sprites via Harmony patches
-- No manual sprite tagging required
-
-#### Display Features
-
-**Resolution Scaling:**
-
-- Internal rendering resolution control (0.5x - 2.0x)
-- Performance optimization for lower-end systems (0.5x - 0.75x)
-- Quality enhancement for high-resolution displays (1.5x - 2.0x)
-- Dynamic scaling without game restart
-- Recommended: 1.0x (native) for balanced experience
-
-**Borderless Window Mode:**
-
-- Fullscreen windowed mode support
-- Instant alt-tab functionality
-- Better multi-monitor compatibility
-- Native window frame removal
-- Only use this if you don't want to use the in-game full screen option
-
-#### Visual Enhancements
-
-**Sprite Post-Processing Control:**
-
-- Selective disable for sprite effects
-- Keeps post-processing on backgrounds
-- Removes effects from character sprites
-- Prevents over-processing artifacts
-- **Crucial for battle**: Disables game effects that affect sprites (e.g., sandstorm effects appearing on battle sprite seams)
-
-### Technical Details
-
-#### Sprite Filtering Implementation
-
-- **Patches**: `Sprite.texture` getter interception via Harmony
-- **Filter Application**: Runtime texture property modification
-  - `filterMode` (Point/Bilinear/Trilinear)
-  - `anisoLevel` (0/2/4/8)
-  - `mipMapBias` (-1.0 to 1.0)
-- **Caching**: Tracks processed textures to avoid redundant operations
-
-#### Resolution Scaling Implementation
-
-- **Patches**: `Screen` resolution getters
-- **Dynamic Scaling**: Real-time resolution override without scene reload
-
-#### Post-Processing Implementation
-
-- **Selective Disabling**: Layer-based or sprite-specific effect removal
-
-### Compatibility
-
-- **Framework**: BepInEx 6.0.0-pre.2 IL2CPP
-- **Game Version**: Suikoden I & II HD Remaster (Unity 2022.3.28f1)
-- **Recommended**: Works best with [Suikoden Fix](https://github.com/d3xMachina/BepInEx.Suikoden) by d3xMachina
-- **Designed For**: [Project Kyaro](https://www.nexusmods.com/suikoden1and2hdremaster/mods/6) HD sprite pack
-
----
-
-## Version Format
-
-Format: `[MAJOR.MINOR.PATCH]`
-
-- **MAJOR**: Incompatible API changes or major feature overhauls
-- **MINOR**: New features, backward compatible
-- **PATCH**: Bug fixes, backward compatible
-
-## Categories
-
-- **Added**: New features
-- **Changed**: Changes to existing functionality
-- **Deprecated**: Soon-to-be removed features
-- **Removed**: Removed features
-- **Fixed**: Bug fixes
-- **Security**: Security vulnerability fixes
-
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+- **Granular Sprite Filtering**:
+  - Bilinear, Trilinear, Anisotropic (up to 8x), and Mipmap bias controls tailored for Project Kyaro HD upscaled sprites.
+- **Resolution Scaling**:
+  - Dynamic internal rendering resolution multiplier (0.5x to 2.0x) without requiring game restarts.
+- **Borderless Fullscreen**:
+  - Native window frame removal and multi-monitor borderless display support.
+- **Sprite Post-Processing Isolation**:
+  - Selectively removes bloom and vignette distortion from character sprites to eliminate outline and seam artifacts during battles and exploration.
