@@ -4,7 +4,7 @@ All notable changes to PKCore (formerly PKextended) are documented in this file.
 
 ---
 
-## [Unreleased]
+## [2026.09.15]
 
 - **Battle Position Adjustments (Suikoden II)**:
   - Added configurable 6-character party formation spacing via `EnableBattlePositionAdjustments` and `S2BattlePositionPreset` (`wide`, `widest`, `default`).
@@ -15,6 +15,19 @@ All notable changes to PKCore (formerly PKextended) are documented in this file.
   - Default enhancements change **Kasumi, Luc, Mazus, Viki, Gantetsu, Badeaux, and Sierra** from Short (`S`) to Medium (`M`) Range, allowing them to attack with physical weapons directly from the back row.
   - Automatically synchronizes `fcommand.range`, `s_phase.arms_range`, `G2_arms_range`, and native `arms_data` memory tables across battle, formation, tavern, and status UI screens.
   - Resolved party formation warnings (removes red `[X]` / `S` indicator over back-row platforms in Castle Tavern) and displays `M` in the Status menu.
+
+- **Save Slot Party Member Portraits (Suikoden I & II)**:
+  - Added visual party member mini portraits next to character level (`Txt_Lv`) in save and load menu slots (`ShowSaveSlotPartyPortraits` configuration option).
+  - High-performance in-memory portrait caching ensuring 0ms lookups after initial load, prioritizing crisp custom textures from `PKCore/Textures/` over native sprites.
+  - **Suikoden I Integration**:
+    - Hooked `UISaveLoad1.Init` and dynamic slot virtualization (`UISaveLoadSlot.UpdateItem` / `UISaveLoadBase.OnUpdateItem`).
+    - Resolved party member codes (`chara_code`) across in-memory save data (`UISaveLoad1.Inst.saveDataList`), native temp saves (`SaveDataManager.TmpSavePath`), and decrypted JSON fallbacks.
+    - Integrated `Ws_face_c.CharacterIDConvertToFaceIDStatic` for character ID to Face ID mapping to support standard Suikoden I portrait indexing (e.g. `fp_gsd1_000` for Joshua Levenheit, Tir McDohl, etc.).
+    - Added textured candidate resolution supporting `fp_gsd1_{faceId:D3}`, `fp_gsd1_{faceId}`, `fp_{faceId:D3}`, and `fp_gsd1_{charId:D3}` variants.
+  - **Suikoden II Integration**:
+    - Hooked `UISaveLoad2.Init` and party member array (`party_cha_no`) via `UISaveLoad2.Inst.saveDataList`, `GSD2SaveData.TmpSavePath`, and native `ImageLoader` fallback.
+  - Isolated cached portrait keys per game (`$"{game}_{charId}"`) to prevent portrait collisions between Suikoden I and Suikoden II during the same session.
+
 - **Battle Engine & Targeting Stability**:
   - Removed intrusive `PM_DATA` check postfixes (`AttackCanCheck`, `MokuhyoCanCheck`, `CheckRowFormation`) to eliminate battle state machine freezes, enabling native enemy target selection and animation flow.
 - **Live Configuration Hot-Reloading**:
