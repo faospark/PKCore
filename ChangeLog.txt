@@ -14,7 +14,9 @@
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 Patch Notes - Version: 2026-09-15
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-* This update provides general fixes and enhancements.
+* MAKE SURE to delete existing PKCore Folder for this update before you install the new one. 
+* This update IS AN UPDATE . Since i forgot to actually release something last August . Let me 
+indulge you guys
 
 ----------------------
 : Release Highlights :
