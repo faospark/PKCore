@@ -5,7 +5,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 [![Nexus Mods](https://img.shields.io/badge/Download-Nexus_Mods-DA6A00.svg)](https://www.nexusmods.com/suikoden1and2hdremaster/mods/6)
 
-> **PKCore (Project Kyaro Core)** is the next-generation core engine and modding framework for **Suikoden I & II HD Remaster**. It provides zero-compromise runtime texture injection, high-performance DDS decoding, CriWare sound swapping (ACB/AWB file redirection), custom NPC portrait framework, Suikoden II war battle rebalancing, UI scaling enhancements, and extensive graphical customization.
+> **PKCore (Project Kyaro Core)** is the next-generation core engine and modding framework for **Suikoden I & II HD Remaster**. It provides zero-compromise runtime texture injection, high-performance DDS decoding (BC1/BC3/BC7), CriWare sound swapping (ACB/AWB file redirection), dynamic dialogue and NPC portrait frameworks (for both Suikoden I & II), save slot party member mini portraits, battle formation spacing adjustments, character weapon range overrides, Suikoden II war battle rebalancing, UI scaling enhancements, and extensive graphical customization.
 
 ---
 
@@ -13,13 +13,17 @@
 
 <div align="center">
 
-| 🚀 [Getting Started](#-getting-started) | ⚙️ [Configuration Guide](#%EF%B8%8F-configuration-overview) | 🎨 [Texture Modding](#-texture-modding-framework) |
+| 🚀 [Getting Started](#-getting-started) | ⚙️ [Configuration Guide](#%EF%B8%8F-configuration-overview) | 🎨 [Texture Modding](custom_textures_guide) |
 | :--- | :--- | :--- |
-| • Requirements<br>• Installation<br>• Migration Guide | • Settings Reference<br>• Visual & UI Toggles<br>• Controller Presets | • Formats (PNG, DDS BC7)<br>• Priority System<br>• Manifest Caching |
+| • Requirements<br>• Installation<br>• Directory Layout | • Settings Reference<br>• Visual & UI Toggles<br>• Live Hot-Reloading | • Formats (PNG, DDS BC7)<br>• Priority Hierarchy<br>• Manifest Caching |
 
-| 🎭 [NPC Portraits](#-npc-portraits-framework) | 🔊 [Sound Swapping](#-sound-swapping) | ⚔️ [War Battle Modding](#%EF%B8%8F-war-battle-modding-s2) |
+| 🎭 [NPC & Dialogue Portraits](walkthrough_npc_portraits) | 🔊 [Sound Swapping](sound_modding_guide) | ⚔️ [War Battles](war_battle_modding) |
 | :--- | :--- | :--- |
-| • Speaker ID Mapping<br>• Expression Variants<br>• S1 & S2 Integration | • ACB / AWB Audio Banks<br>• Music & SFX Swapping<br>• Launcher BGM | • JSON Ability Overrides<br>• Unit Stats & Attributes<br>• Commander Traits |
+| • Speaker ID Mapping<br>• Expression Variants<br>• S1 & S2 Integration | • ACB / AWB Audio Banks<br>• Music & SFX Redirection<br>• Better Launcher BGM | • JSON Ability Overrides<br>• Unit Stats & Attributes<br>• Commander Traits |
+
+| 🏹 [Battle Ranges & Formations](suikoden_2_character_battle_ranges) | 🖼️ [Save Slot Party Portraits](#-save-slot-party-member-portraits) | 📦 [00-Mods Guide](00-mods_guide) |
+| :--- | :--- | :--- |
+| • Weapon Range Overrides<br>• 6-Hero Formation Spacing<br>• Hot-Reloadable Config | • In-Memory Portrait Cache<br>• S1 & S2 Save/Load UI<br>• Custom Texture Priority | • Mod Packaging<br>• Isolated Folders<br>• Conflict Resolution |
 
 </div>
 
@@ -35,19 +39,21 @@
          ┌─────────────────────────┬──────────────┴─────────────┬─────────────────────────┐
          ▼                         ▼                            ▼                         ▼
 ┌──────────────────┐     ┌──────────────────┐         ┌──────────────────┐      ┌──────────────────┐
-│  High-Perf DDS   │     │  00-Mods Layer   │         │  NPC Portraits   │      │ War Battle Mod   │
-│  & Texture Engine│     │ Overrides & Audio│         │ Expression Engine│      │ JSON Data Driven │
-│ (BC1 / BC3 / BC7)│     │ (Top-Priority)   │         │ (S1 & S2 Support)│      │ (S2 Rebalancing) │
+│  High-Perf DDS   │     │  00-Mods Layer   │         │  NPC Portraits   │      │ War Battle &     │
+│  & Texture Engine│     │ Overrides & Audio│         │ & Save Portraits │      │ Battle Formation │
+│ (BC1 / BC3 / BC7)│     │ (Top-Priority)   │         │ (S1 & S2 Support)│      │ (S2 Range Mods)  │
 └──────────────────┘     └──────────────────┘         └──────────────────┘      └──────────────────┘
 ```
 
-* **⚡ Zero-Lag Manifest Caching**: Scans thousands of texture replacements once and caches index in XML — boot times drop from seconds to milliseconds.
-* **🚀 Native GPU DDS Acceleration**: Direct memory in-place swap using BC1, BC3, and high-fidelity BC7 textures (with DX10 header support).
-* **🎯 00-Mods Non-Destructive Mod Packages**: Drop complete standalone mods into isolated folders without touching core files.
-* **🖼️ Dynamic NPC Portrait Framework**: Inject high-res dialogue portraits for any character or NPC with multi-language and emotion variant support.
+* **⚡ Zero-Lag Manifest Caching**: Scans thousands of texture replacements and caches indices in XML — boot times drop from seconds to milliseconds.
+* **🚀 Native GPU DDS Acceleration**: Direct in-place memory replacement using BC1, BC3, and high-fidelity BC7 textures (with DX10 header support).
+* **🖼️ Save Slot Party Member Portraits**: Automatically renders high-resolution mini party portraits in save/load slots for both Suikoden I and II with instant 0ms cached lookups.
+* **🏹 Character Battle Range Overrides (S2)**: Configurable weapon range modification (e.g. Kasumi, Luc, Mazus, Viki, Gantetsu, Badeaux, Sierra from Short `S` to Medium `M`), removing formation warnings and allowing back-row attacks.
+* **📐 Battle Position Formation Adjustments (S2)**: Configurable party formation spacing presets (`wide`, `widest`) preventing back-row party members from blocking front-row characters.
+* **🎭 Dynamic NPC & Dialogue Portrait Framework**: Inject high-res dialogue portraits for any NPC or character with multi-language, emotion variant, and cutscene fallback support across both games.
 * **🛡️ Data-Driven War Battles**: Deep rebalancing of Suikoden II Tactical War Battles via intuitive `S2WarAbilities.json`.
 * **🔊 CriWare Sound Swapping**: Drop-in `.acb`/`.awb` sound and music redirection without modifying game archives.
-* **🎮 UI & Immersion Customization**: Customizable Save Point Crystal colors, UI scaling, classic PSX save windows, and controller button prompt overrides.
+* **🎮 UI & Immersion Customization**: Customizable Save Point Crystal colors, UI scaling, Enhanced Gallery backgrounds, classic PSX save windows, and controller button prompt overrides.
 
 ---
 
@@ -85,17 +91,22 @@
     │   ├── DialogOverrides.json        <-- Specific dialogue line portrait overrides
     │   ├── S1SpeakerOverrides.json     <-- Suikoden 1 speaker ID overrides
     │   └── S2SpeakerOverrides.json     <-- Suikoden 2 speaker ID overrides
-    ├── Debug/                          <-- Runtime database dumps
+    ├── Debug/                          <-- Runtime database & asset dumps
+    │   ├── JsonDumps/                  <-- AssetBundle TextAsset & JSON dumps
     │   ├── TextDB_GSD1.json            <-- Suikoden 1 dialogue database dump
     │   └── TextDB_GSD2.json            <-- Suikoden 2 dialogue database dump
+    ├── JsonOverrides/                  <-- Custom JSON TextAsset replacements
     ├── Textures/                       <-- Base texture overrides
     │   ├── GSD1/                       <-- Suikoden 1 specific
+    │   │   └── NPCPortraits/           <-- S1 dialogue portraits (PNG / DDS)
     │   ├── GSD2/                       <-- Suikoden 2 specific
-    │   └── NPCPortraits/               <-- Custom dialogue portraits
+    │   │   └── NPCPortraits/           <-- S2 dialogue portraits (PNG / DDS)
+    │   └── NPCPortraits/               <-- Shared dialogue portraits
     ├── Sound/                          <-- Base CriWare sound banks
     └── 00-Mods/                        <-- High-priority mod packages
-        ├── ModA_Textures/
-        └── ModB_SoundPack/
+        ├── PKS1/                       <-- Project Kyaro S1 sprites
+        ├── PKS2/                       <-- Project Kyaro S2 sprites
+        └── Better-Launcher-BGM-Mod/    <-- Launcher BGM mod
 ```
 
 ---
@@ -144,13 +155,34 @@ All options are configurable in `BepInEx/config/faospark.pkcore.cfg`:
 * `ScaleDownDialogBox` (`true`/`false`): Compact dialogue box (80% size) for improved scene visibility.
 * `ScaledDownMenu` (`true`/`false`): Scaled-down main pause/status menu.
 * `ClassicSaveWindow` (`true`/`false`): Restores the classic PSX-style save slot interface in Suikoden II.
+* `ShowSaveSlotPartyPortraits` (`true`/`false`): Displays mini party member portraits next to character level (`Txt_Lv`) in save/load slots.
 * `DisablePortraitDialogMask` (`true`/`false`): Removes the dark vignette gradient overlay from dialogue portraits.
+* `EnhancedGallery` (`true`/`false`): Replaces Movies, Events, and Sounds gallery backgrounds with custom textures inspired by the PSP release.
+* `PSPLauncher` (`true`/`false`): Enable the PSP-inspired launcher interface.
 
-### 🌟 Gameplay & Aesthetics
+### ⚔️ Combat & Formations (Suikoden II)
+* `EnableBattlePositionAdjustments` (`true`/`false`): Adjusts 6-character party formation spacing so back-row characters don't obstruct front-row members.
+* `S2BattlePositionPreset` (`default`, `wide`, `widest`): Formation spacing preset (`wide` is recommended).
+* `EnableCharacterRangeOverrides` (`true`/`false`): Enable custom weapon/attack range modification with live hot-reloading.
+* `S2CharacterRangeOverrides` (string): Comma-separated list of range overrides (e.g. `Kasumi:M, Luc:M, Mazus:M, Viki:M, Gantetsu:M, Badeaux:M, Sierra:M`).
+* `EnableWarAbilityMod` (`true`/`false`): Tactical war battle ability customization via `S2WarAbilities.json`.
+
+### 🌟 Aesthetics & General
 * `SavePointColor` (`default`, `blue`, `green`, `red`, `purple`, `yellow`, `cyan`, `random`, etc.): Customizes the crystal save orb.
 * `DisableSavePointGlow` (`true`/`false`): Removes the washed-out white glare from save points.
 * `DisableWorldMapClouds` / `DisableWorldMapSunrays` (`true`/`false`): Cleans up the world map visuals.
 * `ColoredIntroAndFlashbacks` (`true`/`false`): Restores vibrant colors to flashback sequences.
+* `BetterLauncherBGM` (`true`/`false`): Replaces launcher ambient music with Suikoden 2's adventure start theme.
+
+---
+
+## 🖼️ Save Slot Party Member Portraits
+
+With `ShowSaveSlotPartyPortraits = true`, PKCore brings party member portraits directly into the Save and Load screens for both **Suikoden I** and **Suikoden II**:
+
+- **Suikoden I**: Dynamic resolution across in-memory save lists and decrypted save data, utilizing `Ws_face_c.CharacterIDConvertToFaceIDStatic` to index portraits accurately (e.g. `fp_gsd1_000` for Tir, Joshua, etc.).
+- **Suikoden II**: Instant party member array lookup (`party_cha_no`) mapped directly to high-res character portraits.
+- **In-Memory Caching**: 0ms lookups after initial read during save menu scrolling, prioritizing custom DDS/PNG textures from `PKCore/Textures/` over vanilla sprites.
 
 ---
 
@@ -162,7 +194,8 @@ Explore in-depth documentation pages for every system:
 | :--- | :--- |
 | 📖 [**00-Mods Guide**](00-mods_guide) | How to build, package, and structure plug-and-play mods. |
 | 🖼️ [**Custom Textures Guide**](custom_textures_guide) | Dumping textures, DDS BC7 compression, naming syntax, and hash bypasses. |
-| 🎭 [**NPC Portrait Walkthrough**](walkthrough_npc_portraits) | Adding portraits to faceless NPCs, variant expressions, and speaker IDs. |
+| 🎭 [**NPC Portrait Walkthrough**](walkthrough_npc_portraits) | Adding portraits to faceless NPCs, variant expressions, DDS BC7 support, and speaker IDs. |
+| 🏹 [**Character Battle Ranges & Formations**](suikoden_2_character_battle_ranges) | Modifying character weapon ranges (S/M/L) and adjusting battle formation spacing presets. |
 | ⚔️ [**War Battle Modding Guide**](war_battle_modding) | Customizing Suikoden II tactical units, leader bonuses, and special skills. |
 | 🔊 [**Sound Swapping Guide**](sound_modding_guide) | CriWare ACB/AWB audio swapping and custom BGM/SFX redirection. |
 | ⚡ [**Caching & Performance**](caching_mechanism) | Deep dive into the XML manifest cache, scene unloader, and smart memory. |
