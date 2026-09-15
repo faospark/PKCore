@@ -43,6 +43,7 @@ public class Plugin : BasePlugin
             Il2CppInterop.Runtime.Injection.ClassInjector.RegisterTypeInIl2Cpp<S2CookOffPortraitMonitor>();
             Il2CppInterop.Runtime.Injection.ClassInjector.RegisterTypeInIl2Cpp<CovertMissionPortraitMonitor>();
             Il2CppInterop.Runtime.Injection.ClassInjector.RegisterTypeInIl2Cpp<WarRoomBGPatch>();
+            Il2CppInterop.Runtime.Injection.ClassInjector.RegisterTypeInIl2Cpp<SaveSlotPartyPortraitPatch.SaveSlotPortraitMonitor>();
 
 
         }
@@ -227,6 +228,7 @@ public class Plugin : BasePlugin
             harmony.PatchAll(typeof(SaveDataProcessor));
         }
 
+
         // ARCHIVED: MapBGManagerHD Object Diagnostics (moved to ObjectReserve folder)
         // if (Config.EnableObjectDiagnostics.Value)
         // {
@@ -362,6 +364,13 @@ public class Plugin : BasePlugin
 
         // War Room BG Patch
         WarRoomBGPatch.Initialize();
+
+        // Save Slot Party Portrait Patch
+        if (Config.ShowSaveSlotPartyPortraits.Value)
+        {
+            Log.LogInfo("Applying Save Slot Party Portrait patch...");
+            harmony.PatchAll(typeof(SaveSlotPartyPortraitPatch));
+        }
 
         // PSP Launcher Patch
 

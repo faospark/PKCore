@@ -32,9 +32,11 @@ public sealed class ModConfiguration
     public ConfigEntry<bool> EnableProjectKyaroSprites { get; private set; }
     public ConfigEntry<bool> MinimalUI { get; private set; }
 
-    // NPC Portrait Settings
+    // NPC Portrait & Asset Settings
     public ConfigEntry<bool> LogTextIDs { get; private set; }
     public ConfigEntry<bool> DumpTextDatabase { get; private set; }
+    public ConfigEntry<bool> DumpJsonAssets { get; private set; }
+    public ConfigEntry<bool> EnableJsonOverrides { get; private set; }
     public ConfigEntry<bool> EnablePortraitSystem { get; private set; }
     public ConfigEntry<bool> LogBattlePositions { get; private set; }
 
@@ -46,6 +48,7 @@ public sealed class ModConfiguration
 
     // Suikoden 2 Classic UI Settings
     public ConfigEntry<bool> ClassicSaveWindow { get; private set; }
+    public ConfigEntry<bool> ShowSaveSlotPartyPortraits { get; private set; }
     public ConfigEntry<string> MercFortFence { get; private set; }
     public ConfigEntry<bool> ColoredIntroAndFlashbacks { get; private set; }
 
@@ -174,6 +177,13 @@ public sealed class ModConfiguration
             "ClassicSaveWindow",
             true,
             "Mimics the feel of the PSX version of Save/Load window for Both Games giving the save/load window a more nostalgic feel instead of the very generic looking window"
+        );
+
+        ShowSaveSlotPartyPortraits = _config.Bind(
+            "02 User Interface",
+            "ShowSaveSlotPartyPortraits",
+            true,
+            "Displays mini party member portraits next to save slots in the Save/Load window for Suikoden II."
         );
 
         DisablePortraitDialogMask = _config.Bind(
@@ -371,6 +381,20 @@ public sealed class ModConfiguration
             "DumpTextDatabase",
             false,
             "Accumulate all text IDs and content seen at runtime and save them to PKCore/Debug/TextDB_GSD1.json and TextDB_GSD2.json. Files are additive across sessions and use the same format as DialogOverrides.json."
+        );
+
+        DumpJsonAssets = _config.Bind(
+            "zz - Diagnostics",
+            "DumpJsonAssets",
+            true,
+            "Dump all loaded AssetBundle TextAsset and JSON files (e.g. vd01.json, event data, map data) to PKCore/Debug/JsonDumps/ when loaded by the game."
+        );
+
+        EnableJsonOverrides = _config.Bind(
+            "zz - Diagnostics",
+            "EnableJsonOverrides",
+            true,
+            "Enable loading custom JSON asset overrides from PKCore/JsonOverrides/. Allows custom JSON files to replace game AssetBundle TextAssets."
         );
 
         DetailedLogs = _config.Bind(
