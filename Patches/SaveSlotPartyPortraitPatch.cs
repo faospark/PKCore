@@ -9,7 +9,7 @@ using System.Collections.Generic;
 namespace PKCore.Patches
 {
     /// <summary>
-    /// Displays mini party member portraits in Suikoden 2 save/load slot windows.
+    /// Displays mini party member portraits in Suikoden 1 & 2 save/load slot windows.
     /// Uses an ultra-fast, high-performance in-memory portrait cache.
     /// Prioritizes crisp modded custom textures from PKCore/Textures/ over native sprites.
     /// Works seamlessly on both Title Screen and Hotel/Inn save points in-game.
@@ -20,36 +20,54 @@ namespace PKCore.Patches
         private static Dictionary<UISaveLoadSlot, GameObject> slotPortraitContainers = new Dictionary<UISaveLoadSlot, GameObject>();
         private static bool _monitorRegistered = false;
 
-        // Optimized static portrait cache to ensure 0ms lookup after initial load
-        private static Dictionary<int, Sprite> portraitCache = new Dictionary<int, Sprite>();
-        private static HashSet<int> pendingLoadIds = new HashSet<int>();
+        // Optimized static portrait cache keyed by "{game}_{charId}" to ensure 0ms lookup after initial load
+        private static Dictionary<string, Sprite> portraitCache = new Dictionary<string, Sprite>(StringComparer.OrdinalIgnoreCase);
+        private static HashSet<string> pendingLoadIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         private static List<UnityEngine.Object> gcRoots = new List<UnityEngine.Object>();
+
+        /// <summary>
+        /// Hook into UISaveLoad1.Init to attach our monitor component
+        /// </summary>
+        [HarmonyPatch(typeof(UISaveLoad1), nameof(UISaveLoad1.Init))]
+        [HarmonyPostfix]
+        public static void Init_GSD1_Postfix(UISaveLoad1 __instance)
+        {
+            if (__instance == null || !Plugin.Config.ShowSaveSlotPartyPortraits.Value || !GameDetection.IsGSD1())
+                return;
+
+            AttachMonitor(__instance.gameObject);
+        }
 
         /// <summary>
         /// Hook into UISaveLoad2.Init to attach our monitor component
         /// </summary>
         [HarmonyPatch(typeof(UISaveLoad2), nameof(UISaveLoad2.Init))]
         [HarmonyPostfix]
-        public static void Init_Postfix(UISaveLoad2 __instance)
+        public static void Init_GSD2_Postfix(UISaveLoad2 __instance)
         {
             if (__instance == null || !Plugin.Config.ShowSaveSlotPartyPortraits.Value || !GameDetection.IsGSD2())
                 return;
 
+            AttachMonitor(__instance.gameObject);
+        }
+
+        private static void AttachMonitor(GameObject go)
+        {
             if (!_monitorRegistered)
             {
                 Il2CppInterop.Runtime.Injection.ClassInjector.RegisterTypeInIl2Cpp<SaveSlotPortraitMonitor>();
                 _monitorRegistered = true;
             }
 
-            var monitor = __instance.gameObject.GetComponent<SaveSlotPortraitMonitor>();
+            var monitor = go.GetComponent<SaveSlotPortraitMonitor>();
             if (monitor == null)
             {
-                monitor = __instance.gameObject.AddComponent<SaveSlotPortraitMonitor>();
+                monitor = go.AddComponent<SaveSlotPortraitMonitor>();
             }
         }
 
         /// <summary>
-        /// Monitor component running on UISaveLoad2 GameObject to keep slot containers updated & active
+        /// Monitor component running on UISaveLoad GameObject to keep slot containers updated & active
         /// </summary>
         public class SaveSlotPortraitMonitor : MonoBehaviour
         {
@@ -113,7 +131,7 @@ namespace PKCore.Patches
         [HarmonyPostfix]
         public static void UpdateItem_Postfix(UISaveLoadSlot __instance, int index, SaveDataSlotInfo info)
         {
-            if (!Plugin.Config.ShowSaveSlotPartyPortraits.Value || !GameDetection.IsGSD2() || __instance == null)
+            if (!Plugin.Config.ShowSaveSlotPartyPortraits.Value || (!GameDetection.IsGSD1() && !GameDetection.IsGSD2()) || __instance == null)
                 return;
 
             try
@@ -135,7 +153,7 @@ namespace PKCore.Patches
         [HarmonyPostfix]
         public static void OnUpdateItem_Postfix(UISaveLoadBase __instance, int itemCount, SaveDataSlotInfo info, GameObject obj)
         {
-            if (!Plugin.Config.ShowSaveSlotPartyPortraits.Value || !GameDetection.IsGSD2() || obj == null)
+            if (!Plugin.Config.ShowSaveSlotPartyPortraits.Value || (!GameDetection.IsGSD1() && !GameDetection.IsGSD2()) || obj == null)
                 return;
 
             try
@@ -184,54 +202,117 @@ namespace PKCore.Patches
         {
             try
             {
-                // Stage 1: Primary In-Memory lookup from UISaveLoad2.Inst.saveDataList
-                if (UISaveLoad2.Inst != null && UISaveLoad2.Inst.saveDataList != null)
+                if (GameDetection.IsGSD1())
                 {
-                    if (UISaveLoad2.Inst.saveDataList.TryGetValue(slotNo, out var slotInfo) && slotInfo != null)
+                    // Stage 1: In-Memory lookup from UISaveLoad1.Inst.saveDataList
+                    if (UISaveLoad1.Inst != null && UISaveLoad1.Inst.saveDataList != null)
                     {
-                        var tmpSave = slotInfo.data2;
-                        if (tmpSave != null && tmpSave.party_data != null && tmpSave.party_data.party_cha_no != null)
+                        if (UISaveLoad1.Inst.saveDataList.TryGetValue(slotNo, out var slotInfo) && slotInfo != null)
                         {
-                            var chaNoArray = tmpSave.party_data.party_cha_no;
-                            int count = chaNoArray.Length;
-                            List<int> ids = new List<int>();
-                            for (int i = 0; i < count && i < 8; i++)
+                            var tmpSave = slotInfo.data;
+                            if (tmpSave != null && tmpSave.party_data != null && tmpSave.party_data.chara_code != null)
                             {
-                                int charId = chaNoArray[i];
-                                if (charId > 0 && charId < 255)
+                                var chaNoArray = tmpSave.party_data.chara_code;
+                                int count = chaNoArray.Length;
+                                List<int> ids = new List<int>();
+                                for (int i = 0; i < count && i < 8; i++)
                                 {
-                                    ids.Add(charId);
+                                    int charId = chaNoArray[i];
+                                    if (charId > 0 && charId < 255)
+                                    {
+                                        ids.Add(charId);
+                                    }
                                 }
-                            }
-                            if (ids.Count > 0)
-                            {
-                                return ids.ToArray();
+                                if (ids.Count > 0)
+                                {
+                                    return ids.ToArray();
+                                }
                             }
                         }
                     }
-                }
 
-                // Stage 2: Try native save file path via GSD2SaveData.TmpSavePath
-                try
-                {
-                    string nativePath = GSD2SaveData.TmpSavePath(slotNo);
-                    if (!string.IsNullOrEmpty(nativePath) && File.Exists(nativePath))
+                    // Stage 2: Native save file path via SaveDataManager.TmpSavePath
+                    try
                     {
-                        int[] ids = ParseSaveFilePartyData(nativePath);
-                        if (ids != null && ids.Length > 0)
-                            return ids;
+                        string nativePath = SaveDataManager.TmpSavePath(slotNo);
+                        if (!string.IsNullOrEmpty(nativePath) && File.Exists(nativePath))
+                        {
+                            int[] ids = ParseSaveFilePartyData(nativePath);
+                            if (ids != null && ids.Length > 0)
+                                return ids;
+                        }
                     }
-                }
-                catch { }
+                    catch { }
 
-                // Stage 3: Decrypted SuikodenFix JSON path fallback
-                string gameDir = Path.GetDirectoryName(Application.dataPath);
-                string fixPath = Path.Combine(gameDir, "SuikodenFix", "Decrypted", "gsd2", $"Data{slotNo}.json");
-                if (File.Exists(fixPath))
+                    // Stage 3: Decrypted SuikodenFix JSON path fallback
+                    try
+                    {
+                        string gameDir = Path.GetDirectoryName(Application.dataPath);
+                        string fixPath = Path.Combine(gameDir, "SuikodenFix", "Decrypted", "gsd1", $"Data{slotNo}.json");
+                        if (File.Exists(fixPath))
+                        {
+                            int[] ids = ParseSaveFilePartyData(fixPath);
+                            if (ids != null && ids.Length > 0)
+                                return ids;
+                        }
+                    }
+                    catch { }
+                }
+                else if (GameDetection.IsGSD2())
                 {
-                    int[] ids = ParseSaveFilePartyData(fixPath);
-                    if (ids != null && ids.Length > 0)
-                        return ids;
+                    // Stage 1: Primary In-Memory lookup from UISaveLoad2.Inst.saveDataList
+                    if (UISaveLoad2.Inst != null && UISaveLoad2.Inst.saveDataList != null)
+                    {
+                        if (UISaveLoad2.Inst.saveDataList.TryGetValue(slotNo, out var slotInfo) && slotInfo != null)
+                        {
+                            var tmpSave = slotInfo.data2;
+                            if (tmpSave != null && tmpSave.party_data != null && tmpSave.party_data.party_cha_no != null)
+                            {
+                                var chaNoArray = tmpSave.party_data.party_cha_no;
+                                int count = chaNoArray.Length;
+                                List<int> ids = new List<int>();
+                                for (int i = 0; i < count && i < 8; i++)
+                                {
+                                    int charId = chaNoArray[i];
+                                    if (charId > 0 && charId < 255)
+                                    {
+                                        ids.Add(charId);
+                                    }
+                                }
+                                if (ids.Count > 0)
+                                {
+                                    return ids.ToArray();
+                                }
+                            }
+                        }
+                    }
+
+                    // Stage 2: Try native save file path via GSD2SaveData.TmpSavePath
+                    try
+                    {
+                        string nativePath = GSD2SaveData.TmpSavePath(slotNo);
+                        if (!string.IsNullOrEmpty(nativePath) && File.Exists(nativePath))
+                        {
+                            int[] ids = ParseSaveFilePartyData(nativePath);
+                            if (ids != null && ids.Length > 0)
+                                return ids;
+                        }
+                    }
+                    catch { }
+
+                    // Stage 3: Decrypted SuikodenFix JSON path fallback
+                    try
+                    {
+                        string gameDir = Path.GetDirectoryName(Application.dataPath);
+                        string fixPath = Path.Combine(gameDir, "SuikodenFix", "Decrypted", "gsd2", $"Data{slotNo}.json");
+                        if (File.Exists(fixPath))
+                        {
+                            int[] ids = ParseSaveFilePartyData(fixPath);
+                            if (ids != null && ids.Length > 0)
+                                return ids;
+                        }
+                    }
+                    catch { }
                 }
             }
             catch (Exception ex)
@@ -256,7 +337,8 @@ namespace PKCore.Patches
                     if (!root.TryGetProperty("party_data", out JsonElement partyData))
                         return null;
 
-                    if (!partyData.TryGetProperty("party_cha_no", out JsonElement partyChaNo))
+                    if (!partyData.TryGetProperty("party_cha_no", out JsonElement partyChaNo) &&
+                        !partyData.TryGetProperty("chara_code", out partyChaNo))
                         return null;
 
                     List<int> characterIds = new List<int>();
@@ -399,38 +481,77 @@ namespace PKCore.Patches
         {
             if (charId <= 0 || charId >= 255) return null;
 
+            string currentGame = GameDetection.GetCurrentGame();
+            string cacheKey = $"{currentGame}_{charId}";
+
             // 1. Instant Cache Hit (0ms)
-            if (portraitCache.TryGetValue(charId, out Sprite cachedSprite))
+            if (portraitCache.TryGetValue(cacheKey, out Sprite cachedSprite))
             {
                 if (cachedSprite != null && cachedSprite.Pointer != IntPtr.Zero)
                     return cachedSprite;
                 else
-                    portraitCache.Remove(charId);
+                    portraitCache.Remove(cacheKey);
             }
 
             // 2. Priority 1: Check Custom External Texture (PKCore/Textures/)
-            string portraitName = $"fp_{charId:D3}";
-            string unpaddedName = $"fp_{charId}";
             Texture2D customTex = null;
-            try
+            List<string> candidateNames = new List<string>();
+
+            if (GameDetection.IsGSD1())
             {
-                customTex = CustomTexturePatch.LoadCustomTexture(portraitName);
-                if (customTex == null)
-                    customTex = CustomTexturePatch.LoadCustomTexture(unpaddedName);
+                int faceId = -1;
+                try
+                {
+                    faceId = Ws_face_c.CharacterIDConvertToFaceIDStatic((ushort)charId);
+                }
+                catch (Exception ex)
+                {
+                    Plugin.Log.LogWarning($"[SaveSlotPortrait] CharacterIDConvertToFaceIDStatic failed for charId {charId}: {ex.Message}");
+                }
+
+                if (faceId >= 0)
+                {
+                    candidateNames.Add($"fp_gsd1_{faceId:D3}");
+                    candidateNames.Add($"fp_gsd1_{faceId}");
+                    candidateNames.Add($"fp_{faceId:D3}");
+                    candidateNames.Add($"fp_{faceId}");
+                }
+
+                candidateNames.Add($"fp_gsd1_{charId:D3}");
+                candidateNames.Add($"fp_gsd1_{charId}");
+                candidateNames.Add($"fp_{charId:D3}");
+                candidateNames.Add($"fp_{charId}");
             }
-            catch { }
+            else
+            {
+                candidateNames.Add($"fp_{charId:D3}");
+                candidateNames.Add($"fp_{charId}");
+                candidateNames.Add($"fp_gsd2_{charId:D3}");
+                candidateNames.Add($"fp_gsd2_{charId}");
+            }
+
+            foreach (var name in candidateNames)
+            {
+                try
+                {
+                    customTex = CustomTexturePatch.LoadCustomTexture(name);
+                    if (customTex != null && customTex.Pointer != IntPtr.Zero)
+                        break;
+                }
+                catch { }
+            }
 
             if (customTex != null && customTex.Pointer != IntPtr.Zero)
             {
                 Sprite customSprite = CreateSquareFaceSprite(customTex);
                 if (customSprite != null && customSprite.Pointer != IntPtr.Zero)
                 {
-                    portraitCache[charId] = customSprite;
+                    portraitCache[cacheKey] = customSprite;
                     return customSprite;
                 }
             }
 
-            // 3. Priority 2: Synchronous Native Face Sprite via ImageLoader.LoadImage
+            // 3. Priority 2: Synchronous Native Face Sprite via ImageLoader.LoadImage (GSD2)
             if (GameDetection.IsGSD2())
             {
                 try
@@ -441,28 +562,28 @@ namespace PKCore.Patches
                         nativeSprite.hideFlags = HideFlags.DontUnloadUnusedAsset;
                         UnityEngine.Object.DontDestroyOnLoad(nativeSprite);
                         gcRoots.Add(nativeSprite);
-                        portraitCache[charId] = nativeSprite;
+                        portraitCache[cacheKey] = nativeSprite;
                         return nativeSprite;
                     }
                 }
                 catch { }
             }
 
-            // 4. Priority 3: Fallback to Async Native Loader if needed
-            if (GameDetection.IsGSD2() && runner != null && !pendingLoadIds.Contains(charId))
+            // 4. Priority 3: Fallback to Async Native Loader if needed (GSD2)
+            if (GameDetection.IsGSD2() && runner != null && !pendingLoadIds.Contains(cacheKey))
             {
-                pendingLoadIds.Add(charId);
+                pendingLoadIds.Add(cacheKey);
                 try
                 {
                     Action<Sprite> callback = (Sprite loadedSprite) =>
                     {
-                        pendingLoadIds.Remove(charId);
+                        pendingLoadIds.Remove(cacheKey);
                         if (loadedSprite != null && loadedSprite.Pointer != IntPtr.Zero)
                         {
                             loadedSprite.hideFlags = HideFlags.DontUnloadUnusedAsset;
                             UnityEngine.Object.DontDestroyOnLoad(loadedSprite);
                             gcRoots.Add(loadedSprite);
-                            portraitCache[charId] = loadedSprite;
+                            portraitCache[cacheKey] = loadedSprite;
 
                             if (targetImage != null && targetImage.Pointer != IntPtr.Zero)
                             {
@@ -482,7 +603,7 @@ namespace PKCore.Patches
                 }
                 catch
                 {
-                    pendingLoadIds.Remove(charId);
+                    pendingLoadIds.Remove(cacheKey);
                 }
             }
 
