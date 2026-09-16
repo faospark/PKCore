@@ -279,9 +279,9 @@ LogReplaceableTextures = false
 # Enable detailed debugging logs (default: false)
 DetailedLogs = false
 
-# Enable manifest caching for faster startup (default: true)
-# Set to false if textures aren't loading after adding new files
-EnableTextureManifestCache = true
+# Enable manifest caching for faster startup (default: false)
+# Set to true for faster startup once your mod list is finalized
+EnableTextureManifestCache = false
 ```
 
 ### Cache Management
@@ -290,7 +290,7 @@ EnableTextureManifestCache = true
 
 The manifest cache is automatically rebuilt when:
 - New textures are added or removed
-- Config settings change (controller prompts, save point color, etc.)
+- Config settings change (controller prompts, save point color, minimal UI, Tir run animation, etc.)
 - Manifest version is updated by mod author
 
 **Manual Cache Clear**:
