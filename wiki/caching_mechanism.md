@@ -11,11 +11,11 @@ Scanning thousands of custom PNG and DDS files every time the game starts can si
 ### How it works
 - **First Run**: PKCore performs a deep scan of your `PKCore/Textures/` and `PKCore/00-Mods/` folders and builds a complete index of every replaceable texture. This index is saved to `PKCore/Cache/texture_manifest.xml`.
 - **Subsequent Runs**: PKCore simply loads the XML file. This reduces startup indexing time from several seconds down to ~20ms.
-- **Config Hash Validation**: The manifest includes a "Config Hash" that tracks settings affecting texture selection (e.g., Save Point Color, Tir Run Animation). If you change these settings, the hash changes, automatically invalidating the cache and triggering a rebuild.
+- **Config Hash Validation**: The manifest includes a "Config Hash" (v3.0) that tracks 10 configuration settings affecting texture selection: `SavePointColor`, `LoadLauncherUITextures`, `EnableProjectKyaroSprites`, `MinimalUI`, `ForceControllerPrompts`, `ControllerPromptType`, `MercFortFence`, `ClassicSaveWindow`, and `TirRunTexture`. If you change any of these settings, the hash changes, automatically invalidating the cache and triggering a rebuild.
 
 ### Texture Directory Filtering
 PKCore includes intelligent texture filtering that allows you to selectively disable specific texture categories for debugging or preference:
-- **Launcher UI Textures** (`LoadLauncherUITextures = false`): Skips textures in `Launcher-Mod` folders.
+- **Launcher UI Textures** (`LoadLauncherUITextures = false`): Skips textures in `Launcher-Mod` or `/launcher/` folders.
 - **Project Kyaro Sprites** (`EnableProjectKyaroSprites = false`): Skips textures in `\PKS1\` and `\PKS2\` folders. 
 - **Minimal UI Textures** (`MinimalUI = false`): Skips textures containing "minimal" in their path.
 
@@ -59,15 +59,17 @@ PKCore features a "Smart Memory" management system that tracks custom textures a
 ### How it works
 - **Scene Tracking**: PKCore monitors which textures are loaded in specific game areas (e.g., world map vs. town).
 - **Automatic Cleanup**: When you move between major game scenes (e.g., entering a town from the world map), PKCore identifies textures that are no longer relevant and **purges** them from memory.
-- **Persistence System**: Essential textures are marked as **Persistent** and are NEVER purged, ensuring UI stability.
+- **Persistence System**: Essential textures and preloaded game atlases are marked as **Persistent** (`DontDestroyOnLoad`) and are NEVER purged, ensuring UI stability and smooth transitions.
   
-**Persistent Patterns (Safe from Purge):**
+**Persistent Patterns & Preloaded Atlases (Safe from Purge):**
 - `window_` (UI Borders)
-- `t_obj_savePoint` (Save Points)
+- `t_obj_savePoint` / `t_obj_savePoint_ball` (Save Points)
 - `menu` (Menu Elements)
 - `ui` (General UI)
 - `dialog` (Dialog Boxes)
-- Save Slot Mini Portraits
+- `sactx` (Field & Battle Texture Atlases preloaded via `CustomTexturePersist`, e.g. `shu_battle_00_atlas`, `shu_field_01_atlas`, `shu_04_hd_atlas`)
+- `fp_129` (Base portrait sprite template for NPC portrait system)
+- Save Slot Mini Portraits (Cached in-memory via `SaveSlotPartyPortraitPatch`)
 
 ### Config Options
 - `EnableMemoryCaching = true`: Activates the scene-based purge system (Recommended).
@@ -112,9 +114,12 @@ PKCore/
 ├── Textures/
 │   ├── *.png, *.dds, *.tga       # Base game textures (lowest priority)
 │   ├── GSD1/                     # Suikoden 1 specific textures
-│   │   └── NPCPortraits/         # S1 custom portraits (PNG / DDS)
+│   │   ├── Portraits/            # S1 custom portraits (PNG / DDS)
+│   │   └── NPCPortraits/         # S1 custom NPC portraits (PNG / DDS)
 │   ├── GSD2/                     # Suikoden 2 specific textures
-│   │   └── NPCPortraits/         # S2 custom portraits (PNG / DDS)
+│   │   ├── Portraits/            # S2 custom portraits (PNG / DDS)
+│   │   └── NPCPortraits/         # S2 custom NPC portraits (PNG / DDS)
+│   ├── Portraits/                # Shared fallback portraits
 │   ├── NPCPortraits/             # Shared fallback NPC portraits
 │   └── SavePoint/                # Save point crystal color variants
 ├── Sound/                        # Base CriWare ACB/AWB audio replacements
@@ -126,3 +131,4 @@ PKCore/
 
 ***
 *Note: The Texture Manifest Cache is located in `PKCore/Cache/`. To reset all caches, delete the `Cache/` folder and restart the game.*
+
