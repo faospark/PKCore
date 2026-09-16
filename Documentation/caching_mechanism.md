@@ -121,7 +121,7 @@ PKCore/
 │   │   └── NPCPortraits/         # S2 custom NPC portraits (PNG / DDS)
 │   ├── Portraits/                # Shared fallback portraits
 │   ├── NPCPortraits/             # Shared fallback NPC portraits
-│   └── SavePoint/                # Save point crystal color variants
+│   └── SavePoint/                # Save point orb/crystal color variants
 ├── Sound/                        # Base CriWare ACB/AWB audio replacements
 └── 00-Mods/                      # HIGHEST PRIORITY Mod Packages
     ├── PKS1/, PKS2/              # Project Kyaro sprites
@@ -130,5 +130,6 @@ PKCore/
 ```
 
 ***
+*Note: NPC portrait injection is fully supported for both Suikoden I (`GSD1`) and Suikoden II (`GSD2`).*
 *Note: The Texture Manifest Cache is located in `PKCore/Cache/`. To reset all caches, delete the `Cache/` folder and restart the game.*
 
