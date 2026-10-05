@@ -124,6 +124,14 @@
       <HintPath>$(GamePath)\BepInEx\interop\PostProcess.dll</HintPath>
       <Private>false</Private>
     </Reference>
+    <Reference Include="DOTweenPro">
+      <HintPath>$(GamePath)\BepInEx\interop\DOTweenPro.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="DOTweenPro.Scripts">
+      <HintPath>$(GamePath)\BepInEx\interop\DOTweenPro.Scripts.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
     <Reference Include="Il2Cppmscorlib">
       <HintPath>$(GamePath)\BepInEx\interop\Il2Cppmscorlib.dll</HintPath>
       <Private>false</Private>
@@ -142,6 +150,10 @@
     </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>$(GamePath)\BepInEx\interop\UnityEngine.UI.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.UIModule">
+      <HintPath>$(GamePath)\BepInEx\interop\UnityEngine.UIModule.dll</HintPath>
       <Private>false</Private>
     </Reference>
     <Reference Include="UnityEngine.AssetBundleModule">

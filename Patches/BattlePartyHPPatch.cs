@@ -1,6 +1,7 @@
 using HarmonyLib;
 using ShareUI.Battle;
 using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -13,6 +14,10 @@ namespace PKCore.Patches
     [HarmonyPatch]
     public static class BattlePartyHPPatch
     {
+        private const float FixedFontSize = 20f;
+        private const float TextRightShift = 5f;
+        private static readonly HashSet<int> AdjustedTextIds = new();
+
         [HarmonyPatch(typeof(UIBattlePlayerStatus), nameof(UIBattlePlayerStatus.SetPlayerStatus))]
         [HarmonyPostfix]
         public static void SetPlayerStatus_Postfix(UIBattlePlayerStatus __instance, Sprite face, string name, int hpNow, int hpMax, bool isDead)
@@ -38,10 +43,25 @@ namespace PKCore.Patches
                 if (text == null)
                     return;
 
-                // Enable auto-sizing to cleanly fit 6-7 characters ("999/999") without overflow or clipping
-                text.enableAutoSizing = true;
-                text.fontSizeMin = 18f;
-                text.fontSizeMax = 28f;
+                // Permanent fixed font size without auto-resize expansion on shorter numbers
+                text.enableAutoSizing = false;
+                text.fontSize = FixedFontSize;
+
+                // Adjust position & width once per text component to avoid touching the heart icon
+                int textId = text.GetInstanceID();
+                if (!AdjustedTextIds.Contains(textId))
+                {
+                    AdjustedTextIds.Add(textId);
+
+                    var rt = text.rectTransform;
+                    if (rt != null)
+                    {
+                        // Shift right away from heart icon and widen box for 7 characters ("999/999")
+                        rt.anchoredPosition = new Vector2(rt.anchoredPosition.x + TextRightShift, rt.anchoredPosition.y);
+                        rt.sizeDelta = new Vector2(rt.sizeDelta.x + 30f, rt.sizeDelta.y);
+                    }
+                }
+
                 text.text = $"{hpNow}/{hpMax}";
             }
             catch (Exception ex)
