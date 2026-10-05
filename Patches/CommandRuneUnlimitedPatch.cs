@@ -362,11 +362,11 @@ public static class CommandRuneUnlimitedPatch
     }
 
     /// <summary>
-    /// Hook PM_DATA.StatusCheck so Fury check (0x20) returns true for Oulan if AlwaysAvailableAngryDragon is enabled.
+    /// Hook PM_DATA.StatusCheck so Fury check (0x20) returns non-zero (1) for Oulan if AlwaysAvailableAngryDragon is enabled.
     /// </summary>
     [HarmonyPatch(typeof(GSD2::PM_DATA), nameof(GSD2::PM_DATA.StatusCheck))]
     [HarmonyPostfix]
-    public static void PM_DATA_StatusCheck_Postfix(GSD2::PM_DATA __instance, uint status, ref bool __result)
+    public static void PM_DATA_StatusCheck_Postfix(GSD2::PM_DATA __instance, uint status, ref int __result)
     {
         if (!GameDetection.IsGSD2())
             return;
@@ -379,8 +379,8 @@ public static class CommandRuneUnlimitedPatch
         {
             if (__instance.chara_no == 22 || __instance.chara_no == 47)
             {
-                Plugin.Log.LogInfo($"[CommandRuneUnlimitedPatch] PM_DATA.StatusCheck for Oulan Fury (0x20) (Original: {__result}) -> forcing True.");
-                __result = true;
+                Plugin.Log.LogInfo($"[CommandRuneUnlimitedPatch] PM_DATA.StatusCheck for Oulan Fury (0x20) (Original: {__result}) -> forcing 1.");
+                __result = 1;
             }
         }
     }
