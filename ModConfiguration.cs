@@ -64,6 +64,11 @@ public sealed class ModConfiguration
     public ConfigEntry<bool> EnableCharacterRangeOverrides { get; private set; }
     public ConfigEntry<string> S2CharacterRangeOverrides { get; private set; }
 
+    // Suikoden 2 Rune Unbalance Removal Settings
+    public ConfigEntry<bool> EnableRuneUnbalanceRemoval { get; private set; }
+    public ConfigEntry<bool> DisableAllRuneUnbalance { get; private set; }
+    public ConfigEntry<string> DisabledRuneUnbalanceList { get; private set; }
+
     // World Map Settings
     public ConfigEntry<bool> DisableWorldMapClouds { get; private set; }
     public ConfigEntry<bool> DisableWorldMapSunrays { get; private set; }
@@ -335,6 +340,27 @@ public sealed class ModConfiguration
             "S2CharacterRangeOverrides",
             "Kasumi:M, Luc:M, Mazus:M, Viki:M, Gantetsu:M, Badeaux:M, Sierra:M",
             "Comma-separated list of character range overrides for Suikoden 2 in 'Character:Range' format (e.g. 'Kasumi:M, Luc:M, Mazus:M, Viki:M, Gantetsu:M, Badeaux:M, Sierra:M'). Range values: S (Short), M (Medium), L (Long)."
+        );
+
+        EnableRuneUnbalanceRemoval = _config.Bind(
+            "05 Game : Suikoden 2",
+            "EnableRuneUnbalanceRemoval",
+            true,
+            "Disable unbalance status effect penalty when using ability command runes (e.g. Titan, Falcon, Viper, Shrike, Swallow, Trick, Fire Breath, Mayfly, Lion, Unicorn, Pixie)."
+        );
+
+        DisableAllRuneUnbalance = _config.Bind(
+            "05 Game : Suikoden 2",
+            "DisableAllRuneUnbalance",
+            true,
+            "When true, disables unbalance penalty for all ability runes regardless of list."
+        );
+
+        DisabledRuneUnbalanceList = _config.Bind(
+            "05 Game : Suikoden 2",
+            "DisabledRuneUnbalanceList",
+            "Titan, Falcon, Viper, Shrike, Swallow, Trick, Fire Breath, Mayfly, Lion, Unicorn, Pixie",
+            "Comma-separated list of ability rune names or IDs to remove unbalance penalty for in Suikoden 2."
         );
 
 

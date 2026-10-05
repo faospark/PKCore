@@ -86,6 +86,8 @@ public class Plugin : BasePlugin
             Patches.PSPGalleryEnhanced.Update();
         if (Config.EnableCharacterRangeOverrides.Value)
             Patches.CharacterRangePatch.Update();
+        if (Config.EnableRuneUnbalanceRemoval.Value)
+            Patches.RuneUnbalancePatch.Update();
         Patches.MenuScalePatch.ApplyLauncherConfigScaling();
         AssetLoader.Update();
     }
@@ -351,6 +353,13 @@ public class Plugin : BasePlugin
         {
             Log.LogInfo("Applying Character Range Overrides patch...");
             CharacterRangePatch.Initialize(harmony);
+        }
+
+        // Rune Unbalance Removal Patch (Suikoden 2)
+        if (Config.EnableRuneUnbalanceRemoval.Value)
+        {
+            Log.LogInfo("Applying Rune Unbalance Removal patch...");
+            RuneUnbalancePatch.Initialize(harmony);
         }
 
 
