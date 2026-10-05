@@ -32,7 +32,7 @@ namespace PKCore.Patches
         [HarmonyPostfix]
         public static void Init_GSD1_Postfix(UISaveLoad1 __instance)
         {
-            if (__instance == null || !Plugin.Config.ShowSaveSlotPartyPortraits.Value || !GameDetection.IsGSD1())
+            if (__instance == null || !Plugin.Config.ShowSaveSlotPartyPortraits.Value)
                 return;
 
             AttachMonitor(__instance.gameObject);
@@ -45,7 +45,7 @@ namespace PKCore.Patches
         [HarmonyPostfix]
         public static void Init_GSD2_Postfix(UISaveLoad2 __instance)
         {
-            if (__instance == null || !Plugin.Config.ShowSaveSlotPartyPortraits.Value || !GameDetection.IsGSD2())
+            if (__instance == null || !Plugin.Config.ShowSaveSlotPartyPortraits.Value)
                 return;
 
             AttachMonitor(__instance.gameObject);
@@ -131,7 +131,7 @@ namespace PKCore.Patches
         [HarmonyPostfix]
         public static void UpdateItem_Postfix(UISaveLoadSlot __instance, int index, SaveDataSlotInfo info)
         {
-            if (!Plugin.Config.ShowSaveSlotPartyPortraits.Value || (!GameDetection.IsGSD1() && !GameDetection.IsGSD2()) || __instance == null)
+            if (!Plugin.Config.ShowSaveSlotPartyPortraits.Value || __instance == null)
                 return;
 
             try
@@ -153,7 +153,7 @@ namespace PKCore.Patches
         [HarmonyPostfix]
         public static void OnUpdateItem_Postfix(UISaveLoadBase __instance, int itemCount, SaveDataSlotInfo info, GameObject obj)
         {
-            if (!Plugin.Config.ShowSaveSlotPartyPortraits.Value || (!GameDetection.IsGSD1() && !GameDetection.IsGSD2()) || obj == null)
+            if (!Plugin.Config.ShowSaveSlotPartyPortraits.Value || obj == null)
                 return;
 
             try
@@ -202,7 +202,10 @@ namespace PKCore.Patches
         {
             try
             {
-                if (GameDetection.IsGSD1())
+                bool isGSD1 = GameDetection.IsGSD1() || (UISaveLoad1.Inst != null && UISaveLoad2.Inst == null);
+                bool isGSD2 = GameDetection.IsGSD2() || UISaveLoad2.Inst != null;
+
+                if (isGSD1)
                 {
                     // Stage 1: In-Memory lookup from UISaveLoad1.Inst.saveDataList
                     if (UISaveLoad1.Inst != null && UISaveLoad1.Inst.saveDataList != null)
@@ -258,7 +261,7 @@ namespace PKCore.Patches
                     }
                     catch { }
                 }
-                else if (GameDetection.IsGSD2())
+                else if (isGSD2)
                 {
                     // Stage 1: Primary In-Memory lookup from UISaveLoad2.Inst.saveDataList
                     if (UISaveLoad2.Inst != null && UISaveLoad2.Inst.saveDataList != null)
@@ -481,8 +484,10 @@ namespace PKCore.Patches
         {
             if (charId <= 0 || charId >= 255) return null;
 
-            string currentGame = GameDetection.GetCurrentGame();
-            string cacheKey = $"{currentGame}_{charId}";
+            bool isGSD1 = GameDetection.IsGSD1() || (UISaveLoad1.Inst != null && UISaveLoad2.Inst == null);
+            bool isGSD2 = GameDetection.IsGSD2() || UISaveLoad2.Inst != null;
+            string gameKey = isGSD1 ? "GSD1" : (isGSD2 ? "GSD2" : GameDetection.GetCurrentGame());
+            string cacheKey = $"{gameKey}_{charId}";
 
             // 1. Instant Cache Hit (0ms)
             if (portraitCache.TryGetValue(cacheKey, out Sprite cachedSprite))
@@ -497,7 +502,7 @@ namespace PKCore.Patches
             Texture2D customTex = null;
             List<string> candidateNames = new List<string>();
 
-            if (GameDetection.IsGSD1())
+            if (isGSD1)
             {
                 int faceId = -1;
                 try
@@ -552,7 +557,7 @@ namespace PKCore.Patches
             }
 
             // 3. Priority 2: Synchronous Native Face Sprite via ImageLoader.LoadImage (GSD2)
-            if (GameDetection.IsGSD2())
+            if (isGSD2)
             {
                 try
                 {
@@ -570,7 +575,7 @@ namespace PKCore.Patches
             }
 
             // 4. Priority 3: Fallback to Async Native Loader if needed (GSD2)
-            if (GameDetection.IsGSD2() && runner != null && !pendingLoadIds.Contains(cacheKey))
+            if (isGSD2 && runner != null && !pendingLoadIds.Contains(cacheKey))
             {
                 pendingLoadIds.Add(cacheKey);
                 try

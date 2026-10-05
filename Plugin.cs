@@ -88,6 +88,8 @@ public class Plugin : BasePlugin
             Patches.CharacterRangePatch.Update();
         if (Config.EnableRuneUnbalanceRemoval.Value)
             Patches.RuneUnbalancePatch.Update();
+        if (Config.EnableUnlimitedCommandRunes.Value)
+            Patches.CommandRuneUnlimitedPatch.Update();
         Patches.MenuScalePatch.ApplyLauncherConfigScaling();
         AssetLoader.Update();
     }
@@ -360,6 +362,13 @@ public class Plugin : BasePlugin
         {
             Log.LogInfo("Applying Rune Unbalance Removal patch...");
             RuneUnbalancePatch.Initialize(harmony);
+        }
+
+        // Unlimited Command Runes Patch (Suikoden 2)
+        if (Config.EnableUnlimitedCommandRunes.Value)
+        {
+            Log.LogInfo("Applying Unlimited Command Runes patch...");
+            CommandRuneUnlimitedPatch.Initialize(harmony);
         }
 
 

@@ -27,7 +27,8 @@ public static class CustomTexturePersist
         "sactx-0-256x256-Uncompressed-shu_battle_00_atlas-de31d9b4",
         "sactx-0-256x256-Uncompressed-shu_field_00_atlas-3fe772bf",
         "sactx-0-256x256-Uncompressed-shu_field_01_atlas-959a6bf2",
-        "sactx-0-256x256-Uncompressed-shu_field_01_atlas-959a6bf2_alt"
+        "sactx-0-256x256-Uncompressed-shu_field_01_atlas-959a6bf2_alt",
+        "hp_classicmap_01"
     };
     
     /// <summary>
@@ -43,6 +44,7 @@ public static class CustomTexturePersist
         "sactx-0-256x256-Uncompressed-shu_atlas-0db86654",
         "sactx-0-256x256-Uncompressed-shu_atlas-e7f71b8e",
         "sactx-0-512x256-Uncompressed-shu_01_atlas-fb0fe61c",
+        "hp_classicmap_02",
         "fp_129"  // Base portrait sprite for NPC portrait system
     };
     

@@ -69,6 +69,13 @@ public sealed class ModConfiguration
     public ConfigEntry<bool> DisableAllRuneUnbalance { get; private set; }
     public ConfigEntry<string> DisabledRuneUnbalanceList { get; private set; }
 
+    // Suikoden 2 Unlimited Command Runes Settings
+    public ConfigEntry<bool> EnableUnlimitedCommandRunes { get; private set; }
+    public ConfigEntry<bool> UnlimitedTrickRune { get; private set; }
+    public ConfigEntry<bool> UnlimitedGroundhogRune { get; private set; }
+    public ConfigEntry<bool> UnlimitedSpiderSlayRune { get; private set; }
+    public ConfigEntry<bool> AlwaysAvailableAngryDragon { get; private set; }
+
     // World Map Settings
     public ConfigEntry<bool> DisableWorldMapClouds { get; private set; }
     public ConfigEntry<bool> DisableWorldMapSunrays { get; private set; }
@@ -361,6 +368,41 @@ public sealed class ModConfiguration
             "DisabledRuneUnbalanceList",
             "Titan, Falcon, Viper, Shrike, Swallow, Trick, Fire Breath, Mayfly, Lion, Unicorn, Pixie",
             "Comma-separated list of ability rune names or IDs to remove unbalance penalty for in Suikoden 2."
+        );
+
+        EnableUnlimitedCommandRunes = _config.Bind(
+            "05 Game : Suikoden 2",
+            "EnableUnlimitedCommandRunes",
+            true,
+            "Enable reusable command runes in battle without 1-use-per-battle lockouts in Suikoden 2 (Meg Trick Rune, Millie Groundhog Rune, Shin Spider Slay Rune, Oulan Angry Dragon)."
+        );
+
+        UnlimitedTrickRune = _config.Bind(
+            "05 Game : Suikoden 2",
+            "UnlimitedTrickRune",
+            true,
+            "Allow Meg/Gadget Trick Rune to be used unlimited times per battle."
+        );
+
+        UnlimitedGroundhogRune = _config.Bind(
+            "05 Game : Suikoden 2",
+            "UnlimitedGroundhogRune",
+            true,
+            "Allow Millie/Bonaparte Groundhog Rune to be used unlimited times per battle."
+        );
+
+        UnlimitedSpiderSlayRune = _config.Bind(
+            "05 Game : Suikoden 2",
+            "UnlimitedSpiderSlayRune",
+            true,
+            "Allow Shin Spider Slay Rune to be used unlimited times per battle."
+        );
+
+        AlwaysAvailableAngryDragon = _config.Bind(
+            "05 Game : Suikoden 2",
+            "AlwaysAvailableAngryDragon",
+            true,
+            "Allow Oulan Angry Dragon Rune to always be available/usable in battle without requiring initial damage or losing Fury."
         );
 
 

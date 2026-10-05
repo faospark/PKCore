@@ -6,6 +6,24 @@ All notable changes to PKCore (formerly PKextended) are documented in this file.
 
 ## [2026.10.05]
 
+- **Unlimited & Reusable Command Runes in Battle (Suikoden II)**:
+  - Created [CommandRuneUnlimitedPatch.cs](file:///d:/Appz/PKCore/Patches/CommandRuneUnlimitedPatch.cs) to remove the 1-use-per-battle lockouts on unique ability command runes:
+    - **Meg & Gadget**: Trick / Gadget Rune (からくりの紋章 / Windup Doll ATK) is now reusable every turn.
+    - **Millie & Bonaparte**: Groundhog Rune (モグラの紋章) is now reusable every turn.
+    - **Shin**: Spider Slay Rune (八房の紋章 / 蜘蛛斬り) is now reusable every turn.
+    - **Oulan**: Angry Dragon Rune (怒竜の紋章 / 狂竜 / 激怒) is now permanently available across every battle turn without requiring damage-triggered Fury or losing Fury status after execution.
+  - Implemented multi-layered battle engine overrides:
+    - Hooked `BattleManager.GetEmblMagicNum` and `PM_DATA.SpecialCanCheck` to enforce valid ability usage counts across turns.
+    - Automatic `C_VARIA_DAT.mp` replenishment and `w_battle.tokusyu_sel_kaisu` / `tokusyu_sel_flag` state refresh during battle turn cycles.
+    - Hooked `BattlePlayerCharacter.CalcIkariEnd` and `PlayerStatusClear` to preserve Oulan's Fury state (`0x20`).
+  - Added dedicated BepInEx configuration options under `[05 Game : Suikoden 2]`:
+    - `EnableUnlimitedCommandRunes` (Default: `true`)
+    - `UnlimitedTrickRune` (Default: `true`)
+    - `UnlimitedGroundhogRune` (Default: `true`)
+    - `UnlimitedSpiderSlayRune` (Default: `true`)
+    - `AlwaysAvailableAngryDragon` (Default: `true`)
+- **Rune Unbalance Removal (Suikoden II)**:
+  - Created [RuneUnbalancePatch.cs](file:///d:/Appz/PKCore/Patches/RuneUnbalancePatch.cs) to disable the Unbalance status penalty and dizzy stars animation on physical ability runes (e.g. Titan, Falcon, Viper, Shrike, Swallow, Trick, Fire Breath, Mayfly, Lion, Unicorn, Pixie, Blue Drop).
 - **Battle Party Max HP Display (Suikoden I & II)**:
   - Added configurable current / max HP display (`ShowBattleMaxHP`) in the battle party status window (e.g. `587/587` instead of just `587`).
   - Enabled dynamic auto-sizing on the HP text mesh (`m_hpText`) to ensure clean alignment without clipping or overflow on larger values (e.g. `999/999`).

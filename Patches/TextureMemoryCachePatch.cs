@@ -33,7 +33,11 @@ public static class TextureMemoryCachePatch
         "t_obj_savePoint",
         "menu",
         "ui",
-        "dialog"
+        "dialog",
+        "classicmap",
+        "hp_classicmap",
+        "fp_",
+        "sactx"
     };
     
     /// <summary>

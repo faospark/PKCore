@@ -20,8 +20,8 @@ namespace PKCore.Patches
 
             // Check which game we're in
             string sceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
-            bool isSuikoden1 = sceneName == "GSD1";
-            bool isSuikoden2 = sceneName == "GSD2";
+            bool isSuikoden1 = GameDetection.IsGSD1() || sceneName.Contains("GSD1", System.StringComparison.OrdinalIgnoreCase) || __instance.name.Contains("SaveLoad1") || UISaveLoad1.Inst != null;
+            bool isSuikoden2 = GameDetection.IsGSD2() || sceneName.Contains("GSD2", System.StringComparison.OrdinalIgnoreCase) || __instance.name.Contains("SaveLoad2") || UISaveLoad2.Inst != null;
             
             if (!isSuikoden1 && !isSuikoden2)
                 return;
@@ -279,11 +279,25 @@ namespace PKCore.Patches
             
             // Load appropriate texture based on game
             string textureName = isSuikoden1 ? "hp_classicmap_01" : "hp_classicmap_02";
-            Texture2D tex = CustomTexturePatch.LoadCustomTexture(textureName);
-            if (tex != null)
+            Sprite bgSprite = isSuikoden1 ? s_cachedClassicMapS1 : s_cachedClassicMapS2;
+
+            if (bgSprite == null || bgSprite.texture == null)
             {
-                Sprite sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100f);
-                img.sprite = sprite;
+                Texture2D tex = CustomTexturePatch.LoadCustomTexture(textureName);
+                if (tex != null)
+                {
+                    bgSprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100f);
+                    UnityEngine.Object.DontDestroyOnLoad(bgSprite);
+                    UnityEngine.Object.DontDestroyOnLoad(tex);
+
+                    if (isSuikoden1) s_cachedClassicMapS1 = bgSprite;
+                    else s_cachedClassicMapS2 = bgSprite;
+                }
+            }
+
+            if (bgSprite != null)
+            {
+                img.sprite = bgSprite;
                 if (Plugin.Config.DetailedLogs.Value)
                 {
                     Plugin.Log.LogInfo($"[SaveWindowPatch] ✓ Applied {textureName} to save window background");
@@ -294,5 +308,8 @@ namespace PKCore.Patches
                 Plugin.Log.LogError($"[SaveWindowPatch] Failed to load {textureName}");
             }
         }
+
+        private static Sprite s_cachedClassicMapS1 = null;
+        private static Sprite s_cachedClassicMapS2 = null;
     }
 }
