@@ -39,6 +39,7 @@ public sealed class ModConfiguration
     public ConfigEntry<bool> EnableJsonOverrides { get; private set; }
     public ConfigEntry<bool> EnablePortraitSystem { get; private set; }
     public ConfigEntry<bool> LogBattlePositions { get; private set; }
+    public ConfigEntry<bool> LogBattleUnitWindow { get; private set; }
 
 
     // Save Point Settings
@@ -74,6 +75,7 @@ public sealed class ModConfiguration
     public ConfigEntry<bool> ScaleDownDialogBox { get; private set; }
     public ConfigEntry<string> ScaledDownMenu { get; private set; }
     public ConfigEntry<string> SMAAQuality { get; private set; }
+    public ConfigEntry<bool> ShowBattleMaxHP { get; private set; }
     public ConfigEntry<bool> PSPLauncher { get; private set; }
     public ConfigEntry<bool> EnhancedGallery { get; private set; }
 
@@ -205,6 +207,13 @@ public sealed class ModConfiguration
             "ScaledDownMenu",
             "true",
             "Main menu layout preset. false = Normal , true: scaled down 80% with adjusted position)."
+        );
+
+        ShowBattleMaxHP = _config.Bind(
+            "02 User Interface",
+            "ShowBattleMaxHP",
+            true,
+            "Displays both current and maximum HP (e.g. 587/587) in the battle party window for Suikoden 1 & 2."
         );
 
         PSPLauncher = _config.Bind(
@@ -416,6 +425,13 @@ public sealed class ModConfiguration
             "LogBattlePositions",
             false,
             "Log party member coordinates and battle position adjustments to the console on battle start. Useful for diagnosing formation spacing."
+        );
+
+        LogBattleUnitWindow = _config.Bind(
+            "zz - Diagnostics",
+            "LogBattleUnitWindow",
+            false,
+            "Log the battle party window layout (HP/MP text elements, max HP visibility, slot hierarchy) once per slot per battle. Works for both games."
         );
 
         // ========================================

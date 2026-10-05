@@ -4,6 +4,21 @@ All notable changes to PKCore (formerly PKextended) are documented in this file.
 
 ---
 
+## [2026.10.05]
+
+- **Battle Party Max HP Display (Suikoden I & II)**:
+  - Added configurable current / max HP display (`ShowBattleMaxHP`) in the battle party status window (e.g. `587/587` instead of just `587`).
+  - Enabled dynamic auto-sizing on the HP text mesh (`m_hpText`) to ensure clean alignment without clipping or overflow on larger values (e.g. `999/999`).
+- **Summon & Battle Magic Stutter Fix (Suikoden II)**:
+  - Resolved severe frame drops, memory spikes, and crashes when casting summon spells (e.g. Pale Gate Rune) by removing intrusive Il2Cpp effect hooks and running summon animations natively.
+- **Texture Engine Memory & Performance Fixes**:
+  - Fixed a memory leak where temporary DDS textures accumulated in memory during gameplay.
+  - Added in-memory file byte caching (`rawFileBytesCache`) to accelerate texture loading and eliminate duplicate disk I/O.
+- **Battle Window Diagnostic Suite**:
+  - Added internal runtime inspection tools (`BattleUnitWindowDiagnostics`) to diagnose battle party window hierarchies and UI text components across both games.
+
+---
+
 ## [2026.09.15]
 
 - **Battle Position Adjustments (Suikoden II)**:

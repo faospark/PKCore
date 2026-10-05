@@ -355,6 +355,13 @@ public class Plugin : BasePlugin
 
 
 
+        // Battle Unit Window Diagnostics (both games)
+        if (Config.LogBattleUnitWindow.Value)
+        {
+            Log.LogInfo("Applying Battle Unit Window diagnostics...");
+            harmony.PatchAll(typeof(BattleUnitWindowDiagnostics));
+        }
+
         // Reaction Monitor (MapChara/r_action trigger)
         S2CookOffPortraitMonitor.Initialize();
 
@@ -370,6 +377,13 @@ public class Plugin : BasePlugin
         {
             Log.LogInfo("Applying Save Slot Party Portrait patch...");
             harmony.PatchAll(typeof(SaveSlotPartyPortraitPatch));
+        }
+
+        // Battle Party Max HP Display (Suikoden 1 & 2)
+        if (Config.ShowBattleMaxHP.Value)
+        {
+            Log.LogInfo("Applying Battle Party Max HP patch...");
+            harmony.PatchAll(typeof(BattlePartyHPPatch));
         }
 
         // PSP Launcher Patch

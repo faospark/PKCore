@@ -21,6 +21,7 @@ public partial class CustomTexturePatch
     // Caches
     internal static Dictionary<string, Sprite> customSpriteCache = new Dictionary<string, Sprite>(StringComparer.OrdinalIgnoreCase);
     internal static Dictionary<string, Texture2D> customTextureCache = new Dictionary<string, Texture2D>(StringComparer.OrdinalIgnoreCase);
+    internal static Dictionary<string, byte[]> rawFileBytesCache = new Dictionary<string, byte[]>(StringComparer.OrdinalIgnoreCase);
     internal static Dictionary<string, string> texturePathIndex = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase); // Maps texture name -> full file path
     internal static Dictionary<string, string> pathTextureIndex = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase); // Maps GameAssets path key -> full file path
 
@@ -407,6 +408,17 @@ public partial class CustomTexturePatch
         if (originalTexture == null || string.IsNullOrEmpty(textureName))
             return false;
 
+        // Skip if already replaced
+        if (originalTexture.name != null && originalTexture.name.EndsWith("_Custom"))
+        {
+            processedTextureIds.Add(originalTexture.GetInstanceID());
+            return true;
+        }
+
+        int originalId = originalTexture.GetInstanceID();
+        if (processedTextureIds.Contains(originalId))
+            return true;
+
         string filePath = null;
         string targetKey = null;
 
@@ -454,10 +466,13 @@ public partial class CustomTexturePatch
             return false;
 
         try
-
         {
-            // Move IO to background thread
-            byte[] fileData = System.Threading.Tasks.Task.Run(() => File.ReadAllBytes(filePath)).Result;
+            // Use cached file bytes or read once
+            if (!rawFileBytesCache.TryGetValue(filePath, out byte[] fileData))
+            {
+                fileData = File.ReadAllBytes(filePath);
+                rawFileBytesCache[filePath] = fileData;
+            }
             
             // Handle DDS files separately
             bool isDDS = filePath.EndsWith(".dds", StringComparison.OrdinalIgnoreCase);
@@ -465,25 +480,30 @@ public partial class CustomTexturePatch
             
             if (isDDS)
             {
-                // For DDS, we need to load the data into a new texture then copy to original
-                // DDS format requires special handling via DDSLoader
-                Texture2D ddsTexture = DDSLoader.LoadDDSFromBytes(fileData, textureName);
+                // Pass null for texture name so temporary object is not indexed or found by searches
+                Texture2D ddsTexture = DDSLoader.LoadDDSFromBytes(fileData, null);
                 if (ddsTexture != null)
                 {
-                    // Copy DDS texture data to original texture
-                    // Note: This preserves the original texture reference but copies pixel data
-                    byte[] ddsPixels = ddsTexture.GetRawTextureData();
-                    originalTexture.LoadRawTextureData(ddsPixels);
-                    originalTexture.Apply(false, false);
-                    
-                    // Match the DDS format properties
-                    originalTexture.name = textureName + "_Custom";
-                    UnityEngine.Object.DontDestroyOnLoad(originalTexture);
-                    loaded = true;
-                    
-                    if (Plugin.Config.DetailedLogs.Value)
+                    try
                     {
-                        Plugin.Log.LogInfo($"Replaced raw DDS texture in-place: {textureName} ({ddsTexture.width}x{ddsTexture.height}, {ddsTexture.format})");
+                        // Copy DDS texture data to original texture
+                        byte[] ddsPixels = ddsTexture.GetRawTextureData();
+                        originalTexture.LoadRawTextureData(ddsPixels);
+                        originalTexture.Apply(false, false);
+                        
+                        originalTexture.name = textureName + "_Custom";
+                        UnityEngine.Object.DontDestroyOnLoad(originalTexture);
+                        loaded = true;
+                        
+                        if (Plugin.Config.DetailedLogs.Value)
+                        {
+                            Plugin.Log.LogInfo($"Replaced raw DDS texture in-place: {textureName} ({ddsTexture.width}x{ddsTexture.height}, {ddsTexture.format})");
+                        }
+                    }
+                    finally
+                    {
+                        // Explicitly destroy temporary Texture2D to avoid memory leaks & duplicate scans
+                        UnityEngine.Object.DestroyImmediate(ddsTexture);
                     }
                 }
                 else
@@ -522,6 +542,8 @@ public partial class CustomTexturePatch
             }
             
             UnityEngine.Object.DontDestroyOnLoad(originalTexture);
+            processedTextureIds.Add(originalId);
+            processedTextureIds.Add(originalTexture.GetInstanceID());
             
             bool shouldSkipLog = textureName.StartsWith("sactx") || filePath.ToLower().Contains("characters");
             if (!shouldSkipLog && Plugin.Config.DetailedLogs.Value)
@@ -847,6 +869,7 @@ public partial class CustomTexturePatch
         processedTextureIds.Clear();
         processedAtlases.Clear();
         replacedTextures.Clear();
+        rawFileBytesCache.Clear();
         
         // TODO: SpriteAtlasCache not yet implemented - would clear atlas cache here
         // SpriteAtlasCache.Clear();
