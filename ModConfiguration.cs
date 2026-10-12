@@ -90,6 +90,7 @@ public sealed class ModConfiguration
     public ConfigEntry<bool> ShowBattleMaxHP { get; private set; }
     public ConfigEntry<bool> PSPLauncher { get; private set; }
     public ConfigEntry<bool> EnhancedGallery { get; private set; }
+    public ConfigEntry<bool> DisableUITips { get; private set; }
 
     // Sound Settings
     public HiddenConfigEntry<bool> EnableSoundRedirect { get; private set; }
@@ -240,6 +241,13 @@ public sealed class ModConfiguration
             "EnhancedGallery",
             true,
             "Enable enhanced gallery backgrounds. Replaces Movies, Events, and Sounds gallery backgrounds with custom textures Inspired by the PSP version."
+        );
+
+        DisableUITips = _config.Bind(
+            "02 User Interface",
+            "DisableUITips",
+            false,
+            "Disable the UITips UI element (control/button tips overlay at UI_Root/UI_Canvas_Root/UITips/)."
         );
 
         SavePointColor = _config.Bind(

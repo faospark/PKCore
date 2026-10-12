@@ -282,6 +282,13 @@ public class Plugin : BasePlugin
         // Disable specific va4_04 map objects (Suikoden 1) - always active
         harmony.PatchAll(typeof(S1DisableObjectsPatch));
 
+        // Disable UITips (UI_Root/UI_Canvas_Root/UITips)
+        if (Config.DisableUITips.Value)
+        {
+            Log.LogInfo("Applying DisableUITips patch...");
+            DisableUITipsPatch.Initialize(harmony);
+        }
+
         // Language selection detection patch (TitlePanel)
         Log.LogInfo("Applying LanguageSelection patch...");
         harmony.PatchAll(typeof(LanguageSelectionPatch));

@@ -1,5 +1,13 @@
 # PKCore Workspace Instructions
 
+## Primary Project
+- **PKCore (`d:\Appz\PKCore`) is the main project of this workspace.** All code changes, new files, builds, and fixes target PKCore unless the user explicitly says otherwise.
+- The other workspace folders are **read-only references**:
+  - `d:\Appz\Suisource\GSD1`, `GSD2`, `GSDShare` — decompiled game source, used only for grounding.
+  - `d:\Appz\Suisource\Ideas` — notes/ideas, read for context only.
+  - `...\Suikoden I and II HD Remaster\BepInEx` and `...\PKCore` — game install / runtime output (logs, configs, textures). Do not write project code there.
+- Never edit decompiled source files; implement behavior changes as Harmony patches in PKCore instead.
+
 ## Environment & Build
 - **Symlink Setup**: The build output directory is symlinked directly to the game's BepInEx plugins directory (`d:\SteamLibrary\steamapps\common\Suikoden I and II HD Remaster\BepInEx\plugins\`).
 - **NEVER** run manual `Copy-Item` or file copy commands to the game folder. Running `dotnet build` is sufficient.

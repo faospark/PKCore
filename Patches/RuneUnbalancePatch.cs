@@ -318,7 +318,7 @@ public static class RuneUnbalancePatch
                 __instance.status &= ~2u;
             }
 
-            Plugin.Log.LogInfo($"[RuneUnbalancePatch] Blocked Unbalance StatusSet({status_id}) for character {__instance?.chara_no}.");
+            Plugin.Log.LogDebug($"[RuneUnbalancePatch] Blocked Unbalance StatusSet({status_id}) for character {__instance?.chara_no}.");
             return false;
         }
 
@@ -342,7 +342,7 @@ public static class RuneUnbalancePatch
         if ((status & 0x02) != 0)
         {
             status = (ushort)(status & ~0x02);
-            Plugin.Log.LogInfo("[RuneUnbalancePatch] Stripped Unbalance bit (0x02) in PlayerStatusSet.");
+            Plugin.Log.LogDebug("[RuneUnbalancePatch] Stripped Unbalance bit (0x02) in PlayerStatusSet.");
 
             if (status == 0)
             {
@@ -426,7 +426,7 @@ public static class RuneUnbalancePatch
 
         if (status_chara_no == GSD2::battle_h.SC_UNVALA)
         {
-            Plugin.Log.LogInfo($"[RuneUnbalancePatch] Blocked StatusCharaDispOn for SC_UNVALA (ID: {status_chara_no}).");
+            Plugin.Log.LogDebug($"[RuneUnbalancePatch] Blocked StatusCharaDispOn for SC_UNVALA (ID: {status_chara_no}).");
             return false;
         }
 
@@ -449,7 +449,7 @@ public static class RuneUnbalancePatch
         // Status ID 2 or SC_UNVALA = Unbalance dizziness / spinning stars visual effect
         if (status_id == 2 || status_id == GSD2::battle_h.SC_UNVALA)
         {
-            Plugin.Log.LogInfo($"[RuneUnbalancePatch] Suppressed Unbalance dizziness animation (SetStatusStartAnime ID {status_id}).");
+            Plugin.Log.LogDebug($"[RuneUnbalancePatch] Suppressed Unbalance dizziness animation (SetStatusStartAnime ID {status_id}).");
             __result = false;
             return false;
         }

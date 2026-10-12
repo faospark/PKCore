@@ -182,7 +182,7 @@ public static class CommandRuneUnlimitedPatch
                     if (kaisuArray[i] == 0)
                     {
                         kaisuArray[i] = maxCount;
-                        Plugin.Log.LogInfo($"[CommandRuneUnlimitedPatch] Replenished tokusyu_sel_kaisu[{i}] -> {maxCount}");
+                        Plugin.Log.LogDebug($"[CommandRuneUnlimitedPatch] Replenished tokusyu_sel_kaisu[{i}] -> {maxCount}");
                     }
                 }
             }
@@ -194,7 +194,7 @@ public static class CommandRuneUnlimitedPatch
                     if (flagArray[i] == 0)
                     {
                         flagArray[i] = 1;
-                        Plugin.Log.LogInfo($"[CommandRuneUnlimitedPatch] Enabled tokusyu_sel_flag[{i}] -> 1");
+                        Plugin.Log.LogDebug($"[CommandRuneUnlimitedPatch] Enabled tokusyu_sel_flag[{i}] -> 1");
                     }
                 }
             }
@@ -226,7 +226,7 @@ public static class CommandRuneUnlimitedPatch
                             if (varia.mp[m] == 0)
                             {
                                 varia.mp[m] = 1;
-                                Plugin.Log.LogInfo($"[CommandRuneUnlimitedPatch] Replenished varia.mp[{m}] for character #{c}");
+                                Plugin.Log.LogDebug($"[CommandRuneUnlimitedPatch] Replenished varia.mp[{m}] for character #{c}");
                             }
                         }
                     }
@@ -257,12 +257,12 @@ public static class CommandRuneUnlimitedPatch
         if (Plugin.Config == null || !Plugin.Config.EnableUnlimitedCommandRunes.Value)
             return;
 
-        Plugin.Log.LogInfo($"[CommandRuneUnlimitedPatch] GetEmblMagicNum(player:{player_no}, embl:{embl_no}) original result: {__result}");
+        Plugin.Log.LogDebug($"[CommandRuneUnlimitedPatch] GetEmblMagicNum(player:{player_no}, embl:{embl_no}) original result: {__result}");
 
         if (__result == 0)
         {
             __result = 1;
-            Plugin.Log.LogInfo($"[CommandRuneUnlimitedPatch] Overrode GetEmblMagicNum(player:{player_no}, embl:{embl_no}) -> 1");
+            Plugin.Log.LogDebug($"[CommandRuneUnlimitedPatch] Overrode GetEmblMagicNum(player:{player_no}, embl:{embl_no}) -> 1");
         }
     }
 
@@ -276,7 +276,7 @@ public static class CommandRuneUnlimitedPatch
         if (!GameDetection.IsGSD2())
             return;
 
-        Plugin.Log.LogInfo($"[CommandRuneUnlimitedPatch] make_embl_window Prefix - PlayerNo: {player_no}");
+        Plugin.Log.LogDebug($"[CommandRuneUnlimitedPatch] make_embl_window Prefix - PlayerNo: {player_no}");
         RefreshCommandRunes();
     }
 
@@ -287,7 +287,7 @@ public static class CommandRuneUnlimitedPatch
         if (!GameDetection.IsGSD2())
             return;
 
-        Plugin.Log.LogInfo($"[CommandRuneUnlimitedPatch] make_embl_window Postfix - PlayerNo: {player_no}");
+        Plugin.Log.LogDebug($"[CommandRuneUnlimitedPatch] make_embl_window Postfix - PlayerNo: {player_no}");
         RefreshCommandRunes();
     }
 
@@ -301,7 +301,7 @@ public static class CommandRuneUnlimitedPatch
         if (!GameDetection.IsGSD2())
             return;
 
-        Plugin.Log.LogInfo($"[CommandRuneUnlimitedPatch] make_magic_window Prefix - PlayerNo: {player_no}");
+        Plugin.Log.LogDebug($"[CommandRuneUnlimitedPatch] make_magic_window Prefix - PlayerNo: {player_no}");
         RefreshCommandRunes();
     }
 
@@ -312,7 +312,7 @@ public static class CommandRuneUnlimitedPatch
         if (!GameDetection.IsGSD2())
             return;
 
-        Plugin.Log.LogInfo($"[CommandRuneUnlimitedPatch] make_magic_window Postfix - PlayerNo: {player_no}");
+        Plugin.Log.LogDebug($"[CommandRuneUnlimitedPatch] make_magic_window Postfix - PlayerNo: {player_no}");
         RefreshCommandRunes();
     }
 
@@ -326,7 +326,7 @@ public static class CommandRuneUnlimitedPatch
         if (!GameDetection.IsGSD2())
             return;
 
-        Plugin.Log.LogInfo("[CommandRuneUnlimitedPatch] w_battle.SetSelectTokusyuStepInit Postfix fired.");
+        Plugin.Log.LogDebug("[CommandRuneUnlimitedPatch] w_battle.SetSelectTokusyuStepInit Postfix fired.");
         RefreshCommandRunes();
     }
 
@@ -340,7 +340,7 @@ public static class CommandRuneUnlimitedPatch
         if (!GameDetection.IsGSD2())
             return;
 
-        Plugin.Log.LogInfo("[CommandRuneUnlimitedPatch] w_battle.SelectTokusyuStepInit Postfix fired.");
+        Plugin.Log.LogDebug("[CommandRuneUnlimitedPatch] w_battle.SelectTokusyuStepInit Postfix fired.");
         RefreshCommandRunes();
     }
 
@@ -356,7 +356,7 @@ public static class CommandRuneUnlimitedPatch
 
         if (Plugin.Config != null && Plugin.Config.EnableUnlimitedCommandRunes.Value)
         {
-            Plugin.Log.LogInfo($"[CommandRuneUnlimitedPatch] PM_DATA.SpecialCanCheck for chara_no {__instance?.chara_no} (Original: {__result}) -> forcing True.");
+            Plugin.Log.LogDebug($"[CommandRuneUnlimitedPatch] PM_DATA.SpecialCanCheck for chara_no {__instance?.chara_no} (Original: {__result}) -> forcing True.");
             __result = true;
         }
     }
@@ -379,7 +379,7 @@ public static class CommandRuneUnlimitedPatch
         {
             if (__instance.chara_no == 22 || __instance.chara_no == 47)
             {
-                Plugin.Log.LogInfo($"[CommandRuneUnlimitedPatch] PM_DATA.StatusCheck for Oulan Fury (0x20) (Original: {__result}) -> forcing 1.");
+                Plugin.Log.LogDebug($"[CommandRuneUnlimitedPatch] PM_DATA.StatusCheck for Oulan Fury (0x20) (Original: {__result}) -> forcing 1.");
                 __result = 1;
             }
         }
@@ -402,7 +402,7 @@ public static class CommandRuneUnlimitedPatch
         {
             if (__instance != null)
             {
-                Plugin.Log.LogInfo("[CommandRuneUnlimitedPatch] BattlePlayerCharacter.CalcIkariEnd: Restoring IkariVal to 100.");
+                Plugin.Log.LogDebug("[CommandRuneUnlimitedPatch] BattlePlayerCharacter.CalcIkariEnd: Restoring IkariVal to 100.");
                 __instance.SetIkariVal(100);
             }
         }
@@ -428,12 +428,39 @@ public static class CommandRuneUnlimitedPatch
         // If trying to clear Fury (0x20), strip it out so Fury is retained
         if ((status & 0x20) != 0)
         {
-            Plugin.Log.LogInfo("[CommandRuneUnlimitedPatch] Prevented clearing Fury status bit (0x20) in PlayerStatusClear.");
+            Plugin.Log.LogDebug("[CommandRuneUnlimitedPatch] Prevented clearing Fury status bit (0x20) in PlayerStatusClear.");
             status = (ushort)(status & ~0x20);
             if (status == 0)
                 return false;
         }
 
         return true;
+    }
+
+    /// <summary>
+    /// Hook BattlePlayerCharacter.PlayerStatusCheck so Fury check (0x20) always returns true for Oulan at battle start and during battle.
+    /// </summary>
+    [HarmonyPatch(typeof(GSD2::BattlePlayerCharacter), nameof(GSD2::BattlePlayerCharacter.PlayerStatusCheck))]
+    [HarmonyPostfix]
+    public static void BattlePlayerCharacter_PlayerStatusCheck_Postfix(GSD2::BattlePlayerCharacter __instance, ushort status, ref bool __result)
+    {
+        if (!GameDetection.IsGSD2())
+            return;
+
+        if (Plugin.Config == null || !Plugin.Config.AlwaysAvailableAngryDragon.Value)
+            return;
+
+        if ((status & 0x20) != 0 && __instance != null)
+        {
+            if (__instance.chara_no == 22 || __instance.chara_no == 47)
+            {
+                __result = true;
+                try
+                {
+                    __instance.SetIkariVal(100);
+                }
+                catch { }
+            }
+        }
     }
 }
