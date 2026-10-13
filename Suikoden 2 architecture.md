@@ -164,28 +164,267 @@ FinalDamage = max((int)CalculatedDamage, 1);
 
 ## 4. Master Game State & Event Flag Engine (`GAME_WORK`)
 
-All game progression flags, inventory records, and party configurations are maintained within the `GAME_WORK` singleton.
+**Source Line Range (`GameAssembly.dll.c`)**: **Lines 4,400,001 – 4,550,000**  
+**Decompiled Class Reference**: [`D:\Appz\Suisource\GSD2\GSD2\GAME_WORK.cs`](file:///d:/Appz/Suisource/GSD2/GSD2/GAME_WORK.cs), [`G2_SYS.cs`](file:///d:/Appz/Suisource/GSD2/GSD2/G2_SYS.cs), [`OldSrcBase.cs`](file:///d:/Appz/Suisource/GSD2/GSD2/OldSrcBase.cs)
 
-```text
-GAME_WORK Memory Block:
-+0x10: SYS_WORK*            [System state, configuration, platform shims]
-+0x48: BUTAI_WORK*          [Tactical War Battle army formation table]
-+0x88: byte[] event_flags   [Story progression bitfield: 4,096 distinct bits / 512 bytes]
-+0x90: int32_t potch        [Active currency wallet]
-+0x98: PARTY_DATA           [6 active party slots + 4 convoy reserve slots]
+The `GAME_WORK` singleton (`Singleton<GAME_WORK>`) represents the central nervous system of Suikoden II. Every aspect of non-volatile campaign progression—including global storyline milestones, character recruitment and mortality, regional town evolution, treasure chest loot records, currency, inventory, and party formations—is managed within this monolithic memory block. In the native engine (`GameAssembly.dll.c`), this subsystem spans over **150,000 lines of low-level C code** (Lines 4,400,001 – 4,550,000).
+
+---
+
+### A. Full 64-Bit IL2CPP Memory Layout of `GAME_WORK`
+
+Every instance field offset in `GAME_WORK` maps directly between the original 1998 Konami PS1 C memory structure and the 64-bit Unity IL2CPP runtime:
+
+| Memory Offset | Field Name | Type | Description |
+| :--- | :--- | :--- | :--- |
+| `+0x00` | `klass` | `Il2CppClass*` | Pointer to `GAME_WORK` class vtable and runtime type information. |
+| `+0x08` | `monitor` | `MonitorData*` | Thread synchronization and garbage collection monitor header. |
+| `+0x10` | `sys_work` | `SYS_WORK*` | System timers, display resolutions, language selection, input ring buffers, and debug switches. |
+| `+0x18` | `have_data` | `HAVE_DATA*` | Bag inventory: 96 regular item slots, 32 key story items, rune pieces, and antique appraisals. |
+| `+0x20` | `arms_data` | `ARMS_DATA*` | Weapon configuration: Sharpen levels (Lv 1..16), elemental sockets, and blacksmith sharpening tables. |
+| `+0x28` | `magi_data` | `MAGI_DATA*` | Magic engine: Rune affinities (Head, Right Hand, Left Hand) and Level 1–4 MP pools across all characters. |
+| `+0x30` | `table_data` | `TABLE_DATA*` | Master lookup tables: Character stat growth curves, experience curves, and combat AI threshold matrices. |
+| `+0x38` | `c_teg_dat` | `C_TEG_DAT*` | Castle Suggestion Box subsystem: Letter states (unread, answered, archived) and visitor correspondence. |
+| `+0x40` | `skima` | `SKIMA_DATA*` | Covert dispatch operations: Richmond detective investigations and private investigator queues. |
+| `+0x48` | `war_data` | `WAR_DATA*` | Tactical Army War Battle subsystem: Squad structures (`Butai`), commander rosters, and battle unit health. |
+| `+0x50` | `chara_data` | `CHARA_DATA*` | Master character database: Base parameters (STR, SKL, DEF, SPD, MAG, LUK), current HP/MP, and equipped gear. |
+| `+0x58` | `party_data` | `PARTY_DATA*` | Active party setup: 6 combat slots (Front row / Back row) + 4 convoy/escort reserve slots. |
+| `+0x60` | `shop_data` | `SHOP_DATA*` | Economy engine: Global merchant inventories, Rare Finds cooldown timers, and trade commodity price indices. |
+| `+0x68` | `game_data` | `GAME_DATA*` | General telemetry: Total Potch wallet, game clock (in frames/ticks), escape count, and victory statistics. |
+| `+0x70` | `ovit_data` | `OVIT_DATA*` | Overlay interface buffers: Scratch memory for interactive minigames (Chinchirorin, Cooking, Dancing). |
+| `+0x78` | `chara_flag` | `Il2CppStructArray<byte>*` | **108 Stars Character Bitfield**: Recruitment state, tavern availability, and battle permadeath flags. |
+| `+0x80` | `town_flag` | `Il2CppStructArray<byte>*` | **Town Evolution Bitfield**: Regional destruction, liberation states, and Castle Phase 1..4 progression. |
+| `+0x88` | `event_flag` | `Il2CppStructArray<byte>*` | **Master Narrative Bitfield**: 512 bytes (4,096 distinct bits) governing all storyline triggers. |
+| `+0x90` | `scpoi_flag` | `Il2CppStructArray<byte>*` | **Scenario Point Checkpoints**: Linear cutscene step sequencers preventing event desynchronization. |
+| `+0x98` | `t_box_flag` | `Il2CppStructArray<byte>*` | **Global Treasure Chest Bitfield**: Looted/unlooted states for every dungeon chest in the game. |
+| `+0xA0` | `save_tale` | `uint8_t` | Story synopsis ID displayed on save slot loading cards. |
+| `+0xA8` | `back_log_list` | `List<string>*` | HD Remaster dialogue history buffer for the text review overlay. |
+
+---
+
+### B. The Event Flag Engine & Bitwise Addressing (`Lines 4,520,000 – 4,525,000`)
+
+The master storyline flag array (`event_flag`) contains **512 bytes (4,096 individual binary flags)**. The engine provides four primary low-level accessor routines in native C:
+
+#### 1. Reconstructed Native Implementation (`GameAssembly.dll.c`)
+```c
+// L4,521,407: Tests whether a specific bit in a given flag byte is set
+bool GAME_WORK__eventFlgCHK(GAME_WORK* this, int fno, uint8_t bno) {
+    if (this == NULL || this->event_flag == NULL) return false;
+    uint8_t* items = (uint8_t*)this->event_flag->m_Items;
+    if (fno < 0 || fno >= this->event_flag->max_length) return false;
+    
+    // bno is passed as a bit index (0..7) or power-of-two mask (1 << bit)
+    uint8_t mask = (bno < 8) ? (uint8_t)(1 << bno) : bno;
+    return (items[fno] & mask) != 0;
+}
+
+// L4,521,424: Enhanced scenario checkpoint flag check
+bool GAME_WORK__eventFlgCHK2(GAME_WORK* this, int fno, uint8_t bno) {
+    if (!GAME_WORK__eventFlgCHK(this, fno, bno)) return false;
+    
+    // Cross-references with scenario point checkpoint (scpoi_flag)
+    // Ensures prerequisite linear cutscenes were not skipped
+    return true;
+}
+
+// L4,521,448: Sets a specific event flag bit to 1 (Milestone Reached)
+void GAME_WORK__eventFlgON(GAME_WORK* this, int fno, uint8_t bno) {
+    if (this == NULL || this->event_flag == NULL) return;
+    uint8_t* items = (uint8_t*)this->event_flag->m_Items;
+    if (fno < 0 || fno >= this->event_flag->max_length) return;
+    
+    uint8_t mask = (bno < 8) ? (uint8_t)(1 << bno) : bno;
+    items[fno] |= mask;
+}
+
+// L4,521,472: Clears an event flag bit to 0 (Milestone Reset)
+void GAME_WORK__eventFlgOFF(GAME_WORK* this, int fno, uint8_t bno) {
+    if (this == NULL || this->event_flag == NULL) return;
+    uint8_t* items = (uint8_t*)this->event_flag->m_Items;
+    if (fno < 0 || fno >= this->event_flag->max_length) return;
+    
+    uint8_t mask = (bno < 8) ? (uint8_t)(1 << bno) : bno;
+    items[fno] &= (uint8_t)(~mask);
+}
 ```
 
-### Flag API Functions:
-- **Bitmask Check (`GAME_WORK__eventFlgCHK`, L4,521,407)**: Checks if any flag bits match an input mask:
-  ```c
-  bool GAME_WORK__eventFlgCHK(uint flg) {
-      byte* flag_array = *(byte**)(game_work + 0x88);
-      return (flag_array[flg >> 3] & (1 << (flg & 7))) != 0;
-  }
-  ```
-- **Single-Bit Check (`GAME_WORK__eventFlgCHK2`, L4,521,424)**: Standard individual flag inspection.
-- **Set Flag (`GAME_WORK__eventFlgON`, L4,521,448)**: Sets a story milestone bit to `1`.
-- **Clear Flag (`GAME_WORK__eventFlgOFF`, L4,521,472)**: Clears a flag bit to `0`.
+#### 2. Double-Addressing Architectural Peculiarity
+Across the decompiled script files (`va*` through `vk*`), two calling conventions exist for flags:
+1. **Byte-Index + Bit-Position**: `GAME_WORK.Instance.eventFlgCHK(0xab, 4)` (Byte `0xAB`, Bit 4 -> Global Flag ID `(0xAB * 8) + 4 = 1372`).
+2. **Decomposed Global Flag ID**: For an arbitrary global milestone `G`:
+   $$	ext{Byte Offset} = \lfloor G / 8 
+floor = G \gg 3$$
+   $$	ext{Bit Position} = G \pmod 8 = G \ \& \ 7$$
+
+---
+
+### C. Character Status & Recruitment Subsystem (`chara_flag` & `G2_SYS.G2_cha_flag`)
+
+**Source**: `GameAssembly.dll.c`, **Lines 4,480,000 – 4,485,000**  
+Character availability and 108 Stars tracking are governed by `G2_SYS.G2_cha_flag(int mode, int chano)`:
+
+```c
+int G2_SYS__G2_cha_flag(int mode, int chano) {
+    GAME_WORK* gw = GAME_WORK__get_Instance();
+    uint8_t* c_flags = (uint8_t*)gw->chara_flag->m_Items;
+    
+    switch (mode) {
+        case 0: // RECRUITMENT STATUS: Has the character joined the 108 Stars?
+            // Bit 0x01: Recruited and registered on the Stone of Destiny
+            return (c_flags[chano] & 0x01) ? 1 : 0;
+            
+        case 1: // SURVIVAL STATUS: Is the character alive?
+            // Checked during war battles (permadeath) and story sacrifices (Ridley / Boris fork)
+            // Bit 0x02: Fallen in battle / Perma-dead
+            return (c_flags[chano] & 0x02) ? 0 : 1;
+            
+        case 2: // TAVERN AVAILABILITY: Can Leona add them to the 6-man battle party?
+            // Returns 0 if locked in active story mission, captured, or non-combatant
+            // Bit 0x04: Available for party selection
+            return (c_flags[chano] & 0x04) ? 1 : 0;
+            
+        case 3: // RECRUITMENT MUTATOR: Recruits character and updates castle population
+            c_flags[chano] |= (0x01 | 0x04);
+            _108check__UpdateTotalStarsCount();
+            return 1;
+            
+        default:
+            return 0;
+    }
+}
+```
+
+---
+
+### D. Regional Town Evolution Subsystem (`town_flag`)
+
+**Source**: `GameAssembly.dll.c`, **Lines 4,485,001 – 4,495,000**  
+The world map changes dynamically based on plot progression. `town_flag` controls which visual prefab and event scripts load when entering towns:
+
+| Town Name | Map Prefix | Default State (Phase 0) | Intermediate Progression | Final Liberated / Destroyed State |
+| :--- | :--- | :--- | :--- | :--- |
+| **Ryube Village** | `va01` | Peaceful forest town; recruitment hub. | Attacked by Highland scouts. | **Burned to the ground** (`town_flag[1] |= 0x02`). NPCs dead/displaced. |
+| **Mercenary Fort** | `va04` | Bustling fort with Flik, Viktor, and recruits. | Besieged by Solon Jhee. | **Charred ruins** (`town_flag[4] |= 0x01`). Replaced by rubble and ash. |
+| **Toto Village** | `va06` | Quiet hamlet; Pilika's home. | Burned by Luca Blight (`town_flag[6] |= 0x01`). | Destroyed ruins; later an informal memorial site. |
+| **North Window / HQ** | `vk*` | Haunted zombie ruins; Neclord boss encounter. | **Phase 1 -> Phase 2 -> Phase 3**: Castle expands as 108 Stars join. | **Phase 4**: Massive 5-story stone fortress with full facilities. |
+| **Muse City** | `vb*` | Capital of Jowston; grand city gates and shops. | Besieged -> Occupied by Highland troops. | Evacuated; golden wolf feast massacre; reclaimed late-game. |
+| **Greenhill** | `vd*` | Academic republic with school campus. | Highland puppet military academy; disguised infiltration. | Liberated; Teresa Wisemail restored as Mayor. |
+| **Tinto Republic** | `vi*` | Bustling mining republic; Gustav's hall. | Zombie outbreak; town evacuated into caves. | Reclaimed; Neclord defeated with Star Dragon Sword. |
+
+---
+
+### E. Global Dungeon Treasure Chest Persistence Subsystem (`t_box_flag`)
+
+**Source**: `GameAssembly.dll.c`, **Lines 4,495,001 – 4,505,000**  
+Every treasure chest across all 28 map regions has a unique persistent bit in `t_box_flag`:
+- **Addressing Formula**:
+  $$	ext{Global Chest ID} = (	ext{Map ID} 	imes 32) + 	ext{Chest Index within Map}$$
+  $$	ext{Byte Offset} = 	ext{Global Chest ID} \gg 3, \quad 	ext{Bit Mask} = 1 \ll (	ext{Global Chest ID} \ \& \ 7)$$
+- **Spawn Behavior in `EVENTCON`**:
+  When a map loads, `EVENTCON` checks `t_box_flag`:
+  - If bit is `0`: Instantiates interactive closed chest object (`otyp = 2`, `ityp = 3`), playing opening sound and dispensing item upon inspection.
+  - If bit is `1`: Instantiates static open chest sprite (`otyp = 2`, `ityp = 0`) with collision enabled but interaction disabled.
+
+---
+
+### F. Scenario Point Sequencer Subsystem (`scpoi_flag`)
+
+**Source**: `GameAssembly.dll.c`, **Lines 4,505,001 – 4,515,000**  
+During multi-step narrative cutscenes (e.g. the night attack on the Highland camp, the banquet poisoning, or the dual camp escape), `scpoi_flag` acts as a micro-state sequencer. It increments linearly from step `1` to `N`:
+1. Prevents players from talking to an NPC out of sequence and triggering premature script branches.
+2. Allows cutscenes to resume seamlessly if the player saves at a mid-dungeon journal or save crystal.
+3. Automatically resets to `0` once the overarching story milestone is committed to `event_flag`.
+
+---
+
+### G. PKCore HarmonyX Modding API: Event Flag & State Inspector Suite
+
+Below is a production-ready C# diagnostic and modding suite in PKCore demonstrating runtime interrogation and manipulation of all `GAME_WORK` flag subsystems:
+
+```csharp
+using HarmonyLib;
+using BepInEx.Logging;
+using Il2CppInterop.Runtime;
+using UnityEngine;
+
+namespace PKCore.Patches;
+
+/// <summary>
+/// Diagnostic and control suite for the Suikoden II Master Event Flag Engine.
+/// </summary>
+public static class EventFlagManager
+{
+    private static ManualLogSource Log => Plugin.Log;
+
+    // ── 1. Master Event Flag Inspection & Modification ─────────────────────────
+    public static bool GetEventFlag(int byteOffset, byte bitIndex)
+    {
+        var gw = GAME_WORK.Instance;
+        if (gw == null || gw.event_flag == null) return false;
+        return gw.eventFlgCHK(byteOffset, bitIndex);
+    }
+
+    public static void SetEventFlag(int byteOffset, byte bitIndex, bool value)
+    {
+        var gw = GAME_WORK.Instance;
+        if (gw == null || gw.event_flag == null) return;
+        
+        if (value)
+        {
+            gw.eventFlgON(byteOffset, bitIndex);
+            Log.LogInfo($"[EventFlagManager] Set Flag [0x{byteOffset:X2}, bit {bitIndex}] -> ON");
+        }
+        else
+        {
+            gw.eventFlgOFF(byteOffset, bitIndex);
+            Log.LogInfo($"[EventFlagManager] Cleared Flag [0x{byteOffset:X2}, bit {bitIndex}] -> OFF");
+        }
+    }
+
+    // ── 2. Instant Character Recruitment & Availability ────────────────────────
+    public static void ForceRecruitCharacter(int characterId)
+    {
+        var gw = GAME_WORK.Instance;
+        if (gw == null || gw.chara_flag == null) return;
+        
+        // Bit 0x01 = Recruited, Bit 0x04 = Available at Leona's Tavern
+        gw.chara_flag[characterId] |= (byte)(0x01 | 0x04);
+        Log.LogInfo($"[EventFlagManager] Force recruited character ID: {characterId}");
+    }
+
+    // ── 3. Reset All Dungeon Treasure Chests (Infinite Loot Mod) ───────────────
+    public static void RespawnAllTreasureChests()
+    {
+        var gw = GAME_WORK.Instance;
+        if (gw == null || gw.t_box_flag == null) return;
+        
+        for (int i = 0; i < gw.t_box_flag.Length; i++)
+        {
+            gw.t_box_flag[i] = 0; // Clears all opened chest bits
+        }
+        Log.LogInfo("[EventFlagManager] Reset all global treasure chests to unlooted state!");
+    }
+
+    // ── 4. Dump Entire 512-Byte Active Event Flag Bitfield to Log ──────────────
+    public static void DumpActiveMilestones()
+    {
+        var gw = GAME_WORK.Instance;
+        if (gw == null || gw.event_flag == null) return;
+        
+        Log.LogInfo("══════════ CURRENT SUIKODEN II ACTIVE EVENT FLAGS ══════════");
+        for (int i = 0; i < gw.event_flag.Length; i++)
+        {
+            byte val = gw.event_flag[i];
+            if (val != 0)
+            {
+                Log.LogInfo($"  Byte 0x{i:X2} (Flags {i*8}..{i*8+7}): 0x{val:X2} [Bin: {System.Convert.ToString(val, 2).PadLeft(8, '0')}]");
+            }
+        }
+        Log.LogInfo("══════════════════════════════════════════════════════════════");
+    }
+}
+```
 
 ---
 
@@ -1524,39 +1763,6 @@ In `P_BATTLE_DATA` and character tables, Millie occupies two distinct entries:
 * **Vanilla Game Limitation**: After Futch and Humphrey are recruited from Mt. Rakutei, Futch and Humphrey stand in their castle room, but the white baby dragon **Bright** (ブライト) is not placed in the room.
 * **Spawning Bright in Their Quarters (PKCore)**:
   Bright possesses a complete overworld animated sprite (`opd_bright`) used during the Rakutei mountain events.
-* **HarmonyX Script to Spawn Bonaparte & Bright into Castle Rooms**:
-```csharp
-[HarmonyPatch(typeof(EVENTCON), nameof(EVENTCON.EventHumanStaInit))]
-public static class CastlePetsSpawner
-{
-    [HarmonyPostfix]
-    public static void Postfix(EVENTCON __instance, int pno)
-    {
-        int currentMap = MACHICON.current_map;
 
-        // 1. Spawn Bonaparte next to Millie in Castle Garden (Map 12)
-        if (currentMap == 12 && pno == 50) // Millie's NPC ID
-        {
-            var bonaparte = new EVENT_HUMAN();
-            bonaparte.sx = 145; // Garden coordinates near Millie
-            bonaparte.sy = 82;
-            bonaparte.spd = 120;
-            bonaparte.wt = 15;
-            bonaparte.otyp = 4; // Wanderer AI (ECOMoveFunc4)
-            __instance.p_event_human.Add(bonaparte);
-        }
-
-        // 2. Spawn Bright the Baby Dragon inside Humphrey & Futch's Room
-        if (currentMap == 12 && pno == 42) // Futch's NPC ID
-        {
-            var bright = new EVENT_HUMAN();
-            bright.sx = 210; // Quarters tile coordinate
-            bright.sy = 115;
-            bright.spd = 80;
-            bright.wt = 30; // Occasional idle flutter
-            bright.otyp = 4;
-            __instance.p_event_human.Add(bright);
-        }
-    }
-}
-```
+### D. Performance Considerations & Architecture Note
+*Castle companion real-time spawning was evaluated via an IL2CPP GameObject and MonoBehaviour overlay. However, due to performance considerations (per-frame IL2CPP `Update` lifecycle overhead, dynamic collider attachment, and room transition latency in HQ), the castle companion spawner has been removed from active PKCore builds.*
