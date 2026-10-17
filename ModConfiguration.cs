@@ -60,6 +60,10 @@ public sealed class ModConfiguration
     public ConfigEntry<bool> EnableBattlePositionAdjustments { get; private set; }
     public ConfigEntry<string> S2BattlePositionPreset { get; private set; }
 
+    // Suikoden 2 Tenzan Pass Chimera Encounters Restoration
+    public ConfigEntry<bool> EnableTenzanChimeraFix { get; private set; }
+    public ConfigEntry<bool> ForceTenzanChimeraEncounter { get; private set; }
+
     // Suikoden 2 Character Range Override Settings
     public ConfigEntry<bool> EnableCharacterRangeOverrides { get; private set; }
     public ConfigEntry<string> S2CharacterRangeOverrides { get; private set; }
@@ -341,6 +345,20 @@ public sealed class ModConfiguration
             "S2BattlePositionPreset",
             "wide",
             "Battle position preset for Suikoden 2. Options: 'default' (vanilla), 'wide' (moderate spacing, front row shifted left), 'widest' (large spacing, high visibility)."
+        );
+
+        EnableTenzanChimeraFix = _config.Bind(
+            "05 Game : Suikoden 2",
+            "EnableTenzanChimeraFix",
+            true,
+            "Restores the missing Chimera monster encounters in Tenzan Pass (30% encounter rate, dropping the rare Cyclone Rune) as originally intended in the PS1 era."
+        );
+
+        ForceTenzanChimeraEncounter = _config.Bind(
+            "05 Game : Suikoden 2",
+            "ForceTenzanChimeraEncounter",
+            false,
+            "Debug/Testing option: Forces all random encounters in Tenzan Pass to be Chimera formations."
         );
 
         EnableCharacterRangeOverrides = _config.Bind(

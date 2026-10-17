@@ -357,6 +357,13 @@ public class Plugin : BasePlugin
             BattlePositionPatch.Initialize(harmony);
         }
 
+        // Tenzan Pass Chimera Encounters Restoration Patch (Suikoden 2)
+        if (Config.EnableTenzanChimeraFix.Value)
+        {
+            Log.LogInfo("Applying Tenzan Pass Chimera Encounters Restoration patch...");
+            TenzanPassEncounterPatch.Initialize(harmony);
+        }
+
         // Character Battle Range Patch (Suikoden 2)
         if (Config.EnableCharacterRangeOverrides.Value)
         {
