@@ -103,7 +103,7 @@ public static class CommandRuneUnlimitedPatch
                 string runeName = string.Empty;
                 try
                 {
-                    runeName = GSD2::G2_SYS.G2_item_name(ovit, 5, i);
+                    runeName = GSD2::G2_SYS.G2_item_name(ovit, 2, i);
                 }
                 catch { }
 
@@ -137,7 +137,7 @@ public static class CommandRuneUnlimitedPatch
 
                 if (isTarget || !_loggedRuneDump)
                 {
-                    sb.AppendLine($"  {(isTarget ? "[TARGET] " : "")}Rune #{i:D2}: '{runeName}' | Botch:{embl.botch} | Bonus:{embl.bonus} | Spells: [{magiInfo}]");
+                    sb.AppendLine($"  {(isTarget ? "[TARGET] " : "")}Rune #{i:D2}: '{runeName}' | Potch:{embl.botch} | Bonus:{embl.bonus} | Spells: [{magiInfo}]");
                 }
             }
 

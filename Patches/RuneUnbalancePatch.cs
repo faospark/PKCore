@@ -176,28 +176,25 @@ public static class RuneUnbalancePatch
                 if (embl == null)
                     continue;
 
-                // Cache original botch value if not already saved
-                if (!OriginalBotchValues.ContainsKey(i))
+                // Restore original Potch price if previously zeroed
+                if (OriginalBotchValues.TryGetValue(i, out ushort originalPrice) && originalPrice > 0 && embl.botch == 0)
+                {
+                    embl.botch = originalPrice;
+                }
+                else if (!OriginalBotchValues.ContainsKey(i) && embl.botch > 0)
                 {
                     OriginalBotchValues[i] = embl.botch;
                 }
 
-                ushort originalBotch = OriginalBotchValues[i];
-
                 if (!isEnabled)
                 {
-                    // Restore original value if disabled
-                    if (embl.botch != originalBotch)
-                    {
-                        embl.botch = originalBotch;
-                    }
                     continue;
                 }
 
                 string runeName = string.Empty;
                 try
                 {
-                    runeName = GSD2::G2_SYS.G2_item_name(ovit, 5, i);
+                    runeName = GSD2::G2_SYS.G2_item_name(ovit, 2, i);
                 }
                 catch
                 {
@@ -208,18 +205,9 @@ public static class RuneUnbalancePatch
 
                 if (shouldDisable)
                 {
-                    if (embl.botch != 0)
-                    {
-                        embl.botch = 0;
-                        patchedCount++;
+                    bool hadUnbalance = false;
 
-                        if (!_loggedInitialPatch)
-                        {
-                            Plugin.Log.LogInfo($"[RuneUnbalancePatch] Disabled unbalance penalty for Rune #{i} '{runeName}' (original botch: {originalBotch}).");
-                        }
-                    }
-
-                    // Also clear unbalance status bytes in the associated MAGI_DATA spell table
+                    // Clear unbalance status bytes in the associated MAGI_DATA spell table
                     try
                     {
                         if (embl.magic_no != null)
@@ -237,6 +225,7 @@ public static class RuneUnbalancePatch
                                             if (magi.status[s] == 2 || magi.status[s] == 1)
                                             {
                                                 magi.status[s] = 0;
+                                                hadUnbalance = true;
                                             }
                                         }
                                     }
@@ -248,13 +237,15 @@ public static class RuneUnbalancePatch
                     {
                         // Ignore
                     }
-                }
-                else
-                {
-                    // Restore original if filtered out
-                    if (embl.botch != originalBotch)
+
+                    if (hadUnbalance || (!string.IsNullOrEmpty(runeName) && ShouldDisableUnbalanceForRune(i, runeName)))
                     {
-                        embl.botch = originalBotch;
+                        patchedCount++;
+
+                        if (!_loggedInitialPatch)
+                        {
+                            Plugin.Log.LogInfo($"[RuneUnbalancePatch] Disabled unbalance penalty for Rune #{i} '{runeName}' (MAGI_DATA status cleared).");
+                        }
                     }
                 }
             }
