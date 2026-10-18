@@ -20,3 +20,10 @@
 
 ## Logging & Diagnostics
 - **Game & BepInEx Logs**: The active log file is located at `d:\SteamLibrary\steamapps\common\Suikoden I and II HD Remaster\BepInEx\LogOutput.log`. Check this log directly for runtime diagnostics, text message IDs, character slot IDs, and errors.
+
+## Map & Asset Patching Pattern (`MACHICON.EventInit`)
+- **Standard Pattern for Map / `<map>.json` Asset Modifications**: Follow the proven pattern established in `SajahShopUnlockPatch.cs` (and `TenzanPassEncounterPatch.cs`).
+  - Hook `[HarmonyPatch(typeof(MACHICON), "EventInit")]` as a `[HarmonyPostfix]`.
+  - Upon map transition, `EVENTCON __result` holds `__result.mdat` (`MACHIDAT`), which is the deserialized object of the map asset (e.g., `vj17.json`, `va11.json`).
+  - Modify `__result.mdat` directly in memory (e.g., `eventdata.mapeventdat`, `eventobj`, `eventdat.eventForm` script byte arrays, `battle_dat`, `monster_party`, etc.).
+  - This acts as an in-memory **byte-patching** mechanism for map asset JSON files, eliminating the need for manual UABEA bundle extraction/repacking and making changes immune to official game updates.

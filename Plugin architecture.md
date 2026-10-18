@@ -337,7 +337,16 @@ The 65 active patch modules are structured into 9 specialized subsystems:
   - Overhauls the party status window during combat.
   - Replaces current HP only (e.g. `587`) with formatted Current/Max HP displays (e.g. `587/587`).
 
-#### 38. `BattlePositionPatch.cs`
+#### 38. `BattleEnemyLevelPatch.cs`
+- **Classes**: `BattleEnemyLevelPatch`
+- **Scope**: Suikoden 1 & 2
+- **Features**:
+  - Displays enemy levels in the battle target selection window (e.g. `Bonapart Lv.25`).
+  - Reads enemy formation slot positions and references active combatant levels (`MONSTER_DATA.level`).
+  - Implements TextMeshPro dynamic font auto-scaling with single-line clamping to ensure long enemy names never truncate or line wrap.
+  - Configurable via `ShowEnemyLevelInBattle` in BepInEx configuration.
+
+#### 39. `BattlePositionPatch.cs`
 - **Classes**: `BattlePositionPatch`, `BattleCharaSetup3ArgPatch`, `BattleManagerPlayerInitPatch`
 - **Scope**: Suikoden 2 (GSD2)
 - **Features**:

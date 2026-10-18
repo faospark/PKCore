@@ -979,7 +979,7 @@ public static class MACHICON_OnMapInitPatch
         // Object injection is now handled in MachiLoader_Load_Patch
     }
 
-    private static string ParseMapIdFromMachiName(string machiName)
+    public static string ParseMapIdFromMachiName(string machiName)
     {
         // Example: "vk07 mno:1 evmno:3" -> Output: "vk07_01"
         if (string.IsNullOrEmpty(machiName)) return null;

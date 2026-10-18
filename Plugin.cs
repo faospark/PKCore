@@ -385,7 +385,22 @@ public class Plugin : BasePlugin
             CommandRuneUnlimitedPatch.Initialize(harmony);
         }
 
+        // Memory Auto-Battle Patch (Suikoden 2)
+        if (Config.EnableMemoryAutoBattle.Value)
+        {
+            Log.LogInfo("Applying Memory Auto-Battle patch...");
+            MemoryAutoBattlePatch.Initialize(harmony);
+        }
 
+        // Map ID Tracking (shared by Map Object & S2 patches)
+        harmony.PatchAll(typeof(MACHICON_OnMapInitPatch));
+
+        // Sajah Village Rare Shop Unlock Patch (Suikoden 2)
+        if (Config.UnlockSajahRareShopEarly.Value)
+        {
+            Log.LogInfo("Applying Sajah Village Rare Shop Unlock patch...");
+            harmony.PatchAll(typeof(SajahShopUnlockPatch));
+        }
 
         // Battle Unit Window Diagnostics (both games)
         if (Config.LogBattleUnitWindow.Value)
@@ -416,6 +431,13 @@ public class Plugin : BasePlugin
         {
             Log.LogInfo("Applying Battle Party Max HP patch...");
             harmony.PatchAll(typeof(BattlePartyHPPatch));
+        }
+
+        // Battle Enemy Level Display (Suikoden 1 & 2)
+        if (Config.ShowEnemyLevelInBattle.Value)
+        {
+            Log.LogInfo("Applying Battle Enemy Level patch...");
+            harmony.PatchAll(typeof(BattleEnemyLevelPatch));
         }
 
         // PSP Launcher Patch

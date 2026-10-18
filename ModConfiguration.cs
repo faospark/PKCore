@@ -63,6 +63,10 @@ public sealed class ModConfiguration
     // Suikoden 2 Tenzan Pass Chimera Encounters Restoration
     public ConfigEntry<bool> EnableTenzanChimeraFix { get; private set; }
     public ConfigEntry<bool> ForceTenzanChimeraEncounter { get; private set; }
+    public ConfigEntry<int> TenzanChimeraCycloneDropRate { get; private set; }
+
+    // Suikoden 2 Sajah Village Rare Shop Early Unlock
+    public ConfigEntry<bool> UnlockSajahRareShopEarly { get; private set; }
 
     // Suikoden 2 Character Range Override Settings
     public ConfigEntry<bool> EnableCharacterRangeOverrides { get; private set; }
@@ -80,6 +84,10 @@ public sealed class ModConfiguration
     public ConfigEntry<bool> UnlimitedSpiderSlayRune { get; private set; }
     public ConfigEntry<bool> AlwaysAvailableAngryDragon { get; private set; }
 
+    // Suikoden 2 Memory Auto-Battle Settings
+    public ConfigEntry<bool> EnableMemoryAutoBattle { get; private set; }
+    public ConfigEntry<bool> MemoryAutoBattlePersistAcrossBattles { get; private set; }
+
     // World Map Settings
     public ConfigEntry<bool> DisableWorldMapClouds { get; private set; }
     public ConfigEntry<bool> DisableWorldMapSunrays { get; private set; }
@@ -92,6 +100,7 @@ public sealed class ModConfiguration
     public ConfigEntry<string> ScaledDownMenu { get; private set; }
     public ConfigEntry<string> SMAAQuality { get; private set; }
     public ConfigEntry<bool> ShowBattleMaxHP { get; private set; }
+    public ConfigEntry<bool> ShowEnemyLevelInBattle { get; private set; }
     public ConfigEntry<bool> PSPLauncher { get; private set; }
     public ConfigEntry<bool> EnhancedGallery { get; private set; }
     public ConfigEntry<bool> DisableUITips { get; private set; }
@@ -233,6 +242,13 @@ public sealed class ModConfiguration
             "Displays both current and maximum HP (e.g. 587/587) in the battle party window for Suikoden 1 & 2."
         );
 
+        ShowEnemyLevelInBattle = _config.Bind(
+            "02 User Interface",
+            "ShowEnemyLevelInBattle",
+            true,
+            "Displays enemy level in battle target selection window for Suikoden 1 & 2 (e.g. 'Bonapart Lv.25')."
+        );
+
         PSPLauncher = _config.Bind(
             "02 User Interface",
             "PSPLauncher",
@@ -361,6 +377,23 @@ public sealed class ModConfiguration
             "Debug/Testing option: Forces all random encounters in Tenzan Pass to be Chimera formations."
         );
 
+        TenzanChimeraCycloneDropRate = _config.Bind(
+            "05 Game : Suikoden 2",
+            "TenzanChimeraCycloneDropRate",
+            100,
+            new BepInEx.Configuration.ConfigDescription(
+                "Drop rate percentage (1-100) for the Cyclone Rune when defeating a Chimera in Tenzan Pass. Default is 100% for guaranteed drop.",
+                new BepInEx.Configuration.AcceptableValueRange<int>(1, 100)
+            )
+        );
+
+        UnlockSajahRareShopEarly = _config.Bind(
+            "05 Game : Suikoden 2",
+            "UnlockSajahRareShopEarly",
+            true,
+            "Unlocks the hidden rare item vendor and counter trigger inside the Sajah Village item shop before defeating the Beast Rune."
+        );
+
         EnableCharacterRangeOverrides = _config.Bind(
             "05 Game : Suikoden 2",
             "EnableCharacterRangeOverrides",
@@ -429,6 +462,20 @@ public sealed class ModConfiguration
             "AlwaysAvailableAngryDragon",
             true,
             "Allow Oulan Angry Dragon Rune to always be available/usable in battle without requiring initial damage or losing Fury."
+        );
+
+        EnableMemoryAutoBattle = _config.Bind(
+            "05 Game : Suikoden 2",
+            "EnableMemoryAutoBattle",
+            true,
+            "Remember the last manually chosen action (Attack vs Rune/Magic) and replay it during Auto-Battle (Omakase). Falls back to Attack if MP is depleted or character is silenced."
+        );
+
+        MemoryAutoBattlePersistAcrossBattles = _config.Bind(
+            "05 Game : Suikoden 2",
+            "MemoryAutoBattlePersistAcrossBattles",
+            false,
+            "Persist remembered Auto-Battle actions across different battles. When false, actions reset at the start of each battle."
         );
 
 

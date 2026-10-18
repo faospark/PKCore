@@ -6,6 +6,13 @@ All notable changes to PKCore (formerly PKextended) are documented in this file.
 
 ## [2026.10.05]
 
+- **Battle Enemy Level Display (Suikoden I & II)**:
+  - Created [BattleEnemyLevelPatch.cs](file:///d:/Appz/PKCore/Patches/BattleEnemyLevelPatch.cs) to display enemy levels in the battle target selection window (e.g. `Bonapart Lv.25`, `Highland Captain Lv.34`).
+  - Implemented automatic level lookup from active battle combatants across both games:
+    - **Suikoden I**: Reads `GSD1::BattleBase.battle_work` and `window_work` position mappings to retrieve monster levels from `monster_data_table`.
+    - **Suikoden II**: Reads `GSD2::BattleParty` and `PM_DATA.monster_data.level` with front/back row formation slot indexing.
+  - Dynamically configures TextMeshPro auto-sizing on the monster selection cell text (`leftText`) with single-line clamping (`enableWordWrapping = false`, `fontSizeMin = 13f`) to prevent truncation or line wrapping on longer enemy names.
+  - Configurable via `ShowEnemyLevelInBattle` under `[02 User Interface]` (enabled by default).
 - **Unlimited & Reusable Command Runes in Battle (Suikoden II)**:
   - Created [CommandRuneUnlimitedPatch.cs](file:///d:/Appz/PKCore/Patches/CommandRuneUnlimitedPatch.cs) to remove the 1-use-per-battle lockouts on unique ability command runes:
     - **Meg & Gadget**: Trick / Gadget Rune (からくりの紋章 / Windup Doll ATK) is now reusable every turn.
