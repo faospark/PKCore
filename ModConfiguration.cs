@@ -88,6 +88,10 @@ public sealed class ModConfiguration
     public ConfigEntry<bool> EnableMemoryAutoBattle { get; private set; }
     public ConfigEntry<bool> MemoryAutoBattlePersistAcrossBattles { get; private set; }
 
+    // Suikoden 2 Hero Bedroom Decoration System (room_item restoration)
+    public ConfigEntry<bool> EnableRoomItemRestoration { get; private set; }
+    public ConfigEntry<bool> RoomItemDebugLog { get; private set; }
+
     // World Map Settings
     public ConfigEntry<bool> DisableWorldMapClouds { get; private set; }
     public ConfigEntry<bool> DisableWorldMapSunrays { get; private set; }
@@ -476,6 +480,20 @@ public sealed class ModConfiguration
             "MemoryAutoBattlePersistAcrossBattles",
             false,
             "Persist remembered Auto-Battle actions across different battles. When false, actions reset at the start of each battle."
+        );
+
+        EnableRoomItemRestoration = _config.Bind(
+            "05 Game : Suikoden 2",
+            "EnableRoomItemRestoration",
+            true,
+            "Restores the unused 1998 cut-content Hero Bedroom Decoration System using GAME_DATA.room_item (8 slots). Allows placing, displaying, and inspecting collected antiques in Riou's room (vk16)."
+        );
+
+        RoomItemDebugLog = _config.Bind(
+            "05 Game : Suikoden 2",
+            "RoomItemDebugLog",
+            false,
+            "Enable verbose logging and diagnostic output for the Room Item Decoration System."
         );
 
 

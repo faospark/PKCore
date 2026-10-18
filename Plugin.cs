@@ -90,6 +90,8 @@ public class Plugin : BasePlugin
             Patches.RuneUnbalancePatch.Update();
         if (Config.EnableUnlimitedCommandRunes.Value)
             Patches.CommandRuneUnlimitedPatch.Update();
+        if (Config.EnableRoomItemRestoration.Value)
+            Patches.RoomItemPatch.Update();
         Patches.MenuScalePatch.ApplyLauncherConfigScaling();
         AssetLoader.Update();
     }
