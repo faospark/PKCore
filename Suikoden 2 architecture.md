@@ -111,10 +111,10 @@ During combat, up to 12 combatants occupy the battlefield, split into two active
 
 | Struct Offset (`BATTLE_WORK`) | Type | Purpose & Field Layout | Verified Code Location |
 | :--- | :--- | :--- | :--- |
-| `+0x1D0` | `int32_t` | **Turn Order Count**: Active combatants queued for the round | [L4,683,320](file:///d:/Appz/Suisource/GSD2/GSD2/GameAssembly.dll.c#L4683320) |
-| `+0x1F0` | `P_BATTLE_DATA[]` | **Combatant Pointer Array**: Array of 12 combatant entity structs | [L4,679,756](file:///d:/Appz/Suisource/GSD2/GSD2/GameAssembly.dll.c#L4679756) |
-| `+0x200` | `ARMS_DATA[]` | **Equipped Weapon Array**: Sharpness level, attack bonus, embedded rune | [L4,679,814](file:///d:/Appz/Suisource/GSD2/GSD2/GameAssembly.dll.c#L4679814) |
-| `+0x218` | `ACTION_DATA[]` | **Action Queue Buffer**: Command ID, target actor, spell/item payload | [L4,683,288](file:///d:/Appz/Suisource/GSD2/GSD2/GameAssembly.dll.c#L4683288) |
+| `+0x1D0` | `int32_t` | **Turn Order Count**: Active combatants queued for the round | `L4,683,320` (`GameAssembly.dll.c`) |
+| `+0x1F0` | `P_BATTLE_DATA[]` | **Combatant Pointer Array**: Array of 12 combatant entity structs | `L4,679,756` (`GameAssembly.dll.c`) |
+| `+0x200` | `ARMS_DATA[]` | **Equipped Weapon Array**: Sharpness level, attack bonus, embedded rune | `L4,679,814` (`GameAssembly.dll.c`) |
+| `+0x218` | `ACTION_DATA[]` | **Action Queue Buffer**: Command ID, target actor, spell/item payload | `L4,683,288` (`GameAssembly.dll.c`) |
 
 ### C. Combatant Struct Offsets (`P_BATTLE_DATA` / `lVar2` & `lVar6`)
 
@@ -165,7 +165,7 @@ FinalDamage = max((int)CalculatedDamage, 1);
 ## 4. Master Game State & Event Flag Engine (`GAME_WORK`)
 
 **Source Line Range (`GameAssembly.dll.c`)**: **Lines 4,400,001 – 4,550,000**  
-**Decompiled Class Reference**: [`D:\Appz\Suisource\GSD2\GSD2\GAME_WORK.cs`](file:///d:/Appz/Suisource/GSD2/GSD2/GAME_WORK.cs), [`G2_SYS.cs`](file:///d:/Appz/Suisource/GSD2/GSD2/G2_SYS.cs), [`OldSrcBase.cs`](file:///d:/Appz/Suisource/GSD2/GSD2/OldSrcBase.cs)
+**Decompiled Class Reference**: `GAME_WORK.cs`, `G2_SYS.cs`, `OldSrcBase.cs`
 
 The `GAME_WORK` singleton (`Singleton<GAME_WORK>`) represents the central nervous system of Suikoden II. Every aspect of non-volatile campaign progression—including global storyline milestones, character recruitment and mortality, regional town evolution, treasure chest loot records, currency, inventory, and party formations—is managed within this monolithic memory block. In the native engine (`GameAssembly.dll.c`), this subsystem spans over **150,000 lines of low-level C code** (Lines 4,400,001 – 4,550,000).
 
@@ -706,8 +706,8 @@ The `D:\Appz\Suisource\GSD2\GSD2` folder contains **1,483 `.cs` files** categori
 ## 10. DLC & Pre-Order Bonus Architecture (`SystemDLC` & `UISaveLoad2`)
 
 ### A. Subsystem Coordinates & Entrypoints
-- **DLC Entitlement Checker**: `SystemDLC.IsDLC` ([L5,066,903](file:///d:/Appz/Suisource/GSD2/GSD2/GameAssembly.dll.c#L5066903))
-- **DLC Reward Dispatcher**: `UISaveLoad2.AddDLC` ([L5,067,379](file:///d:/Appz/Suisource/GSD2/GSD2/GameAssembly.dll.c#L5067379))
+- **DLC Entitlement Checker**: `SystemDLC.IsDLC` (Line 5,066,903 in `GameAssembly.dll.c`)
+- **DLC Reward Dispatcher**: `UISaveLoad2.AddDLC` (Line 5,067,379 in `GameAssembly.dll.c`)
 - **Entry Method VA**: `0x181e194a0` (`UISaveLoad2$$AddDLC`)
 - **Entitlement Check VA**: `0x181e18fe0` (`SystemDLC$$IsDLC`)
 
@@ -1273,14 +1273,14 @@ High-tier spells in Suikoden II summon celestial avatars, dragons, and True Rune
 
 | Rune & Spell Level | In-Game Spell Name | Summoned Avatar | Engine Implementation |
 | :--- | :--- | :--- | :--- |
-| **Soul Eater (Lv 4)** | **Judgement** | Grim Reaper / Avatar of Death | [`Magic/Eat4.cs`](file:///d:/Appz/Suisource/GSD2/GSD2/Magic/Eat4.cs) |
-| **Thunder Rune (Lv 4)** | **Thunder God** | Raijin / Thor Lightning Avatar | [`Magic/Thu4.cs`](file:///d:/Appz/Suisource/GSD2/GSD2/Magic/Thu4.cs) |
-| **Rage Rune (Lv 4)** | **Final Flame** | Inferno Phoenix / Fire Dragon | [`Magic/Fire4.cs`](file:///d:/Appz/Suisource/GSD2/GSD2/Magic/Fire4.cs) |
-| **Flowing Rune (Lv 4)** | **Mother Ocean** | Water Goddess / Tidal Avatar | [`Magic/Wat4.cs`](file:///d:/Appz/Suisource/GSD2/GSD2/Magic/Wat4.cs) |
-| **Mother Earth (Lv 4)** | **Earthquake** | Titan / Earth Guardian | [`Magic/Clay.cs`](file:///d:/Appz/Suisource/GSD2/GSD2/Magic/Clay.cs) |
-| **Cyclone Rune (Lv 4)** | **Shining Wind** | Sylph / Gale Spirit Avatar | [`Magic/Win4.cs`](file:///d:/Appz/Suisource/GSD2/GSD2/Magic/Win4.cs) |
-| **Bright Shield (Lv 4)** | **Forgiver Sign** | Celestial Angel of Mercy | [`Magic/Shi4.cs`](file:///d:/Appz/Suisource/GSD2/GSD2/Magic/Shi4.cs) |
-| **Black Sword (Lv 4)** | **Hungry Fiend** | Dark Demonic Shadow Beast | [`Magic/Swo4.cs`](file:///d:/Appz/Suisource/GSD2/GSD2/Magic/Swo4.cs) |
+| **Soul Eater (Lv 4)** | **Judgement** | Grim Reaper / Avatar of Death | `Magic/Eat4.cs` |
+| **Thunder Rune (Lv 4)** | **Thunder God** | Raijin / Thor Lightning Avatar | `Magic/Thu4.cs` |
+| **Rage Rune (Lv 4)** | **Final Flame** | Inferno Phoenix / Fire Dragon | `Magic/Fire4.cs` |
+| **Flowing Rune (Lv 4)** | **Mother Ocean** | Water Goddess / Tidal Avatar | `Magic/Wat4.cs` |
+| **Mother Earth (Lv 4)** | **Earthquake** | Titan / Earth Guardian | `Magic/Clay.cs` |
+| **Cyclone Rune (Lv 4)** | **Shining Wind** | Sylph / Gale Spirit Avatar | `Magic/Win4.cs` |
+| **Bright Shield (Lv 4)** | **Forgiver Sign** | Celestial Angel of Mercy | `Magic/Shi4.cs` |
+| **Black Sword (Lv 4)** | **Hungry Fiend** | Dark Demonic Shadow Beast | `Magic/Swo4.cs` |
 
 ### B. Rendering Anatomy of a Summon
 When a Level 4 summon executes:
@@ -1348,19 +1348,19 @@ public static class SummonRetextureHook
 In Suikoden lore, True Summoning Magic is wielded exclusively through the **Pale Gate Rune (冥門の紋章)** and the **Blue Moon Rune (蒼月の紋章)**. Rather than projecting elemental energy, these runes tear open dimensional rifts to pull other-worldly fiends and cosmic horrors into the battlefield.
 
 ### A. Pale Gate Rune (冥門の紋章) Spells & Avatars
-Governed by [`Magic/Gate1.cs`](file:///d:/Appz/Suisource/GSD2/GSD2/Magic/Gate1.cs) through [`Gate4.cs`](file:///d:/Appz/Suisource/GSD2/GSD2/Magic/Gate4.cs):
+Governed by `Magic/Gate1.cs` through `Gate4.cs`:
 
 | Spell Level | In-Game Name | Summoned Entity | Engine Implementation |
 | :--- | :--- | :--- | :--- |
-| **Level 1** | **Open Gate (門の開き)** | Nether Hellhounds & Fiends | [`Magic/Gate1.cs`](file:///d:/Appz/Suisource/GSD2/GSD2/Magic/Gate1.cs) |
-| **Level 2** | **Mud Spider (泥蜘蛛)** | Giant Underworld Arachnid | [`Magic/Gate2.cs`](file:///d:/Appz/Suisource/GSD2/GSD2/Magic/Gate2.cs) |
-| **Level 3** | **Chaos (混沌)** | Void Horror / Chaos Chimera | [`Magic/Gate3.cs`](file:///d:/Appz/Suisource/GSD2/GSD2/Magic/Gate3.cs) |
-| **Level 4** | **Empty World (虚無の世界)** | Nether Dragon / Void King | [`Magic/Gate4.cs`](file:///d:/Appz/Suisource/GSD2/GSD2/Magic/Gate4.cs) |
+| **Level 1** | **Open Gate (門の開き)** | Nether Hellhounds & Fiends | `Magic/Gate1.cs` |
+| **Level 2** | **Mud Spider (泥蜘蛛)** | Giant Underworld Arachnid | `Magic/Gate2.cs` |
+| **Level 3** | **Chaos (混沌)** | Void Horror / Chaos Chimera | `Magic/Gate3.cs` |
+| **Level 4** | **Empty World (虚無の世界)** | Nether Dragon / Void King | `Magic/Gate4.cs` |
 
 - **Dimensional Portal Mesh**: `Gate4.SetDonatsuShapeHadou` generates a toroidal dimensional vortex ("Donatsu" shape). The Nether Dragon emerges through this tear to unleash a screen-wide void blast.
 
 ### B. Blue Moon Rune (蒼月の紋章) Spells & Avatars
-Sierra Mikain's True Rune, implemented in [`Magic/Dark1.cs`](file:///d:/Appz/Suisource/GSD2/GSD2/Magic/Dark1.cs) through `Dark4.cs`:
+Sierra Mikain's True Rune, implemented in `Magic/Dark1.cs` through `Dark4.cs`:
 - **Level 1: Lunar Sigh (月のため息)** (`Dark1.cs`): Summons spectral bats that siphon enemy attack power.
 - **Level 2: Moon Shadow (月影)** (`Dark2.cs`): Manifests shadowy lunar phantoms striking all front-row enemies.
 - **Level 3: Blue Light (蒼光)** (`Dark3.cs`): Summons a piercing column of pale lunar energy.
@@ -1581,7 +1581,7 @@ public static class TakiSuggestionBoxNotifier
 
 ## 27. Master Blacksmithing Architecture: Tessai Recruitment & The 4 Hammers
 
-Weapon sharpening up to Level 16 is managed by master blacksmith Tessai and the Castle Forge subsystem ([`EventOverlayClass/h_kaji.cs`](file:///d:/Appz/Suisource/GSD2/GSD2/EventOverlayClass/h_kaji.cs)).
+Weapon sharpening up to Level 16 is managed by master blacksmith Tessai and the Castle Forge subsystem (`EventOverlayClass/h_kaji.cs`).
 
 ### A. Tessai Recruitment Logic
 - **Location**: Kuskus Town blacksmith forge.
@@ -1634,7 +1634,7 @@ public static class BlacksmithMasterMod
 
 ## 28. Viki Blinking Rune & Teleportation Engine (`telepo.cs`)
 
-Viki's spatial teleportation network operates through [`EventOverlayClass/telepo.cs`](file:///d:/Appz/Suisource/GSD2/GSD2/EventOverlayClass/telepo.cs) and `EventOverlayClass_telepo__TtelmachiChk` (Line 5,624,873 in `GameAssembly.dll.c`).
+Viki's spatial teleportation network operates through `EventOverlayClass/telepo.cs` and `EventOverlayClass_telepo__TtelmachiChk` (Line 5,624,873 in `GameAssembly.dll.c`).
 
 ### A. Teleport Destination Bitmask
 - Teleport destinations are tracked in `GAME_WORK + 0x80`:

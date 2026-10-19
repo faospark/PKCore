@@ -18,6 +18,17 @@ The **core DLL component** for **[Project Kyaro](https://www.nexusmods.com/suiko
 * Comprehensive Portrait Variant Support
 * Colored Intros and Flashbacks
 * Boosted War Battles (S2)
+* Restore Chimera Encounters in Tenzan Pass (30% encounter rate with Cyclone Rune drop restoration, S2)
+* Early Sajah Village Rare Shop & Rune Sage Vendor Unlock (S2)
+* Memory Auto-Battle (Replays last manually chosen action, S2)
+* Smart After-Battle Auto-Healing (Automatic Medicine & Healing Wind HP recovery, Sacrificial Jizo revival, and Antitoxin poison curing, S2)
+* Battle Enemy Level & HP Display with 1.5x Expanded Target Window (S1 & S2)
+* Battle Party Current / Max HP Display (S1 & S2)
+* Unlimited & Reusable Command Runes in Battle (Trick, Groundhog, Spider Slay, Angry Dragon, S2)
+* Rune Unbalance Removal (S2)
+* Character Battle Range Overrides (e.g. Medium range Kasumi, Luc, Mazus, Viki, Gantetsu, Badeaux, Sierra, S2)
+* Battle Formation Position Adjustments (S2)
+* Save Slot Party Member Mini Portraits (S1 & S2)
 * Button Controller Prompt Support (expanded to include more options)
 * Alternative Launcher (based on unused in‑game assets)
 * Minimal UI
@@ -32,6 +43,7 @@ The **core DLL component** for **[Project Kyaro](https://www.nexusmods.com/suiko
 * Scaled‑Down World Map of Suikoden 1
 * Alternative Run Animation for Tir (Project Kyaro sprites)
 * Restore Bamboo Fence on Mercenary Fortress
+* NPC Bathhouse Sprites & Castle Visitors Restoration (S2)
 
 **[Performance Features]**
 
@@ -51,6 +63,7 @@ The **core DLL component** for **[Project Kyaro](https://www.nexusmods.com/suiko
 **[Utility]**
 * Show Mouse Cursor
 * Clean Exit on ALT+F4 (Force immediate shutdown instead of hanging)
+* High-Speed Decompiled Symbol Indexer & CLI Query Tool (Sub-millisecond lookups for C# types, members, and native IL2CPP addresses)
 
 > **Borderless Mode**: For borderless fullscreen window, use Unity's native `-popupwindow` launch argument:
 > - **Steam**: Right-click game → Properties → Launch Options → Add `-popupwindow`
@@ -69,8 +82,17 @@ Replace game textures with custom PNG or DDS files in `BepInEx/plugins/PKCore/Te
 
 ### Advanced Customization
 
+- **Tenzan Pass Chimera Encounters Restoration**: Restores omitted Chimera monster encounters (Parties 6, 7, and 8) in Tenzan Pass (`va11`) with Pyriel's community fix layout (~30% encounter rate), guaranteed or configurable Cyclone Rune drops, and multi-tier engine bounds protection against Remaster crash bugs. See [Tenzan Pass Guide](Documentation/tenzan_pass_chimera_va11.md).
+- **Sajah Village Rare Shop & Rune Sage Unlock**: Early access unlock for the hidden late-game rare item/rune vendor and counter trigger in Sajah Village (`vj17`) bypassing story flag 143 via in-memory map patching. See [Sajah Shop Guide](Documentation/sajah_village_rare_shop_vj17.md).
+- **NPC Bathhouse Sprites & Castle Visitors Restoration**: Restores unused bathhouse sprites for non-combatant recruits and convoy members in Suikoden 2, unlocks full 8-character bathhouse capacity (+2 convoy/visitor slots over a 6-man party), eliminates engine null-dereference crashes, corrects Bob and male character gender routing, and populates open bath positions with recruited castle companions (Apple, Shu, Leona, Richmond, Barbara, Pilika, Teresa, etc.). See [Bath Attributes Guide](Documentation/suikoden_2_character_attributes_gender_and_baths.md).
+- **Memory Auto-Battle**: Replays last manually chosen actions (Attack vs Rune/Magic) in Auto-Battle with resource and status checks.
+- **Suikoden I Map Identifiers & Regional Breakdown Reference Guide**: Complete architectural reference and regional sector catalog for Suikoden 1, documenting all 12 regional sectors (`area_a` through `area_k`, `area_z`), 85 background map assets (`bg_va1`–`bg_vz5`), C# decompiled handlers (`G1_fdata_c.cs`, `VillageManager.cs`, `Village_c.cs`, `Event_c.cs`), and the 70+ `EVENT_COMMAND` bytecode opcodes. See [Suikoden 1 Map Guide](Documentation/suikoden_1_map_ids_and_areas_breakdown.md).
+- **Suikoden II Map Identifiers & Geographic Areas Reference**: Master architectural reference and exhaustive breakdown of all 4-character map and venue identifiers (`va01` through `vk37`), chronological story chapters, extracted asset conventions, text message encoding keys, and associated PKCore patches. See [Map Identifiers Guide](Documentation/suikoden_2_map_ids_and_areas_breakdown.md).
+- **Suikoden II Master Map Entities, Triggers & World Objects Catalog**: Exhaustive technical census and bytecode reference across all 226 master map assets in Suikoden 2, documenting all 4,901 NPCs, 1,552 dynamic props (bonsai trees, flower pots, furniture), 3,207 collision triggers and single-tile dots, 90 save points, 27 chest clusters, hidden/unfinished entities, trigger types (`etyp`), and all 147 event command opcodes (`EC*`) with in-memory injection blueprints. See [Master Map Entities Guide](Documentation/suikoden_2_master_map_entities_and_triggers_catalog.md).
+- **Individual Geographic Area Volumes (62 Areas)**: Complete standalone documentation files for every village, dungeon, city, pass, and castle area in `Documentation/areas/`, complete with embedded **Human-Readable Field & Engine Legends** and decoded plain-English event actions (no raw opcode numbers).
 - **Placeholder Text Replacement**: Automatic replacement of protagonist and HQ name placeholders in dialogs. See [Placeholder Text Guide](Documentation/PlaceholderText.md).
 - **Active Launcher Language Detection**: Automatically detects the active launcher language on startup (English, Traditional Chinese, Simplified Chinese, Japanese, French, German, Spanish, Italian, Korean) and tracks manual language changes via `LanguageSelectionPatch`.
+- **High-Speed Decompiled Symbol & Map Indexer**: Instant lookup tool for C# classes, methods, fields, native IL2CPP memory addresses, and all 360 Maps & World Environments across both Suikoden 1 and Suikoden 2 (`tools\sym.bat <Query>`, `tools\sym.bat --maps <MapID>`). See [Symbol Indexer Guide](Documentation/symbol_indexer_guide.md).
 - **NPC Portraits**: Inject custom high-resolution portraits for any NPC.
 - **War Battle Modding**: Customize character stats, abilities, and subunit bonus values in Suikoden 2 war battles via JSON.
 - **UI Scaling**: Presets for dialog box size and menu layout scaling.

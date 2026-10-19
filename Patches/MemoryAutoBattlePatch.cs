@@ -49,7 +49,7 @@ public static class MemoryAutoBattlePatch
         if (!GameDetection.IsGSD2())
             return;
 
-        if (Plugin.Config != null && !Plugin.Config.MemoryAutoBattlePersistAcrossBattles.Value)
+        if (scene.name == "Title" || scene.name == "MainMenu")
         {
             _rememberedActions.Clear();
         }
@@ -241,33 +241,6 @@ public static class MemoryAutoBattlePatch
         catch (Exception ex)
         {
             Plugin.Log.LogError($"[MemoryAutoBattle:omakase_window] Error: {ex}");
-        }
-    }
-
-    /// <summary>
-    /// Clear memory when battle initializes unless persistence is enabled.
-    /// </summary>
-    [HarmonyPatch(typeof(GSD2::BattleManager), "PlayerInit")]
-    [HarmonyPostfix]
-    public static void BattleManager_PlayerInit_Postfix(GSD2::BattleManager __instance)
-    {
-        try
-        {
-            if (!GameDetection.IsGSD2())
-                return;
-
-            if (Plugin.Config != null && !Plugin.Config.MemoryAutoBattlePersistAcrossBattles.Value)
-            {
-                _rememberedActions.Clear();
-                if (Plugin.Config.DetailedLogs.Value)
-                {
-                    Plugin.Log.LogInfo("[MemoryAutoBattle] Cleared remembered actions on PlayerInit.");
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            Plugin.Log.LogError($"[MemoryAutoBattle:PlayerInit] Error: {ex}");
         }
     }
 }

@@ -226,17 +226,28 @@ When examining placed items in Riou's room, dynamic dialogue branches can fire d
 
 ---
 
-## 4. Implementation Roadmap
+## 4. Implementation Analysis & Visual Placement Prerequisite
 
-| Phase | Milestone | Deliverables |
-| :---: | :--- | :--- |
-| **Phase 1** | **Backend Manager** | Implement `RoomItemManager.cs` in PKCore. Unit test placing, retrieving, and auto-saving via `GSD2SaveData`. |
-| **Phase 2** | **Lebrante Menu Hook** | Harmony patch on `h_kantei_c` to inject the *"Decorate Room"* dialogue option and slot management UI. |
-| **Phase 3** | **Map Event Injection** | Inject 8 inspection triggers in Riou's room (`vd06`) via `MACHICON.EventInit` Postfix. |
-| **Phase 4** | **Flavor & Polish** | Add contextual item examination windows, Nanami reaction dialogues, and sound effects. |
+During initial prototype testing in PKCore, the backend state manager and inventory synchronization were fully verified:
+1. `GAME_DATA.room_item` (8 slots) accepts antique item IDs (e.g., `item_no: 19`, `use_cnt: 64` for Bonsai Tree) and persists seamlessly in decrypted save files (`Data0.json`).
+2. Party bag antique transfers and Lebrante appraisal hooks function as intended.
+
+### Critical UX Finding: Physical In-Room Visuals Required
+However, presenting this system purely as an overlay menu or UI window proves unsatisfactory: **without physical, visible sprites appearing on the room's tables, pedestals, and shelves, the feature feels detached from the game world**. In the 1998 PS1 release, Konami severed this system before creating the in-map sprite display bindings for `vk16` (unlike Tetsu's bathhouse, which had dedicated `furo_item` sprite animations).
+
+To do this restoration authentic justice, future work must focus on **surgical visual map object insertion**:
+- Injecting 8 visual sprite renderers into the `vk16` scene hierarchy (`bgManagerHD/vk16_00` or `MapSpriteHD`).
+- Mapping world coordinates directly to the 8 bedroom surfaces:
+  - Bedside Nightstand Left & Right
+  - Center Meeting Table & Corner Table
+  - Wall Display Shelves Upper & Lower
+  - Bedroom Walls West & East
+- Dynamically binding each sprite's active texture/frame to the corresponding `room_item[i]` item number.
+
+Until physical in-room visual placement is implemented, the overlay UI remains dormant (`EnableRoomItemRestoration = false`) to keep the player experience clean and unobtrusive.
 
 ---
 
 ## Conclusion
 
-The `room_item` array is a rare example of intact historical cut content preserved across multiple decades of game releases. By leveraging Project Kayaro’s in-memory patching architecture, we can cleanly restore Konami’s intended bedroom decoration feature with zero risk to save compatibility or game stability.
+The `room_item` array is a rare example of intact historical cut content preserved across multiple decades of game releases. While the data pipeline and save serialization are now fully reverse-engineered and grounded in PKCore, the ultimate goal of the restoration is to see the Bonsai Tree, Celadon Urn, and Peeing Boy physically resting on Riou's bedroom furniture. That surgical map object insertion will be the crowning milestone of the project.

@@ -21,6 +21,7 @@
 
 #### ⚡ Technical
 * [⚡ **Caching & Performance**](caching_mechanism)
+* [🗺️ **Map IDs & Areas Reference**](suikoden_2_map_ids_and_areas_breakdown)
 * [🛠️ **Troubleshooting**](Home#-troubleshooting--faq)
 
 ---

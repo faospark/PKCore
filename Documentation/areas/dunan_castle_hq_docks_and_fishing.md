@@ -1,0 +1,321 @@
+# Suikoden II Geographic Area Catalog: Castle HQ: Lake Dunan Docks & Fishing Pier
+
+**Geographic Scope & Role**: Fortress harbor; Amada's patrol boat moorings, fast transport gangway, and the fishing mini-game wooden pier.
+
+**Regional Category**: Region `VK` | **Master Maps Included**: `vk22`
+
+**Grounding Reference**: Compiled from `suikoden_2_map_ids_and_areas_breakdown.md` and direct bytecode inspection of all corresponding assets in `D:\Modding\suikodum\Mobobehaviour`.
+
+---
+
+## 📖 Human-Readable Field & Engine Legend
+
+| Field / Concept | Engine Term | Human Meaning & Allowed Values |
+|---|---|---|
+| **Class (`otyp`)** | Object Type | **1** = NPC / Actor (living characters)<br>**2** = Prop / Scenery (wells, buckets, bonsai, tables, chairs)<br>**3** = World Device (Journeyman save crystals, chests, inn beds, fire)<br>**4** = Trigger / Hitbox (invisible door warps, counter barriers, single-tile dots) |
+| **Collision (`ozok`)** | Obstacle Mask | **0** = Passable (walk-through, floor warps, rugs)<br>**2** = Solid Obstacle (impassable physical barrier you bump into)<br>**3** = Special Barrier (counters, low tables, railings you can interact over) |
+| **Facing (`ano`)** | Animation / State | For NPCs: **0** = Down (South), **1** = Left (West), **2** = Up (North), **3** = Right (East)<br>For Devices: **2** = Closed Chest, **3** = Open Chest, **14/25/53+** = Spinning Save Crystal, **12/26** = Inn Rest Bed |
+| **Display (`disp`)** | Visibility State | **1** = Active & Rendered on screen<br>**0** = Dormant / Hidden (waiting for story flags to spawn) |
+| **Coords (`x, y`)** | Tile Grid Position | Exact tile coordinate on the map layout (`(0, 0)` is top-left) |
+| **Size (`w, h`)** | Trigger Dimensions | `0x0` = 1 single 1x1 tile ("A Dot"). `4x1` = Bounding box 5 tiles wide by 2 tiles tall |
+| **Speed (`spd`)** | Movement Rate | **0** = Immobile fixture; **4** = Standard walking; **5–8** = Running |
+| **Wait (`wt`)** | Wander Timer | **255** = Stationary (fixed orientation); **0–254** = Idle ticks before wandering |
+| **Priority (`pri`)** | Z-Order Layer | **0** = Standard ground layer; **40–180** = Elevated/floating (save crystals, chandeliers) |
+| **Mode (`etyp`)** | Trigger Mode | **1 (Action / Talk)** = Fired when standing adjacent/inside and pressing Confirm button<br>**2 (Map Init)** = Fired once immediately upon loading the room before fade-in<br>**3 (Step-On Tripwire)** = Fired the instant player steps onto the tile<br>**4 (Loop)** = Continuous per-frame background script |
+| **`eventForm`** | Preconditions | Conditions that MUST be true for the script to execute (Story flags, items, party members, position) |
+| **`eventCom`** | Action Sequence | The actual actions executed when triggered (dialogue, warps, healing, shops, loot, spawns) |
+
+---
+
+## Location Map: `vk22`
+
+- **Master Map Container**: `vk22.json`
+- **Submap Layer Files**: vk22_06.json, vk22_08.json, vk22_09.json
+- **Collision Grid Files**: vk22_map_00.json
+- **Sprite Animation Bundles**: None
+- **Submap Room Count**: 1
+
+### Submap Layer `vk22_00` (Index 0)
+
+- **Map Number (`mapno`)**: `0`
+- **Battle Encounter Zone (`batlno`)**: `0` (Timer: `0`, Rate: `0`)
+- **Entity Count (`okaz`)**: `56` Objects | **Script Count (`evkaz`)**: `148` Scripts
+
+#### Complete Physical Entity Inventory (56 Objects)
+
+| Slot | Class (`otyp`) | Identity / Description | Sprite Pattern (`fpno`) | Coords (`x, y`) | Size (`w, h`) | Facing (`ano`) | State (`disp`) | Collision (`ozok`) | Speed | Wait | Priority |
+|:---:|---|---|:---:|:---:|:---:|---|---|---|:---:|:---:|:---:|
+| `obj[00]` | NPC / Actor | **Simone Verdicci** | `37` | `(57, 42)` | `5x2` | South (Down) | Dormant / Hidden (0) | Special (3) | 3 | 128 | 0 |
+| `obj[01]` | NPC / Actor | **Richmond** | `38` | `(123, 50)` | `0x0` | East (Right) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[02]` | NPC / Actor | **Humphrey Mintz** | `100` | `(125, 53)` | `0x0` | Up (North) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[03]` | NPC / Actor | **Actor ID 42** | `42` | `(32, 28)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[04]` | NPC / Actor | **Actor ID 41** | `41` | `(58, 28)` | `5x2` | East (Right) | Dormant / Hidden (0) | Special (3) | 3 | 128 | 0 |
+| `obj[05]` | Prop / Scenery | **Lilly** | `49` | `(108, 46)` | `0x0` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
+| `obj[06]` | Prop / Scenery | **Lilly** | `49` | `(113, 46)` | `0x0` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
+| `obj[07]` | Prop / Scenery | **Prop ID 53553** | `53553` | `(110, 60)` | `0x0` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
+| `obj[08]` | Trigger / Hitbox | **Hitbox Zone (7x3)** | `0` | `(110, 44)` | `6x2` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
+| `obj[09]` | Prop / Scenery | **Hoi (Impostor)** | `74` | `(113, 44)` | `0x0` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
+| `obj[10]` | Prop / Scenery | **Hoi (Impostor)** | `74` | `(118, 44)` | `0x0` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
+| `obj[11]` | Trigger / Hitbox | **Hitbox Zone (7x3)** | `0` | `(115, 42)` | `6x2` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
+| `obj[12]` | Prop / Scenery | **Prop ID 53578** | `53578` | `(118, 59)` | `0x0` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
+| `obj[13]` | NPC / Actor | **Actor ID 79** | `79` | `(109, 48)` | `5x1` | East (Right) | Dormant / Hidden (0) | Special (3) | 3 | 128 | 0 |
+| `obj[14]` | NPC / Actor | **Actor ID 65105** | `65105` | `(61, 57)` | `0x0` | East (Right) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[15]` | Save Point | **Journeyman Save Orb** | `0` | `(34, 54)` | `0x0` | Frame 25 | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[16]` | Rest Device / Fire | **Inn Bed / Recovery Device** | `0` | `(27, 28)` | `0x0` | Frame 26 | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 480 |
+| `obj[17]` | NPC / Actor | **Jowy Atreides** | `2` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[18]` | NPC / Actor | **Youth Brigade Recruit** | `3` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[19]` | NPC / Actor | **Jowy (Camp/Prologue)** | `18` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[20]` | NPC / Actor | **Eilie** | `19` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[21]` | NPC / Actor | **Rina** | `20` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[22]` | NPC / Actor | **Bolgan** | `21` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[23]` | NPC / Actor | **Pilika (Wooden Amulet)** | `124` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[24]` | NPC / Actor | **Tsai** | `52` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[25]` | NPC / Actor | **Rowd** | `85` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[26]` | NPC / Actor | **Actor ID 89** | `89` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[27]` | NPC / Actor | **Actor ID 79** | `79` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
+| `obj[28]` | Trigger / Hitbox | **Hitbox Zone (3x2)** | `0` | `(109, 38)` | `2x1` | South (Down) | Visible (1) | Passable (0) | 4 | 255 | 0 |
+| `obj[29]` | Trigger / Hitbox | **Hitbox Zone (2x2)** | `0` | `(33, 27)` | `1x1` | South (Down) | Visible (1) | Passable (0) | 4 | 255 | 0 |
+| `obj[30]` | Trigger / Hitbox | **Hitbox Zone (2x2)** | `0` | `(36, 25)` | `1x1` | South (Down) | Visible (1) | Passable (0) | 4 | 255 | 0 |
+| `obj[31]` | Trigger / Hitbox | **Hitbox Zone (2x2)** | `0` | `(60, 25)` | `1x1` | South (Down) | Visible (1) | Passable (0) | 4 | 255 | 0 |
+| `obj[32]` | Trigger / Hitbox | **Hitbox Zone (2x2)** | `0` | `(62, 25)` | `1x1` | South (Down) | Visible (1) | Passable (0) | 4 | 255 | 0 |
+| `obj[33]` | Trigger / Hitbox | **Hitbox Zone (2x2)** | `0` | `(71, 23)` | `1x1` | South (Down) | Visible (1) | Passable (0) | 4 | 255 | 0 |
+| `obj[34]` | Trigger / Hitbox | **Hitbox Zone (2x2)** | `0` | `(72, 29)` | `1x1` | South (Down) | Visible (1) | Passable (0) | 4 | 255 | 0 |
+| `obj[35]` | Trigger / Hitbox | **Hitbox Zone (2x2)** | `0` | `(61, 53)` | `1x1` | South (Down) | Visible (1) | Passable (0) | 4 | 255 | 0 |
+| `obj[36]` | Trigger / Hitbox | **Hitbox Zone (2x2)** | `0` | `(105, 36)` | `1x1` | South (Down) | Visible (1) | Passable (0) | 4 | 255 | 0 |
+| `obj[37]` | Trigger / Hitbox | **Hitbox Zone (2x2)** | `0` | `(32, 25)` | `1x1` | South (Down) | Visible (1) | Passable (0) | 4 | 255 | 0 |
+| `obj[38]` | Trigger / Hitbox | **Hitbox Zone (2x2)** | `0` | `(45, 25)` | `1x1` | South (Down) | Visible (1) | Passable (0) | 4 | 255 | 0 |
+| `obj[39]` | Trigger / Hitbox | **Hitbox Zone (2x2)** | `0` | `(49, 25)` | `1x1` | South (Down) | Visible (1) | Passable (0) | 4 | 255 | 0 |
+| `obj[40]` | Trigger / Hitbox | **Hitbox Zone (2x2)** | `0` | `(65, 25)` | `1x1` | South (Down) | Visible (1) | Passable (0) | 4 | 255 | 0 |
+| `obj[41]` | Trigger / Hitbox | **Hitbox Zone (2x2)** | `0` | `(69, 25)` | `1x1` | South (Down) | Visible (1) | Passable (0) | 4 | 255 | 0 |
+| `obj[42]` | Trigger / Hitbox | **Hitbox Zone (2x2)** | `0` | `(59, 53)` | `1x1` | South (Down) | Visible (1) | Passable (0) | 4 | 255 | 0 |
+| `obj[43]` | Trigger / Hitbox | **Hitbox Zone (2x2)** | `0` | `(107, 37)` | `1x1` | South (Down) | Visible (1) | Passable (0) | 4 | 255 | 0 |
+| `obj[44]` | Trigger / Hitbox | **Hitbox Zone (2x2)** | `0` | `(115, 37)` | `1x1` | South (Down) | Visible (1) | Passable (0) | 4 | 255 | 0 |
+| `obj[45]` | Trigger / Hitbox | **Hitbox Zone (2x2)** | `0` | `(72, 32)` | `1x1` | South (Down) | Visible (1) | Passable (0) | 4 | 255 | 0 |
+| `obj[46]` | Trigger / Hitbox | **Hitbox Zone (2x2)** | `0` | `(113, 37)` | `1x1` | South (Down) | Visible (1) | Passable (0) | 4 | 255 | 0 |
+| `obj[47]` | Trigger / Hitbox | **Hitbox Zone (2x2)** | `0` | `(64, 30)` | `1x1` | South (Down) | Visible (1) | Passable (0) | 4 | 255 | 0 |
+| `obj[48]` | Trigger / Hitbox | **Hitbox Zone (2x2)** | `0` | `(43, 25)` | `1x1` | South (Down) | Visible (1) | Passable (0) | 4 | 255 | 0 |
+| `obj[49]` | Trigger / Hitbox | **Hitbox Zone (2x2)** | `0` | `(67, 25)` | `1x1` | South (Down) | Visible (1) | Passable (0) | 4 | 255 | 0 |
+| `obj[50]` | NPC / Actor | **Actor ID 65208** | `65208` | `(49, 29)` | `6x3` | West (Left) | Dormant / Hidden (0) | Special (3) | 2 | 128 | 0 |
+| `obj[51]` | NPC / Actor | **Actor ID 65186** | `65186` | `(90, 52)` | `6x3` | West (Left) | Dormant / Hidden (0) | Special (3) | 2 | 128 | 0 |
+| `obj[52]` | NPC / Actor | **Actor ID 65209** | `65209` | `(71, 27)` | `6x3` | West (Left) | Dormant / Hidden (0) | Special (3) | 2 | 128 | 0 |
+| `obj[53]` | NPC / Actor | **Actor ID 65215** | `65215` | `(33, 41)` | `6x3` | East (Right) | Dormant / Hidden (0) | Special (3) | 2 | 128 | 0 |
+| `obj[54]` | NPC / Actor | **Actor ID 65080** | `65080` | `(74, 55)` | `6x3` | East (Right) | Dormant / Hidden (0) | Special (3) | 2 | 128 | 0 |
+| `obj[55]` | NPC / Actor | **Actor ID 65191** | `65191` | `(48, 41)` | `6x3` | Up (North) | Dormant / Hidden (0) | Special (3) | 2 | 128 | 0 |
+
+
+#### Entity Narrative Roles, Placements & Mechanics
+
+- **`obj[00]` (Simone Verdicci)**: Positioned at tile `(57, 42)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[01]` (Richmond)**: Positioned at tile `(123, 50)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[02]` (Humphrey Mintz)**: Positioned at tile `(125, 53)`, facing Up (North). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[03]` (Object 42)**: Positioned at tile `(32, 28)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[04]` (Object 41)**: Positioned at tile `(58, 28)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[05]` (Prop: Lilly)**: Environmental world dressing prop placed at tile `(108, 46)`. Solid collision is set to `32`.
+- **`obj[06]` (Prop: Lilly)**: Environmental world dressing prop placed at tile `(113, 46)`. Solid collision is set to `0`.
+- **`obj[07]` (Prop: Object 53553)**: Environmental world dressing prop placed at tile `(110, 60)`. Solid collision is set to `0`.
+- **`obj[08]` (Hitbox Zone)**: Bounding trigger area covering `7` tiles wide by `3` tiles high from `(110, 44)` to `(116, 46)`. Handles doorway warps, counter interactions, and room transitions.
+- **`obj[09]` (Prop: Hoi (Impostor))**: Environmental world dressing prop placed at tile `(113, 44)`. Solid collision is set to `32`.
+- **`obj[10]` (Prop: Hoi (Impostor))**: Environmental world dressing prop placed at tile `(118, 44)`. Solid collision is set to `0`.
+- **`obj[11]` (Hitbox Zone)**: Bounding trigger area covering `7` tiles wide by `3` tiles high from `(115, 42)` to `(121, 44)`. Handles doorway warps, counter interactions, and room transitions.
+- **`obj[12]` (Prop: Object 53578)**: Environmental world dressing prop placed at tile `(118, 59)`. Solid collision is set to `0`.
+- **`obj[13]` (Object 79)**: Positioned at tile `(109, 48)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[14]` (Object 65105)**: Positioned at tile `(61, 57)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[15]` (Journeyman Save Crystal)**: Floating save station orb at tile `(34, 54)`, priority `0`. Triggers `MSaveInit` save system dialog.
+- **`obj[16]` (World Device: Invisible / Hitbox Trigger)**: Interactive mechanism at tile `(27, 28)` with state parameter `26`.
+- **`obj[17]` (Jowy Atreides)**: Positioned at tile `(0, 0)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[18]` (Youth Brigade Recruit)**: Positioned at tile `(0, 0)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[19]` (Jowy (Camp/Prologue))**: Positioned at tile `(0, 0)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[20]` (Eilie)**: Positioned at tile `(0, 0)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[21]` (Rina)**: Positioned at tile `(0, 0)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[22]` (Bolgan)**: Positioned at tile `(0, 0)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[23]` (Pilika (Wooden Amulet))**: Positioned at tile `(0, 0)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[24]` (Tsai)**: Positioned at tile `(0, 0)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[25]` (Rowd)**: Positioned at tile `(0, 0)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[26]` (Object 89)**: Positioned at tile `(0, 0)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[27]` (Object 79)**: Positioned at tile `(0, 0)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[28]` (Hitbox Zone)**: Bounding trigger area covering `3` tiles wide by `2` tiles high from `(109, 38)` to `(111, 39)`. Handles doorway warps, counter interactions, and room transitions.
+- **`obj[29]` (Hitbox Zone)**: Bounding trigger area covering `2` tiles wide by `2` tiles high from `(33, 27)` to `(34, 28)`. Handles doorway warps, counter interactions, and room transitions.
+- **`obj[30]` (Hitbox Zone)**: Bounding trigger area covering `2` tiles wide by `2` tiles high from `(36, 25)` to `(37, 26)`. Handles doorway warps, counter interactions, and room transitions.
+- **`obj[31]` (Hitbox Zone)**: Bounding trigger area covering `2` tiles wide by `2` tiles high from `(60, 25)` to `(61, 26)`. Handles doorway warps, counter interactions, and room transitions.
+- **`obj[32]` (Hitbox Zone)**: Bounding trigger area covering `2` tiles wide by `2` tiles high from `(62, 25)` to `(63, 26)`. Handles doorway warps, counter interactions, and room transitions.
+- **`obj[33]` (Hitbox Zone)**: Bounding trigger area covering `2` tiles wide by `2` tiles high from `(71, 23)` to `(72, 24)`. Handles doorway warps, counter interactions, and room transitions.
+- **`obj[34]` (Hitbox Zone)**: Bounding trigger area covering `2` tiles wide by `2` tiles high from `(72, 29)` to `(73, 30)`. Handles doorway warps, counter interactions, and room transitions.
+- **`obj[35]` (Hitbox Zone)**: Bounding trigger area covering `2` tiles wide by `2` tiles high from `(61, 53)` to `(62, 54)`. Handles doorway warps, counter interactions, and room transitions.
+- **`obj[36]` (Hitbox Zone)**: Bounding trigger area covering `2` tiles wide by `2` tiles high from `(105, 36)` to `(106, 37)`. Handles doorway warps, counter interactions, and room transitions.
+- **`obj[37]` (Hitbox Zone)**: Bounding trigger area covering `2` tiles wide by `2` tiles high from `(32, 25)` to `(33, 26)`. Handles doorway warps, counter interactions, and room transitions.
+- **`obj[38]` (Hitbox Zone)**: Bounding trigger area covering `2` tiles wide by `2` tiles high from `(45, 25)` to `(46, 26)`. Handles doorway warps, counter interactions, and room transitions.
+- **`obj[39]` (Hitbox Zone)**: Bounding trigger area covering `2` tiles wide by `2` tiles high from `(49, 25)` to `(50, 26)`. Handles doorway warps, counter interactions, and room transitions.
+- **`obj[40]` (Hitbox Zone)**: Bounding trigger area covering `2` tiles wide by `2` tiles high from `(65, 25)` to `(66, 26)`. Handles doorway warps, counter interactions, and room transitions.
+- **`obj[41]` (Hitbox Zone)**: Bounding trigger area covering `2` tiles wide by `2` tiles high from `(69, 25)` to `(70, 26)`. Handles doorway warps, counter interactions, and room transitions.
+- **`obj[42]` (Hitbox Zone)**: Bounding trigger area covering `2` tiles wide by `2` tiles high from `(59, 53)` to `(60, 54)`. Handles doorway warps, counter interactions, and room transitions.
+- **`obj[43]` (Hitbox Zone)**: Bounding trigger area covering `2` tiles wide by `2` tiles high from `(107, 37)` to `(108, 38)`. Handles doorway warps, counter interactions, and room transitions.
+- **`obj[44]` (Hitbox Zone)**: Bounding trigger area covering `2` tiles wide by `2` tiles high from `(115, 37)` to `(116, 38)`. Handles doorway warps, counter interactions, and room transitions.
+- **`obj[45]` (Hitbox Zone)**: Bounding trigger area covering `2` tiles wide by `2` tiles high from `(72, 32)` to `(73, 33)`. Handles doorway warps, counter interactions, and room transitions.
+- **`obj[46]` (Hitbox Zone)**: Bounding trigger area covering `2` tiles wide by `2` tiles high from `(113, 37)` to `(114, 38)`. Handles doorway warps, counter interactions, and room transitions.
+- **`obj[47]` (Hitbox Zone)**: Bounding trigger area covering `2` tiles wide by `2` tiles high from `(64, 30)` to `(65, 31)`. Handles doorway warps, counter interactions, and room transitions.
+- **`obj[48]` (Hitbox Zone)**: Bounding trigger area covering `2` tiles wide by `2` tiles high from `(43, 25)` to `(44, 26)`. Handles doorway warps, counter interactions, and room transitions.
+- **`obj[49]` (Hitbox Zone)**: Bounding trigger area covering `2` tiles wide by `2` tiles high from `(67, 25)` to `(68, 26)`. Handles doorway warps, counter interactions, and room transitions.
+- **`obj[50]` (Object 65208)**: Positioned at tile `(49, 29)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[51]` (Object 65186)**: Positioned at tile `(90, 52)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[52]` (Object 65209)**: Positioned at tile `(71, 27)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[53]` (Object 65215)**: Positioned at tile `(33, 41)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[54]` (Object 65080)**: Positioned at tile `(74, 55)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[55]` (Object 65191)**: Positioned at tile `(48, 41)`, facing Up (North). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+
+
+#### Complete Bytecode Script Catalog (148 Scripts)
+
+| Script | Execution Mode (`etyp`) | Required Preconditions (`eventForm`) | Action Execution Sequence (`eventCom`) |
+|:---:|---|---|---|
+| `ev[00]` | `2 (Map Init)` | Player within Box [50..54, 2..55] AND Condition Check #65 AND Condition Check #30 AND Active Party Has Character #4 | Dismiss Emotion Bubble (1); Open Dialogue Message Window |
+| `ev[01]` | `2 (Map Init)` | Story Flag 202 (bit 4) SET AND Story Flag 126 (bit 1) CLEAR AND Player within Box [50..54, 2..55] AND Condition Check #65 AND Star of Destiny #1 Recruited AND Target Inspected is obj[255] | Make obj[84] Hidden (disp = 0); Engine Action #5; Toggle Random Encounters (9); Engine Action #126; Warp Room -> Submap 144 at (16,47) facing 255 |
+| `ev[02]` | `2 (Map Init)` | Story Flag 202 (bit 4) SET AND Story Flag 126 (bit 1) CLEAR AND Player within Box [80..88, 2..150] AND Condition Check #160 AND Star of Destiny #0 Recruited AND Target Inspected is obj[255] | Dismiss Character to Castle Base (5); Engine Action #39 |
+| `ev[03]` | `2 (Map Init)` | Condition Check #23 AND Condition Check #37 AND Player within Box [34..18, 1..33] AND Player X within Range [2..255] | Open Dialogue Message Window; Reset Camera Tracking (255) |
+| `ev[04]` | `2 (Map Init)` | Condition Check #23 AND Condition Check #42 AND Player within Box [34..15, 16..33] AND Player X within Range [2..255] | Open Dialogue Message Window; Close Dialogue Window |
+| `ev[05]` | `2 (Map Init)` | Condition Check #23 AND Condition Check #41 AND Player within Box [34..15, 2..33] AND Player X within Range [2..255] | Open Dialogue Message Window; Display Dialogue Box [Bank: 255, MsgID: 254] |
+| `ev[06]` | `2 (Map Init)` | Condition Check #23 AND Condition Check #37 AND Player within Box [34..18, 1..33] AND Player X within Range [2..255] | Open Dialogue Message Window; Reset Camera Tracking (255) |
+| `ev[07]` | `2 (Map Init)` | Condition Check #23 AND Condition Check #38 AND Player within Box [34..18, 16..255] | Open Dialogue Message Window; Engine Action #9 |
+| `ev[08]` | `2 (Map Init)` | Condition Check #23 AND Condition Check #100 AND Player X within Range [255..254] | Open Dialogue Message Window; Screen Fade Transition (255, 254, 204) |
+| `ev[09]` | `2 (Map Init)` | Condition Check #23 AND Condition Check #49 AND Player within Box [35..26, 4..33] AND Player X within Range [3..255] | Make obj[89] Hidden (disp = 0); Place Scenery Structure (2); Warp Town -> Area 0 Map 13 Submap 0 at (16,47) |
+| `ev[10]` | `2 (Map Init)` | Condition Check #23 AND Condition Check #49 AND Player within Box [34..26, 4..33] AND Player X within Range [3..255] | Make obj[89] Hidden (disp = 0); Show Dialogue Portrait (2, 0, 0); Show Dialogue Portrait (47, 255, 254) |
+| `ev[11]` | `2 (Map Init)` | Condition Check #23 AND Condition Check #74 AND Player within Box [35..26, 8..33] AND Player X within Range [3..255] | Make obj[89] Hidden (disp = 0); Change Portrait Expression (2); Warp Town -> Area 0 Map 17 Submap 0 at (19,47) |
+| `ev[12]` | `2 (Map Init)` | Condition Check #23 AND Condition Check #74 AND Player within Box [34..26, 8..33] AND Player X within Range [3..255] | Make obj[89] Hidden (disp = 0); Branch on Choice (2, 0); Open Dialogue Message Window; Branch on Choice (47, 255) |
+| `ev[13]` | `2 (Map Init)` | Condition Check #23 AND Condition Check #79 AND Player within Box [33..1, 3..255] | Open Dialogue Message Window; Execute Choice Result (255) |
+| `ev[14]` | `2 (Map Init)` | Story Flag 113 (bit 128) SET | Make obj[0] Hidden (disp = 0); Open Dialogue Sub-Window (0); Close Dialogue Sub-Window (47) |
+| `ev[15]` | `2 (Map Init)` | Story Flag 144 (bit 8) SET | Open Dialogue Message Window; Set Story Flag (255, 254) |
+| `ev[16]` | `2 (Map Init)` | Condition Check #29 AND Party Holds At Least 3,200 Potch | Mark NPC Talk Interaction Complete (Flag #13); Warp Map Transition (255, 254, 204, 204, 204) |
+| `ev[17]` | `1 (Action / Talk)` | Condition Check #30 AND Party Holds At Least 3,200 Potch | Jump to Bytecode Offset (0, 176); Engine Action #99; Place Scenery Structure (32) |
+| `ev[18]` | `2 (Map Init)` | Story Flag 186 (bit 4) SET AND Story Flag 114 (bit 8) CLEAR | Make obj[9] Hidden (disp = 0); Make obj[2] Visible (disp = 1); Engine Action #9; Make obj[1] Hidden (disp = 0); Engine Action #9; Make obj[8] Hidden (disp = 0); Teleport obj[255] to (254,204) |
+| `ev[19]` | `1 (Action / Talk)` | Story Flag 113 (bit 128) SET AND Story Flag 114 (bit 1) CLEAR AND Player within Box [66..86, 2..60] AND Condition Check #70 AND Story Flag 148 (bit 128) SET | Exit to World Map (0, 68, 57); Engine Action #9; Warp to Castle HQ (0, 2, 33); Warp Room -> Submap 0 at (1,5) facing West (Left); Exit to World Map (5, 2, 3); Engine Action #5; Trigger Character Emotion Effect (30, 24); Warp Room -> Submap 54 at (5,1) facing East (Right); Open Dialogue Message Window; Engine Action #5; Trigger Character Emotion Effect (4, 5); Warp to Castle HQ (3, 30, 1); Warp Room -> Submap 114 at (1,255) facing 254 |
+| `ev[20]` | `1 (Action / Talk)` | Story Flag 113 (bit 128) SET AND Story Flag 114 (bit 1) CLEAR AND Player within Box [66..86, 2..60] AND Condition Check #70 AND Story Flag 148 (bit 128) CLEAR | Exit to World Map (0, 68, 57); Engine Action #9; Warp to Castle HQ (0, 2, 33); Warp Room -> Submap 0 at (1,5) facing West (Left); Exit to World Map (5, 2, 3); Engine Action #5; Trigger Character Emotion Effect (30, 24); Warp Room -> Submap 45 at (5,1) facing East (Right); Open Dialogue Message Window; Engine Action #5; Trigger Character Emotion Effect (4, 5); Warp to Castle HQ (3, 30, 1); Warp Room -> Submap 114 at (1,255) facing 254 |
+| `ev[21]` | `2 (Map Init)` | Story Flag 124 (bit 8) SET AND Story Flag 124 (bit 16) CLEAR | Make obj[2] Hidden (disp = 0); Clear Dialogue Sub-Window; Remove Item from Inventory (58, 3); Clear Dialogue Sub-Window; Warp Town -> Area 0 Map 25 Submap 2 at (26,79); Set Animation Pose (3, 26); Warp Town -> Area 0 Map 26 Submap 2 at (34,76); Recruit Character into Active Party (3, 34); Warp Town -> Area 0 Map 34 Submap 2 at (33,73); Set Animation Pose (3, 33); Warp Town -> Area 0 Map 33 Submap 2 at (31,68); Engine Action #62; Warp to Castle HQ (31, 1, 0); Warp Room -> Submap 63 at (3,18); Engine Action #54; Jump to Bytecode Offset (2, 3); Animate Doorway State (57, 3); Warp to Castle HQ (3, 0, 3); Warp Town -> Area 1 Map 61 Submap 57 at (3,1); Warp to Castle HQ (0, 1, 2); Warp Town -> Area 68 Map 53 Submap 3 at (2,0); Open Dialogue Message Window; Warp Town -> Area 3 Map 0 Submap 3 at (47,255) |
+| `ev[22]` | `2 (Map Init)` | Story Flag 124 (bit 8) SET AND Story Flag 124 (bit 16) CLEAR AND Star of Destiny #0 Recruited AND Inventory Holds Item #255 | Make obj[2] Hidden (disp = 0); Dismiss Emotion Bubble (68); Play Sound Effect (SE) (3); Dismiss Emotion Bubble (1); Open Dialogue Message Window; Dismiss Emotion Bubble (47) |
+| `ev[23]` | `2 (Map Init)` | Story Flag 124 (bit 8) SET AND Story Flag 124 (bit 16) CLEAR AND Star of Destiny #0 Recruited AND Character #255 Level >= 254 | Make obj[2] Hidden (disp = 0); Display Chapter Text (67); Open Shop Interface #3; Display Chapter Text (1); Open Dialogue Message Window; Display Chapter Text (47) |
+| `ev[24]` | `2 (Map Init)` | Story Flag 124 (bit 8) SET AND Story Flag 124 (bit 16) CLEAR AND Star of Destiny #0 Recruited AND Castle HQ Tier >= Level 255 | Make obj[2] Hidden (disp = 0); Display Emotion Bubble (69, 69); Warp to Castle HQ (29, 1, 0); Display Emotion Bubble (47, 255) |
+| `ev[25]` | `1 (Action / Talk)` | Story Flag 124 (bit 8) SET AND Story Flag 124 (bit 16) CLEAR | Engine Action #5; Return Warp to Castle Base (2, 1); Dismiss Emotion Bubble (24); Return Warp to Castle Base (1, 43); Engine Action #5; Warp Room -> Submap 1 at (2,5); Screen Fade Transition (6, 1, 5); Screen Fade Transition (6, 1, 30); Close Dialogue Sub-Window (31); Warp Room -> Submap 36 at (1,54) facing South (Down); Warp Room -> Submap 2 at (6,4) facing 30; Close Dialogue Sub-Window (2); Warp Room -> Submap 3 at (1,0) facing 72; Warp Room -> Submap 4 at (24,1) facing West (Left); Teleport obj[72] to (0,1); Engine Action #5; Warp to Castle HQ (3, 1, 30); Warp to Castle HQ (0, 2, 24); Warp to Castle HQ (1, 48, 39); Return Warp to Castle Base (44, 5); Open Dialogue Message Window; Warp Town -> Area 32 Map 30 Submap 24 at (34,1); Set Entity Movement Speed (73, 60); Engine Action #5; Return Warp to Castle Base (3, 1); Dismiss Emotion Bubble (24); Return Warp to Castle Base (1, 50); Set Combat Battle BGM (45); Close Dialogue Sub-Window (26); Warp Room -> Submap 73 at (45,24) facing 34; Warp Room -> Submap 73 at (20,9) facing 124; Dismiss Dialogue Portrait; Screen Fade Transition (45, 254, 10); Make obj[254] Hidden (disp = 0); Screen Fade Transition (47, 254, 10); Turn obj[254] facing 101; Engine Action #5; Engine Action #176; Engine Action #122; Warp Room -> Submap 0 at (0,88) facing 109 |
+| `ev[26]` | `128 (Loop)` | Story Flag 124 (bit 8) SET AND Story Flag 124 (bit 16) CLEAR AND Inventory Holds Item #1 AND Star of Destiny #0 Recruited AND Inventory Holds Item #255 | Close Dialogue Sub-Window (30); Warp Room -> Submap 37 at (1,255) facing 254 |
+| `ev[27]` | `128 (Loop)` | Story Flag 124 (bit 8) SET AND Story Flag 124 (bit 16) CLEAR AND Inventory Holds Item #1 AND Star of Destiny #1 Recruited AND Inventory Holds Item #255 | Toggle Random Encounters (1) |
+| `ev[28]` | `2 (Map Init)` | Always Passes (Unconditional) | Screen Fade Transition (145, 128, 255) |
+| `ev[29]` | `2 (Map Init)` | Story Flag 151 (bit 64) CLEAR AND Condition Check #23 AND Condition Check #49 AND Player Y within Range [23..74] AND Player Y within Range [4..146] AND Player within Box [1..64, 86..2] AND Condition Check #65 AND Condition Check #70 | Make obj[2] Hidden (disp = 0); Start Boss Battle #84 (BGM: 57); Warp to Castle HQ (35, 2, 0); Start Boss Battle #1 (BGM: 8); Warp Room -> Submap 1 at (10,1) facing 11; Warp Room -> Submap 1 at (17,1) facing 13; Warp Room -> Submap 1 at (15,1) facing 19; Warp Room -> Submap 9 at (145,128) facing 47 |
+| `ev[30]` | `2 (Map Init)` | Story Flag 113 (bit 128) SET AND Story Flag 114 (bit 1) CLEAR | Screen Fade Transition (145, 128, 255) |
+| `ev[31]` | `2 (Map Init)` | Story Flag 124 (bit 8) SET AND Story Flag 124 (bit 16) CLEAR | Screen Fade Transition (145, 128, 255) |
+| `ev[32]` | `1 (Action / Talk)` | Story Flag 145 (bit 128) SET AND Story Flag 146 (bit 1) CLEAR AND Temp Event Flag #2 SET | Dismiss Character to Castle Base (79); Dismiss Emotion Bubble (3); Open Dialogue Message Window; Warp Room -> Submap 254 at (36,1) facing 72; Warp Room -> Submap 2 at (73,60) facing 72; Open Dialogue Message Window; Open Dialogue Message Window; Engine Action #54; Open Dialogue Message Window; Warp Room -> Submap 2 at (255,254) facing 204 |
+| `ev[33]` | `1 (Action / Talk)` | Story Flag 145 (bit 128) SET AND Story Flag 146 (bit 1) CLEAR AND Inventory Holds Item #2 AND Temp Event Flag #4 SET AND Player within Box [58..59, 2..55] AND Condition Check #58 | Exit to World Map (0, 57, 56); Engine Action #9; Warp to Castle HQ (0, 2, 73); Dismiss Emotion Bubble (49); Warp Town -> Area 5 Map 0 Submap 2 at (1,5); Dismiss Emotion Bubble (2); Warp Room -> Submap 30 at (2,1) facing 30; Engine Action #5; Start Boss Battle #5 (BGM: 70); Warp to Castle HQ (0, 30, 72); Warp Room -> Submap 2 at (255,254) facing 50; Load Sound Bank into Memory (0, 35); Open Shop Menu #6 (Type: 35); Set Entity Movement Speed (2, 5); Open Dialogue Message Window; Engine Action #5; Dismiss Emotion Bubble (0); Open Dialogue Message Window; Engine Action #5; Screen Fade Transition (3, 0, 30); Exit to World Map (35, 68, 30); Reset Camera Tracking (255); Walk obj[4] to (35,42); Dismiss Emotion Bubble (8); Open Shop Menu #4 (Type: 0); Launch Tactical War Battle (4) |
+| `ev[34]` | `1 (Action / Talk)` | Story Flag 145 (bit 128) SET AND Story Flag 146 (bit 1) CLEAR AND Inventory Holds Item #4 AND Temp Event Flag #8 SET AND Player within Box [53..54, 2..26] AND Condition Check #31 | Exit to World Map (0, 52, 28); Engine Action #9; Warp to Castle HQ (0, 2, 73); Dismiss Emotion Bubble (49); Warp Town -> Area 5 Map 0 Submap 2 at (1,5); Dismiss Emotion Bubble (2); Warp Room -> Submap 30 at (2,1) facing 30; Engine Action #5; Start Boss Battle #5 (BGM: 70); Warp to Castle HQ (0, 30, 72); Warp Room -> Submap 2 at (255,254) facing 50; Load Sound Bank into Memory (0, 35); Open Shop Menu #6 (Type: 35); Set Entity Movement Speed (2, 5); Open Dialogue Message Window; Engine Action #5; Dismiss Emotion Bubble (0); Open Dialogue Message Window; Engine Action #5; Screen Fade Transition (3, 0, 30); Exit to World Map (35, 68, 57); Reset Camera Tracking (255); Walk obj[36] to (8,255) |
+| `ev[35]` | `1 (Action / Talk)` | Story Flag 145 (bit 128) SET AND Story Flag 146 (bit 1) CLEAR AND Inventory Holds Item #8 AND Temp Event Flag #16 SET AND Player within Box [66..70, 2..47] AND Condition Check #49 | Open Shop Menu #5 (Type: 0); Open Shop Menu #6 (Type: 35); Set Entity Movement Speed (2, 4); Open Dialogue Message Window; Play CD / Ambient BGM Track (56); Engine Action #9; Engine Action #5; Start Boss Battle #5 (BGM: 20); Warp to Castle HQ (16, 1, 5); Dismiss Emotion Bubble (255); Walk obj[4] to (35,124); Engine Action #53; Engine Action #9; Launch Tactical War Battle (16); Open Shop Menu #7 (Type: 35); Launch Tactical War Battle (1) |
+| `ev[36]` | `1 (Action / Talk)` | Story Flag 145 (bit 128) SET AND Story Flag 146 (bit 1) CLEAR AND Inventory Holds Item #16 AND Temp Event Flag #32 SET AND Player within Box [105..106, 2..51] AND Condition Check #54 | Exit to World Map (0, 110, 53); Engine Action #9; Engine Action #5; Open Dialogue Message Window; Warp to Castle HQ (1, 5, 20); Warp to Castle HQ (1, 5, 20); Warp to Castle HQ (1, 5, 20); Dismiss Emotion Bubble (37); Warp Room -> Submap 35 at (1,72) facing West (Left); Start Boss Battle #2 (BGM: 5); Start Boss Battle #4 (BGM: 5); Engine Action #6; Warp Room -> Submap 20 at (6,1) facing 30; Load Sound Bank into Memory (0, 35); Load Sound Bank into Memory (1, 0); Warp to Castle HQ (73, 60, 72); Open Dialogue Message Window; Open Dialogue Message Window; Jump to Bytecode Offset (4, 52); Make obj[2] Hidden (disp = 0); Place Scenery Structure (109); Engine Action #51; Engine Action #89; Place Scenery Structure (2); Open Dialogue Message Window; Open Dialogue Message Window; Place Scenery Structure (47); Engine Action #89; Place Scenery Structure (5); Engine Action #89; Place Scenery Structure (5); Engine Action #89; Place Scenery Structure (2); Warp Room -> Submap 4 at (52,46) facing East (Right); Open Dialogue Message Window; Warp Room -> Submap 17 at (114,49) facing 89; Change Portrait Expression (2); Open Dialogue Message Window; Open Dialogue Message Window; Change Portrait Expression (47); Engine Action #89; Change Portrait Expression (5); Engine Action #89; Change Portrait Expression (5); Engine Action #89; Change Portrait Expression (2); Warp Room -> Submap 17 at (5,89) facing 17; Engine Action #5; Jump to Bytecode Offset (6, 52); Launch Tactical War Battle (32); Load Sound Bank into Memory (1, 0); Warp Town -> Area 5 Map 0 Submap 6 at (3,5); Screen Fade Transition (7, 1, 30); Load Sound Bank into Memory (0, 0); Engine Action #5; Start Boss Battle #4 (BGM: 6); Warp Town -> Area 4 Map 1 Submap 2 at (6,1); Engine Action #5; Screen Fade Transition (6, 1, 30); Close Dialogue Sub-Window (13); Warp to Castle HQ (25, 24, 17); Warp to Castle HQ (26, 5, 35); Exit to World Map (3, 7, 2); Dismiss Emotion Bubble (24); Start Boss Battle #3 (BGM: 27); Set Combat Battle BGM (60); Close Dialogue Sub-Window (13); Warp to Castle HQ (28, 24, 17); Warp to Castle HQ (29, 5, 35); Warp to Castle HQ (0, 5, 10); Warp Town -> Area 0 Map 5 Submap 10 at (3,0); Engine Action #5; Screen Fade Transition (2, 0, 5); Screen Fade Transition (1, 0, 30); Close Dialogue Sub-Window (35); Warp to Castle HQ (30, 73, 90); Engine Action #5; Start Boss Battle #4 (BGM: 4); Warp Town -> Area 2 Map 30 Submap 24 at (35,3); Warp Room -> Submap 84 at (79,31); Engine Action #5; Open Dialogue Message Window; Open Dialogue Message Window; Open Dialogue Message Window; Engine Action #5; Show Dialogue Portrait (30, 101, 4); Engine Action #6; Engine Action #5; Open Dialogue Message Window; Warp Town -> Area 0 Map 5 Submap 3 at (1,0); Engine Action #5; Warp to Castle HQ (3, 0, 5); Warp to Castle HQ (0, 0, 5); Warp to Castle HQ (30, 89, 0); Warp Town -> Area 8 Map 89 Submap 0 at (5,89); Open Dialogue Message Window; Engine Action #5; Set Combat Battle BGM (10); Engine Action #89; Open Dialogue Message Window; Warp Town -> Area 9 Map 5 Submap 0 at (6,2); Dismiss Emotion Bubble (89); Open Dialogue Message Window; Warp Town -> Area 10 Map 89 Submap 0 at (5,89); Open Dialogue Message Window; Engine Action #5; Set Combat Battle BGM (10); Dismiss Emotion Bubble (0); Warp Room -> Submap 5 at (0,0) facing South (Down); Engine Action #5; Show Dialogue Portrait (3, 0, 30); Engine Action #115; Bytecode Subroutine Return; Engine Action #40; Close Dialogue Sub-Window (13); Warp to Castle HQ (32, 89, 13); Warp Town -> Area 3 Map 89 Submap 17 at (2,3); Engine Action #89; Place Scenery Structure (5); Engine Action #89; Place Scenery Structure (5); Jump to Bytecode Offset (4, 52); Engine Action #89; Place Scenery Structure (2); Exit to World Map (89, 17, 2); Exit to World Map (89, 13, 5); Engine Action #89; Place Scenery Structure (5); Jump to Bytecode Offset (6, 52); Warp Room -> Submap 1 at (17,9) facing 146; Warp Room -> Submap 60 at (69,1) facing 11; Warp Town -> Area 2 Map 120 Submap 12 at (0,114); Engine Action #53 |
+| `ev[37]` | `128 (Loop)` | Story Flag 145 (bit 128) SET AND Story Flag 146 (bit 1) CLEAR AND Temp Event Flag #2 SET AND Inventory Holds Item #1 | Engine Action #5; Start Boss Battle #3 (BGM: 1); Warp Town -> Area 2 Map 3 Submap 1 at (2,1); Open Dialogue Message Window; Open Dialogue Message Window; Engine Action #5; Branch on Choice (30, 72); Warp Room -> Submap 2 at (73,60) facing 72; Open Dialogue Message Window; Start Boss Battle #43 (BGM: 35); Engine Action #6; Set Render Priority (pri) (35, 45); Engine Action #58; Reset Camera Tracking (37); Warp Room -> Submap 254 at (204,204) facing 204 |
+| `ev[38]` | `128 (Loop)` | Story Flag 145 (bit 128) SET AND Story Flag 146 (bit 1) CLEAR AND Inventory Holds Item #16 AND Temp Event Flag #32 SET AND Inventory Holds Item #1 | Engine Action #5; Start Boss Battle #3 (BGM: 1); Pan Camera (1, 30, 255) |
+| `ev[39]` | `1 (Action / Talk)` | Story Flag 159 (bit 4) SET AND Player within Box [60..65, 2..55] AND Condition Check #58 | Warp to Castle HQ (0, 2, 33); Warp Room -> Submap 0 at (1,5) facing West (Left); Exit to World Map (5, 2, 3); Warp to Castle HQ (0, 30, 24); Warp Room -> Submap 4 at (39,34) facing 5; Open Dialogue Message Window; Warp to Castle HQ (3, 30, 255) |
+| `ev[40]` | `1 (Action / Talk)` | Story Flag 134 (bit 1) SET AND Target Inspected is obj[8] | Open Dialogue Sub-Window (8); Open Dialogue Message Window |
+| `ev[41]` | `1 (Action / Talk)` | Story Flag 134 (bit 1) SET AND Target Inspected is obj[11] | Open Dialogue Sub-Window (8); Warp Room -> Submap 254 at (204,204) facing 204 |
+| `ev[42]` | `1 (Action / Talk)` | Story Flag 134 (bit 1) SET AND Target Inspected is obj[12] | Open Dialogue Sub-Window (8); Warp Town -> Area 255 Map 254 Submap 204 at (204,204) |
+| `ev[43]` | `1 (Action / Talk)` | Story Flag 134 (bit 1) SET AND Target Inspected is obj[9] | Open Dialogue Sub-Window (8); Warp to Castle HQ (255, 254, 204) |
+| `ev[44]` | `1 (Action / Talk)` | Story Flag 134 (bit 1) SET AND Condition Check #23 AND Condition Check #100 AND Player within Box [5..10, 255..254] | Engine Action #99; Show Dialogue Portrait (32, 23, 8); Exit to World Map (73, 20, 127); Open Dialogue Message Window; Show Dialogue Portrait (32, 101, 5); Engine Action #176; Recruit Riou (Hero) into Battle Slot 1; Jump to Bytecode Offset (0, 176) |
+| `ev[45]` | `1 (Action / Talk)` | Story Flag 134 (bit 1) SET AND Target Inspected is obj[21] | Open Dialogue Sub-Window (8); Engine Action #5 |
+| `ev[46]` | `1 (Action / Talk)` | Story Flag 134 (bit 1) SET AND Target Inspected is obj[16] | Close Dialogue Sub-Window (14); Reset Camera Tracking (6) |
+| `ev[47]` | `1 (Action / Talk)` | Story Flag 134 (bit 1) SET AND Target Inspected is obj[19] | Close Dialogue Sub-Window (18); Reset Camera Tracking (7) |
+| `ev[48]` | `1 (Action / Talk)` | Story Flag 132 (bit 64) SET AND Story Flag 134 (bit 1) CLEAR AND Condition Check #37 AND Player within Box [10..0, 30..0] AND Target Inspected is obj[8] | Open Dialogue Sub-Window (9); Open Dialogue Message Window |
+| `ev[49]` | `1 (Action / Talk)` | Story Flag 132 (bit 64) SET AND Story Flag 134 (bit 1) CLEAR AND Condition Check #37 AND Player within Box [10..0, 30..0] AND Target Inspected is obj[11] | Open Dialogue Sub-Window (9); Warp Room -> Submap 254 at (204,204) facing 204 |
+| `ev[50]` | `1 (Action / Talk)` | Story Flag 132 (bit 64) SET AND Story Flag 134 (bit 1) CLEAR AND Condition Check #37 AND Player within Box [10..0, 30..0] AND Target Inspected is obj[12] | Open Dialogue Sub-Window (9); Warp Town -> Area 255 Map 254 Submap 204 at (204,204) |
+| `ev[51]` | `1 (Action / Talk)` | Story Flag 132 (bit 64) SET AND Story Flag 134 (bit 1) CLEAR AND Condition Check #37 AND Player within Box [10..0, 30..0] AND Target Inspected is obj[9] | Open Dialogue Sub-Window (9); Warp to Castle HQ (255, 254, 204) |
+| `ev[52]` | `1 (Action / Talk)` | Story Flag 132 (bit 64) SET AND Story Flag 134 (bit 1) CLEAR AND Condition Check #37 AND Player within Box [10..0, 30..0] AND Condition Check #23 AND Condition Check #100 AND Player within Box [5..10, 255..254] | Engine Action #99; Show Dialogue Portrait (32, 23, 9); Exit to World Map (73, 20, 127); Open Dialogue Message Window; Show Dialogue Portrait (32, 101, 5); Engine Action #176; Recruit Riou (Hero) into Battle Slot 1; Jump to Bytecode Offset (0, 176) |
+| `ev[53]` | `1 (Action / Talk)` | Story Flag 132 (bit 64) SET AND Story Flag 134 (bit 1) CLEAR AND Condition Check #37 AND Player within Box [10..0, 30..0] AND Target Inspected is obj[21] | Open Dialogue Sub-Window (9); Engine Action #5 |
+| `ev[54]` | `1 (Action / Talk)` | Story Flag 132 (bit 64) SET AND Story Flag 134 (bit 1) CLEAR AND Condition Check #37 AND Player within Box [10..0, 30..0] AND Target Inspected is obj[16] | Close Dialogue Sub-Window (14); Engine Action #9; Engine Action #6 |
+| `ev[55]` | `1 (Action / Talk)` | Story Flag 132 (bit 64) SET AND Story Flag 134 (bit 1) CLEAR AND Condition Check #37 AND Player within Box [10..0, 30..0] AND Target Inspected is obj[19] | Close Dialogue Sub-Window (18); Engine Action #9; Pan Camera (255, 254, 204) |
+| `ev[56]` | `1 (Action / Talk)` | Story Flag 20 (bit 128) SET AND Story Flag 132 (bit 64) CLEAR AND Target Inspected is obj[8] | Open Dialogue Sub-Window (10); Open Dialogue Message Window |
+| `ev[57]` | `1 (Action / Talk)` | Story Flag 20 (bit 128) SET AND Story Flag 132 (bit 64) CLEAR AND Target Inspected is obj[11] | Open Dialogue Sub-Window (10); Warp Room -> Submap 254 at (204,204) facing 204 |
+| `ev[58]` | `1 (Action / Talk)` | Story Flag 20 (bit 128) SET AND Story Flag 132 (bit 64) CLEAR AND Target Inspected is obj[12] | Open Dialogue Sub-Window (10); Warp Town -> Area 255 Map 254 Submap 204 at (204,204) |
+| `ev[59]` | `1 (Action / Talk)` | Story Flag 20 (bit 128) SET AND Story Flag 132 (bit 64) CLEAR AND Target Inspected is obj[9] | Open Dialogue Sub-Window (10); Warp to Castle HQ (255, 254, 204) |
+| `ev[60]` | `1 (Action / Talk)` | Story Flag 20 (bit 128) SET AND Story Flag 132 (bit 64) CLEAR AND Condition Check #23 AND Condition Check #100 AND Player within Box [5..10, 255..254] | Open Dialogue Sub-Window (17); Warp Room -> Submap 254 at (204,204) facing 204 |
+| `ev[61]` | `1 (Action / Talk)` | Story Flag 20 (bit 128) SET AND Story Flag 132 (bit 64) CLEAR AND Target Inspected is obj[21] | Open Dialogue Sub-Window (10); Engine Action #5 |
+| `ev[62]` | `1 (Action / Talk)` | Story Flag 20 (bit 128) SET AND Story Flag 132 (bit 64) CLEAR AND Target Inspected is obj[16] | Close Dialogue Sub-Window (14); Screen Fade Transition (6, 255, 254) |
+| `ev[63]` | `1 (Action / Talk)` | Story Flag 20 (bit 128) SET AND Story Flag 132 (bit 64) CLEAR AND Target Inspected is obj[19] | Close Dialogue Sub-Window (18); Screen Fade Transition (7, 255, 254) |
+| `ev[64]` | `1 (Action / Talk)` | Story Flag 122 (bit 16) SET AND Story Flag 128 (bit 1) CLEAR AND Condition Check #37 AND Player within Box [10..0, 30..0] AND Target Inspected is obj[8] | Open Dialogue Sub-Window (11); Open Dialogue Message Window |
+| `ev[65]` | `1 (Action / Talk)` | Story Flag 122 (bit 16) SET AND Story Flag 128 (bit 1) CLEAR AND Condition Check #37 AND Player within Box [10..0, 30..0] AND Target Inspected is obj[11] | Open Dialogue Sub-Window (11); Warp Room -> Submap 254 at (204,204) facing 204 |
+| `ev[66]` | `1 (Action / Talk)` | Story Flag 122 (bit 16) SET AND Story Flag 128 (bit 1) CLEAR AND Condition Check #37 AND Player within Box [10..0, 30..0] AND Target Inspected is obj[12] | Open Dialogue Sub-Window (11); Warp Town -> Area 255 Map 254 Submap 204 at (204,204) |
+| `ev[67]` | `1 (Action / Talk)` | Story Flag 122 (bit 16) SET AND Story Flag 128 (bit 1) CLEAR AND Condition Check #37 AND Player within Box [10..0, 30..0] AND Target Inspected is obj[9] | Open Dialogue Sub-Window (11); Warp to Castle HQ (255, 254, 204) |
+| `ev[68]` | `1 (Action / Talk)` | Story Flag 122 (bit 16) SET AND Story Flag 128 (bit 1) CLEAR AND Condition Check #37 AND Player within Box [10..0, 30..0] AND Condition Check #23 AND Condition Check #100 AND Player within Box [5..10, 255..254] | Engine Action #99; Show Dialogue Portrait (32, 23, 11); Exit to World Map (73, 20, 127); Open Dialogue Message Window; Show Dialogue Portrait (32, 101, 5); Engine Action #176; Recruit Riou (Hero) into Battle Slot 1; Jump to Bytecode Offset (0, 176) |
+| `ev[69]` | `1 (Action / Talk)` | Story Flag 122 (bit 16) SET AND Story Flag 128 (bit 1) CLEAR AND Condition Check #37 AND Player within Box [10..0, 30..0] AND Target Inspected is obj[21] | Open Dialogue Sub-Window (11); Engine Action #5 |
+| `ev[70]` | `1 (Action / Talk)` | Story Flag 122 (bit 16) SET AND Story Flag 128 (bit 1) CLEAR AND Condition Check #37 AND Player within Box [10..0, 30..0] AND Target Inspected is obj[16] | Close Dialogue Sub-Window (14); Close Dialogue Window; Engine Action #6 |
+| `ev[71]` | `1 (Action / Talk)` | Story Flag 122 (bit 16) SET AND Story Flag 128 (bit 1) CLEAR AND Condition Check #37 AND Player within Box [10..0, 30..0] AND Target Inspected is obj[19] | Close Dialogue Sub-Window (18); Close Dialogue Window; Pan Camera (255, 254, 204) |
+| `ev[72]` | `1 (Action / Talk)` | Story Flag 118 (bit 4) SET AND Story Flag 122 (bit 16) CLEAR AND Target Inspected is obj[8] | Open Dialogue Sub-Window (12); Open Dialogue Message Window |
+| `ev[73]` | `1 (Action / Talk)` | Story Flag 118 (bit 4) SET AND Story Flag 122 (bit 16) CLEAR AND Target Inspected is obj[11] | Open Dialogue Sub-Window (12); Warp Room -> Submap 254 at (204,204) facing 204 |
+| `ev[74]` | `1 (Action / Talk)` | Story Flag 118 (bit 4) SET AND Story Flag 122 (bit 16) CLEAR AND Target Inspected is obj[12] | Open Dialogue Sub-Window (12); Warp Town -> Area 255 Map 254 Submap 204 at (204,204) |
+| `ev[75]` | `1 (Action / Talk)` | Story Flag 118 (bit 4) SET AND Story Flag 122 (bit 16) CLEAR AND Target Inspected is obj[9] | Open Dialogue Sub-Window (12); Warp to Castle HQ (255, 254, 204) |
+| `ev[76]` | `1 (Action / Talk)` | Story Flag 118 (bit 4) SET AND Story Flag 122 (bit 16) CLEAR AND Condition Check #23 AND Condition Check #100 AND Player within Box [5..10, 255..254] | Engine Action #99; Show Dialogue Portrait (32, 23, 12); Exit to World Map (73, 20, 127); Open Dialogue Message Window; Show Dialogue Portrait (32, 101, 5); Engine Action #176; Recruit Riou (Hero) into Battle Slot 1; Jump to Bytecode Offset (0, 176) |
+| `ev[77]` | `1 (Action / Talk)` | Story Flag 118 (bit 4) SET AND Story Flag 122 (bit 16) CLEAR AND Target Inspected is obj[21] | Open Dialogue Sub-Window (12); Engine Action #5 |
+| `ev[78]` | `1 (Action / Talk)` | Story Flag 118 (bit 4) SET AND Story Flag 122 (bit 16) CLEAR AND Target Inspected is obj[16] | Close Dialogue Sub-Window (14); Display Dialogue Box [Bank: 6, MsgID: 255] |
+| `ev[79]` | `1 (Action / Talk)` | Story Flag 118 (bit 4) SET AND Story Flag 122 (bit 16) CLEAR AND Target Inspected is obj[19] | Close Dialogue Sub-Window (18); Display Dialogue Box [Bank: 7, MsgID: 255] |
+| `ev[80]` | `1 (Action / Talk)` | Target Inspected is obj[8] | Open Dialogue Sub-Window (4); Open Dialogue Message Window |
+| `ev[81]` | `1 (Action / Talk)` | Target Inspected is obj[11] | Open Dialogue Sub-Window (4); Warp Room -> Submap 254 at (204,204) facing 204 |
+| `ev[82]` | `1 (Action / Talk)` | Target Inspected is obj[12] | Open Dialogue Sub-Window (4); Warp Town -> Area 255 Map 254 Submap 204 at (204,204) |
+| `ev[83]` | `1 (Action / Talk)` | Target Inspected is obj[9] | Open Dialogue Sub-Window (4); Warp to Castle HQ (255, 254, 204) |
+| `ev[84]` | `1 (Action / Talk)` | Condition Check #23 AND Condition Check #100 AND Player within Box [5..10, 255..254] | Engine Action #99; Show Dialogue Portrait (32, 23, 4); Exit to World Map (73, 20, 127); Open Dialogue Message Window; Show Dialogue Portrait (32, 101, 5); Engine Action #176; Recruit Riou (Hero) into Battle Slot 1; Jump to Bytecode Offset (0, 176) |
+| `ev[85]` | `128 (Loop)` | Condition Check #29 AND Party Formation Check AND Condition Check #32 | Warp Room -> Submap 1 at (13,6); Mark NPC Talk Interaction Complete (Flag #15); Warp Map Transition (255, 254, 204, 204, 204) |
+| `ev[86]` | `1 (Action / Talk)` | Target Inspected is obj[21] | Open Dialogue Sub-Window (4); Engine Action #5 |
+| `ev[87]` | `1 (Action / Talk)` | Target Inspected is obj[16] | Close Dialogue Sub-Window (14); Exit to World Map (6, 255, 254) |
+| `ev[88]` | `1 (Action / Talk)` | Target Inspected is obj[19] | Close Dialogue Sub-Window (18); Exit to World Map (7, 255, 254) |
+| `ev[89]` | `1 (Action / Talk)` | Story Flag 144 (bit 8) SET AND Player within Box [63..64, 2..55] AND Condition Check #58 | Close Dialogue Sub-Window (22); Engine Action #6; Open Dialogue Message Window; Engine Action #5; Open Dialogue Message Window; Warp to Castle HQ (2, 30, 255) |
+| `ev[90]` | `1 (Action / Talk)` | Story Flag 113 (bit 128) SET AND Player within Box [39..54, 2..55] AND Condition Check #56 AND Story Flag 1 (mask 255) SET | Fade In from Black (2); Warp Room -> Submap 20 at (40,0) facing South (Down); Warp Town -> Area 2 Map 2 Submap 2 at (3,73); Branch on Choice (41, 2); Open Dialogue Message Window; Warp Room -> Submap 0 at (122,1) facing 101; Engine Action #5; Engine Action #176; Warp Map Transition (0, 0, 85, 114, 255); Warp Room -> Submap 0 at (0,2) facing 30 |
+| `ev[91]` | `128 (Loop)` | Player within Box [42..58, 2..45] AND Condition Check #58 | Warp Room -> Submap 2 at (12,10) |
+| `ev[92]` | `128 (Loop)` | Player within Box [67..100, 2..59] AND Condition Check #66 | Warp Room -> Submap 1 at (10,16) |
+| `ev[93]` | `1 (Action / Talk)` | Player within Box [64..72, 2..69] AND Condition Check #70 AND Story Flag 0 (mask 255) SET | Jump to Bytecode Offset (5, 176); Warp Map Transition (2, 4, 86, 9, 255) |
+| `ev[94]` | `1 (Action / Talk)` | Player within Box [82..86, 2..69] AND Condition Check #70 AND Story Flag 0 (mask 255) SET | Jump to Bytecode Offset (5, 176); Warp Map Transition (2, 4, 102, 9, 255) |
+| `ev[95]` | `2 (Map Init)` | Story Flag 112 (bit 64) SET AND Condition Check #33 AND Player X within Range [1..255] | Open Dialogue Message Window; Engine Action #58 |
+| `ev[96]` | `2 (Map Init)` | Story Flag 112 (bit 64) SET AND Condition Check #33 AND Player X within Range [2..255] | Open Dialogue Message Window; Set obj[255] Collision to Passable |
+| `ev[97]` | `2 (Map Init)` | Story Flag 112 (bit 64) SET AND Condition Check #33 AND Player X within Range [3..255] | Open Dialogue Message Window; Trigger Character Emotion Effect (255, 254) |
+| `ev[98]` | `2 (Map Init)` | Story Flag 112 (bit 64) SET AND Condition Check #33 AND Player X within Range [1..255] | Open Dialogue Message Window; Engine Action #61 |
+| `ev[99]` | `2 (Map Init)` | Story Flag 112 (bit 64) SET AND Story Flag 124 (bit 8) CLEAR AND Condition Check #33 AND Player X within Range [2..255] | Open Dialogue Message Window; Engine Action #62 |
+| `ev[100]` | `2 (Map Init)` | Story Flag 112 (bit 64) SET AND Story Flag 124 (bit 16) SET AND Condition Check #33 AND Player X within Range [2..255] | Open Dialogue Message Window; Engine Action #62 |
+| `ev[101]` | `2 (Map Init)` | Story Flag 112 (bit 64) SET AND Condition Check #33 AND Player X within Range [3..255] | Open Dialogue Message Window; Engine Action #63 |
+| `ev[102]` | `1 (Action / Talk)` | Story Flag 134 (bit 1) SET AND Target Inspected is obj[58] | Close Dialogue Sub-Window (58); Place Scenery Structure (0) |
+| `ev[103]` | `1 (Action / Talk)` | Story Flag 122 (bit 16) SET AND Story Flag 128 (bit 1) CLEAR AND Condition Check #37 AND Player within Box [10..0, 30..0] AND Target Inspected is obj[58] | Close Dialogue Sub-Window (58); Animate Door Open; Open Dialogue Message Window |
+| `ev[104]` | `1 (Action / Talk)` | Story Flag 118 (bit 4) SET AND Story Flag 122 (bit 16) CLEAR AND Target Inspected is obj[58] | Close Dialogue Sub-Window (58); Show Dialogue Portrait (0, 255, 254) |
+| `ev[105]` | `1 (Action / Talk)` | Target Inspected is obj[58] | Close Dialogue Sub-Window (58); Pan Camera (0, 255, 254) |
+| `ev[106]` | `1 (Action / Talk)` | Condition Check #23 AND Condition Check #79 AND Player Y within Range [5..59] | Close Dialogue Sub-Window (59); Place Scenery Structure (1) |
+| `ev[107]` | `1 (Action / Talk)` | Condition Check #23 AND Condition Check #74 AND Player Y within Range [5..59] | Close Dialogue Sub-Window (59); Animate Door Open; Warp Room -> Submap 254 at (255,254) facing 204 |
+| `ev[108]` | `1 (Action / Talk)` | Condition Check #23 AND Condition Check #49 AND Player Y within Range [5..59] | Close Dialogue Sub-Window (59); Show Dialogue Portrait (1, 255, 254) |
+| `ev[109]` | `1 (Action / Talk)` | Condition Check #24 AND Condition Check #49 AND Player Y within Range [5..59] | Close Dialogue Sub-Window (59); Pan Camera (1, 255, 254) |
+| `ev[110]` | `1 (Action / Talk)` | Story Flag 134 (bit 1) SET AND Target Inspected is obj[60] | Close Dialogue Sub-Window (60); Place Scenery Structure (2) |
+| `ev[111]` | `1 (Action / Talk)` | Story Flag 134 (bit 1) SET AND Target Inspected is obj[61] | Close Dialogue Sub-Window (61); Place Scenery Structure (3) |
+| `ev[112]` | `1 (Action / Talk)` | Story Flag 134 (bit 1) SET AND Target Inspected is obj[62] | Close Dialogue Sub-Window (62); Place Scenery Structure (4) |
+| `ev[113]` | `1 (Action / Talk)` | Story Flag 134 (bit 1) SET AND Target Inspected is obj[63] | Close Dialogue Sub-Window (63); Place Scenery Structure (5) |
+| `ev[114]` | `1 (Action / Talk)` | Story Flag 122 (bit 16) SET AND Story Flag 128 (bit 1) CLEAR AND Condition Check #37 AND Player within Box [10..0, 30..0] AND Target Inspected is obj[60] | Close Dialogue Sub-Window (60); Animate Door Open; Warp Town -> Area 255 Map 254 Submap 255 at (254,204) |
+| `ev[115]` | `1 (Action / Talk)` | Story Flag 122 (bit 16) SET AND Story Flag 128 (bit 1) CLEAR AND Condition Check #37 AND Player within Box [10..0, 30..0] AND Target Inspected is obj[61] | Close Dialogue Sub-Window (61); Animate Door Open; Warp to Castle HQ (255, 254, 255) |
+| `ev[116]` | `1 (Action / Talk)` | Story Flag 122 (bit 16) SET AND Story Flag 128 (bit 1) CLEAR AND Condition Check #37 AND Player within Box [10..0, 30..0] AND Target Inspected is obj[62] | Close Dialogue Sub-Window (62); Animate Door Open; Exit to World Map (255, 254, 255) |
+| `ev[117]` | `1 (Action / Talk)` | Story Flag 122 (bit 16) SET AND Story Flag 128 (bit 1) CLEAR AND Condition Check #37 AND Player within Box [10..0, 30..0] AND Target Inspected is obj[63] | Close Dialogue Sub-Window (63); Animate Door Open; Engine Action #5 |
+| `ev[118]` | `1 (Action / Talk)` | Story Flag 118 (bit 4) SET AND Story Flag 122 (bit 16) CLEAR AND Target Inspected is obj[60] | Close Dialogue Sub-Window (60); Show Dialogue Portrait (2, 255, 254) |
+| `ev[119]` | `1 (Action / Talk)` | Story Flag 118 (bit 4) SET AND Story Flag 122 (bit 16) CLEAR AND Target Inspected is obj[61] | Close Dialogue Sub-Window (61); Show Dialogue Portrait (3, 255, 254) |
+| `ev[120]` | `1 (Action / Talk)` | Story Flag 118 (bit 4) SET AND Story Flag 122 (bit 16) CLEAR AND Target Inspected is obj[62] | Close Dialogue Sub-Window (62); Show Dialogue Portrait (4, 255, 254) |
+| `ev[121]` | `1 (Action / Talk)` | Story Flag 118 (bit 4) SET AND Story Flag 122 (bit 16) CLEAR AND Target Inspected is obj[63] | Close Dialogue Sub-Window (63); Show Dialogue Portrait (5, 255, 254) |
+| `ev[122]` | `1 (Action / Talk)` | Target Inspected is obj[60] | Close Dialogue Sub-Window (60); Pan Camera (2, 255, 254) |
+| `ev[123]` | `1 (Action / Talk)` | Target Inspected is obj[61] | Close Dialogue Sub-Window (61); Pan Camera (3, 255, 254) |
+| `ev[124]` | `1 (Action / Talk)` | Target Inspected is obj[62] | Close Dialogue Sub-Window (62); Pan Camera (4, 255, 254) |
+| `ev[125]` | `1 (Action / Talk)` | Target Inspected is obj[63] | Close Dialogue Sub-Window (63); Pan Camera (5, 255, 254) |
+| `ev[126]` | `1 (Action / Talk)` | Target Inspected is obj[37] | Close Dialogue Sub-Window (37); Engine Action #5; Open Dialogue Message Window |
+| `ev[127]` | `1 (Action / Talk)` | Target Inspected is obj[38] | Close Dialogue Sub-Window (38); Engine Action #5; Warp Room -> Submap 254 at (255,254) facing 204 |
+| `ev[128]` | `1 (Action / Talk)` | Target Inspected is obj[39] | Close Dialogue Sub-Window (39); Engine Action #5; Warp Town -> Area 255 Map 254 Submap 255 at (254,204) |
+| `ev[129]` | `1 (Action / Talk)` | Target Inspected is obj[40] | Close Dialogue Sub-Window (40); Engine Action #5; Warp to Castle HQ (255, 254, 255) |
+| `ev[130]` | `1 (Action / Talk)` | Target Inspected is obj[41] | Close Dialogue Sub-Window (41); Engine Action #5; Exit to World Map (255, 254, 255) |
+| `ev[131]` | `1 (Action / Talk)` | Target Inspected is obj[42] | Close Dialogue Sub-Window (42); Engine Action #5; Engine Action #5 |
+| `ev[132]` | `1 (Action / Talk)` | Target Inspected is obj[43] | Close Dialogue Sub-Window (43); Engine Action #5; Engine Action #6 |
+| `ev[133]` | `1 (Action / Talk)` | Target Inspected is obj[44] | Close Dialogue Sub-Window (44); Engine Action #5; Pan Camera (255, 254, 255) |
+| `ev[134]` | `1 (Action / Talk)` | Target Inspected is obj[45] | Close Dialogue Sub-Window (45); Engine Action #5; Reset Camera Tracking (255) |
+| `ev[135]` | `1 (Action / Talk)` | Target Inspected is obj[46] | Close Dialogue Sub-Window (46); Engine Action #5; Engine Action #9 |
+| `ev[136]` | `1 (Action / Talk)` | Target Inspected is obj[47] | Close Dialogue Sub-Window (47); Engine Action #5; Screen Fade Transition (255, 254, 255) |
+| `ev[137]` | `1 (Action / Talk)` | Target Inspected is obj[48] | Close Dialogue Sub-Window (48); Engine Action #5; Close Dialogue Window |
+| `ev[138]` | `1 (Action / Talk)` | Target Inspected is obj[49] | Close Dialogue Sub-Window (49); Engine Action #5; Display Dialogue Box [Bank: 255, MsgID: 254] |
+| `ev[139]` | `1 (Action / Talk)` | Target Inspected is obj[50] | Close Dialogue Sub-Window (50); Engine Action #5; Place Scenery Structure (255) |
+| `ev[140]` | `1 (Action / Talk)` | Target Inspected is obj[51] | Close Dialogue Sub-Window (51); Engine Action #5; Animate Door Open |
+| `ev[141]` | `1 (Action / Talk)` | Target Inspected is obj[52] | Close Dialogue Sub-Window (52); Engine Action #5; Show Dialogue Portrait (255, 254, 255) |
+| `ev[142]` | `1 (Action / Talk)` | Target Inspected is obj[53] | Close Dialogue Sub-Window (53); Engine Action #5; Dismiss Dialogue Portrait |
+| `ev[143]` | `1 (Action / Talk)` | Target Inspected is obj[54] | Close Dialogue Sub-Window (54); Engine Action #5; Change Portrait Expression (255) |
+| `ev[144]` | `1 (Action / Talk)` | Target Inspected is obj[55] | Close Dialogue Sub-Window (55); Engine Action #5; Display Speaker Name Box (255) |
+| `ev[145]` | `1 (Action / Talk)` | Target Inspected is obj[56] | Close Dialogue Sub-Window (56); Engine Action #5; Branch on Choice (255, 254) |
+| `ev[146]` | `1 (Action / Talk)` | Target Inspected is obj[57] | Close Dialogue Sub-Window (57); Engine Action #5; Execute Choice Result (255) |
+| `ev[147]` | `1 (Action / Talk)` | Target Inspected is obj[36] | Close Dialogue Sub-Window (36); Engine Action #5; Set Story Flag (255, 254) |
+
+---
+
+

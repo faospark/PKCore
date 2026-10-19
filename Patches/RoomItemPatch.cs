@@ -49,68 +49,73 @@ public static class RoomItemPatch
             }
         }
 
-        if (!IsHeroBedroom(mapId, __result)) return;
+        bool isHeroRoom = IsHeroBedroom(mapId, __result);
+        RoomItemUI.IsInHeroBedroom = isHeroRoom;
 
-        Plugin.Log.LogInfo($"[RoomItemPatch] Entered Hero's Bedroom (map: {mapId ?? "vk16"}). Active decor slots:");
-        RoomItemManager.DumpStatus();
+        if (isHeroRoom)
+        {
+            Plugin.Log.LogInfo($"[RoomItemPatch] Entered Hero's Bedroom (map: {mapId ?? "vk16"}). Active decor slots:");
+            RoomItemManager.DumpStatus();
+        }
+    }
+
+    /// <summary>
+    /// Postfix on kantei.WinOpenFunc to detect when player talks to Lebrante at Castle Appraiser.
+    /// </summary>
+    [HarmonyPatch(typeof(GSD2::kantei), "WinOpenFunc")]
+    [HarmonyPostfix]
+    public static void OnKanteiWinOpen()
+    {
+        RoomItemUI.IsLebranteActive = true;
+        Plugin.Log.LogInfo("[RoomItemPatch] Lebrante Appraisal window opened. Bedroom Curation interface ready.");
+    }
+
+    /// <summary>
+    /// Postfix on kantei.WinCloseFunc to detect when player exits Lebrante's counter.
+    /// </summary>
+    [HarmonyPatch(typeof(GSD2::kantei), "WinCloseFunc")]
+    [HarmonyPostfix]
+    public static void OnKanteiWinClose()
+    {
+        RoomItemUI.IsLebranteActive = false;
+        Plugin.Log.LogInfo("[RoomItemPatch] Lebrante Appraisal window closed.");
     }
 
     /// <summary>
     /// Runtime update loop called from Plugin.Update().
-    /// Handles diagnostic hotkey (F9 by default) to inspect and test room decor items in real time.
+    /// Handles toggle hotkey (F9) to open/close the interactive Bedroom Decorator UI.
     /// </summary>
     public static void Update()
     {
         if (!Plugin.Config.EnableRoomItemRestoration.Value) return;
 
-        // Diagnostic hotkey (F9) with 0.5s debounce
-        if (Input.GetKeyDown(KeyCode.F9) && Time.time - _lastHotbarTime > 0.5f)
+        // Keep room state updated from current map ID
+        string curMap = MACHICON_OnMapInitPatch.CurrentMapId;
+        if (!string.IsNullOrEmpty(curMap))
         {
-            _lastHotbarTime = Time.time;
-            HandleDiagnosticHotkey();
-        }
-    }
-
-    /// <summary>
-    /// Diagnostic helper for testing: logs status or seeds sample antiques into room_item.
-    /// </summary>
-    private static void HandleDiagnosticHotkey()
-    {
-        Plugin.Log.LogInfo("[RoomItemPatch] Hotkey (F9) triggered: Inspecting Hero Bedroom Decor...");
-        
-        var gd = RoomItemManager.GetGameData();
-        if (gd == null || gd.room_item == null)
-        {
-            Plugin.Log.LogWarning("[RoomItemPatch] Cannot inspect room items - Suikoden 2 save session not currently active.");
-            return;
+            RoomItemUI.IsInHeroBedroom = curMap.StartsWith("vk16", StringComparison.OrdinalIgnoreCase);
         }
 
-        // If slots are currently empty, provide a sample seeding test option
-        bool anyOccupied = false;
-        for (int i = 0; i < RoomItemManager.ROOM_ITEM_MAX; i++)
+        try
         {
-            if (RoomItemManager.IsSlotOccupied(i))
+            var keyboard = UnityEngine.InputSystem.Keyboard.current;
+            if (keyboard != null)
             {
-                anyOccupied = true;
-                break;
+                if (keyboard.f9Key.wasPressedThisFrame && Time.time - _lastHotbarTime > 0.3f)
+                {
+                    _lastHotbarTime = Time.time;
+                    RoomItemUI.IsOpen = !RoomItemUI.IsOpen;
+                    Plugin.Log.LogInfo($"[RoomItemPatch] Toggled Room Item Decorator UI (Open: {RoomItemUI.IsOpen})");
+                }
+                else if (keyboard.escapeKey.wasPressedThisFrame && RoomItemUI.IsOpen)
+                {
+                    RoomItemUI.IsOpen = false;
+                }
             }
         }
-
-        if (!anyOccupied)
+        catch
         {
-            Plugin.Log.LogInfo("[RoomItemPatch] All 8 bedroom slots are currently empty. Seeding initial display set for testing...");
-            // Sample Antiques (use_cnt = 0x40 / 64)
-            // Item 10: Celadon Urn
-            // Item 18: Peeing Boy
-            // Item 19: Bonsai Tree
-            // Item 20: Knight Statue
-            RoomItemManager.SetRoomItem(0, 10, 64); // Slot 0: Celadon Urn
-            RoomItemManager.SetRoomItem(1, 18, 64); // Slot 1: Peeing Boy
-            RoomItemManager.SetRoomItem(2, 19, 64); // Slot 2: Bonsai Tree
-            RoomItemManager.SetRoomItem(3, 20, 64); // Slot 3: Knight Statue
-            Plugin.Log.LogInfo("[RoomItemPatch] Sample antiques seeded! These will persist automatically into your next game save.");
+            // Suppress input polling exceptions to prevent spamming the trampoline
         }
-
-        RoomItemManager.DumpStatus();
     }
 }

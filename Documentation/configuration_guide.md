@@ -29,6 +29,10 @@ This document outlines all available configuration options for PKCore located in
 | **ClassicSaveWindow** | `bool` | `true` | Restores classic PSX-style Save/Load window layout for a nostalgic presentation in both games. |
 | **ShowSaveSlotPartyPortraits** | `bool` | `true` | Displays mini party member portraits next to character levels (`Txt_Lv`) in save/load slots for both Suikoden I and Suikoden II. |
 | **DisablePortraitDialogMask** | `bool` | `false` | Disable the `Face_Mask_01` texture overlay on character portraits in dialog windows. Supports custom DDS/PNG masks. |
+| **ShowBattleMaxHP** | `bool` | `true` | Displays both current and maximum HP (e.g. `587/587`) in the battle party status window for Suikoden 1 & 2. |
+| **ShowEnemyLevelInBattle** | `bool` | `true` | Displays enemy level in the battle target selection window for Suikoden 1 & 2 (e.g. `Bonapart Lv.25`). |
+| **ShowEnemyHpInBattle** | `bool` | `true` | Displays enemy current and maximum HP on a new line in the battle target selection window for Suikoden 1 & 2 (e.g. `HP 120/120`). |
+| **MonsterWindowWidthScale** | `float` | `1.5` | Width multiplier for the battle monster target selection window container and cells in Suikoden 1 & 2 (1.5 = 50% wider, 1.0 = original width). |
 | **ScaleDownDialogBox** | `bool` | `true` | Compact dialog box (`80%` size with adjusted positioning for improved scene visibility). |
 | **ScaledDownMenu** | `string` / `bool` | `true` | Scaled-down main pause/status menu (`80%` size with adjusted positioning). |
 | **PSPLauncher** | `bool` | `false` | Enable the PSP-inspired launcher interface. |
@@ -75,6 +79,20 @@ This document outlines all available configuration options for PKCore located in
 | **S2BattlePositionPreset** | `string` | `wide` | Battle formation spacing preset for Suikoden 2:<br>• `default`: Vanilla spacing<br>• `wide`: Moderate spacing, front row shifted forward/left (Recommended)<br>• `widest`: Large spacing for maximum character visibility |
 | **EnableCharacterRangeOverrides** | `bool` | `true` | Enable custom character weapon/attack range overrides in Suikoden 2 (supports live hot-reloading). |
 | **S2CharacterRangeOverrides** | `string` | `Kasumi:M, Luc:M, Mazus:M, Viki:M, Gantetsu:M, Badeaux:M, Sierra:M` | Comma-separated list of character range overrides in `Character:Range` format (`S` = Short, `M` = Medium, `L` = Long). Allows back-row attacks without formation warnings. |
+| **EnableTenzanChimeraFix** | `bool` | `true` | Restores the missing Chimera monster encounters in Tenzan Pass (~30% encounter rate, dropping the rare Cyclone Rune) as originally intended in the PS1 release. |
+| **ForceTenzanChimeraEncounter** | `bool` | `false` | Debug/Testing option: Forces all random encounters in Tenzan Pass to be Chimera formations. |
+| **TenzanChimeraCycloneDropRate** | `int` | `100` | Drop rate percentage (1–100) for the Cyclone Rune when defeating a Chimera in Tenzan Pass (default `100` for guaranteed drop). |
+| **UnlockSajahRareShopEarly** | `bool` | `true` | Unlocks the hidden late-game rare item and rune sage vendor inside the Sajah Village multi-shop (`vj17`) before defeating the Beast Rune. |
+| **EnableRuneUnbalanceRemoval** | `bool` | `true` | Disable unbalance status effect penalty when using physical ability command runes (e.g. Titan, Falcon, Viper, Shrike, Swallow, Trick, Fire Breath, Mayfly, Lion, Unicorn, Pixie). |
+| **DisableAllRuneUnbalance** | `bool` | `true` | When `true`, disables unbalance penalty for all ability runes regardless of list. |
+| **DisabledRuneUnbalanceList** | `string` | `Titan, Falcon, ...` | Comma-separated list of ability rune names or IDs to remove unbalance penalty for. |
+| **EnableUnlimitedCommandRunes** | `bool` | `true` | Removes the 1-use-per-battle lockouts on unique ability command runes in Suikoden 2. |
+| **UnlimitedTrickRune** | `bool` | `true` | Allow Meg & Gadget Trick Rune to be used unlimited times per battle. |
+| **UnlimitedGroundhogRune** | `bool` | `true` | Allow Millie & Bonaparte Groundhog Rune to be used unlimited times per battle. |
+| **UnlimitedSpiderSlayRune** | `bool` | `true` | Allow Shin Spider Slay Rune to be used unlimited times per battle. |
+| **AlwaysAvailableAngryDragon** | `bool` | `true` | Allow Oulan Angry Dragon Rune to always be available in battle without requiring damage-triggered Fury or losing Fury after execution. |
+| **EnableMemoryAutoBattle** | `bool` | `true` | Remembers each character's last manually chosen battle action (Attack vs Rune/Magic) and replays it during Auto-Battle (Omakase). Persists across battles. Falls back to standard Attack if MP is depleted or character is silenced. |
+| **EnableSmartHealing** | `bool` | `true` | Master toggle for after-battle automatic party recovery. Automatically revives fallen allies with Sacrificial Jizo, cures Poison with Antitoxin, and heals party wounds using Medicine, Mega Medicine, and Healing Wind scrolls. Features smart best-fit item selection, Party Bag priority with personal inventory fallback, and automatic bag compaction. |
 
 ---
 

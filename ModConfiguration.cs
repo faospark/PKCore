@@ -86,11 +86,16 @@ public sealed class ModConfiguration
 
     // Suikoden 2 Memory Auto-Battle Settings
     public ConfigEntry<bool> EnableMemoryAutoBattle { get; private set; }
-    public ConfigEntry<bool> MemoryAutoBattlePersistAcrossBattles { get; private set; }
+
+    // Suikoden 2 Smart After-Battle Healing Settings (Master Toggle)
+    public ConfigEntry<bool> EnableSmartHealing { get; private set; }
 
     // Suikoden 2 Hero Bedroom Decoration System (room_item restoration)
     public ConfigEntry<bool> EnableRoomItemRestoration { get; private set; }
     public ConfigEntry<bool> RoomItemDebugLog { get; private set; }
+
+    // Suikoden 2 NPC Bathhouse Sprites & Castle Visitors Restoration
+    public ConfigEntry<bool> EnableNPCBathVisitors { get; private set; }
 
     // World Map Settings
     public ConfigEntry<bool> DisableWorldMapClouds { get; private set; }
@@ -105,6 +110,8 @@ public sealed class ModConfiguration
     public ConfigEntry<string> SMAAQuality { get; private set; }
     public ConfigEntry<bool> ShowBattleMaxHP { get; private set; }
     public ConfigEntry<bool> ShowEnemyLevelInBattle { get; private set; }
+    public ConfigEntry<bool> ShowEnemyHpInBattle { get; private set; }
+    public ConfigEntry<float> MonsterWindowWidthScale { get; private set; }
     public ConfigEntry<bool> PSPLauncher { get; private set; }
     public ConfigEntry<bool> EnhancedGallery { get; private set; }
     public ConfigEntry<bool> DisableUITips { get; private set; }
@@ -251,6 +258,20 @@ public sealed class ModConfiguration
             "ShowEnemyLevelInBattle",
             true,
             "Displays enemy level in battle target selection window for Suikoden 1 & 2 (e.g. 'Bonapart Lv.25')."
+        );
+
+        ShowEnemyHpInBattle = _config.Bind(
+            "02 User Interface",
+            "ShowEnemyHpInBattle",
+            true,
+            "Displays enemy current and maximum HP on a new line in the battle target selection window for Suikoden 1 & 2 (e.g. 'HP 120/120')."
+        );
+
+        MonsterWindowWidthScale = _config.Bind(
+            "02 User Interface",
+            "MonsterWindowWidthScale",
+            1.5f,
+            "Width multiplier for the battle monster target selection window container and cells in Suikoden 1 & 2 (1.5 = 50% wider, 1.0 = original width)."
         );
 
         PSPLauncher = _config.Bind(
@@ -472,14 +493,14 @@ public sealed class ModConfiguration
             "05 Game : Suikoden 2",
             "EnableMemoryAutoBattle",
             true,
-            "Remember the last manually chosen action (Attack vs Rune/Magic) and replay it during Auto-Battle (Omakase). Falls back to Attack if MP is depleted or character is silenced."
+            "Remember the last manually chosen action (Attack vs Rune/Magic) and replay it during Auto-Battle (Omakase). Persists across battles. Falls back to Attack if MP is depleted or character is silenced."
         );
 
-        MemoryAutoBattlePersistAcrossBattles = _config.Bind(
+        EnableSmartHealing = _config.Bind(
             "05 Game : Suikoden 2",
-            "MemoryAutoBattlePersistAcrossBattles",
-            false,
-            "Persist remembered Auto-Battle actions across different battles. When false, actions reset at the start of each battle."
+            "EnableSmartHealing",
+            true,
+            "Master toggle for after-battle automatic party recovery. Automatically revives fallen allies with Sacrificial Jizo, cures Poison with Antitoxin, and heals wounds using Medicine, Mega Medicine, and Healing Wind scrolls."
         );
 
         EnableRoomItemRestoration = _config.Bind(
@@ -494,6 +515,13 @@ public sealed class ModConfiguration
             "RoomItemDebugLog",
             false,
             "Enable verbose logging and diagnostic output for the Room Item Decoration System."
+        );
+
+        EnableNPCBathVisitors = _config.Bind(
+            "05 Game : Suikoden 2",
+            "EnableNPCBathVisitors",
+            true,
+            "Restores unused NPC bathhouse sprites and prevents the engine crash when bathing with non-combatant recruits or convoy members. Automatically fills unoccupied bath slots with recruited castle companions (e.g. Apple, Shu, Leona, Richmond, Barbara, Pilika, Teresa, etc.)."
         );
 
 

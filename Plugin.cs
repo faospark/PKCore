@@ -394,6 +394,13 @@ public class Plugin : BasePlugin
             MemoryAutoBattlePatch.Initialize(harmony);
         }
 
+        // Smart After-Battle Healing Patch (Suikoden 2)
+        if (Config.EnableSmartHealing.Value)
+        {
+            Log.LogInfo("Applying Smart After-Battle Healing patch...");
+            SmartHealingPatch.Initialize(harmony);
+        }
+
         // Map ID Tracking (shared by Map Object & S2 patches)
         harmony.PatchAll(typeof(MACHICON_OnMapInitPatch));
 
@@ -421,6 +428,13 @@ public class Plugin : BasePlugin
         // War Room BG Patch
         WarRoomBGPatch.Initialize();
 
+        // Suikoden 2 NPC Bathhouse Sprites & Castle Visitors Restoration
+        if (Config.EnableNPCBathVisitors.Value)
+        {
+            Log.LogInfo("Applying Suikoden 2 NPC Bathhouse Sprites & Castle Visitors patch...");
+            NPCBathVisitorPatch.Initialize(harmony);
+        }
+
         // Save Slot Party Portrait Patch
         if (Config.ShowSaveSlotPartyPortraits.Value)
         {
@@ -435,10 +449,10 @@ public class Plugin : BasePlugin
             harmony.PatchAll(typeof(BattlePartyHPPatch));
         }
 
-        // Battle Enemy Level Display (Suikoden 1 & 2)
-        if (Config.ShowEnemyLevelInBattle.Value)
+        // Battle Enemy Level & HP Display (Suikoden 1 & 2)
+        if (Config.ShowEnemyLevelInBattle.Value || Config.ShowEnemyHpInBattle.Value || Config.MonsterWindowWidthScale.Value > 1.0f)
         {
-            Log.LogInfo("Applying Battle Enemy Level patch...");
+            Log.LogInfo("Applying Battle Enemy Level & HP patch...");
             harmony.PatchAll(typeof(BattleEnemyLevelPatch));
         }
 
@@ -465,5 +479,11 @@ public class PkCoreMainLoop : MonoBehaviour
         }
     }
 
-
+    public void OnGUI()
+    {
+        if (Plugin.Instance != null && Plugin.Config.EnableRoomItemRestoration.Value)
+        {
+            RoomItemUI.OnGUI();
+        }
+    }
 }

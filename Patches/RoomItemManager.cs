@@ -31,6 +31,31 @@ public static class RoomItemManager
     };
 
     /// <summary>
+    /// Complete catalog of all authentic Suikoden II antiques, statues, urns, and paintings.
+    /// </summary>
+    public static readonly (byte itemNo, byte useCnt, string name)[] AntiqueCatalog = new (byte, byte, string)[]
+    {
+        (19, 64, "Bonsai Tree"),
+        (10, 64, "Celadon Urn"),
+        (18, 64, "Peeing Boy"),
+        (20, 64, "Knight Statue"),
+        (21, 64, "Goddess Statue"),
+        (22, 64, "Hex Doll"),
+        (11, 64, "Octopus Pot"),
+        (12, 64, "Black Urn"),
+        (13, 64, "Fine China"),
+        (14, 64, "Blue Dragon Urn"),
+        (23, 64, "Japanese Dish"),
+        (24, 64, "Chinese Dish"),
+        (25, 64, "Persian Lamp"),
+        (26, 64, "Coral"),
+        (27, 64, "Genkaku's Urn"),
+        (1, 64, "Landscape Painting"),
+        (2, 64, "Flower Painting"),
+        (3, 64, "Graffiti Painting")
+    };
+
+    /// <summary>
     /// Gets the active Suikoden 2 GAME_DATA instance.
     /// </summary>
     public static GSD2::GAME_DATA GetGameData()
@@ -138,6 +163,21 @@ public static class RoomItemManager
     }
 
     /// <summary>
+    /// Resolves the in-game display name given raw item_no and use_cnt.
+    /// </summary>
+    public static string GetItemName(int itemNo, int useCnt)
+    {
+        if (itemNo == 0) return "Empty";
+        try
+        {
+            string name = GSD2::fcommand.FC_ItemName(useCnt, itemNo);
+            if (!string.IsNullOrEmpty(name)) return name.Trim();
+        }
+        catch { }
+        return $"Item #{itemNo}";
+    }
+
+    /// <summary>
     /// Resolves the in-game help / description text of a PARTY_ITEM.
     /// </summary>
     public static string GetItemDescription(GSD2::PARTY_ITEM item)
@@ -150,6 +190,250 @@ public static class RoomItemManager
         }
         catch { }
         return "An antique item.";
+    }
+
+    /// <summary>
+    /// Resolves the character display name given character slot ID.
+    /// </summary>
+    public static string GetCharacterName(int charId)
+    {
+        if (charId == 1)
+        {
+            string heroName = SaveDataProcessor.GetS2ProtagonistName();
+            if (!string.IsNullOrEmpty(heroName)) return heroName;
+            return "Riou";
+        }
+
+        return charId switch
+        {
+            1 => "Riou",
+            2 => "Jowy",
+            3 => "Nanami",
+            4 => "Pilika",
+            5 => "Mukumuku",
+            6 => "Flik",
+            7 => "Viktor",
+            8 => "Apple",
+            9 => "Clive",
+            10 => "Sierra",
+            _ => $"Ally #{charId}"
+        };
+    }
+
+    /// <summary>
+    /// Moves an antique from a party member's bag into a bedroom display slot.
+    /// If the bedroom slot already held an antique, it swaps the old antique into the party bag.
+    /// </summary>
+    public static bool PlaceItemFromParty(int cno, int bagSlotIndex, int roomSlotIndex, out string message)
+    {
+        message = "";
+        if (roomSlotIndex < 0 || roomSlotIndex >= ROOM_ITEM_MAX)
+        {
+            message = "Invalid display slot.";
+            return false;
+        }
+
+        try
+        {
+            var gw = GSD2::OldSrcBase.game_work;
+            var charaData = gw?.chara_data;
+            if (charaData?.c_varia_dat == null || cno >= charaData.c_varia_dat.Length)
+            {
+                message = "Character data unavailable.";
+                return false;
+            }
+
+            var varia = charaData.c_varia_dat[cno];
+            if (varia?.item_eqp == null || bagSlotIndex >= varia.item_eqp.Length)
+            {
+                message = "Inventory slot unavailable.";
+                return false;
+            }
+
+            var bagItem = varia.item_eqp[bagSlotIndex];
+            if (bagItem == null || bagItem.item_no == 0)
+            {
+                message = "No item in that bag slot.";
+                return false;
+            }
+
+            int newNo = bagItem.item_no;
+            int newUse = bagItem.use_cnt;
+
+            var gd = GetGameData();
+            if (gd?.room_item == null || roomSlotIndex >= gd.room_item.Length)
+            {
+                message = "Save session inactive.";
+                return false;
+            }
+
+            var currentRoomItem = gd.room_item[roomSlotIndex];
+            int prevNo = currentRoomItem != null ? (int)currentRoomItem.item_no : 0;
+            int prevUse = currentRoomItem != null ? (int)currentRoomItem.use_cnt : 0;
+
+            // Put selected antique into bedroom display slot
+            SetRoomItem(roomSlotIndex, (byte)newNo, (byte)newUse);
+
+            // Return swapped antique (or 0) to party bag
+            bagItem.item_no = (byte)prevNo;
+            bagItem.use_cnt = (byte)prevUse;
+
+            string placedName = GetItemName(newNo, newUse);
+            if (prevNo != 0)
+            {
+                string swappedName = GetItemName(prevNo, prevUse);
+                message = $"Placed {placedName} onto {SlotDescriptions[roomSlotIndex]} (Swapped {swappedName} to {GetCharacterName(cno)}'s bag).";
+            }
+            else
+            {
+                message = $"Placed {placedName} onto {SlotDescriptions[roomSlotIndex]}.";
+            }
+
+            Plugin.Log.LogInfo($"[RoomItemManager] {message}");
+            return true;
+        }
+        catch (Exception ex)
+        {
+            message = $"Error placing item: {ex.Message}";
+            Plugin.Log.LogError($"[RoomItemManager] {message}");
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// Removes an antique from a bedroom display slot and returns it to the first available party bag slot.
+    /// </summary>
+    public static bool RemoveItemToParty(int roomSlotIndex, out string message)
+    {
+        message = "";
+        if (roomSlotIndex < 0 || roomSlotIndex >= ROOM_ITEM_MAX)
+        {
+            message = "Invalid display slot.";
+            return false;
+        }
+
+        try
+        {
+            var gd = GetGameData();
+            if (gd?.room_item == null || roomSlotIndex >= gd.room_item.Length)
+            {
+                message = "Save session inactive.";
+                return false;
+            }
+
+            var roomItem = gd.room_item[roomSlotIndex];
+            if (roomItem == null || roomItem.item_no == 0)
+            {
+                message = "Slot is already empty.";
+                return false;
+            }
+
+            int itemNo = roomItem.item_no;
+            int useCnt = roomItem.use_cnt;
+
+            var gw = GSD2::OldSrcBase.game_work;
+            if (gw?.party_data?.party_cha_no == null || gw.chara_data?.c_varia_dat == null)
+            {
+                message = "Party inventory not accessible.";
+                return false;
+            }
+
+            var chaNos = gw.party_data.party_cha_no;
+            bool foundSlot = false;
+            string recipientName = "";
+
+            for (int c = 0; c < chaNos.Length; c++)
+            {
+                byte cno = chaNos[c];
+                if (cno == 0 || cno == 255) continue;
+                if (cno >= gw.chara_data.c_varia_dat.Length) continue;
+
+                var varia = gw.chara_data.c_varia_dat[cno];
+                if (varia?.item_eqp == null) continue;
+
+                for (int i = 0; i < varia.item_eqp.Length; i++)
+                {
+                    var slot = varia.item_eqp[i];
+                    if (slot != null && slot.item_no == 0)
+                    {
+                        slot.item_no = (byte)itemNo;
+                        slot.use_cnt = (byte)useCnt;
+                        foundSlot = true;
+                        recipientName = GetCharacterName(cno);
+                        break;
+                    }
+                }
+                if (foundSlot) break;
+            }
+
+            if (!foundSlot)
+            {
+                message = "Party bags are full! Free an inventory slot before removing this antique.";
+                return false;
+            }
+
+            // Clear display slot
+            SetRoomItem(roomSlotIndex, 0, 0);
+            message = $"Returned {GetItemName(itemNo, useCnt)} to {recipientName}'s inventory.";
+            Plugin.Log.LogInfo($"[RoomItemManager] {message}");
+            return true;
+        }
+        catch (Exception ex)
+        {
+            message = $"Error removing item: {ex.Message}";
+            Plugin.Log.LogError($"[RoomItemManager] {message}");
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// Adds a specific antique directly into the first available slot in party inventory.
+    /// </summary>
+    public static bool GiveAntiqueToPartyBag(byte itemNo, byte useCnt, out string message)
+    {
+        message = "";
+        try
+        {
+            var gw = GSD2::OldSrcBase.game_work;
+            if (gw?.party_data?.party_cha_no == null || gw.chara_data?.c_varia_dat == null)
+            {
+                message = "Party inventory not accessible.";
+                return false;
+            }
+
+            var chaNos = gw.party_data.party_cha_no;
+            for (int c = 0; c < chaNos.Length; c++)
+            {
+                byte cno = chaNos[c];
+                if (cno == 0 || cno == 255) continue;
+                if (cno >= gw.chara_data.c_varia_dat.Length) continue;
+
+                var varia = gw.chara_data.c_varia_dat[cno];
+                if (varia?.item_eqp == null) continue;
+
+                for (int i = 0; i < varia.item_eqp.Length; i++)
+                {
+                    var slot = varia.item_eqp[i];
+                    if (slot != null && slot.item_no == 0)
+                    {
+                        slot.item_no = itemNo;
+                        slot.use_cnt = useCnt;
+                        string itName = GetItemName(itemNo, useCnt);
+                        message = $"Added {itName} to {GetCharacterName(cno)}'s inventory bag!";
+                        Plugin.Log.LogInfo($"[RoomItemManager] {message}");
+                        return true;
+                    }
+                }
+            }
+
+            message = "Party inventory bags are completely full! Free an inventory space first.";
+            return false;
+        }
+        catch (Exception ex)
+        {
+            message = $"Error: {ex.Message}";
+            return false;
+        }
     }
 
     /// <summary>

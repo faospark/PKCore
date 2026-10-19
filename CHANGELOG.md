@@ -4,17 +4,179 @@ All notable changes to PKCore (formerly PKextended) are documented in this file.
 
 ---
 
+## [2026.10.20]
+
+- **Suikoden I Map Identifiers & Regional Breakdown Reference Guide**:
+  - Authored complete architecture and geographic guide in [suikoden_1_map_ids_and_areas_breakdown.md](Documentation/suikoden_1_map_ids_and_areas_breakdown.md).
+  - Documents all 12 regional sectors (`area_a` through `area_k`, `area_z`) and all 85 background maps (`bg_va1` through `bg_vz5`), mapped to their C# decompiled handlers (`G1_fdata_c.cs`, `VillageManager.cs`, `Village_c.cs`, `Event_c.cs`, `Fmain_c.cs`).
+  - Cataloged the Suikoden 1 event command bytecode engine (`EVENT_COMMAND` enum with 70+ opcodes: `WINOP`, `WINCL`, `PUSHMARU`, `VILLAGEOUT`, `EVENTMSG`, `EVENTSHOP`, `EVENTITEM`, `EVENTBATTLE`, `PADD`, `PDEL`, etc.).
+  - Side-by-side architectural comparison between Suikoden I and Suikoden II engine layers, detailing runtime coordinators, asset models, and PKCore Harmony hook targets.
+
+- **High-Speed Symbol & Map Indexer Integration (`tools\sym.bat`)**:
+  - Harmonized all 62 Suikoden II geographic areas and all 12 Suikoden I regional sectors (360 total map entries) directly into the SQLite symbol indexer database (`symbols.db`).
+  - Added full map asset resolution in <1ms: querying by map ID (e.g. `vc18`, `va01`, `bg_va1`), area name (e.g. `Banner`, `Toto`, `Gregminster`), or region code instantly returns the C# handler class, source file location, documentation path, and narrative summary alongside types, members, and native addresses.
+  - Added `--maps` CLI flag to filter queries strictly to map environments.
+  - Integrated full FTS5 full-text indexing over map identifiers, area names, and narrative descriptions.
+
+- **Human-Readable Field & Engine Legends across All 62 Geographic Area Volumes**:
+  - Embedded the comprehensive **Field & Engine Legend** across all 62 area volumes in `Documentation/areas/` (`otyp`, `ozok`, `ano`, `disp`, `spd`, `wt`, `pri`, `etyp`, `eventForm`, `eventCom`).
+  - Replaced all raw numerical opcodes across every trigger table with human-readable descriptions (`Display Dialogue Box`, `Warp Room`, `Open Save Crystal Menu`, `Recruit Character`, `Full Rest & Healing`, `Open Shop / Trade Interface`, `Add Character to Party`, `Adjust Potch Money`, `Play Sound Effect`, etc.).
+
+- **Suikoden II Master Map Entities, Triggers & World Objects Catalog**:
+  - Authored comprehensive technical documentation in [suikoden_2_master_map_entities_and_triggers_catalog.md](Documentation/suikoden_2_master_map_entities_and_triggers_catalog.md).
+  - Documents the complete runtime entity architecture across all 226 master map assets (`va01` through `vk37`), compiling census data for all **4,901 NPCs**, **1,552 Dynamic Props**, **3,207 Collision Triggers & Single-Tile Dots**, **90 Save Orbs**, and **27 Dungeon Chest Clusters**.
+  - **Bit-Level Entity Layout (`EVENT_OBJ`)**: Exhaustive mapping of all 13 physical fields (`otyp`, `disp`, `spd`, `wt`, `ano`, `ityp`, `fpno`, `ozok`, `pri`, `x`, `y`, `w`, `h`), explaining solid vs passable masks (`ozok`), facing frames, multi-tile bounding volumes, and single-tile dots (`w:0, h:0`).
+  - **Trigger Evaluation Modes (`etyp`)**: Documents the 4 execution contexts: `etyp = 1` (Action/Confirm inspect), `etyp = 2` (Room Init / `OnMapLoad`), `etyp = 3` (Step-On Tripwire / Warp), and `etyp = 4` (Continuous Frame Loop).
+  - **Condition Bytecode (`eventForm`)**: Full parameter specifications for condition opcodes (Story flags `3`/`4`, spatial boxes `1`, orientation `2`, target matching `5`, inventory `6`, party members `10`/`11`, treasure bits `27`/`28`, castle tiers `30`).
+  - **Master Action Command Catalog (`eventCom`)**: Cataloged all 147 `EC*` action methods in `EVENTCON.eventCommandFunction` (dialogue, camera tracking, screens, movement, pathfinding, warp transitions, shop overlays, party recruitment, stat buffs, potch, and battles).
+  - **In-Memory Injection Pattern**: Established the verified Harmony postfix blueprint on `MACHICON.EventInit` to dynamically expand `eventobj` and `eventdat` arrays at runtime, enabling modders to add custom actors, bonsai props, trigger dots, and shops without repacking Unity asset bundles.
+
+## [2026.10.19]
+
+- **Suikoden II NPC Bathhouse Sprites & Castle Visitors Restoration**:
+  - Implemented in [NPCBathVisitorPatch.cs](Patches/NPCBathVisitorPatch.cs).
+  - Restores the unused bathhouse sprites drawn for non-combatant castle recruits and story characters (stored across texture atlases `hp_furo_00_atlas` through `hp_furo_37_atlas`).
+  - **Eliminated the Engine Crash Traps**:
+    - **P_GRAPH_DATA Null Trap (`CreateFuroChara` at `0x182016059`)**: Disassembled and resolved the fatal null-dereference check in `EventOverlayClass.f_main$$CreateFuroChara` where non-combatants lacking combat `battle_data` and `field_data` triggered an immediate `NullReferenceException` crash (`0x182016725`). Hooked `G2_SYS.G2_gra_dat` to supply a lightweight dummy `P_GRAPH_DATA` fallback while inside the bathhouse, allowing all characters to render safely through `CreateFuroAnime` without altering any combat systems.
+    - **Equipment Scan Bounds Trap (`CreateFuroEquipAnime` & `G2_varia_dat`)**: Disassembled `EventOverlayClass.f_main$$CheckfuroItemEquip` and `G2_SYS$$G2_varia_dat`. In Suikoden II, variable player stats (`c_varia_dat`) only exist for combat characters (IDs 0..82). When `CreateFuroEquipAnime` scanned bath accessory equipment for NPCs (`ID >= 83`), `G2_varia_dat` threw `System.IndexOutOfRangeException`. Added bounds-guard prefixes to `G2_varia_dat` and `CheckfuroItemEquip` to return `null` / `0` for any non-combatant, completely extinguishing the log exception.
+  - **Convoy Slot Inclusion**:
+    - Extends bath party evaluation to include the convoy slot (`party_data.party_cha_no[6]`). Any character placed in the convoy (via story progression or save editors) is automatically included in the bathhouse session.
+  - **Gender Identification Hook (`f_main.GetSeibetu` at `0x18201ab90`)**:
+    - Disassembled `EventOverlayClass.f_main$$GetSeibetu` and identified that vanilla queries `ckd_info[chara_id][1] & 0xf`. This revealed two major engine data flaws:
+      1. **NPC Gender Zeroing**: Non-combatant castle NPCs have no combat equipment attributes (`ckd_info` zeroed), causing `GetSeibetu` to evaluate to `0` (Male) for all NPCs (routing women like Apple, Leona, Barbara, Teresa, and Pilika to the men's tub).
+      2. **Vanilla Male Data Misclassifications**: Konami's original data tables assigned female attribute bitmasks (`0x21` / `val = 1` or `4`) to several male combatants, notably **Bob** (`player_bic`, ID 4), **Chaco** (`player_zko`, ID 17), **General Kiba** (ID 86), and **Alex** (ID 103), causing Bob and Chaco to be misplaced into the women's tub behind the partition.
+    - Added a comprehensive Harmony prefix to `f_main.GetSeibetu` using verified ground-truth GSD2 character IDs (`player_*.json`). Strictly maps all canonical female characters (Nanami [18], Eilie [19], Rina [20], Nina [55], Tengaar [8], Millie [24], Meg [25], Karen [14], Kasumi [41/73], Valeria [12], Anita [39], Ayda [43], Sierra [42/45], Oulan [46], Tomo [57], Viki [60], Wakaba [68], Hanna [23], Mikumiku [83], Rulodia [71], Apple [84/85], Teresa [91], Leona [94], Barbara [96], Jeane [97], Yuzu [98], Taki [99], Pilika [100/123/124], Emilia [101/102], Hilda [104], Raura [105]) to `1` (Female), while strictly classifying all other characters (including Bob [4], Chaco [17], Kiba [86], and Alex [103]) as `0` (Male).
+    - Guarantees that Bob and male companions always bathe in the men's tub (positions 0..5), female bathers are placed in the women's tub (positions 6..11), and peeping interactions accurately register female bathers.
+  - **Balanced Castle NPC Visitor Pool & Guaranteed Female Representation**:
+    - Segregated candidates into dedicated female and male recruited star pools (`FemaleCastleNPCs` and `MaleCastleNPCs`).
+    - If the player enters the bathhouse with no female party members present, the first unoccupied slot is guaranteed to select a female castle recruit (e.g. Apple, Leona, Barbara, Teresa, Jeane, Pilika, etc.), ensuring the women's tub is never empty.
+    - Unoccupied slots alternate between male and female visitors so both sides of the bathhouse are populated simultaneously.
+  - **Zero Save-Data Footprint**:
+    - Party slots are substituted strictly in memory for the duration of the bath session and cleanly restored back to the player's exact party configuration upon bath exit (`f_main.FuroEnd`).
+  - Master configuration toggle under `[05 Game : Suikoden 2]`:
+    - `EnableNPCBathVisitors` (Default: `true`)
+  - **Full 8-Character Bathhouse Expansion (+2 Convoy & Castle Visitor Slots)**:
+    - Disassembled `EventOverlayClass.f_main$$CreateFuroChara`, `GetFuroPos`, and `furo_h.FURO_WORK$$ctor` (`0x181ff5cf0`).
+    - Discovered that the entire bathhouse engine in Suikoden II was architecturally engineered for **8 actors**: all internal character tracking structures (`furo_pos_data`, `furo_chara_id`, `furo_chara_info`, `furo_chara_palette`, `chara_status`, `FuroInit` loop `0x182019956`) are sized for 8 characters across 12 tub positions (0..5 men's tub, 6..11 women's tub).
+    - Vanilla was artificially capped at 6 bathers because `CreateFuroChara` and `GetFuroPos` invoked `G2_SYS.G2_pamem_num(0)`, which only counts battle slots (`0..5`), completely ignoring convoy slots (`6..7`).
+    - Hooked `G2_SYS.G2_pamem_num` during bath sessions to count all active non-zero characters across all 8 slots (`party_cha_no[0..7]`), unlocking the full 8-character bathhouse capacity.
+    - `PrepareBathParty` now scans and populates all 8 slots (`0..7`). Even when entering with a full 6-character combat party, slots 6 and 7 (+2 over party count) are filled with recruited castle companions or convoy members, allowing up to 8 characters to soak together.
+    - If entering with fewer than 6 combat members (e.g. Riou alone), all empty slots across 1..7 are filled with castle recruits, balanced between male and female visitors so both the men's and women's tubs are populated with up to 8 companions.
+  - **Permanent Castle Facility Candidates & Balanced Visitor Pool**:
+    - Recruited candidates are segregated into `FemaleCastleNPCs` and `MaleCastleNPCs`.
+    - Added guaranteed inclusion for permanent castle facility residents (**Apple [85]**, **Leona [94]**, **Barbara [96]**, and **Pilika [100]** for women; **Hauser [86]** and **Richmond [93]** for men) who reside at HQ without requiring standard Star of Destiny recruitment flags (`G2_cha_flag`), guaranteeing the female candidate pool never runs out.
+    - Unoccupied bath slots alternate between female and male companions to evenly balance both the men's tub (right side) and women's tub (left side) up to 8 total bathers.
+  - **Character ID Corrections (Templeton & Apple)**:
+    - Verified exact ID mappings against `player_*.json` asset schemas:
+      - **Templeton** (ID 101, `player_tel_d.json`): Male cartographer, previously miscataloged under female IDs, which caused him to soak in the women's tub. Corrected to `MaleCastleNPCs`.
+      - **Apple** (ID 85, `player_app_d.json`): Female convoy strategist, previously misclassified under `MaleCastleNPCs`. Corrected to `FemaleCastleNPCs`.
+  - Complete technical documentation and binary disassembly notes recorded in [suikoden_2_character_attributes_gender_and_baths.md](Documentation/suikoden_2_character_attributes_gender_and_baths.md).
+
+- **High-Speed Decompiled Symbol Indexer & Query CLI**:
+  - Implemented high-performance symbol indexing and sub-millisecond query tooling for decompiled C# sources and native IL2CPP symbol tables in `tools/symbol_indexer/`.
+  - **Comprehensive Multi-Target Coverage**:
+    - **Suikoden 1 (GSD1)**: 445 decompiled C# files.
+    - **Suikoden 2 (GSD2)**: 1,483 decompiled C# files.
+    - **Shared Engine (GSDShare)**: 354 decompiled C# files.
+    - **Native IL2CPP Symbols (`symbols.txt`)**: 189,523 native function and method address mappings.
+    - Total cataloged inventory: 6,147 types, 259,139 members (methods, properties, fields), and 189,523 virtual memory addresses.
+  - **High-Performance Architecture (`indexer.py` & `sym.py`)**:
+    - **Streamlined SQLite Backend (`symbols.db`)**: Indexed B-Trees and SQLite memory-mapping (`PRAGMA mmap_size = 256MB`) delivering query execution speeds between 0.5ms and 3ms.
+    - **Full-Text Search (FTS5)**: Integrated FTS5 virtual tables for rapid prefix, substring, and wildcard matching across all games.
+    - **Hex Address Resolution**: Resolves any IL2CPP memory address (e.g. `0x1818bb190`) directly to its native symbol (`MACHICON$$EventInit`) and pairs it with the decompiled C# source file and line (`MACHICON.cs#L947`).
+    - **Type Inspection (`-m` / `--members`)**: Dumps all members of any class or struct with signatures, native addresses, and line numbers.
+    - **Fine-Grained Filtering**: Supports game scoping (`--gsd1`, `--gsd2`, `--share`), kind scoping (`--methods`, `--fields`, `--props`, `--types`, `--native`), and JSON formatting (`--json`).
+  - **Batch Convenience Wrapper**:
+    - Created `tools/sym.bat` for seamless command-line queries directly from the PKCore root workspace.
+  - **Hand-in-Hand Workflow with REA (Reverse Engineer Anything)**:
+    - Integrated multi-phase reverse engineering protocol: use `sym.bat` to instantly anchor C# types and IL2CPP memory addresses, feed virtual addresses directly into REA for binary disassembly/pseudocode analysis, cross-correlate discovered sub-procedure calls back into `sym.bat`, and write grounded Harmony patches.
+  - Complete technical documentation added in [symbol_indexer_guide.md](Documentation/symbol_indexer_guide.md).
+
+---
+
+## [2026.10.18]
+
+- **Battle Enemy HP Display & Expanded Target Selection Window (Suikoden I & II)**:
+  - Enhanced [BattleEnemyLevelPatch.cs](Patches/BattleEnemyLevelPatch.cs) to display both current and maximum enemy HP on a new line beneath the enemy name and level (e.g. `Bonapart Lv.25\nHP 120/120`).
+  - Implemented live enemy HP retrieval across combatants:
+    - **Suikoden I**: Reads live HP and Max HP from `GSD1::BattleBase.battle_work.pm_data` with fallback to `monster_data_table` base parameters.
+    - **Suikoden II**: Reads live HP (`pm.hp`) and Max HP (`pm.max_hp` / `pm.monster_data.hp`) directly from `GSD2::BattleManager.Instance.battle_work.pm_data` across front and back row formation slots.
+  - **Expanded Monster Window Container Width (+50%)**:
+    - Automatically widens `UIBattleWindowMonster`, its game-specific sub-layouts (`m_GS1Layout`, `m_GS2Layout`, `m_GS2BackLayout`), and child background frames by 50% (`1.5x` multiplier) to prevent text clipping and cramped layouts.
+    - Proportionally widens each target selection cell (`UIWindowListCell.rectTransform`) and text component (`leftText.rectTransform`).
+    - Intelligently scales and redistributes column horizontal positions (`anchoredPosition.x`) across both center-anchored and offset-anchored multi-column grids (such as Suikoden II's 2x3 target grid), as well as auto-layout groups (`GridLayoutGroup.cellSize` and `spacing`).
+    - Configures TextMeshPro multi-line rendering with auto-sizing (`fontSizeMin = 10f`, `fontSizeMax = 18f`), hard newline separation (`enableWordWrapping = false`), and `TextOverflowModes.Overflow` to guarantee full, crisp visibility for multi-line stats.
+  - Added dedicated configuration settings under `[02 User Interface]`:
+    - `ShowEnemyHpInBattle` (Default: `true`)
+    - `MonsterWindowWidthScale` (Default: `1.5`, range `1.0`-`2.0`)
+
+- **Smart After-Battle Auto-Healing (Suikoden II)**:
+  - Implemented in [SmartHealingPatch.cs](Patches/SmartHealingPatch.cs).
+  - Automatically assesses party status and consumes restorative items after battle across a multi-phase recovery pipeline:
+    - **Sacrificial Jizo Fallen Revival**: Detects knocked-out (0 HP) party members and revives them using Sacrificial Jizo (Item #30) from the shared party bag or living party members' personal inventories. Restores fallen characters to 50% max HP, clears KO/dead status flags (`dead_flg`), and clears negative battle status so they can be further healed.
+    - **Antitoxin Poison Curing**: Scans all party members (including newly revived characters) and administers Antitoxin (Item #5) from the party bag or personal inventories to cure Poison (`G2_SYS.G2_poison(2, 0, slot)` and battle status flags).
+    - **Smart HP Deficit Recovery**: Prioritizes living damaged members by lowest HP percentage first. Automatically selects the best-fit item: regular Medicine (+100 HP) for smaller wounds, Mega Medicine (+500 HP) for deficits $\ge 300$ HP, and Healing Wind (Wind Card 2 / scroll, +999 HP full heal) for massive wounds ($\ge 600$ HP).
+    - **Overheal Waste Protection**: Guards rare Mega Medicine and Healing Wind from being wasted on minor scratches ($< 250$ HP deficit for Mega Medicine, $< 400$ HP deficit for Healing Wind). Ignores trivial chip damage below 20 HP deficit.
+    - **Inventory Compaction**: Automatically compacts the shared Party Bag when items are fully consumed to avoid empty gaps in inventory slots.
+    - **Battle Exit Latching**: Hooks `BattleManager.calc_exp`, `BattleManager.StorePlayerData`, `BattleManager.exit_sub00`, and `BattleManager.battle_exit99` with a one-shot latch to ensure seamless HP synchronization (`G2_SYS.G2_pamem_hp`, `C_VARIA_DAT.now_hp`, and `BattlePlayerCharacter.hp`) regardless of victory or escape.
+  - Controlled via a single master toggle under `[05 Game : Suikoden 2]`:
+    - `EnableSmartHealing` (Default: `true`)
+
+- **Suikoden II Map Identifiers & Geographic Areas Architectural Reference**:
+  - Migrated and integrated master map identifier documentation [suikoden_2_map_ids_and_areas_breakdown.md](Documentation/suikoden_2_map_ids_and_areas_breakdown.md) into PKCore.
+  - Documents the anatomy of the 4-character venue naming system (`v` + region letter `a`-`k` + map number `01`-`37`), submap layout (`_00`, `_01`, `_obj`, `_map_00`), dialog message ID encoding formulas (`100` + region + map + offset), and provides an exhaustive cross-reference table against active PKCore patches ([GenshuRecruitmentPatch.cs](Patches/GenshuRecruitmentPatch.cs), [VincentRecruitmentPatch.cs](Patches/VincentRecruitmentPatch.cs), [GreenhillMatildaBorderPatch.cs](Patches/GreenhillMatildaBorderPatch.cs), [SajahShopUnlockPatch.cs](Patches/SajahShopUnlockPatch.cs), [TenzanPassEncounterPatch.cs](Patches/TenzanPassEncounterPatch.cs)).
+- **Memory Auto-Battle (Suikoden II)**:
+  - Implemented in [MemoryAutoBattlePatch.cs](Patches/MemoryAutoBattlePatch.cs).
+  - Remembers the last manually chosen action per character (Attack vs Rune/Magic) and automatically replays it during Auto-Battle (Omakase / おまかせ) instead of forcing basic physical attacks.
+  - Automatically verifies MP levels, status ailments (silence, sleep, death), and rune usability before casting, gracefully falling back to basic physical attacks if resources are depleted.
+  - Configured under `[05 Game : Suikoden 2]`:
+    - `EnableMemoryAutoBattle` (Default: `true`) — Remembers last actions and persists across battles.
+- **Tenzan Pass Chimera Encounters & Cyclone Rune Drop Restoration (Suikoden II)**:
+  - Implemented in [TenzanPassEncounterPatch.cs](Patches/TenzanPassEncounterPatch.cs) with technical architecture documented in [tenzan_pass_chimera_va11.md](Documentation/tenzan_pass_chimera_va11.md).
+  - Restores the omitted Chimera encounters (Parties 6, 7, and 8) in Tenzan Pass (`va11`), resolving a 25-year bug dating back to the original PS1 release where the 10-slot encounter table omitted them in favor of duplicates.
+  - Recreates Pyriel's community fix layout by substituting duplicate slots 1, 3, and 6 with:
+    - **Slot 1 (Party 6)**: Chimera Solo (1 Chimera, centered at front row position 1).
+    - **Slot 3 (Party 7)**: Chimera + Magus x 2 (Chimera centered, flanked by 2 Magus at positions 0 and 2).
+    - **Slot 6 (Party 8)**: Chimera + Minotaurus (Chimera at position 1, Minotaurus at position 0).
+    - Results in an authentic ~30% encounter rate in Tenzan Pass.
+  - **HD Remaster Engine Crash Prevention**:
+    - Overcomes an engine bug in the Remaster where `monster_data` was hardcoded to a 3-element array, which crashed the game with `IndexOutOfRangeException` whenever Chimera (MID 3) spawned.
+    - Dynamically expands `monster_data` to a safe 4-element structure across `MACHICON.EventInit`, `BattleManager.BattleDataSetup`, and `BattleManager.InitNewMonster`.
+    - Supplies canonical 18-element 3D battlefield grid coordinates (`monster_position`) for every formation, preventing camera and position lockups.
+  - **Cyclone Rune Drop & Loot Integration**:
+    - Configures guaranteed or customizable Cyclone Rune drops (`use_cnt = 0x20` [Category 2 = `embl_data`], `item_no = 6` [Cyclone Orb]) on Chimera.
+    - Hooks post-battle loot calculation (`BattleManager.get_monster_okane`) and fallback item delivery (`BattleManager.b_OverlayAddItem2Init`) so that defeating a Chimera awards the Cyclone Rune directly into `battle_work.exit_work.monster_item`, seamlessly triggering the item fanfare, dialogue, and inventory addition.
+  - **Runtime In-Memory Patching**:
+    - Operates entirely in memory via `[HarmonyPatch(typeof(MACHICON), "EventInit")]` without modifying or repacking any `.bundle` asset files, providing complete resilience against official game updates.
+  - Added configuration options under `[05 Game : Suikoden 2]`:
+    - `EnableTenzanChimeraFix` (Default: `true`)
+    - `ForceTenzanChimeraEncounter` (Default: `false` - debug/testing option to force 100% Chimera encounters in Tenzan Pass)
+    - `TenzanChimeraCycloneDropRate` (Default: `100`, range 1-100% - configurable drop chance upon victory)
+- **Sajah Village Rare Shop & Rune Sage Early Access Unlock (Suikoden II)**:
+  - Implemented in [SajahShopUnlockPatch.cs](Patches/SajahShopUnlockPatch.cs) with technical architecture documented in [sajah_village_rare_shop_vj17.md](Documentation/sajah_village_rare_shop_vj17.md).
+  - Unlocks the hidden late-game rare item and rune sage vendor located in the upper-right corner of the multi-shop building in Sajah Village (`vj17` / `vj17_01`), bypassing the vanilla Story Flag 143 requirement (Beast Rune defeated).
+  - Follows the in-memory map patching pattern by hooking `MACHICON.EventInit` Postfix when loading Sajah Village:
+    - Forces the vendor NPC sprite visible (`mapeventdat[1].eventobj[3].disp = 1`).
+    - Activates the counter interaction hitbox (`mapeventdat[1].eventobj[7].disp = 1`).
+    - Neutralizes the room initialization script (`mapeventdat[1].eventdat[2].eventForm = new byte[] { 0, 255, 254 }`), preventing the game engine from re-hiding the vendor if flag 143 is off.
+    - Rewrites the talk interaction scripts (`eventdat[10]` and `eventdat[11]`) to bypass flag 143 (`{ 5, 11, 255, 254 }` and `{ 5, 15, 255, 254 }`), opening the rare item vendor interface and inventory immediately upon visiting Sajah Village.
+  - Operates completely in memory with zero asset bundle extraction or UABEA repacking required.
+  - Added configuration option under `[05 Game : Suikoden 2]`:
+    - `UnlockSajahRareShopEarly` (Default: `true`)
+
+---
+
 ## [2026.10.05]
 
 - **Battle Enemy Level Display (Suikoden I & II)**:
-  - Created [BattleEnemyLevelPatch.cs](file:///d:/Appz/PKCore/Patches/BattleEnemyLevelPatch.cs) to display enemy levels in the battle target selection window (e.g. `Bonapart Lv.25`, `Highland Captain Lv.34`).
+  - Created [BattleEnemyLevelPatch.cs](Patches/BattleEnemyLevelPatch.cs) to display enemy levels in the battle target selection window (e.g. `Bonapart Lv.25`, `Highland Captain Lv.34`).
   - Implemented automatic level lookup from active battle combatants across both games:
     - **Suikoden I**: Reads `GSD1::BattleBase.battle_work` and `window_work` position mappings to retrieve monster levels from `monster_data_table`.
     - **Suikoden II**: Reads `GSD2::BattleParty` and `PM_DATA.monster_data.level` with front/back row formation slot indexing.
   - Dynamically configures TextMeshPro auto-sizing on the monster selection cell text (`leftText`) with single-line clamping (`enableWordWrapping = false`, `fontSizeMin = 13f`) to prevent truncation or line wrapping on longer enemy names.
   - Configurable via `ShowEnemyLevelInBattle` under `[02 User Interface]` (enabled by default).
 - **Unlimited & Reusable Command Runes in Battle (Suikoden II)**:
-  - Created [CommandRuneUnlimitedPatch.cs](file:///d:/Appz/PKCore/Patches/CommandRuneUnlimitedPatch.cs) to remove the 1-use-per-battle lockouts on unique ability command runes:
+  - Created [CommandRuneUnlimitedPatch.cs](Patches/CommandRuneUnlimitedPatch.cs) to remove the 1-use-per-battle lockouts on unique ability command runes:
     - **Meg & Gadget**: Trick / Gadget Rune (からくりの紋章 / Windup Doll ATK) is now reusable every turn.
     - **Millie & Bonaparte**: Groundhog Rune (モグラの紋章) is now reusable every turn.
     - **Shin**: Spider Slay Rune (八房の紋章 / 蜘蛛斬り) is now reusable every turn.
@@ -30,7 +192,7 @@ All notable changes to PKCore (formerly PKextended) are documented in this file.
     - `UnlimitedSpiderSlayRune` (Default: `true`)
     - `AlwaysAvailableAngryDragon` (Default: `true`)
 - **Rune Unbalance Removal (Suikoden II)**:
-  - Created [RuneUnbalancePatch.cs](file:///d:/Appz/PKCore/Patches/RuneUnbalancePatch.cs) to disable the Unbalance status penalty and dizzy stars animation on physical ability runes (e.g. Titan, Falcon, Viper, Shrike, Swallow, Trick, Fire Breath, Mayfly, Lion, Unicorn, Pixie, Blue Drop).
+  - Created [RuneUnbalancePatch.cs](Patches/RuneUnbalancePatch.cs) to disable the Unbalance status penalty and dizzy stars animation on physical ability runes (e.g. Titan, Falcon, Viper, Shrike, Swallow, Trick, Fire Breath, Mayfly, Lion, Unicorn, Pixie, Blue Drop).
 - **Battle Party Max HP Display (Suikoden I & II)**:
   - Added configurable current / max HP display (`ShowBattleMaxHP`) in the battle party status window (e.g. `587/587` instead of just `587`).
   - Enabled dynamic auto-sizing on the HP text mesh (`m_hpText`) to ensure clean alignment without clipping or overflow on larger values (e.g. `999/999`).
