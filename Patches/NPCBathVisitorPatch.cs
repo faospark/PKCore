@@ -59,8 +59,6 @@ public static class NPCBathVisitorPatch
         99,  // Taki (npc_99)
         100, // Pilika (npc_100)
         102, // Emilia (npc_102)
-        104, // Hilda (npc_104)
-        105, // Raura (npc_105)
         123, // Pilika (player_prk_d)
         124, // Pilika (player_pr2_d)
         172  // Elza (player_eri_d)
@@ -79,8 +77,6 @@ public static class NPCBathVisitorPatch
         99,  // Taki
         100, // Pilika
         102, // Emilia
-        104, // Hilda
-        105, // Raura
         123  // Pilika
     };
 
@@ -97,7 +93,8 @@ public static class NPCBathVisitorPatch
         95,  // Alex (player_alx_d) / Hai Yo
         101, // Templeton (player_tel_d)
         103, // Alex
-        107, // Adlai
+        104, // Tenkou
+        105, // Adlai
         108, // Sansuke
         109, // Tetsu
         110, // Maximillian
