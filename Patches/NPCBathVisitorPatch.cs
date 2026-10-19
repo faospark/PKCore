@@ -21,7 +21,7 @@ public static class NPCBathVisitorPatch
 
     private static GSD2::P_GRAPH_DATA _dummyGraphData = null;
 
-    // All canonically female characters in Suikoden 2 (Ground truth mapped from player_*.json and ckd_info)
+    // All canonically female characters in Suikoden 2 (Ground truth mapped from player_*.json, ckd_info, and hp_furo atlases)
     public static readonly HashSet<byte> FemaleCharaIds = new HashSet<byte>
     {
         // Playable / Combat females
@@ -51,15 +51,14 @@ public static class NPCBathVisitorPatch
         // Castle Recruit / Convoy / Facility females with authentic bath sprites
         84,  // Apple (npc_84)
         85,  // Apple (player_app_d)
-        91,  // Teresa Wisemail (npc_91)
-        94,  // Leona (npc_94)
+        95,  // Teresa Wisemail (npc_95 - dark green hair in hp_furo_18_atlas slot 4)
         96,  // Barbara (npc_96)
-        97,  // Jeane (npc_97)
         98,  // Yuzu (npc_98)
-        99,  // Taki (npc_99)
         100, // Pilika (npc_100)
-        102, // Emilia (npc_102)
-        123, // Pilika (player_prk_d)
+        102, // Emilia / Teresa (npc_102 - blonde/green hair in hp_furo_20_atlas slot 1)
+        104, // Raura (npc_104 - red bonnet)
+        111, // Red hooded female
+        112, // Brown bob female
         124, // Pilika (player_pr2_d)
         172  // Elza (player_eri_d)
     };
@@ -69,36 +68,39 @@ public static class NPCBathVisitorPatch
     {
         84,  // Apple
         85,  // Apple (convoy)
-        91,  // Teresa Wisemail
-        94,  // Leona
+        95,  // Teresa Wisemail (npc_95)
         96,  // Barbara
-        97,  // Jeane
         98,  // Yuzu
-        99,  // Taki
         100, // Pilika
-        102, // Emilia
-        123  // Pilika
+        102, // Emilia / Teresa
+        104  // Raura
     };
 
     // Recruited castle male NPCs with authentic bath sprites in hp_furo_XX_atlas
     public static readonly byte[] MaleCastleNPCs = new byte[]
     {
-        86,  // Hauser / General Kiba (npc)
+        86,  // Hauser / Richmond (blue hat)
         87,  // Kiba (player_kib_d)
         88,  // Fitcher (player_fic_d)
         89,  // Jess
         90,  // Gilbert
+        91,  // Marlowe / young man (bare chest)
         92,  // Marlowe (npc)
         93,  // Richmond
-        95,  // Alex (player_alx_d) / Hai Yo
-        101, // Templeton (player_tel_d)
+        94,  // Spiky hair man
+        97,  // Templeton / green hat boy
+        99,  // Tenkou (bearded man with gold headband)
+        101, // Adlai / Kiba / Templeton (grey beard)
         103, // Alex
-        104, // Tenkou
         105, // Adlai
+        107, // Sansuke (bald with glasses)
         108, // Sansuke
-        109, // Tetsu
+        109, // Tetsu / boy with green bandana
         110, // Maximillian
+        118, // Ridley
         120, // Marlowe (player_mrl_d)
+        121, // Ridley (actor)
+        123, // Boris
         125, // Grenmeyer (player_gre_d)
         143  // Klaus (player_kru_d)
     };
@@ -152,6 +154,15 @@ public static class NPCBathVisitorPatch
     [HarmonyPrefix]
     public static bool GetSeibetu_Prefix(int chara_id, ref int __result)
     {
+        // Vincent (ID 64) and Simone (ID 65) possess the special unisex/flamboyant classification (2).
+        // Vanilla's GetFuroPos routes gender 2 to Case 2 (0x18201a861), allowing them to bathe on the women's
+        // side (slots 6..11) when no women are present, or join the men's side when women occupy the women's tub.
+        if (chara_id == 64 || chara_id == 65)
+        {
+            __result = 2;
+            return false;
+        }
+
         if (FemaleCharaIds.Contains((byte)chara_id))
         {
             __result = 1; // 1 = Female (routes to women's bath positions 6..11 behind partition)
@@ -161,6 +172,17 @@ public static class NPCBathVisitorPatch
             __result = 0; // 0 = Male (routes to men's bath positions 0..5)
         }
         return false;
+    }
+
+    /// <summary>
+    /// Diagnostically logs exact tub position and side (Men's 0..5 vs Women's 6..11) for every bather.
+    /// </summary>
+    [HarmonyPatch(typeof(GSD2::EventOverlayClass.f_main), nameof(GSD2::EventOverlayClass.f_main.GetFuroPos))]
+    [HarmonyPostfix]
+    public static void GetFuroPos_Postfix(GSD2::EventOverlayClass.furo_h.FURO_WORK fw, int chara_id, int __result)
+    {
+        string tubSide = (__result >= 6 && __result <= 11) ? "Women's tub" : "Men's tub";
+        Plugin.Log.LogInfo($"[NPCBathVisitorPatch] GetFuroPos: Character ID {chara_id} placed in slot {__result} ({tubSide}).");
     }
 
 
@@ -298,16 +320,38 @@ public static class NPCBathVisitorPatch
     private static readonly HashSet<byte> PermanentCastleFemales = new HashSet<byte>
     {
         85,  // Apple
-        94,  // Leona
+        95,  // Teresa
         96,  // Barbara
-        100  // Pilika
+        100, // Pilika
+        102  // Emilia / Teresa
     };
 
     private static readonly HashSet<byte> PermanentCastleMales = new HashSet<byte>
     {
-        86,  // Hauser
-        93   // Richmond
+        86,  // Hauser / Richmond
+        91,  // Marlowe / Young man
+        93,  // Richmond
+        94,  // Spiky hair man
+        99   // Tenkou
     };
+
+    private static bool SafeIsRecruited(byte npcId)
+    {
+        if (PermanentCastleFemales.Contains(npcId) || PermanentCastleMales.Contains(npcId))
+            return true;
+
+        if (npcId > 108) // Stars array length bounds
+            return false;
+
+        try
+        {
+            return GSD2::G2_SYS.G2_cha_flag(2, npcId) == 1;
+        }
+        catch
+        {
+            return false;
+        }
+    }
 
     private static void PrepareBathParty()
     {
@@ -356,27 +400,17 @@ public static class NPCBathVisitorPatch
 
             foreach (byte npcId in FemaleCastleNPCs)
             {
-                if (!activeIds.Contains(npcId))
+                if (!activeIds.Contains(npcId) && SafeIsRecruited(npcId))
                 {
-                    try
-                    {
-                        if (PermanentCastleFemales.Contains(npcId) || GSD2::G2_SYS.G2_cha_flag(2, npcId) == 1)
-                            recruitedFemales.Add(npcId);
-                    }
-                    catch { }
+                    recruitedFemales.Add(npcId);
                 }
             }
 
             foreach (byte npcId in MaleCastleNPCs)
             {
-                if (!activeIds.Contains(npcId))
+                if (!activeIds.Contains(npcId) && SafeIsRecruited(npcId))
                 {
-                    try
-                    {
-                        if (PermanentCastleMales.Contains(npcId) || GSD2::G2_SYS.G2_cha_flag(2, npcId) == 1)
-                            recruitedMales.Add(npcId);
-                    }
-                    catch { }
+                    recruitedMales.Add(npcId);
                 }
             }
 
@@ -430,8 +464,7 @@ public static class NPCBathVisitorPatch
                         chaNoArray[i] = chosenId;
                         activeIds.Add(chosenId);
                         string genderStr = FemaleCharaIds.Contains(chosenId) ? "Female (Women's tub)" : "Male (Men's tub)";
-                        if (Plugin.Config.DetailedLogs.Value)
-                            Plugin.Log.LogInfo($"[NPCBathVisitorPatch] Added castle visitor NPC ID {chosenId} [{genderStr}] to bath slot {i}. Total bathers now: {maleCount + femaleCount} (Men: {maleCount}, Women: {femaleCount}).");
+                        Plugin.Log.LogInfo($"[NPCBathVisitorPatch] Added castle visitor NPC ID {chosenId} [{genderStr}] to bath slot {i}. Total bathers now: {maleCount + femaleCount} (Men: {maleCount}, Women: {femaleCount}).");
                     }
                 }
             }

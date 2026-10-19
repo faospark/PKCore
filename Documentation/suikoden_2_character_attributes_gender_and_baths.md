@@ -59,14 +59,15 @@ The headquarters bathhouse (managed by Tetsu) divides characters into gendered b
 
 ### A. Gender Partition & Tub Slot Architecture (`GetFuroPos` at `0x18201a7d0`)
 * The bath is structurally split into two sections separated by a wooden wall: the **Men's side** and the **Women's side**, with a maximum room capacity of **12 positions** (`0..11`) managed in `FURO_WORK.furo_chara`:
-  * **Positions `0 .. 5`**: Main Men's Tub (Left side, where Riou bathes).
-  * **Positions `6 .. 11`**: Women's Tub (Right side, behind the wooden partition).
+  * **Positions `0 .. 5`**: Main Men's Tub (Right side, Positive X: `+32, +69, +106`, where Riou bathes).
+  * **Positions `6 .. 11`**: Women's Tub (Left side, Negative X: `-32, -69, -106`, behind the partition).
 * Position assignment is executed by `EventOverlayClass.f_main$$GetFuroPos` via jump table branching on `f_main.GetSeibetu(chara_id)`:
   * **Case 0 (`0x18201aa27`, Male)**: Loops through positions `0 .. 5` to locate the first free slot in the men's tub.
   * **Case 1 (`0x18201a9ec`, Female)**: Loops through positions `6 .. 11` to locate the first free slot in the women's tub.
-  * **Case 2 (`0x18201a861`, Special / Unisex)**: Evaluates whether women are present; routes to the women's tub if female bathers exist, or defaults to the men's tub.
-  * **Fallback Trap at `0x18201a98e` (`xor eax, eax; ret`)**: If the women's tub fills up or an unhandled index is encountered, vanilla's routine falls through to `0x18201a98e`, which returns **Position 0** (placing the female character directly in the men's tub next to Riou). In PKCore, `GetFuroPos_Prefix` completely replaces this logic to guarantee strict assignment without fallback leaks.
-* Characters whose design or mannerisms are androgynous (such as **Simone**) are placed strictly in accordance with their canonical gender table (Simone routes to Case 0, placing him in the men's tub).
+  * **Case 2 (`0x18201a861`, Special / Unisex - Simone & Vincent)**: Evaluates whether women are present in the bath:
+    * If **no female bathers** are present (`female_count == 0`), routes them to **Positions `6 .. 11`** (allowing Simone and Vincent to soak alone on the women's side of the bath).
+    * If **female bathers are present**, routes them back to **Positions `0 .. 5`** (men's tub).
+  * **Fallback Trap at `0x18201a98e` (`xor eax, eax; ret`)**: If an invalid index or overflow occurs, vanilla returns Position 0.
 * **`GetFuroWomanNum` (`0x18201aaa0`)**: Scans all bathers and tallies every character where `GetSeibetu == 1` or `4`, driving conditional logic for bath dialogues and event triggers.
 
 ### B. Peeping / Wall Interaction (`FuroPhaseLookEvent` at `0x18201f180`)
@@ -81,10 +82,26 @@ In `EventOverlayClass/fc_event.cs`, specific combinations of character IDs trigg
 * **The Ninja Squad (`CheckCharaEvent03`)**: Kasumi (41 / 73) and Mondo (63).
 * **Vignette Protection in PKCore**: Because routines like `CheckCharaEvent00` and `CheckCharaEvent01` strictly compare `G2_pamem_num(0)` against exact party counts (`eax == 3`, `eax == 4`), injecting NPC visitors would cause `eax == 8`, causing all special vignettes to fail their condition checks! PKCore implements `IsSpecialBathEventParty` to automatically detect when a special vignette composition enters the bath, instantly disabling visitor injection and `G2_pamem_num` overrides so the pure vanilla event plays uninterrupted.
 
-### D. Beasts in the Bath
-* Large 2-slot monsters (Krakens, Griffins, Unicorn) cannot enter the bathhouse.
-* Small companion animals (Shiro, Mukumuku) have customized sitting positions near the deck edges rather than standard humanoid soaking sprites.
-* Decorating the bathhouse with items like the **6 Octopus Urns** when Abizboah and Rulodia are recruited triggers special aquatic animations.
+### D. Native Implementation of Beasts & Monsters in the Bath
+All recruited beasts and monsters possess native bathhouse implementations with authentic sprite atlases in `hp_furo` and dedicated routing:
+* **Large Beasts & Monsters (IDs 74 .. 78)**:
+  * **Native Gender Jump Table (`0x18201ac84`)**: Directly integrated into `EventOverlayClass.f_main$$GetSeibetu`:
+    * **Abizboah** (Kraken, ID 74) & **Chuchara** (Baby Kraken, ID 76): Native gender classification.
+    * **Rulodia** (Female Kraken, ID 75): Evaluates to Female (`1`), bathing on the women's side (slots 6..11).
+    * **Feather** (Griffin, ID 77) & **Siegfried** (Unicorn, ID 78): Evaluates to Male (`0`), bathing on the men's side (slots 0..5).
+  * **Aquatic Animations & Urns**: Decorating the bathhouse with items like the **6 Octopus Urns** when Abizboah and Rulodia are recruited triggers special kraken bath animations.
+* **Small Companion Animals**:
+  * **Shiro** (Canine, ID 48): Hardcoded check at `0x18201abfa` (`lea eax, [rbx - 0x30]; cmp eax, 2; jbe 0x18201ac25`) returning `0` (Male), placing him in the men's bath with custom sitting sprites on the wooden deck.
+  * **Mukumuku & Squirrel Companions** (IDs 81, 83): Authentic soaking sprites and playful splash sequences.
+
+### E. Native Implementation of Gadget (ID 26)
+* **Meg's Barrel Robot**: Hardcoded natively at `0x18201ac20` in `EventOverlayClass.f_main$$GetSeibetu`:
+  ```assembly
+  0x18201ac20: cmp ebx, 0x1a   ; chara_id == 26 (Gadget)
+  0x18201ac23: jne 0x18201ac2d
+  0x18201ac25: xor eax, eax    ; returns 0 (Male -> Men's Bath)
+  ```
+* Gadget possesses dedicated barrel-tub soaking graphics in Atlas 5 (`hp_furo_26_atlas`), sitting contentedly in the men's tub alongside Riou and male companions.
 
 ---
 
@@ -210,8 +227,8 @@ Below, all Suikoden II combatants, beasts, non-human races, and key allies are o
 | :--- | :--- | :--- | :---: | :---: | :--- | :--- |
 | **Gengen** | Male | Kobold | 1 Slot | Yes (`1`) | Men's Bath | Kobold Captain; Kobold Attack w/ Gabocha. |
 | **Gabocha** | Male | Kobold | 1 Slot | Yes (`1`) | Men's Bath | Kobold admirer; Kobold Attack w/ Gengen. |
-| **Ridley Wizen** | Male | Kobold | War Battle | Yes (`1`) | Non-combatant | Two River Kobold army general (Tenko Star). |
-| **Boris Wizen** | Male | Kobold | War Battle | Yes (`1`) | Non-combatant | Ridley's son; replaces Ridley if killed in Tinto. |
+| **Ridley Wizen** | Male | Kobold | War Battle | Yes (`1`) | Men's Bath | Two River Kobold army general (Tenko Star). |
+| **Boris Wizen** | Male | Kobold | War Battle | Yes (`1`) | Men's Bath | Ridley's son; replaces Ridley if killed in Tinto. |
 | **Chaco** | Male | Winghorde | 1 Slot | Yes (`1`) | Men's Bath | Flying Winghorde thief. |
 | **Sid** | Male | Winghorde | 1 Slot | Yes (`1`) | Men's Bath | Rebellious Winghorde fighter. |
 | **Stallion** | Male | Elf | 1 Slot | Yes (`1`) | Men's Bath | Fleet-footed runner; True Holy Rune bearer. |
@@ -224,17 +241,17 @@ Below, all Suikoden II combatants, beasts, non-human races, and key allies are o
 
 | Character | Gender / Type | Species / Family | Battle Slots | Equipment Swapping (`soubi_henkou`) | Castle Bathhouse Placement | Engine Archetype / Special Notes |
 | :--- | :--- | :--- | :---: | :---: | :--- | :--- |
-| **Shiro** | Male | Wolf / Canine | 1 Slot | **No (`0`)** | Deck / Bath Edge | 1-slot companion beast; locked equipment; front-row melee. |
-| **Mukumuku** | Male | Flying Squirrel | 1 Slot | **No (`0`)** | Deck / Bath Edge | 1-slot beast; Squirrel 5 Attack; missable early recruit. |
-| **Makumaku** | Male | Flying Squirrel | 1 Slot | **No (`0`)** | Deck / Bath Edge | Green flying squirrel; Squirrel 5 Attack. |
-| **Mikumiku** | Female | Flying Squirrel | 1 Slot | **No (`0`)** | Deck / Bath Edge | Pink flying squirrel; Squirrel 5 Attack. |
-| **Mekumeku** | Male | Flying Squirrel | 1 Slot | **No (`0`)** | Deck / Bath Edge | Yellow flying squirrel; Squirrel 5 Attack. |
-| **Mokumoku** | Male | Flying Squirrel | 1 Slot | **No (`0`)** | Deck / Bath Edge | Purple flying squirrel; Squirrel 5 Attack. |
-| **Abizboah** | Male | Giant Kraken / Monster | **2 Slots** | **No (`0`)** | **Excluded** | `ID 74` (`0x4A`); consumes 2 slots; Octopus Urns bath easter egg. |
-| **Rulodia** | Female | Giant Kraken / Monster | **2 Slots** | **No (`0`)** | **Excluded** | `ID 75` (`0x4B`); consumes 2 slots; Kraken mate; Octopus Urns easter egg. |
-| **Chuchara** | Neutral / Young | Baby Kraken / Monster | 1 Slot | **No (`0`)** | **Excluded** | `ID 76` (`0x4C`); 1-slot baby kraken; locked monster gear. |
-| **Feather** | Neutral | Griffin / Beast | **2 Slots** | **No (`0`)** | **Excluded** | `ID 77` (`0x4D`); consumes 2 party slots; Shining Bird. |
-| **Siegfried** | Male | Unicorn / Holy Beast | **2 Slots** | **No (`0`)** | **Excluded** | `ID 78` (`0x4E`); consumes 2 party slots; recruited only by Pure Maiden. |
+| **Shiro** | Male | Wolf / Canine | 1 Slot | **No (`0`)** | Men's Bath (Deck / Edge) | 1-slot companion beast; locked gear; native check at `0x18201abfa` routes to Men's Bath. |
+| **Mukumuku** | Male | Flying Squirrel | 1 Slot | **No (`0`)** | Men's Bath (Tub / Edge) | 1-slot beast; Squirrel 5 Attack; native splashing bath sprite. |
+| **Makumaku** | Male | Flying Squirrel | 1 Slot | **No (`0`)** | Men's Bath (Tub / Edge) | Green flying squirrel; Squirrel 5 Attack. |
+| **Mikumiku** | Female | Flying Squirrel | 1 Slot | **No (`0`)** | Women's Bath | Pink flying squirrel; Squirrel 5 Attack; routes to women's tub. |
+| **Mekumeku** | Male | Flying Squirrel | 1 Slot | **No (`0`)** | Men's Bath (Tub / Edge) | Yellow flying squirrel; Squirrel 5 Attack. |
+| **Mokumoku** | Male | Flying Squirrel | 1 Slot | **No (`0`)** | Men's Bath (Tub / Edge) | Purple flying squirrel; Squirrel 5 Attack. |
+| **Abizboah** | Male | Giant Kraken / Monster | **2 Slots** | **No (`0`)** | Men's Bath (Tub) | `ID 74` (`0x4A`); 2 slots; native routing at `0x18201ac84`; Octopus Urns animation. |
+| **Rulodia** | Female | Giant Kraken / Monster | **2 Slots** | **No (`0`)** | Women's Bath (Tub) | `ID 75` (`0x4B`); 2 slots; native jump table routes to Women's Tub (slots 6..11). |
+| **Chuchara** | Neutral / Young | Baby Kraken / Monster | 1 Slot | **No (`0`)** | Men's Bath (Tub) | `ID 76` (`0x4C`); 1 slot baby kraken; native bath sprite. |
+| **Feather** | Male / Neutral | Griffin / Beast | **2 Slots** | **No (`0`)** | Men's Bath (Tub) | `ID 77` (`0x4D`); 2 slots; Shining Bird; native jump table routes to Men's Tub (slots 0..5). |
+| **Siegfried** | Male | Unicorn / Holy Beast | **2 Slots** | **No (`0`)** | Men's Bath (Tub) | `ID 78` (`0x4E`); 2 slots; native jump table routes to Men's Tub (slots 0..5). |
 
 ---
 
@@ -242,7 +259,7 @@ Below, all Suikoden II combatants, beasts, non-human races, and key allies are o
 
 | Character | Gender / Type | Species / Construction | Battle Slots | Equipment Swapping (`soubi_henkou`) | Castle Bathhouse Placement | Engine Archetype / Special Notes |
 | :--- | :--- | :--- | :---: | :---: | :--- | :--- |
-| **Gadget** | Genderless | Mechanical Barrel Robot | 1 Slot | **No (`0`)** | Deck / Non-water | Meg's barrel construct; mechanical punches. |
+| **Gadget** | Male (Hardcoded `0`) | Mechanical Barrel Robot | 1 Slot | **No (`0`)** | Men's Bath (Tub) | Hardcoded at `0x18201ac20` in `GetSeibetu` (`cmp ebx, 0x1a -> 0`); dedicated `hp_furo_26` barrel tub sprites. |
 
 ---
 
@@ -324,12 +341,12 @@ Restoring NPC bath sprites requires eliminating all engine traps, correctly rout
 2. **Variable Data Bounds Guard (`G2_SYS.G2_varia_dat` & `CheckfuroItemEquip`)**:
    * Preemptively intercept calls for `chano >= 83`, returning `null` (and `0` for item equip checks).
    * Completely eliminates the `System.IndexOutOfRangeException` in `CreateFuroEquipAnime`.
-3. **Gender Resolution Hook (`f_main.GetSeibetu`) & Strict Tub Partition Enforcement (`f_main.GetFuroPos`)**:
+3. **Gender Resolution Hook (`f_main.GetSeibetu`)**:
    * Harmony prefix on `EventOverlayClass.f_main$$GetSeibetu` using verified ground-truth GSD2 character IDs (`player_*.json`).
-   * Explicitly maps all canonical female characters (Nanami [18], Eilie [19], Rina [20], Nina [55], Tengaar [8], Millie [24], Meg [25], Karen [14], Kasumi [41/73], Valeria [12], Anita [39], Ayda [43], Sierra [42/45], Oulan [46], Tomo [57], Viki [60], Wakaba [68], Hanna [23], Mikumiku [83], Rulodia [71], Apple [84/85], Teresa [91], Leona [94], Barbara [96], Jeane [97], Yuzu [98], Taki [99], Pilika [100/123/124], Emilia [102], Hilda [104], Raura [105], Elza [172]) to `1` (Female).
-   * Strictly classifies all other characters (including **Bob [4]**, **Chaco [17]**, **Kiba [86/87]**, **Templeton [101]**, and **Alex [95/103]**) as `0` (Male).
-   * **Root Cause of Templeton appearing in Women's Tub**: Character ID 101 (`player_tel_d.json` -> Templeton) was originally miscataloged under female IDs, placing the male cartographer into the women's tub. Corrected ID 101 to `MaleCastleNPCs`.
-   * **Root Cause of Taki appearing in Men's Tub**: Vanilla's `GetFuroPos` (`0x18201a7d0`) had an unhandled overflow fallback to `0x18201a98e` returning Position 0 (men's tub). PKCore implements `GetFuroPos_Prefix` to strictly assign female bathers to positions `6..11` and male bathers to positions `0..5`, eliminating any position leakage.
+   * Explicitly maps all canonical female characters (Nanami [18], Eilie [19], Rina [20], Nina [55], Tengaar [8], Millie [24], Meg [25], Karen [14], Kasumi [41/73], Valeria [12], Anita [39], Ayda [43], Sierra [42/45], Oulan [46], Tomo [57], Viki [60], Wakaba [68], Hanna [23], Mikumiku [83], Rulodia [71], Apple [84/85], Teresa Wisemail [95/102], Barbara [96], Yuzu [98], Pilika [100/124], Emilia [102], Raura [104], Elza [172]) to `1` (Female).
+   * Strictly classifies all other characters (including **Bob [4]**, **Chaco [17]**, **Kiba [86/87]**, **Marlowe [91/120]**, **Richmond [86/93]**, **Tenkou [99]**, **Templeton [97/101]**, **Adlai [101/105]**, and **Alex [103]**) as `0` (Male).
+   * **Root Cause of Tenkou in Women's Tub**: Character ID 99 was previously labeled as "Taki" and placed in female pools. 2D image cross-correlation of `hp_furo_19_atlas` slot 3 confirmed ID 99 is Tenkou (bearded man with gold headband). Reclassified ID 99 to `MaleCastleNPCs` and `PermanentCastleMales`, ensuring he routes strictly to the men's tub.
+   * **Root Cause of Teresa in Men's Tub**: Character ID 95 in `hp_furo_18_atlas` slot 4 contains the dark green haired female sprite (Teresa Wisemail), which was previously miscataloged under `MaleCastleNPCs` as Alex, while ID 91 (bare-chested young man) was miscataloged under female pools as Teresa. Reclassified ID 95 and ID 102 to `FemaleCharaIds` and `FemaleCastleNPCs`, guaranteeing Teresa routes strictly to the women's tub.
 
 ### Step 2: NPC Bath Delivery Mechanisms
 
@@ -341,10 +358,10 @@ Restoring NPC bath sprites requires eliminating all engine traps, correctly rout
 * In vanilla, the bathhouse has empty tub spots if your combat party has fewer than 6 members, or if few women are in your party.
 * Whenever Riou enters the bath, any unoccupied spots are populated from the pool of currently recruited castle NPCs:
   * **Candidate Segregation**: Recruits are divided into `FemaleCastleNPCs` and `MaleCastleNPCs`.
-    * **Men's side**: Shu [84], Richmond [90], Hai Yo [92], Klaus [143], Kiba [87], Fitcher [88], Hauser [89], Jess [93], Marlowe [120], Templeton [101], Alex [95], Adlai [110], Sansuke [112], Tetsu [118], Maximillian [107], Grenmeyer [125].
-    * **Women's side**: Apple [85], Leona [94], Barbara [96], Teresa Wisemail [91], Pilika [100], Jeane [97], Raura [105], Emilia [102], Taki [99], Yuzu [98], Hilda [104], Elza [172].
-  * **Guaranteed Female Representation**: If Riou's active party has no female members, the first vacant bath slot is guaranteed to draw from the recruited female pool first, ensuring the women's side is never empty.
-  * **Balanced Tub Distribution**: If multiple vacancies exist (such as visiting with Riou alone), the selection alternates between female and male recruits, filling both the men's tub and women's tub simultaneously.
+    * **Men's side**: Richmond / Hauser [86], Kiba [87], Fitcher [88], Jess [89], Gilbert [90], Marlowe / Young man [91], Marlowe [92], Richmond [93], Spiky hair man [94], Templeton / Green hat boy [97], Tenkou [99], Adlai / Kiba [101], Alex [103], Adlai [105], Sansuke [107/108], Tetsu [109], Maximillian [110], Ridley [118/121], Marlowe [120], Boris [123], Grenmeyer [125], Klaus [143].
+    * **Women's side**: Apple [84/85], Teresa Wisemail [95], Barbara [96], Yuzu [98], Pilika [100], Emilia / Teresa [102], Raura [104], Elza [172].
+  * **Guaranteed Facility Inclusion**: Core castle facility residents (**Apple, Teresa, Barbara, Pilika, Emilia** for women; **Hauser, Richmond, Tenkou** for men) are guaranteed in the candidate pool without depending on standard Star recruitment flags.
+  * **Balanced Tub Distribution**: If multiple vacancies exist, the selection alternates between female and male recruits, filling both the men's tub (right) and women's tub (left) simultaneously.
   * **Zero Save-Data Footprint**: Slot substitutions occur strictly in memory during `f_main.FuroInit` and are completely restored to the player's exact party configuration upon bath exit (`f_main.FuroEnd`).
 
 #### 3. Full 8-Character Bathhouse Expansion (+2 Convoy & Castle Visitor Slots)

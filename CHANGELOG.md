@@ -31,6 +31,23 @@ All notable changes to PKCore (formerly PKextended) are documented in this file.
   - **Master Action Command Catalog (`eventCom`)**: Cataloged all 147 `EC*` action methods in `EVENTCON.eventCommandFunction` (dialogue, camera tracking, screens, movement, pathfinding, warp transitions, shop overlays, party recruitment, stat buffs, potch, and battles).
   - **In-Memory Injection Pattern**: Established the verified Harmony postfix blueprint on `MACHICON.EventInit` to dynamically expand `eventobj` and `eventdat` arrays at runtime, enabling modders to add custom actors, bonsai props, trigger dots, and shops without repacking Unity asset bundles.
 
+- **Suikoden II Bathhouse Unisex Routing Restoration (Simone & Vincent)**:
+  - Updated [NPCBathVisitorPatch.cs](Patches/NPCBathVisitorPatch.cs) to preserve the special gender code `2` for **Vincent de Boule** (ID 64) and **Simone Verdricci** (ID 65).
+  - In vanilla Suikoden II, `EventOverlayClass.f_main$$GetFuroPos` evaluates gender code `2` at `0x18201a861` (Case 2): when no female party members are present, both Vincent and Simone are routed to **Positions 6..11** (the women's tub on the left side of the bathhouse), allowing them to bathe on the other side. If female party members are present, they join the men's tub (positions 0..5).
+  - Fixed an overly strict binary check in `GetSeibetu_Prefix` that previously forced both characters to `0` (strictly Male).
+
+- **Suikoden II Bathhouse Grounding: Ridley & Boris, Gadget, and Beasts Native Architecture**:
+  - **Ridley & Boris Men's Side Routing**: Fixed a catalog error where ID 123 (Boris) was previously listed in `FemaleCharaIds` / `FemaleCastleNPCs`. Removed 123 from female pools, and added Ridley (IDs 118, 121) and Boris (ID 123) to `MaleCastleNPCs`, guaranteeing they both soak on the men's side (Positions 0..5).
+  - **Native Gadget Implementation (ID 26)**: Grounded native hardcoded check at `0x18201ac20` in `EventOverlayClass.f_main$$GetSeibetu` (`cmp ebx, 0x1a -> xor eax, eax`) returning `0` (Male), giving Meg's barrel robot dedicated tub graphics in `hp_furo_26_atlas` on the men's side.
+  - **Native Beasts Architecture**: Corrected documentation in [suikoden_2_character_attributes_gender_and_baths.md](Documentation/suikoden_2_character_attributes_gender_and_baths.md). All recruited beasts and monsters (Abizboah, Rulodia, Chuchara, Feather, Siegfried, Shiro, Mukumuku) have native bathhouse implementations, authentic sprite atlases via `(chara_id - 1)/5` indexing, and routing through the native gender jump table at `0x18201ac84`.
+
+- **Suikoden II Bathhouse Grounding: Tenkou (99) and Teresa (95/102) Sprite Reclassification & Tub Routing**:
+  - **Visual Sprite Verification**: Extracted and verified sprite blocks across `hp_furo_17_atlas` through `hp_furo_22_atlas`:
+    - **Tenkou (ID 99)**: Visual cross-correlation confirmed ID 99 (`hp_furo_19_atlas` slot 3) is the bearded man with the gold headband (Tenkou). Previously miscataloged under female pools, causing him to appear in the women's tub. Reclassified ID 99 to `MaleCastleNPCs` and `PermanentCastleMales`, ensuring he routes strictly to the men's tub (Positions 0..5).
+    - **Teresa Wisemail (ID 95 / 102)**: Visual inspection of `hp_furo_18_atlas` slot 4 verified the dark green haired female sprite (Teresa Wisemail). ID 95 was previously miscategorized in `MaleCastleNPCs`, causing her to appear in the men's tub. Reclassified ID 95 and ID 102 (blonde/light-green hair) to `FemaleCharaIds`, `FemaleCastleNPCs`, and `PermanentCastleFemales`, ensuring they route strictly to the women's tub (Positions 6..11).
+    - **Male NPC Reclassifications**: Reclassified ID 91 (bare-chested young man), ID 94 (bare-chested spiky-haired man), and ID 97 (green-hat boy) to `MaleCastleNPCs`.
+  - **Runtime Tub Placement Logging**: Added `GetFuroPos_Postfix` hook to log exact character ID and tub assignments (`Men's tub` vs `Women's tub`) to `LogOutput.log`. Unconditionally logged visitor selection in `PrepareBathParty` for runtime clarity.
+
 ## [2026.10.19]
 
 - **Suikoden II NPC Bathhouse Sprites & Castle Visitors Restoration**:
@@ -66,10 +83,13 @@ All notable changes to PKCore (formerly PKextended) are documented in this file.
     - Recruited candidates are segregated into `FemaleCastleNPCs` and `MaleCastleNPCs`.
     - Added guaranteed inclusion for permanent castle facility residents (**Apple [85]**, **Leona [94]**, **Barbara [96]**, and **Pilika [100]** for women; **Hauser [86]** and **Richmond [93]** for men) who reside at HQ without requiring standard Star of Destiny recruitment flags (`G2_cha_flag`), guaranteeing the female candidate pool never runs out.
     - Unoccupied bath slots alternate between female and male companions to evenly balance both the men's tub (right side) and women's tub (left side) up to 8 total bathers.
-  - **Character ID Corrections (Templeton & Apple)**:
-    - Verified exact ID mappings against `player_*.json` asset schemas:
+  - **Character ID Corrections (Tenkou, Adlai, Templeton & Apple)**:
+    - Verified exact ID mappings against game character and asset schemas:
+      - **Tenkou** (ID 104) & **Adlai** (ID 105): Canonical male recruits (window maker and elevator inventor) who were mistakenly placed under `FemaleCharaIds` / `FemaleCastleNPCs`, causing them to soak in the women's tub. Removed from female lists and reclassified into `MaleCastleNPCs`.
       - **Templeton** (ID 101, `player_tel_d.json`): Male cartographer, previously miscataloged under female IDs, which caused him to soak in the women's tub. Corrected to `MaleCastleNPCs`.
       - **Apple** (ID 85, `player_app_d.json`): Female convoy strategist, previously misclassified under `MaleCastleNPCs`. Corrected to `FemaleCastleNPCs`.
+  - **Recruitment Flag Bounds Guard (`SafeIsRecruited`)**:
+    - Preemptively validates candidate ID bounds (`npcId <= 108`) before querying `G2_SYS.G2_cha_flag(2, npcId)`, completely extinguishing the `IndexOutOfRangeException` thrown when scanning characters with IDs beyond the 108 Stars table.
   - Complete technical documentation and binary disassembly notes recorded in [suikoden_2_character_attributes_gender_and_baths.md](Documentation/suikoden_2_character_attributes_gender_and_baths.md).
 
 - **High-Speed Decompiled Symbol Indexer & Query CLI**:
