@@ -8,11 +8,12 @@ All notable changes to PKCore (formerly PKextended) are documented in this file.
 
 - **Dear ImGui Current Data Location Box, Bottom HUD & Hotkey Dump (`[NumPad 5]`)**:
   - Implemented strictly within [ImGuiOverlayUI.cs](Patches/ImGuiOverlayUI.cs) and [ModConfiguration.cs](ModConfiguration.cs).
-  - **Bottom-Screen Location HUD (When Overlay Closed)**: When the main Dear ImGui overlay is closed, a compact, unobtrusive semi-transparent HUD box is displayed at the bottom of the screen showing strictly and exclusively `Location: <MapId>`. Removed Stars count and NumPad 5 text from the in-game HUD to avoid screen clutter.
-  - **In-Overlay Stars & Telemetry Cleanup**: Stars of Destiny count resides cleanly inside the main overlay sidebar (`Stars: <Count> / 108`). Completely removed confusing bathhouse `Tub` telemetry from the location box, location dump logs, and button labels.
+  - **Bottom-Left Location HUD**: When the main Dear ImGui overlay is closed, the compact HUD is anchored at the **bottom-left** of the screen (`Location: <MapId>`). Clicking anywhere on the HUD or pressing **`[NumPad 6]`** / **`[F9]`** seamlessly activates the inline text field and transfers input focus.
+  - **Inline Notes & Dump in HUD**: Players can write an area description right in the HUD, press Enter or click **`[Dump]`** (or hotkey **`[NumPad 5]`**), and see active notes right alongside the location.
+  - **Open Dump Log Button**: Added an **`[Open Log]`** button directly beside every Dump button (in the bottom-left HUD, overlay sidebar, and Scene Telemetry). Clicking it immediately opens `\Suikoden I and II HD Remaster\PKCore\Logs\locationdump.log` (or the containing folder) in Windows Explorer / default text editor.
+  - **In-Overlay Stars & Telemetry Cleanup**: Stars of Destiny count resides cleanly inside the main overlay sidebar (`Stars: <Count> / 108`).
   - **In-Overlay Toggle & Persistence**: Can be toggled on/off at any time from inside the overlay via **MenuBar > Overlays > Bottom Screen Location HUD**, the **Sidebar** checkbox under *CURRENT DATA LOCATION*, or the **General & Debug** section. Persists cleanly across sessions in `PKCore.cfg` via `ShowLocationHUD`.
-  - **Gameplay Input Pass-Through**: The bottom HUD uses `ImGuiWindowFlags.NoInputs` so clicks pass straight through to the game and controller/keyboard gameplay is completely uninhibited.
-  - **Hotkey Dump (`[NumPad 5]`)**: Pressing **`[NumPad 5]`** at any point in gameplay immediately appends a formatted location snapshot to `\Suikoden I and II HD Remaster\PKCore\Logs\locationdump.log`.
+  - **Hotkey Dump (`[NumPad 5]`)**: Pressing **`[NumPad 5]`** at any point in gameplay immediately appends a formatted location snapshot (with any current notes) to `\Suikoden I and II HD Remaster\PKCore\Logs\locationdump.log`.
 
 - **Dead Code Pruning & Map Object Architecture Cleanup**:
   - Cleaned up in [CustomObjectInsertion.cs](Patches/CustomObjectInsertion.cs), [DiscoveredObject.cs](Patches/DiscoveredObject.cs), and [GameObjectPatch.cs](Patches/GameObjectPatch.cs).

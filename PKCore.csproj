@@ -85,6 +85,16 @@
       <Private>false</Private>
     </Reference>
 
+    <!-- Dear ImGui Injection (External Standalone Plugin, NOT bundled) -->
+    <Reference Include="DearImGuiInjection">
+      <HintPath>$(GamePath)\BepInEx\plugins\DearImGuiInjection\DearImGuiInjection.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="ImGui.NET">
+      <HintPath>$(GamePath)\BepInEx\plugins\DearImGuiInjection\ImGui.NET.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+
     
     <!-- Game assemblies -->
     <Reference Include="GSD1">

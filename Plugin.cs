@@ -10,6 +10,7 @@ namespace PKCore;
 [BepInPlugin("faospark.pkcore", "PKCore", "2026.03.01")]
 [BepInDependency("d3xMachina.suikoden_fix", BepInDependency.DependencyFlags.SoftDependency)]
 [BepInDependency("faospark.SquidFam", BepInDependency.DependencyFlags.SoftDependency)]
+[BepInDependency("iDeathHD.DearImGuiInjection", BepInDependency.DependencyFlags.SoftDependency)]
 public class Plugin : BasePlugin
 {
     public static Plugin Instance { get; private set; }
@@ -97,6 +98,7 @@ public class Plugin : BasePlugin
             Patches.RoomItemPatch.Update();
         Patches.MenuScalePatch.ApplyLauncherConfigScaling();
         Patches.EncounterNonePatch.UpdateInput();
+        Patches.ImGuiOverlayUI.Update();
         AssetLoader.Update();
     }
 
@@ -141,6 +143,9 @@ public class Plugin : BasePlugin
         // Encounter None (F4 Hotkey)
         EncounterNonePatch.Initialize();
         harmony.PatchAll(typeof(EncounterNonePatch));
+
+        // Dear ImGui Overlay (F10 Hotkey, DirectX Present Hook via DearImGuiInjection)
+        Patches.ImGuiOverlayUI.Initialize();
 
         // Controller Prompt Override
         if (Config.ForceControllerPrompts.Value)
