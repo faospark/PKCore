@@ -411,6 +411,20 @@ public class Plugin : BasePlugin
             harmony.PatchAll(typeof(SajahShopUnlockPatch));
         }
 
+        // Liberated Muse City Hall Re-entry Patch (Suikoden 2)
+        if (Config.UnlockLiberatedMuseCityHall.Value)
+        {
+            Log.LogInfo("Applying Liberated Muse City Hall Re-entry patch...");
+            harmony.PatchAll(typeof(LiberatedMuseCityHallPatch));
+        }
+
+        // Muse Ruins Survivors & 108 Stars Restoration Patch (Suikoden 2)
+        if (Config.EnableMuseRuinsSurvivorsRestoration.Value)
+        {
+            Log.LogInfo("Applying Muse Ruins Survivors & 108 Stars Restoration patch...");
+            harmony.PatchAll(typeof(MuseRuinsSurvivorsPatch));
+        }
+
         // Battle Unit Window Diagnostics (both games)
         if (Config.LogBattleUnitWindow.Value)
         {

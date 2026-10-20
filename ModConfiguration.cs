@@ -68,6 +68,10 @@ public sealed class ModConfiguration
     // Suikoden 2 Sajah Village Rare Shop Early Unlock
     public ConfigEntry<bool> UnlockSajahRareShopEarly { get; private set; }
 
+    // Suikoden 2 Muse City Hall Re-entry & Ruins Survivors Restoration
+    public ConfigEntry<bool> UnlockLiberatedMuseCityHall { get; private set; }
+    public ConfigEntry<bool> EnableMuseRuinsSurvivorsRestoration { get; private set; }
+
     // Suikoden 2 Character Range Override Settings
     public ConfigEntry<bool> EnableCharacterRangeOverrides { get; private set; }
     public ConfigEntry<string> S2CharacterRangeOverrides { get; private set; }
@@ -417,6 +421,20 @@ public sealed class ModConfiguration
             "UnlockSajahRareShopEarly",
             true,
             "Unlocks the hidden rare item vendor and counter trigger inside the Sajah Village item shop before defeating the Beast Rune."
+        );
+
+        UnlockLiberatedMuseCityHall = _config.Bind(
+            "05 Game : Suikoden 2",
+            "UnlockLiberatedMuseCityHall",
+            true,
+            "Restores the City Hall doorway warp in Liberated Muse (vc25) post-liberation, allowing re-entry to retrieve missed items such as Old Book Vol. 4 from the council archive bookshelf."
+        );
+
+        EnableMuseRuinsSurvivorsRestoration = _config.Bind(
+            "05 Game : Suikoden 2",
+            "EnableMuseRuinsSurvivorsRestoration",
+            true,
+            "Restores interaction triggers for the 8 dormant actors in Muse Ruins (vc26). When all 108 Stars of Destiny are gathered, all 33 survivors speak their cleansed, peaceful dialogue as a spiritual reward."
         );
 
         EnableCharacterRangeOverrides = _config.Bind(

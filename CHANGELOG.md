@@ -6,6 +6,18 @@ All notable changes to PKCore (formerly PKextended) are documented in this file.
 
 ## [2026.10.20]
 
+- **Suikoden II Liberated Muse City Hall Re-entry (`UnlockLiberatedMuseCityHall`)**:
+  - Implemented in [LiberatedMuseCityHallPatch.cs](Patches/LiberatedMuseCityHallPatch.cs).
+  - Resolves a permanent lock-out oversight in vanilla Suikoden II where completing the liberation victory cutscene permanently sets `Story Flag 22 (bit 4)` but provides no door script for that state at the City Hall entrance in `vc25` (Submaps 1 & 2), locking players out of City Hall for the remainder of the game.
+  - Updates doorway event `ev[03]` at coordinates `(101..107, 18..19)` to allow free re-entry post-liberation, enabling players to retrieve missable items such as **Old Book Vol. 4** from the council archive bookshelf (`obj[25]`). City Hall's exit doorway automatically routes back to `vc25`.
+  - Configurable via `UnlockLiberatedMuseCityHall` (Default: `true`).
+
+- **Suikoden II Muse Ruins Survivors Restoration & 108 Stars Spiritual Reward (`EnableMuseRuinsSurvivorsRestoration`)**:
+  - Implemented in [MuseRuinsSurvivorsPatch.cs](Patches/MuseRuinsSurvivorsPatch.cs).
+  - **Dormant Victims Restoration**: Discovered 8 placed but untargeted NPC sprites (`obj[02]` through `obj[09]`) and 16 orphaned interaction scripts (`ev[62]` through `ev[77]`) in Muse Ruins (`vc26_01`). Re-targets these orphan scripts from non-existent slots `obj[35]..obj[42]` to the actual placed actors `obj[02]..obj[09]`, restoring their authored tragic dialogues (Bank 1, Messages 26–33).
+  - **108 Stars Spiritual Reward**: Checks if all 108 Stars of Destiny have been gathered (`G2_SYS.Mem108Chk(0) >= 108`) or the Beast Rune has been defeated. When united, all 33 spirits and survivors throughout Muse Ruins (`obj[02]` through `obj[34]`) are cleansed and at peace, speaking their hidden, peaceful survivor dialogues (Bank 1, Messages 51–83).
+  - Configurable via `EnableMuseRuinsSurvivorsRestoration` (Default: `true`).
+
 - **Suikoden I Map Identifiers & Regional Breakdown Reference Guide**:
   - Authored complete architecture and geographic guide in [suikoden_1_map_ids_and_areas_breakdown.md](Documentation/suikoden_1_map_ids_and_areas_breakdown.md).
   - Documents all 12 regional sectors (`area_a` through `area_k`, `area_z`) and all 85 background maps (`bg_va1` through `bg_vz5`), mapped to their C# decompiled handlers (`G1_fdata_c.cs`, `VillageManager.cs`, `Village_c.cs`, `Event_c.cs`, `Fmain_c.cs`).
