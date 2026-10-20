@@ -8,13 +8,15 @@ using UnityEngine.InputSystem;
 namespace PKCore.Patches;
 
 /// <summary>
-/// Suikoden I: R3 Castle Vault Access Patch.
-/// Enables pressing R3 (Right Stick Click or [V] on keyboard) to open Rock's Castle Vault
+/// Suikoden I: Remote Castle Vault Access Patch.
+/// Enables pressing Right Stick Up (or R3 / [F6] on keyboard) to open Rock's Castle Vault
 /// directly from anywhere on the field, immune to glitches and softlocks.
 /// </summary>
 public static class S1QuickStoragePatch
 {
     public static bool IsQuickStorageOpen { get; private set; } = false;
+
+    public static bool IsAnyQuickWindowOpen => IsQuickStorageOpen || S1QuickRunePatch.IsQuickRuneMasterOpen;
 
     public static GSD1::Village_c CurrentVillage { get; private set; }
     public static GSD1::Fmain_c CurrentField { get; private set; }
@@ -22,6 +24,49 @@ public static class S1QuickStoragePatch
     private static GSD1::SHIRO_FUNC_DELEGATE _activeStorageDelegate = null;
     private static float _lastToggleTime = 0f;
     private static bool _wasRightStickUpPrev = false;
+
+    /// <summary>
+    /// Checks if the game is currently in a loading screen, scene change, or screen fade.
+    /// </summary>
+    public static bool IsGameInLoadingOrTransition(out string reason)
+    {
+        reason = null;
+
+        try
+        {
+            // 1. Loading UI overlay
+            var uiManager = global::UIManager.Instance;
+            if (uiManager != null && uiManager.loading != null && uiManager.loading.gameObject.activeInHierarchy)
+            {
+                reason = "Loading screen is currently displayed";
+                return true;
+            }
+
+            // 2. Active UILoadingAnim resource loading
+            if (GSD1::UILoadingAnim.IsLoadingAnimeResources)
+            {
+                reason = "Loading animation resources active";
+                return true;
+            }
+
+            // 3. Map background asset loading in village / field
+            if (CurrentVillage != null && CurrentVillage.bg_manager != null && CurrentVillage.bg_manager.IsLoading)
+            {
+                reason = "Map background asset loading in progress";
+                return true;
+            }
+
+            // 4. World map transition in progress
+            if (CurrentField != null && (CurrentField.loadVillage != 0 || CurrentField.field_exit_flg != 0))
+            {
+                reason = "World map transition in progress";
+                return true;
+            }
+        }
+        catch { }
+
+        return false;
+    }
 
     /// <summary>
     /// Per-frame update called on the Unity main thread via Plugin.Update().
@@ -34,6 +79,13 @@ public static class S1QuickStoragePatch
         if (Plugin.Config == null || !Plugin.Config.EnableS1QuickStorage.Value)
             return;
 
+        // Mutual exclusion: only one quick window can be active or activated at a time
+        if (S1QuickRunePatch.IsQuickRuneMasterOpen)
+        {
+            _wasRightStickUpPrev = false;
+            return;
+        }
+
         // Check if Right Stick Up, R3 (Right Stick Press), or [F6] was pressed
         bool triggerPressed = false;
         try
@@ -44,7 +96,7 @@ public static class S1QuickStoragePatch
                 // Right stick up detection (analog threshold + edge detection)
                 float stickY = pad.rightStick.y.ReadValue();
                 bool isStickUp = stickY > 0.65f;
-                bool stickUpPressed = (isStickUp && !_wasRightStickUpPrev) || pad.rightStick.up.wasPressedThisFrame;
+                bool stickUpPressed = isStickUp && !_wasRightStickUpPrev;
                 _wasRightStickUpPrev = isStickUp;
 
                 if (stickUpPressed || pad.rightStickButton.wasPressedThisFrame)
@@ -58,7 +110,7 @@ public static class S1QuickStoragePatch
             }
 
             var kb = Keyboard.current;
-            if (kb != null && (kb.f6Key.wasPressedThisFrame || kb.bKey.wasPressedThisFrame))
+            if (kb != null && kb.f6Key.wasPressedThisFrame)
             {
                 triggerPressed = true;
             }
@@ -103,6 +155,12 @@ public static class S1QuickStoragePatch
     {
         failReason = null;
 
+        // 1. Loading screen / scene transition guard
+        if (IsGameInLoadingOrTransition(out failReason))
+        {
+            return false;
+        }
+
         var gw = GSD1::OldSrcBase.game_work;
         if (gw == null)
         {
@@ -145,6 +203,13 @@ public static class S1QuickStoragePatch
             return false;
         }
 
+        // Rejection: Rune Master is currently open
+        if (S1QuickRunePatch.IsQuickRuneMasterOpen)
+        {
+            failReason = "Rune Master is currently open";
+            return false;
+        }
+
         // Rejection: In Village during an active cutscene, event dialogue, or transition
         if (CurrentVillage != null)
         {
@@ -176,13 +241,15 @@ public static class S1QuickStoragePatch
     {
         try
         {
-            Plugin.Log.LogInfo("[S1QuickStorage] Invoking Rock's Castle Vault via R3...");
+            Plugin.Log.LogInfo("[S1QuickStorage] Invoking Rock's Castle Vault via Right Stick Up...");
 
             var initResult = GSD1::D_azukar_c.azukari_demo();
             if (initResult.Item1 && initResult.Item2 != null)
             {
                 _activeStorageDelegate = initResult.Item2;
                 IsQuickStorageOpen = true;
+                SuppressRockBackground();
+                PlaySoundOpen();
                 Plugin.Log.LogInfo("[S1QuickStorage] Vault opened successfully.");
             }
             else
@@ -222,6 +289,7 @@ public static class S1QuickStoragePatch
             {
                 // Native storage routine finished cleanly (user pressed Back/Cancel)
                 Plugin.Log.LogInfo("[S1QuickStorage] Storage session completed cleanly.");
+                PlaySoundClose();
                 IsQuickStorageOpen = false;
                 _activeStorageDelegate = null;
             }
@@ -234,10 +302,39 @@ public static class S1QuickStoragePatch
     }
 
     /// <summary>
-    /// Safely forces the storage window to close if interrupted or toggled off with R3.
+    /// Hides Rock's warehouse background image so the current field stays visible behind the vault UI.
+    /// </summary>
+    private static void SuppressRockBackground()
+    {
+        try
+        {
+            var eventC = GSD1::Village_c.event_c;
+            if (eventC != null)
+            {
+                var uiAzukari = eventC.uiAzukari;
+                if (uiAzukari != null && uiAzukari.bg_obj != null)
+                {
+                    uiAzukari.bg_obj.enabled = false;
+                    if (uiAzukari.bg_obj.gameObject != null)
+                    {
+                        uiAzukari.bg_obj.gameObject.SetActive(false);
+                    }
+                }
+            }
+        }
+        catch { }
+    }
+
+    /// <summary>
+    /// Safely forces the storage window to close if interrupted or toggled off.
     /// </summary>
     public static void CloseStorageSafely()
     {
+        if (IsQuickStorageOpen)
+        {
+            PlaySoundClose();
+        }
+
         try
         {
             GSD1::D_azukar_c.demo_exit();
@@ -260,8 +357,38 @@ public static class S1QuickStoragePatch
         Plugin.Log.LogInfo("[S1QuickStorage] Storage closed and player control restored.");
     }
 
+    /// <summary>
+    /// Plays the authentic Suikoden 1 menu open chime.
+    /// </summary>
+    public static void PlaySoundOpen()
+    {
+        try
+        {
+            int seId = GSD1::G_cmd_c.SE_OK;
+            if (seId <= 0) seId = GSD1::D_azukar_c.SE_OK;
+            if (seId <= 0) seId = 1;
+            GSD1::P_sound_c.Qsd_call(seId);
+        }
+        catch { }
+    }
+
+    /// <summary>
+    /// Plays the authentic Suikoden 1 menu cancel/close chime.
+    /// </summary>
+    public static void PlaySoundClose()
+    {
+        try
+        {
+            int seId = GSD1::G_cmd_c.SE_CANCEL;
+            if (seId <= 0) seId = GSD1::D_azukar_c.SE_CANCEL;
+            if (seId <= 0) seId = 2;
+            GSD1::P_sound_c.Qsd_call(seId);
+        }
+        catch { }
+    }
+
     // =========================================================================
-    // HARMONY HOOKS (Player Control & Encounter Guards)
+    // HARMONY HOOKS (Player Control, Movement & Encounter Guards)
     // =========================================================================
 
     [HarmonyPatch(typeof(GSD1::Village_c), nameof(GSD1::Village_c.village_main))]
@@ -278,11 +405,48 @@ public static class S1QuickStoragePatch
         CurrentField = __instance;
     }
 
+    // --- Movement Blockers (Towns, Dungeons, Castles) ---
+
+    [HarmonyPatch(typeof(GSD1::Village_c), nameof(GSD1::Village_c.NewPlayerMove))]
+    [HarmonyPrefix]
+    public static bool Village_NewPlayerMove_Prefix()
+    {
+        return !IsAnyQuickWindowOpen;
+    }
+
+    [HarmonyPatch(typeof(GSD1::Village_c), nameof(GSD1::Village_c.OldPlayerMove))]
+    [HarmonyPrefix]
+    public static bool Village_OldPlayerMove_Prefix()
+    {
+        return !IsAnyQuickWindowOpen;
+    }
+
+    [HarmonyPatch(typeof(GSD1::Village_c), nameof(GSD1::Village_c.playerMoveBase1))]
+    [HarmonyPrefix]
+    public static bool Village_playerMoveBase1_Prefix()
+    {
+        return !IsAnyQuickWindowOpen;
+    }
+
+    [HarmonyPatch(typeof(GSD1::Village_c), nameof(GSD1::Village_c.playerMoveBase2))]
+    [HarmonyPrefix]
+    public static bool Village_playerMoveBase2_Prefix()
+    {
+        return !IsAnyQuickWindowOpen;
+    }
+
+    [HarmonyPatch(typeof(GSD1::Village_c), nameof(GSD1::Village_c.playerMoveBase3))]
+    [HarmonyPrefix]
+    public static bool Village_playerMoveBase3_Prefix()
+    {
+        return !IsAnyQuickWindowOpen;
+    }
+
     [HarmonyPatch(typeof(GSD1::Village_c), nameof(GSD1::Village_c.player_move))]
     [HarmonyPrefix]
     public static bool Village_player_move_Prefix(ref byte __result)
     {
-        if (IsQuickStorageOpen)
+        if (IsAnyQuickWindowOpen)
         {
             __result = 0;
             return false;
@@ -290,11 +454,11 @@ public static class S1QuickStoragePatch
         return true;
     }
 
-    [HarmonyPatch(typeof(GSD1::Village_c), "isEnableOpenMenu", MethodType.Getter)]
+    [HarmonyPatch(typeof(GSD1::Village_c), nameof(GSD1::Village_c.CheckArrivedEvent))]
     [HarmonyPrefix]
-    public static bool Village_get_isEnableOpenMenu_Prefix(ref bool __result)
+    public static bool Village_CheckArrivedEvent_Prefix(ref bool __result)
     {
-        if (IsQuickStorageOpen)
+        if (IsAnyQuickWindowOpen)
         {
             __result = false;
             return false;
@@ -302,11 +466,43 @@ public static class S1QuickStoragePatch
         return true;
     }
 
+    [HarmonyPatch(typeof(GSD1::Village_c), nameof(GSD1::Village_c.playerOP_move))]
+    [HarmonyPrefix]
+    public static bool Village_playerOP_move_Prefix()
+    {
+        return !IsAnyQuickWindowOpen;
+    }
+
+    // --- Movement & Input Blockers (World Map) ---
+
+    [HarmonyPatch(typeof(GSD1::Fmain_c), nameof(GSD1::Fmain_c.userMove))]
+    [HarmonyPrefix]
+    public static bool Fmain_userMove_Prefix()
+    {
+        return !IsAnyQuickWindowOpen;
+    }
+
+    [HarmonyPatch(typeof(GSD1::Fmain_c), nameof(GSD1::Fmain_c.userMoveSet))]
+    [HarmonyPrefix]
+    public static bool Fmain_userMoveSet_Prefix()
+    {
+        return !IsAnyQuickWindowOpen;
+    }
+
+    [HarmonyPatch(typeof(GSD1::Fmain_c), nameof(GSD1::Fmain_c.padReaction))]
+    [HarmonyPrefix]
+    public static bool Fmain_padReaction_Prefix()
+    {
+        return !IsAnyQuickWindowOpen;
+    }
+
+    // --- Encounter Lockouts ---
+
     [HarmonyPatch(typeof(GSD1::Village_c), nameof(GSD1::Village_c.v_wanderingMonsterChk))]
     [HarmonyPrefix]
     public static bool Village_MonsterChk_Prefix(ref int __result)
     {
-        if (IsQuickStorageOpen)
+        if (IsAnyQuickWindowOpen)
         {
             __result = 0;
             return false;
@@ -318,9 +514,75 @@ public static class S1QuickStoragePatch
     [HarmonyPrefix]
     public static bool Fmain_MonsterChk_Prefix(ref int __result)
     {
-        if (IsQuickStorageOpen)
+        if (IsAnyQuickWindowOpen)
         {
             __result = 0;
+            return false;
+        }
+        return true;
+    }
+
+    // --- Rock Background Image Suppression & Instant Opening ---
+
+    [HarmonyPatch(typeof(GSD1::D_azukar_c.UIAzukari), nameof(GSD1::D_azukar_c.UIAzukari.Initialize))]
+    [HarmonyPrefix]
+    public static bool UIAzukari_Initialize_Prefix(GSD1::D_azukar_c.UIAzukari __instance, ref Il2CppSystem.Collections.IEnumerator __result)
+    {
+        if (IsQuickStorageOpen)
+        {
+            if (__instance != null)
+            {
+                __instance.is_complete_initialize = true;
+            }
+            __result = null;
+            return false; // Skip async background image loading entirely for zero-delay opening
+        }
+        return true;
+    }
+
+    [HarmonyPatch(typeof(GSD1::D_azukar_c.UIAzukari), nameof(GSD1::D_azukar_c.UIAzukari.IsCompleteInitialize))]
+    [HarmonyPrefix]
+    public static bool UIAzukari_IsCompleteInitialize_Prefix(ref bool __result)
+    {
+        if (IsQuickStorageOpen)
+        {
+            __result = true;
+            return false; // Ready instantly on frame 0
+        }
+        return true;
+    }
+
+    [HarmonyPatch(typeof(GSD1::D_azukar_c.UIAzukari), nameof(GSD1::D_azukar_c.UIAzukari.Terminate))]
+    [HarmonyPrefix]
+    public static bool UIAzukari_Terminate_Prefix(GSD1::D_azukar_c.UIAzukari __instance)
+    {
+        if (IsQuickStorageOpen)
+        {
+            if (__instance != null)
+            {
+                __instance.is_complete_initialize = false;
+            }
+            return false;
+        }
+        return true;
+    }
+
+    [HarmonyPatch(typeof(GSD1::D_azukar_c.UIAzukari), nameof(GSD1::D_azukar_c.UIAzukari.SetFadeBright))]
+    [HarmonyPrefix]
+    public static bool UIAzukari_SetFadeBright_Prefix(GSD1::D_azukar_c.UIAzukari __instance)
+    {
+        if (IsQuickStorageOpen)
+        {
+            try
+            {
+                if (__instance != null && __instance.bg_obj != null)
+                {
+                    __instance.bg_obj.enabled = false;
+                    if (__instance.bg_obj.gameObject != null)
+                        __instance.bg_obj.gameObject.SetActive(false);
+                }
+            }
+            catch { }
             return false;
         }
         return true;

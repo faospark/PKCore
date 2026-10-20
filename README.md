@@ -46,7 +46,8 @@ The **core DLL component** for **[Project Kyaro](https://www.nexusmods.com/suiko
 * NPC Bathhouse Sprites & Castle Visitors Restoration (S2)
 * Muse Ruins Survivors Restoration & 108 Stars Spiritual Reward (S2)
 * Muse City Hall Re-entry (Unlock re-entry into City Hall across all storyline phases, S2)
-* Remote Castle Vault Access via Right Stick Up / R3 (Open Rock's warehouse from anywhere on the field, immune to softlocks and glitches, S1)
+* Remote Castle Vault Access via Right Stick Up / R3 (Open Rock's warehouse from anywhere on the field with transparent background overlay, loading screen immunity, and complete background player movement silencing, S1)
+* Remote Castle Rune Master Access via Right Stick Down (Open Jeane's rune shop from anywhere on the field with loading screen immunity and complete background player movement silencing, S1)
 
 **[Performance Features]**
 

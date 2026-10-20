@@ -6,14 +6,51 @@ All notable changes to PKCore (formerly PKextended) are documented in this file.
 
 ## [2026.10.20]
 
+- **Suikoden I: Audio Feedback & Input Robustness for Quick Storage & Quick Rune Master**:
+  - Implemented in [S1QuickStoragePatch.cs](Patches/S1QuickStoragePatch.cs) and [S1QuickRunePatch.cs](Patches/S1QuickRunePatch.cs).
+  - **Native Open & Close Sound Effects**:
+    - Triggering either menu (Right Stick Up for Castle Vault or Right Stick Down for Castle Rune Master) now plays the authentic Suikoden 1 menu open chime (`P_sound_c.Qsd_call(G_cmd_c.SE_OK)`).
+    - Closing either menu (via native Back/Cancel button, selecting "Exit"/"Quit" in the menu, or toggling with R3 / Right Stick / function keys) plays the authentic Suikoden 1 menu cancel/close chime (`P_sound_c.Qsd_call(G_cmd_c.SE_CANCEL)`).
+  - **Rune Master Input Edge-Detection Fix**:
+    - Replaced raw synthetic button checks with clean single-edge analog threshold detection (`isStickDown && !_wasRightStickDownPrev`).
+    - Resolved an issue where moving the analog stick down to browse runes or menu options within Rune Master could trigger an early close.
+    - Removed conflicting keyboard letter keys (`[R]`, `[B]`) to avoid accidental triggers while running or typing; standardized keyboard controls on **[F6]** (Vault) and **[F7]** (Rune Master).
+    - Added full fallback initialization for `OMISE_DATA.message` and static castle reference assignment in `OpenRuneMaster()`.
+
+- **Suikoden I: Right Stick Down Castle Rune Master Remote Access (Jeane Anywhere)**:
+  - Implemented in [S1QuickRunePatch.cs](Patches/S1QuickRunePatch.cs).
+  - **Direct Field Access**: Flicking **Right Stick Down** (or pressing **[F7]** on keyboard) opens the Toran Castle Rune Master shop directly from anywhere on the field (dungeons, towns, world map) without needing to travel back to Toran Castle.
+  - **Native Remaster UI Lifecycle**: Directly initializes and advances the native `h_monsyo_c.init_monsyo()` state machine with `Event_c.shiro_monsyou_data`, providing full access to attaching runes, removing runes, and rune purchasing. Pressing Back/Cancel (or Right Stick Down again) safely executes `h_monsyo_c.monsyo_exit()` to tear down the window hierarchy and restore field gameplay.
+  - **Loading Screen & Scene Transition Immunity**:
+    - Pre-flight validation checks `UIManager.isFadeInState`, `isFadeOutState`, `IsFadeOutEnd`, `UIManager.Instance.loading`, `UILoadingAnim.IsLoadingAnimeResources`, `UILoadingAnim.instance.doStopAnime`, and background asset loading (`MapBGManager.IsLoading`, `FieldBGManager.IsLoading`).
+    - Guarantees the Rune Master window cannot be opened during loading screens, map shifts, or screen transitions.
+  - **Single-Window Mutual Exclusion & Dialogue Lock**:
+    - Strictly prevents opening the Rune Master if the Castle Vault is open or currently activating (`IsQuickStorageOpen`).
+    - Blocks opening during active story NPC dialogue, message windows, or choice popups (`WindowManager.GetIsOpen()`, `IsUseMessageWindow`, `IsOpenCommonDialogWindow()`).
+  - **Complete Background Movement & Input Silencing**:
+    - Silences Tir McDohl and party follower movement while the shop is active by intercepting all movement and controller processing across `Village_c` (`NewPlayerMove`, `OldPlayerMove`, `playerMoveBase1/2/3`, `player_move`, `playerOP_move`, `CheckArrivedEvent`) and `Fmain_c` (`userMove`, `userMoveSet`, `padReaction`). Prevents the protagonist from moving or triggering events in the background while navigating rune menus.
+    - Suppresses wandering monster encounters (`v_wanderingMonsterChk` / `f_wanderingMonsterChk`) and normal pause menu activation while open.
+  - **Configuration Settings**:
+    - `EnableS1QuickRuneMaster` (default: `true`) — Toggles the feature.
+    - `S1QuickRuneMasterRequireJeane` (default: `false`) — When true, restricts access until Jeane is recruited in Antei (`member_flag[FP_JIJ] != 0`). By default (`false`), unlocks as soon as Toran Castle is established (`shiro.level > 0`).
+
 - **Suikoden I: Right Stick Up Castle Vault Remote Access (Rock's Warehouse Anywhere)**:
   - Implemented in [S1QuickStoragePatch.cs](Patches/S1QuickStoragePatch.cs).
   - **Direct Field Access**: Flicking **Right Stick Up** (or pressing **R3** / **[F6]** on keyboard) opens Rock's Castle Vault directly from anywhere on the field (dungeons, towns, world map) without needing to travel back to Toran Castle.
   - **Native Remaster UI Lifecycle**: Directly initializes and advances the native `D_azukar_c.azukari_demo()` state machine and `WindowManager.OpenStorageWindowUI`, retaining full native HD Remaster menus, audio, item descriptions, and deposit/withdraw controls. Pressing Back/Cancel (or Right Stick Up / R3 again) safely tears down the storage windows and terminates `UIAzukari`.
-  - **Glitch-Immunity & Softlock Guarding**:
-    - Pre-flight validation guarantees the vault cannot be opened in invalid game states: blocks activation during battles, 1-on-1 duels, wars, or active story event/dialogue execution (`Village_c.isEnableOpenMenu == false`).
-    - Validates `OldSrcBase.game_work.shiro_data` and warehouse capacity (60-slot `azukari` array bounds) before opening.
-    - Temporarily suppresses player field movement (`player_move`) and wandering monster encounters (`v_wanderingMonsterChk` / `f_wanderingMonsterChk`) while the vault is active, preventing background walking or map exit softlocks.
+  - **Zero-Delay Instant Opening & Background Asset Bypass**:
+    - By default, the native game asynchronously loads Rock's static warehouse background illustration and pauses execution every frame until `UIAzukari.IsCompleteInitialize()` completes.
+    - Patched `UIAzukari.Initialize` and `IsCompleteInitialize` to bypass the asynchronous background sprite loading completely and signal instant readiness on frame 0.
+    - Completely eliminates the delay when opening the vault, allowing the menu to open instantly and keeping the current field scene cleanly visible behind the UI.
+  - **Loading Screen & Scene Transition Immunity**:
+    - Pre-flight validation checks `UIManager.isFadeInState`, `isFadeOutState`, `IsFadeOutEnd`, `UIManager.Instance.loading`, `UILoadingAnim.IsLoadingAnimeResources`, `UILoadingAnim.instance.doStopAnime`, and background asset loading (`MapBGManager.IsLoading`, `FieldBGManager.IsLoading`).
+    - Guarantees the vault cannot be opened during loading screens, map shifts, or screen transitions.
+  - **Single-Window Mutual Exclusion & Dialogue Lock**:
+    - Strictly prevents opening the Castle Vault if the Rune Master is open or currently activating (`IsQuickRuneMasterOpen`).
+    - Blocks opening during active story NPC dialogue, message windows, or choice popups (`WindowManager.GetIsOpen()`, `IsUseMessageWindow`, `IsOpenCommonDialogWindow()`).
+  - **Complete Background Movement & Input Silencing**:
+    - Completely stops Tir McDohl and follower movement while browsing vault items by intercepting all input and locomotion logic across `Village_c` (`NewPlayerMove`, `OldPlayerMove`, `playerMoveBase1/2/3`, `player_move`, `playerOP_move`, `CheckArrivedEvent`) and `Fmain_c` (`userMove`, `userMoveSet`, `padReaction`). Eliminates background character walking while scrolling through vault items.
+    - Suppresses wandering monster encounters (`v_wanderingMonsterChk` / `f_wanderingMonsterChk`) and standard menu open calls while open.
   - **Configuration Settings**:
     - `EnableS1QuickStorage` (default: `true`) — Toggles the feature.
     - `S1QuickStorageRequireRock` (default: `false`) — When true, restricts vault access until Rock is recruited (`member_flag[FP_LOK] != 0`). By default (`false`), unlocks as soon as Toran Castle is established (`shiro.level > 0`).

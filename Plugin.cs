@@ -99,6 +99,7 @@ public class Plugin : BasePlugin
         Patches.MenuScalePatch.ApplyLauncherConfigScaling();
         Patches.EncounterNonePatch.UpdateInput();
         Patches.S1QuickStoragePatch.Update();
+        Patches.S1QuickRunePatch.Update();
         Patches.ImGuiOverlayUI.Update();
         AssetLoader.Update();
     }
@@ -477,8 +478,19 @@ public class Plugin : BasePlugin
             harmony.PatchAll(typeof(BattleEnemyLevelPatch));
         }
 
-        // PSP Launcher Patch
+        // Suikoden 1 Castle Vault (Quick Storage)
+        if (Config.EnableS1QuickStorage.Value)
+        {
+            Log.LogInfo("Applying Suikoden 1 Quick Storage patch...");
+            harmony.PatchAll(typeof(Patches.S1QuickStoragePatch));
+        }
 
+        // Suikoden 1 Castle Rune Master (Quick Rune)
+        if (Config.EnableS1QuickRuneMaster.Value)
+        {
+            Log.LogInfo("Applying Suikoden 1 Quick Rune Master patch...");
+            harmony.PatchAll(typeof(Patches.S1QuickRunePatch));
+        }
 
         // PSP Launcher Patch
         // Now handled by Update loop instead of Harmony postfix

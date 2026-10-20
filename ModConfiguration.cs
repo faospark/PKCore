@@ -111,6 +111,8 @@ public sealed class ModConfiguration
     public ConfigEntry<bool> S1ScaledDownWorldMap { get; private set; }
     public ConfigEntry<bool> EnableS1QuickStorage { get; private set; }
     public ConfigEntry<bool> S1QuickStorageRequireRock { get; private set; }
+    public ConfigEntry<bool> EnableS1QuickRuneMaster { get; private set; }
+    public ConfigEntry<bool> S1QuickRuneMasterRequireJeane { get; private set; }
 
     // UI Settings
     public ConfigEntry<bool> ScaleDownDialogBox { get; private set; }
@@ -573,6 +575,21 @@ public sealed class ModConfiguration
             "S1QuickStorageRequireRock",
             false,
             "When enabled, Castle Vault requires Rock to be recruited (Toran Castle warehouse unlocked) before it can be accessed. Set to false to allow opening anytime after obtaining the castle."
+        );
+
+        // Suikoden 1 Castle Rune Master (Quick Rune)
+        EnableS1QuickRuneMaster = _config.Bind(
+            "06 Game : Suikoden 1",
+            "EnableS1QuickRuneMaster",
+            true,
+            "Press Right Stick Down (or [F7] on keyboard) to open the Toran Castle Rune Master (Jeane) directly from anywhere on the field, immune to glitches and softlocks."
+        );
+
+        S1QuickRuneMasterRequireJeane = _config.Bind(
+            "06 Game : Suikoden 1",
+            "S1QuickRuneMasterRequireJeane",
+            false,
+            "When enabled, Remote Rune Master requires Jeane to be recruited in Antei before it can be accessed. Set to false to allow opening anytime after obtaining Toran Castle."
         );
 
 
