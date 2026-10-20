@@ -42,3 +42,9 @@ imgui/
 
 # Agent
 #.agent/
+
+# Symbol indexer database & Python cache
+*.db
+tools/symbol_indexer/symbols.db
+__pycache__/
+*.pyc
