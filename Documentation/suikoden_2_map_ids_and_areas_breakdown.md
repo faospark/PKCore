@@ -9,14 +9,14 @@ $v + [Region Letter] + [Map Number]
 ```text
     v    c    18
     │    │    └─── [Part 3] 2-Digit Submap / Screen ID (01 - 37)
-    │    └──────── [Part 2] Region Letter (a - k) = Chronological Story Progression
-    └───────────── [Part 1] Asset Type ('v' = Venue / Village Map Asset)
+    │    └──────── [Part 2] Region Letter (a - k) = Internal Area Archive Code (010_ARA - 110_ARK)
+    └───────────── [Part 1] Asset Type ('v' = Village / Field Map Asset, from engine 'vno')
 ```
 
 ---
 
 ### Part 1: Leading Prefix `'v'` (Asset Category)
-* **`v`** stands for **Venue** (or *Village / Vector stage asset*).
+* **`v`** stands for **Village** (corresponding to internal engine variable `vno` / *Village Number*, paired with `ano` / *Area Number* and `mno` / *Map Number* in `MACHICON`).
 * In the game’s engine and disc filesystem:
   - **`v`** prefixes designate **location/field map assets** (towns, dungeons, rooms, castles).
   - **`w`** prefixes designate **World Map** terrain sectors (e.g., `wd_map_00.json`, `we.json`, `wi.json`).
@@ -25,20 +25,20 @@ $v + [Region Letter] + [Map Number]
 
 ---
 
-### Part 2: Region Letter (`a` through `k`) = Chronological Story Progression
-The regional letters **`a` through `k`** directly map to the chronological narrative progression of the main campaign:
+### Part 2: Region Letter (`a` through `k`) = Internal Area Archive Code
+The regional letters **`a` through `k`** represent the internal CD-ROM area archives (`010_ARA` through `110_ARK`). While they roughly track the expansion of the game world, player story progression branches across them dynamically (for example, the alliance mission to Two River **`vh`** occurs immediately following South Window **`vd`**, before Greenhill **`ve`**, Matilda **`vi`**, Banner **`vf`**, or Tinto **`vg`**):
 
 ```mermaid
 flowchart LR
     va["va (Prologue: Highland Border / Kyaro)"] --> vb["vb (Act 1A: Mercenary Fort / Ryube)"]
     vb --> vc["vc (Act 1B: Muse / Coronet)"]
     vc --> vd["vd (Act 2A: South Window / Radat)"]
-    vd --> ve["ve (Act 2B: Greenhill / Matilda Path)"]
-    ve --> vf["vf (Act 2C: Banner / Toran)"]
-    vf --> vg["vg (Act 3A: Tinto / Mines / Vampires)"]
-    vg --> vh["vh (Act 3B: Two River / Kobold)"]
-    vh --> vi["vi (Act 4A: Matilda / Rockaxe)"]
-    vi --> vj["vj (Act 4B: Highland Finale / L'Renouille)"]
+    vd --> vh["vh (Act 2B: Two River / Kobold)"]
+    vh --> ve["ve (Act 2C: Greenhill Academy)"]
+    ve --> vi["vi (Act 3A: Matilda / Rockaxe)"]
+    vi --> vf["vf (Act 3B: Banner / Toran)"]
+    vf --> vg["vg (Act 3C: Tinto / Mines)"]
+    vg --> vj["vj (Act 4: Highland Finale / L'Renouille)"]
     vj -. Castle HQ .- vk["vk (Dunan Castle HQ Tiers 1-4)"]
 ```
 
@@ -47,10 +47,10 @@ flowchart LR
 - `030_ARC` -> **`vc`**: **Act 1 (Mid)** (Muse City -> White Deer Inn -> Sindar Ruins -> Coronet Port).
 - `040_ARD` -> **`vd`**: **Act 2 (South)** (South Window City -> Radat Town -> North Window Ruins -> Cave of the Wind).
 - `050_ARE` -> **`ve`**: **Act 2 (West)** (Greenhill Academy -> Forest Village -> Greenhill-Matilda Border & Forest Path).
-- `060_ARF` -> **`vf`**: **Act 2 (South-Toran)** (Banner Village -> Mt. Ryukan Pass -> Gregminster Capital).
-- `070_ARG` -> **`vg`**: **Act 3 (Mining & Vampires)** (Tinto City -> Tinto Mines -> Drakemouth -> Crom -> Tiger Cave).
-- `080_ARH` -> **`vh`**: **Act 3 (Lakeside Republic)** (Two River Human/Wingly/Kobold districts -> Sewers -> Lakewest -> Kobold Village).
-- `090_ARI` -> **`vi`**: **Act 4 (Matilda Campaign)** (Rockaxe Castle -> Highway Village -> Mt. Rakutei dragon peak).
+- `060_ARF` -> **`vf`**: **Act 3 (South-Toran)** (Banner Village -> Banner Pass -> Gregminster Capital).
+- `070_ARG` -> **`vg`**: **Act 3 (Mining & Tinto)** (Tinto City -> Tinto Mines -> Tigermouth -> Crom).
+- `080_ARH` -> **`vh`**: **Act 2 (Lakeside Republic)** (Two River Human/Wingly/Kobold districts -> Sewers -> Lakewest -> Kobold Village -> Drakemouth).
+- `090_ARI` -> **`vi`**: **Act 3 (Matilda Campaign)** (Rockaxe Castle -> Highway Village -> Mt. Rakutei dragon peak).
 - `100_ARJ` -> **`vj`**: **Act 4 (Finale - Highland)** (L'Renouille Castle keep -> Beast Rune Sanctum -> Sajah Village).
 - `110_ARK` -> **`vk`**: **Headquarters** (Dunan Castle / North Window Castle across all 4 upgrade stages).
 
@@ -125,13 +125,13 @@ $100100 + [Region Code (01-11)] + [Map Number (01-37)] + [Local Message Offset (
 | Prefix | CD-ROM Archive | Major Territory | Primary Towns / Dungeons |
 | :---: | :---: | :--- | :--- |
 | **`va`** | `010_ARA` | **Highland Borderlands & Kyaro** | Highland Youth Brigade Camp, Tenzan Pass, North Sparrow Pass, Kyaro Town |
-| **`vb`** | `020_ARB` | **East State Borderlands** | Mercenary Fortress, Toto Village, Ryube Village, Mt. Tigerwolf, Swallow Pass |
-| **`vc`** | `030_ARC` | **Muse Principality & Lake Toran** | Muse City, White Deer Inn, Sindar Ruins, Coronet Town & Port |
-| **`vd`** | `040_ARD` | **South Window Principality** | South Window City, Radat Town, Kuskus Town, North Window Ghost Town, Cave of the Wind |
-| **`ve`** | `050_ARE` | **Greenhill Principality** | Greenhill City, New Leaf Academy, Forest Village, Greenhill-Matilda Border & Forest Path |
-| **`vf`** | `060_ARF` | **Banner & Toran Republic** | Banner Village, Mt. Ryukan Pass, Gregminster Capital, Toran Castle |
-| **`vg`** | `070_ARG` | **Tinto Republic & Mountains** | Tinto City, Tinto Mines, Drakemouth Village, Crom Village, Tiger Cave / Mt. Senai |
-| **`vh`** | `080_ARH` | **Two River Republic** | Two River City (Human, Wingly, Kobold Districts), Two River Sewers, Lakewest, Kobold Village |
+| **`vb`** | `020_ARB` | **East State Borderlands** | Mercenary Fortress, Toto Village, Ryube Village, Mt. Tigerwolf, Ryube Forest Path |
+| **`vc`** | `030_ARC` | **Muse City-State & Lake Dunan** | Muse City, White Deer Inn, Sindar Ruins, Coronet Town & Port |
+| **`vd`** | `040_ARD` | **South Window City-State** | South Window City, Radat Town, Kuskus Town, North Window Ghost Town, Cave of the Wind |
+| **`ve`** | `050_ARE` | **Greenhill City-State** | Greenhill City, New Leaf Academy, Forest Village, Greenhill-Matilda Border & Forest Path |
+| **`vf`** | `060_ARF` | **Banner & Toran Republic** | Banner Village, Banner Pass, Gregminster Capital, Toran Castle |
+| **`vg`** | `070_ARG` | **Tinto Republic & Mountains** | Tinto City, Tinto Mines, Tigermouth Village, Crom Village, Lampdragon Mountain |
+| **`vh`** | `080_ARH` | **Two River Republic** | Two River City (Human, Wingly, Kobold Districts), Two River Sewers, Lakewest, Kobold Village, Drakemouth Village |
 | **`vi`** | `090_ARI` | **Matilda Knightdom** | Rockaxe Castle, Rockaxe Town, Highway Village, Mt. Rakutei |
 | **`vj`** | `100_ARJ` | **Highland Kingdom Capital** | L'Renouille Castle, Royal Throne Room, Beast Rune Sanctum, Sajah Village |
 | **`vk`** | `110_ARK` | **Dunan Castle Headquarters** | Castle HQ (All 4 Levels, War Room, Great Hall, Docks, Farm, Bathhouse, Dojo, Teleport) |
@@ -170,7 +170,7 @@ $100100 + [Region Code (01-11)] + [Map Number (01-37)] + [Local Message Offset (
 | `vb04` | **Toto Village - Burned Ruins** | Destruction of Toto by Luca Blight and Highland soldiers; Pilika silenced. |
 | `vb05` | **Ryube Village - Town Square** | Circus performance stage (**Eilie, Rina, Bolgan recruitment**), town fountain. |
 | `vb06` | **Ryube Village - Outskirts & Woods** | Forest edge, inn, item shop, Millie searching for Bonaparte. |
-| `vb07` | **Swallow Pass (Ryube Forest Path)** | Forest trail; Bonaparte runaway pig chase, **Shiro & Kinnison recruitment**. |
+| `vb07` | **Ryube Forest Path** | Forest trail; Bonaparte runaway pig chase, **Shiro & Kinnison recruitment**. |
 | `vb08` | **Highland Border Gate** | Checkpoint blocked by Highland soldiers prior to the outbreak of war. |
 | `vb09` | **Mt. Tigerwolf - Mountain Trail** | Rocky slopes, monster encounters, path to the hermit's grove. |
 | `vb10` | **Mt. Tigerwolf - Tsai's Hermit Hut** | **Tsai recruitment**; Fire Spear inventor's cottage. |
@@ -181,17 +181,17 @@ $100100 + [Region Code (01-11)] + [Map Number (01-37)] + [Local Message Offset (
 
 ---
 
-### `vc` — Muse Principality & Coronet Port
+### `vc` — Muse City-State & Coronet Port
 
 | Map ID | Location / Submap | Key NPCs, Events & Recruitment Notes |
 | :---: | :--- | :--- |
-| `vc01` | **Muse City - Main Plaza & Streets** | City gate entry check (Fitcher pass), Leona's bar, Rune Master, rune shop, city avenues. |
-| `vc02` | **Muse City - City Hall & Council** | Mayor Anabelle's office, Jess's tactical desk, reception ante-room. |
+| `vc01` | **Muse City - Main Plaza & Streets** | City gate entry check (Fitcher pass), Leona's bar, Rune Master, rune shop, city avenues. Submap 1 (`vc01_01`) features open City Hall gates and front municipal entrance (X: 101..107, Y: 18..19). |
+| `vc02` | **Muse City - Residential & Council Ancillary** | Auxiliary rooms and private quarters. |
 | `vc04` | **White Deer Inn - Main Lodge** | Hilda and Alex's countryside inn; starting point of the Sindar Ruins excavation. |
 | `vc05` | **White Deer Inn - Guest Bedroom** | Private quarters where Pilika sleeps and recuperates. |
 | `vc06` | **Sindar Ruins - Exterior Approach** | Ancient stone portal entrance and grassy perimeter. |
 | `vc07` | **Sindar Ruins - Caverns & Dungeons** | Sluice gates puzzle, double-headed water snake boss, Healing Rune altar. |
-| `vc09` | **Jowston Hill - State Council Hall** | Assembly chamber of the High Leaders of the City-State of Jowston. |
+| `vc09` | **Muse City - City Hall & State Council Hall (Interior)** | Grand assembly chamber of the High Leaders of the City-State of Jowston, Mayor Anabelle's office, Jess's tactical desk, library archive (Old Book Vol. 4), and lobby exit doors (X: 161..165, Y: 111..112). |
 | `vc10` | **Jowston Hill - Flashback Chamber** | Genkaku and Han Cunningham duel memories and backstory. |
 | `vc11` | **Muse Outskirts - Forest Edge** | Clive pursues Elza cutscene encounter. |
 | `vc15` | **Muse Outskirts - Hill Overlook** | Overlook spot watching Highland forces surround Muse. |
@@ -199,13 +199,14 @@ $100100 + [Region Code (01-11)] + [Map Number (01-37)] + [Local Message Offset (
 | `vc17` | **Coronet Town - Town Streets** | Port village cobblestone streets, general store, inn. |
 | `vc18` | **Coronet Town - Port & Docks** | **Genshu recruitment** (`GenshuRecruitmentPatch.cs`), Tai Ho & Yam Koo dice duel, boat to Kuskus. |
 | `vc21` | **Muse / Coronet Commercial District** | Equipment and armor shops. |
-| `vc25` | **Liberated Muse City** | Post-liberation victory scenes. |
-| `vc26` | **Muse Ruins** | Aftermath of the Golden Wolf beast summoning sacrifice. |
-| `vc31` | **Muse Outskirts - Final Duel** | Clive & Elza conclusion storyline. |
+| `vc25` | **Muse City - Highland Military Occupation & Liberation Campaign** | Story battle and military occupation state where Highland commanders (Seed, Culgan, Gorudo, Rowd) and garrison patrols barricade the city and City Hall (`vc25_01` / `vc25_02`). |
+| `vc26` | **Muse City - Post-Liberation City Square & Rebuilding State** | Permanent active late-game / post-liberation city map (`vc26_01`). The central town square where surviving citizens rebuild after the Beast Rune sacrifice; features 33 spirits & survivors who speak peaceful post-liberation dialogue upon 108 Stars completion (`MuseRuinsSurvivorsPatch.cs`). Central City Hall entrance doors at X: 101..107, Y: 18..19. |
+| `vc27` | **Muse City - Post-Liberation City Hall (Interior)** | Liberated Municipal Council Hall interior with exit double doors at (X: 161..165, Y: 111..112). |
+| `vc31` | **Jowston Hill - State Council Hall Courtyard** | Exterior municipal courtyard leading to Council Hall entrance doors (X: 23..32, Y: 35..36). |
 
 ---
 
-### `vd` — South Window Principality & Radat
+### `vd` — South Window City-State & Radat
 
 | Map ID | Location / Submap | Key NPCs, Events & Recruitment Notes |
 | :---: | :--- | :--- |
@@ -224,7 +225,7 @@ $100100 + [Region Code (01-11)] + [Map Number (01-37)] + [Local Message Offset (
 
 ---
 
-### `ve` — Greenhill Principality & Forest Path
+### `ve` — Greenhill City-State & Forest Path
 
 | Map ID | Location / Submap | Key NPCs, Events & Recruitment Notes |
 | :---: | :--- | :--- |
@@ -248,7 +249,7 @@ $100100 + [Region Code (01-11)] + [Map Number (01-37)] + [Local Message Offset (
 | :---: | :--- | :--- |
 | `vf01` | **Banner Village - Harbor & Main Village** | Harbor docks, **Anita recruitment**, trade shop, fisherman. |
 | `vf02` | **Banner Village - Mountain Pass Inn** | Poisoned boy cutscene, trail entry lodge. |
-| `vf03` | **Mt. Ryukan Pass (Toran Mountain Trail)** | Mountain trail connecting Dunan and Toran; Worm boss, bandit encounters. |
+| `vf03` | **Banner Pass (Toran Mountain Trail)** | Mountain trail connecting Dunan and Toran; Worm boss, bandit encounters, hidden path to **Rokkaku Hamlet** (**Mondo & Sasuke recruitment**). |
 | `vf04` | **Gregminster - Capital Plaza & Streets** | Scarlet Moon / Toran Republic capital avenues, fountain, rune/armor shops. |
 | `vf05` | **Toran Castle / Presidential Palace** | President Lepant, Cleo, Pahn, Varkas; McDohl (Hero 1) cameo storyline. |
 | `vf06` | **Banner Village - Fast Ferry Pier** | Direct ship route connection to Dunan Castle HQ docks. |
@@ -259,15 +260,15 @@ $100100 + [Region Code (01-11)] + [Map Number (01-37)] + [Local Message Offset (
 
 | Map ID | Location / Submap | Key NPCs, Events & Recruitment Notes |
 | :---: | :--- | :--- |
-| `vg01` | **Tinto City - Entrance & Main Plaza** | Mountain city gate, town square, Gustav's standoff against Neclord. |
+| `vg01` | **Tinto City - Entrance & Main Plaza** | Mountain city gate, town square, Gustav's standoff against Neclord, armorer shop (**Alberto recruitment**). |
 | `vg02` | **Tinto City - Mayor's City Hall** | Mayor Gustav, Lilly, Jess reconciliation, council room. |
 | `vg03` | **Tinto - Riou's Bedroom** | Riou's mental collapse scene; decision branch to flee with Nanami to Crom. |
-| `vg04` | **Drakemouth Village - Mountain Trails** | Mountain path connecting Tinto, Two River, and Kobold territories. |
+| `vg04` | **Tigermouth Village - Mountain Trails** | Lampdragon Mountain / Tigermouth Pass connecting Tinto and Two River territories. |
 | `vg05` | **Tinto Mines - Upper Tunnels** | Abandoned gold mine, rail tracks, zombie miner ambushes. |
-| `vg06` | **Drakemouth Village - Inn & Lodges** | Traveler's mountain rest stop. |
+| `vg06` | **Tigermouth Village - Inn & Lodges** | Traveler's mountain rest stop, **Sierra Mikain** inn encounter. |
 | `vg07` | **Tinto Mines - Caverns & Lower Depths** | Subterranean caverns, underground rivers, boss arena. |
-| `vg08` | **Crom Village - Inn & Elder's Lodge** | Refugee settlement; **Alberto recruitment**, Nanami resting scene. |
-| `vg09` | **Tiger Cave / Mt. Senai Entrance** | Kahn Marley, **Sierra Mikain recruitment**, entrance to vampire hunting grounds. |
+| `vg08` | **Crom Village - Inn & Elder's Lodge** | Refugee settlement; Nanami resting scene; **Long Chan-Chan & Tenkou recruitment** nearby. |
+| `vg09` | **Tigermouth Pass / Mountain Cavern Approach** | Kahn Marley, **Sierra Mikain recruitment**, approach to Neclord confrontation. |
 | `vg11` | **Tinto Mines - Sealed Gate** | Barricaded shaft entrance. |
 | `vg13` | **Crom Village - Village Center** | Alleys, local inhabitants, refugee tents. |
 | `vg16` | **Crom Outskirts Trail** | Nanami and Riou resting sequence during the flight from Tinto. |
@@ -283,9 +284,9 @@ $100100 + [Region Code (01-11)] + [Map Number (01-37)] + [Local Message Offset (
 | `vh02` | **Lakewest Town - Docks & Village** | Ferry landing from Castle HQ, Grandma Taki, cabbage farms, storage baskets. |
 | `vh03` | **Kobold Village** | Southern Kobold settlement, village elder, **Yuzu recruitment** (sheep pen). |
 | `vh04` | **Two River Sewers** | Subterranean aqueducts, slime monsters, Pestilence boss chamber. |
-| `vh05` | **Two River City - Wingly District** | High treetop bridges, rope walkways, Susumu, Chaco's treehouse. |
+| `vh05` | **Two River City - Wingly District** | High treetop bridges, rope walkways, **Susu** (Winger elder), Chaco's treehouse. |
 | `vh06` | **Two River City - Kobold District** | Ridley's military garrison, Kobold food stalls, trading market. |
-| `vh08` | **Drakemouth-Kobold Border Road** | Border path connecting Two River territory to the southwest. |
+| `vh08` | **Drakemouth Village & Border Road** | Eastern border settlement and Lampdragon Mountain trail connecting Two River territory to Tigermouth/Tinto. |
 | `vh10` | **Lakewest / Two River Secret Grove** | Listening Orb event, **Siegfried (Unicorn) recruitment**. |
 | `vh11` | **Two River City - Liberated Tavern** | City celebration following Highland repulse. |
 

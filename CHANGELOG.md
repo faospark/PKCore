@@ -6,6 +6,68 @@ All notable changes to PKCore (formerly PKextended) are documented in this file.
 
 ## [2026.10.20]
 
+- **Suikoden I: Right Stick Up Castle Vault Remote Access (Rock's Warehouse Anywhere)**:
+  - Implemented in [S1QuickStoragePatch.cs](Patches/S1QuickStoragePatch.cs).
+  - **Direct Field Access**: Flicking **Right Stick Up** (or pressing **R3** / **[F6]** on keyboard) opens Rock's Castle Vault directly from anywhere on the field (dungeons, towns, world map) without needing to travel back to Toran Castle.
+  - **Native Remaster UI Lifecycle**: Directly initializes and advances the native `D_azukar_c.azukari_demo()` state machine and `WindowManager.OpenStorageWindowUI`, retaining full native HD Remaster menus, audio, item descriptions, and deposit/withdraw controls. Pressing Back/Cancel (or Right Stick Up / R3 again) safely tears down the storage windows and terminates `UIAzukari`.
+  - **Glitch-Immunity & Softlock Guarding**:
+    - Pre-flight validation guarantees the vault cannot be opened in invalid game states: blocks activation during battles, 1-on-1 duels, wars, or active story event/dialogue execution (`Village_c.isEnableOpenMenu == false`).
+    - Validates `OldSrcBase.game_work.shiro_data` and warehouse capacity (60-slot `azukari` array bounds) before opening.
+    - Temporarily suppresses player field movement (`player_move`) and wandering monster encounters (`v_wanderingMonsterChk` / `f_wanderingMonsterChk`) while the vault is active, preventing background walking or map exit softlocks.
+  - **Configuration Settings**:
+    - `EnableS1QuickStorage` (default: `true`) — Toggles the feature.
+    - `S1QuickStorageRequireRock` (default: `false`) — When true, restricts vault access until Rock is recruited (`member_flag[FP_LOK] != 0`). By default (`false`), unlocks as soon as Toran Castle is established (`shiro.level > 0`).
+
+- **Dear ImGui Overlay Input Isolation & Controller/Keyboard Game Silencing**:
+  - Implemented in [ImGuiOverlayUI.cs](Patches/ImGuiOverlayUI.cs).
+  - **Dynamic Input Silencing**: Fixed an issue where gamepad controller buttons, analog sticks, and keyboard strokes passed through to the main game while navigating, clicking, or typing into the overlay.
+  - **Context-Aware Focus Tracking**: Silences background game controls whenever:
+    - The main Dear ImGui overlay window is open (`IsOpen`).
+    - The dedicated Castle Bathhouse inspector is open (`ShowBathhouseWindow`).
+    - The area note input popup is active (`_showHudNoteInput`).
+    - The mouse cursor is hovering over any Dear ImGui window, menu bar, or widget (`io.WantCaptureMouse` or `io.WantCaptureKeyboard`), including when interacting with the bottom-left Location HUD.
+  - **Multi-Subsystem Interception**: Harmony hooks across `GRInputManager` (`IsOn`, `IsPress`, `IsHold`, `IsRepeat`, `IsOff`, `IsAny`, `IsKeyDown`, `IsKeyPress`, `GetValue`, `IsRunValue`), `G2_PAD` (`PadRead`, `PadRRead`), and `Pad` (`PadRead`, `PadRRead`) ensure complete silence of background movement, menu actuation, and combat commands without affecting ImGui's direct input processing or hotkeys (`[F10]`, `[Escape]`).
+
+- **Dear ImGui Overlay Sidebar Streamlining & Dedicated Themes / Settings Page**:
+  - Implemented in [ImGuiOverlayUI.cs](Patches/ImGuiOverlayUI.cs).
+  - **Sidebar Decluttering**: Streamlined the left navigation panel strictly to the search filter and section navigation buttons. Removed duplicate theme dropdowns, pills, redundant bathhouse buttons, quick toggles, and the cramped mini-location child window to ensure the sidebar fits entirely without scrolling.
+  - **Relocated Location & Area Notes Widget**: Moved the full telemetry and area notes interface (Map ID, Stars of Destiny count, Area Notes text input with `[X]` clear, `Append to locationdump.log [NumPad 5]`, and `Open Log`) into the **General & Debug** section where it has full horizontal breathing room.
+  - **Dedicated Themes & Settings Section**: Added **Section 7: Themes & Settings** accessible via sidebar navigation and keyword search (`theme`, `settings`, `appearance`, `style`, `color`). Includes full interactive preset cards for **Classic Blue**, **Matrix Green**, **Obsidian Black**, and **Dark Magenta**, descriptions, live swatch feedback, and overlay hotkey reminders.
+  - **Layout & Column Fix**: Resolved Dear ImGui channel splitter access violation crashes and line-wrap blank rendering by converting the two-column master-detail layout to `ImGui.Columns(2, "PKCoreColumns", true)` with independent scrolling and unconditional child window lifecycles.
+
+- **Tile & Entity Editor (Live Map Inspector & In-Memory Entity Placer)**:
+  - Implemented in [ImGuiOverlayUI.cs](Patches/ImGuiOverlayUI.cs).
+  - Accessible directly in the Dear ImGui overlay via **Section 8: Tile & Entity Editor** (or via keyword filter `tile`, `entity`, `object`, `placer`, `inspect`, etc.).
+  - **Live Tile Inspector**: Select any tile coordinate `(X, Y)` with quick buttons (`[Sync Riou]`, `Auto-follow Riou`, and `[<-]`/`[->]`/`[^]`/`[v]` nudge stepping). Scans the active submap's `eventobj` and `eventdat` arrays to display all physical entities (Class `otyp`, Sprite pattern `fpno`, Collision `ozok`, Facing `ano`, Dimensions `w`x`h`, and Active state `disp`) and all active trigger scripts (`etyp`, condition bounding box, and action bytecode summary). Includes quick `[Use]` buttons to clone any inspected object's properties directly into the placer.
+  - **In-Memory Entity Placer & Injector**: Allows configuring and injecting new custom entities into the active map in memory:
+    - Object Class (`otyp`: Actor/NPC 1, Environmental Prop 2, Device 3, Trigger Hitbox 4).
+    - Sprite pattern picker with preset dropdown (Riou, Jowy, Nanami, Pilika, Apple, Clive, Millie, Shiro, Viki, Soldier, Villager, Save Crystal, Chests, Bonsai, Signpost) and direct integer `fpno` input.
+    - Collision attributes (`ozok`: Passable 0, Solid barrier 2, Counter table 3).
+    - Facing direction (`ano`: South, East, North, West).
+    - Optional interactive behavior:
+      - **Warp Door**: Injects trigger bytecode allowing the object to act as a transition to any target map and submap.
+      - **Save Point**: Injects native `ECSaveGo` (`opcode 38`) action trigger to open the game's `MSaveInit()` save system dialog.
+      - **Full Rest & Inn Heal**: Restores all party HP and spell slots.
+  - **Export Placements to JSON**: Appends configured custom object definitions to `\PKCore\Logs\custom_map_objects.json` for persistence, sharing, and mod authoring.
+  - **Session Injection History**: Tracks all custom objects created during the session with map code, coordinates, sprite, class, and interaction summary, with a one-click `[Clear Session History]` action.
+  - **Comprehensive Documentation**: Detailed architectural guide, UI layout breakdown, bytecode reference, and step-by-step tutorials documented in [Tile & Entity Editor Guide](Documentation/tile_and_entity_editor_guide.md).
+
+- **Map Teleport & Time-Phase Re-entry Warper (Dear ImGui Overlay)**:
+  - Implemented in [ImGuiOverlayUI.cs](Patches/ImGuiOverlayUI.cs) and [MapTrackingPatch.cs](Patches/MapTrackingPatch.cs).
+  - **Inter-Map Time-Phase Warper**: Allows traveling to any map code and story-phase variant across the game (such as Muse Normal `vc01`, Night Siege `vc02`, Highland Occupation `vc25`, Post-Liberation Rebuilding `vc26`, City Hall Early `vc09` vs Post-Liberation `vc27`, Courtyard `vc31`, etc.) directly from the Dear ImGui overlay (**Section 7: Map Teleport & Warp**).
+  - **Safe Native Bytecode Warp Execution**: Arms a clean native map transition (`opcode 31` room change + `opcode 32` town transition) dynamically injected at the player's current tile. Taking one step or pressing Confirm activates the game's native fade-and-load pipeline, ensuring sound banks, cameras, and collision grids initialize cleanly without crashing.
+  - **Story Phase Presets & Custom Map Codes**: Includes 35 built-in presets for major story locations, as well as custom text and submap inputs for entering any arbitrary map code (`va` through `vt`).
+  - **Intra-Map Direct Coordinate Teleport**: Allows instantly repositioning Riou's tile coordinates (`px`, `py`) and world coordinates (`mx`, `my`) on the active map without walking.
+  - **Live Coordinate Telemetry & Dump Integration**: Displays player grid coordinates `(X, Y)` live on the bottom-left Location HUD and includes exact player coordinates in all location dump logs (`[NumPad 5]`).
+
+- **Save Slot Party Member Portrait Soft-Reset Reloading Fix**:
+  - Fixed in [SaveSlotPartyPortraitPatch.cs](Patches/SaveSlotPartyPortraitPatch.cs).
+  - **Zombie Sprite Texture Invalidation**: Fixed a bug where soft-resetting or returning to the title screen caused character preview portraits in the save/load window to turn into blank white squares. The static `portraitCache` previously returned stale Sprite wrappers whose underlying Unity `Texture2D`s had been destroyed during scene unloading and texture cleanup.
+  - **Texture & Dimension Verification**: Added `IsSpriteValid` verification checking that both the `Sprite` and its underlying `Texture2D` are non-null with active native IL2CPP pointers and valid dimensions before any cached entry is used. If invalid, the dead entry is immediately evicted and triggered for full reload.
+  - **Scene & Save Window Lifecycle Cache Purging**: Registered a listener on `SceneManager.sceneLoaded` and hooked `UISaveLoad1.Init` / `UISaveLoad2.Init` to call `ResetCache()`, guaranteeing that `portraitCache`, `pendingLoadIds`, `gcRoots`, and `slotPortraitContainers` are cleared across soft resets and scene loads so all character portraits are loaded cleanly from disk/resources.
+  - **Active Coroutine Runner & Null Guard**: Provided a guaranteed fallback runner (`slotInstance`) for async portrait loading if `SaveSlotPortraitMonitor.Instance` is destroyed or resetting, and initialized portrait images to transparent while awaiting async decoding to prevent untextured white box rendering.
+
+
 - **Dear ImGui Current Data Location Box, Bottom HUD & Hotkey Dump (`[NumPad 5]`)**:
   - Implemented strictly within [ImGuiOverlayUI.cs](Patches/ImGuiOverlayUI.cs) and [ModConfiguration.cs](ModConfiguration.cs).
   - **Bottom-Left Location HUD**: When the main Dear ImGui overlay is closed, the compact HUD is anchored at the **bottom-left** of the screen (`Location: <MapId>`). Clicking anywhere on the HUD or pressing **`[NumPad 6]`** / **`[F9]`** seamlessly activates the inline text field and transfers input focus.
@@ -13,7 +75,6 @@ All notable changes to PKCore (formerly PKextended) are documented in this file.
   - **Open Dump Log Button**: Added an **`[Open Log]`** button directly beside every Dump button (in the bottom-left HUD, overlay sidebar, and Scene Telemetry). Clicking it immediately opens `\Suikoden I and II HD Remaster\PKCore\Logs\locationdump.log` (or the containing folder) in Windows Explorer / default text editor.
   - **In-Overlay Stars & Telemetry Cleanup**: Stars of Destiny count resides cleanly inside the main overlay sidebar (`Stars: <Count> / 108`).
   - **In-Overlay Toggle & Persistence**: Can be toggled on/off at any time from inside the overlay via **MenuBar > Overlays > Bottom Screen Location HUD**, the **Sidebar** checkbox under *CURRENT DATA LOCATION*, or the **General & Debug** section. Persists cleanly across sessions in `PKCore.cfg` via `ShowLocationHUD`.
-  - **Thread-Safe Input & Non-Blocking Log Launching**: Fixed cross-thread data race by decoupling `ImGui.GetIO()` from the Unity main thread (`Update`), dispatching cursor reflection state via `RequestCursorVisible`, and offloading `Process.Start` to a worker thread so opening `locationdump.log` never freezes or blocks the DirectX 11 Present loop.
   - **Hotkey Dump (`[NumPad 5]`)**: Pressing **`[NumPad 5]`** at any point in gameplay immediately appends a formatted location snapshot (with any current notes) to `\Suikoden I and II HD Remaster\PKCore\Logs\locationdump.log`.
 
 - **Dead Code Pruning & Map Object Architecture Cleanup**:
@@ -87,8 +148,12 @@ All notable changes to PKCore (formerly PKextended) are documented in this file.
   - **Party & Roster Inspector**: Inspects all 8 party slots (combatants, convoy, support) and Castle recruit visitor pools.
   - **Scene & World State**: Displays current active map asset identifier and Stars of Destiny count.
 
-- **Suikoden II Muse City Hall Re-entry (`UnlockLiberatedMuseCityHall`) [Shelved / Disabled]**:
-  - Disabled by default and registration commented out in [Plugin.cs](Plugin.cs) while under investigation.
+- **Suikoden II Muse City Hall Re-entry (`UnlockLiberatedMuseCityHall`) [Restored & Verified]**:
+  - Fully enabled and registered in [Plugin.cs](Plugin.cs), implemented in [LiberatedMuseCityHallPatch.cs](Patches/LiberatedMuseCityHallPatch.cs).
+  - Grounded using verified runtime locations (`vc09_00` for inside City Hall, `vc01_01` for outside plaza with open gates).
+  - Fixed map identifiers and exit door coordinates: City Hall interior double doors at `(X: 161..165, Y: 111..112)` in `vc09_00` and `vc27_00` dynamically return Riou to his origin exterior map (`vc26_01`, `vc25_01`, `vc31_00`, or `vc01_01`).
+  - Restored exterior doorway triggers at `(X: 101..107, Y: 18..19)` in ruined Muse (`vc26_01`) and liberated Muse (`vc25_01`), properly warping into `vc09_00` / `vc27_00` at `(163, 110/112)`.
+  - Configurable via `UnlockLiberatedMuseCityHall` (Default: `false` or toggleable via config).
 
 - **Suikoden II Muse Ruins Survivors Restoration & 108 Stars Spiritual Reward (`EnableMuseRuinsSurvivorsRestoration`)**:
   - Implemented in [MuseRuinsSurvivorsPatch.cs](Patches/MuseRuinsSurvivorsPatch.cs).

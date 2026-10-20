@@ -26,7 +26,37 @@ namespace PKCore.Patches
         private static List<UnityEngine.Object> gcRoots = new List<UnityEngine.Object>();
 
         /// <summary>
-        /// Hook into UISaveLoad1.Init to attach our monitor component
+        /// Clears all portrait and container caches so portraits are guaranteed to reload freshly
+        /// </summary>
+        public static void ResetCache()
+        {
+            portraitCache.Clear();
+            pendingLoadIds.Clear();
+            slotPortraitContainers.Clear();
+            gcRoots.Clear();
+        }
+
+        private static bool IsSpriteValid(Sprite sprite)
+        {
+            if (sprite == null || sprite.Pointer == IntPtr.Zero)
+                return false;
+
+            try
+            {
+                Texture2D tex = sprite.texture;
+                if (tex == null || tex.Pointer == IntPtr.Zero)
+                    return false;
+
+                return tex.width > 0 && tex.height > 0;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Hook into UISaveLoad1.Init to attach our monitor component and refresh stale caches
         /// </summary>
         [HarmonyPatch(typeof(UISaveLoad1), nameof(UISaveLoad1.Init))]
         [HarmonyPostfix]
@@ -35,11 +65,12 @@ namespace PKCore.Patches
             if (__instance == null || !Plugin.Config.ShowSaveSlotPartyPortraits.Value)
                 return;
 
+            ResetCache();
             AttachMonitor(__instance.gameObject);
         }
 
         /// <summary>
-        /// Hook into UISaveLoad2.Init to attach our monitor component
+        /// Hook into UISaveLoad2.Init to attach our monitor component and refresh stale caches
         /// </summary>
         [HarmonyPatch(typeof(UISaveLoad2), nameof(UISaveLoad2.Init))]
         [HarmonyPostfix]
@@ -48,6 +79,7 @@ namespace PKCore.Patches
             if (__instance == null || !Plugin.Config.ShowSaveSlotPartyPortraits.Value)
                 return;
 
+            ResetCache();
             AttachMonitor(__instance.gameObject);
         }
 
@@ -57,6 +89,9 @@ namespace PKCore.Patches
             {
                 Il2CppInterop.Runtime.Injection.ClassInjector.RegisterTypeInIl2Cpp<SaveSlotPortraitMonitor>();
                 _monitorRegistered = true;
+
+                // Also listen for scene transitions / soft resets to clear stale portrait textures
+                UnityEngine.SceneManagement.SceneManager.sceneLoaded += (Action<UnityEngine.SceneManagement.Scene, UnityEngine.SceneManagement.LoadSceneMode>)OnSceneLoaded;
             }
 
             var monitor = go.GetComponent<SaveSlotPortraitMonitor>();
@@ -64,6 +99,11 @@ namespace PKCore.Patches
             {
                 monitor = go.AddComponent<SaveSlotPortraitMonitor>();
             }
+        }
+
+        private static void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, UnityEngine.SceneManagement.LoadSceneMode mode)
+        {
+            ResetCache();
         }
 
         /// <summary>
@@ -84,6 +124,14 @@ namespace PKCore.Patches
             private void Awake()
             {
                 Instance = this;
+            }
+
+            private void OnDestroy()
+            {
+                if (Instance == this)
+                {
+                    Instance = null;
+                }
             }
 
             private void Update()
@@ -429,7 +477,7 @@ namespace PKCore.Patches
                     if (charId <= 0 || charId >= 255)
                         continue;
 
-                    if (CreatePortraitImage(container, createdCount, charId))
+                    if (CreatePortraitImage(slotInstance, container, createdCount, charId))
                     {
                         createdCount++;
                     }
@@ -441,7 +489,7 @@ namespace PKCore.Patches
             }
         }
 
-        private static bool CreatePortraitImage(GameObject container, int index, int characterId)
+        private static bool CreatePortraitImage(UISaveLoadSlot slotInstance, GameObject container, int index, int characterId)
         {
             try
             {
@@ -461,11 +509,18 @@ namespace PKCore.Patches
                 Image portraitImage = portraitObj.AddComponent<Image>();
                 portraitImage.raycastTarget = false;
 
-                Sprite sprite = GetOrLoadPortraitSprite(characterId, SaveSlotPortraitMonitor.Instance, portraitImage);
-                if (sprite != null)
+                MonoBehaviour runner = (MonoBehaviour)SaveSlotPortraitMonitor.Instance ?? slotInstance;
+                Sprite sprite = GetOrLoadPortraitSprite(characterId, runner, portraitImage);
+                if (IsSpriteValid(sprite))
                 {
                     portraitImage.sprite = sprite;
                     portraitImage.preserveAspect = true;
+                    portraitImage.color = Color.white;
+                }
+                else
+                {
+                    // Transparent while waiting for async load to avoid blank white square
+                    portraitImage.color = Color.clear;
                 }
 
                 return true;
@@ -489,10 +544,10 @@ namespace PKCore.Patches
             string gameKey = isGSD1 ? "GSD1" : (isGSD2 ? "GSD2" : GameDetection.GetCurrentGame());
             string cacheKey = $"{gameKey}_{charId}";
 
-            // 1. Instant Cache Hit (0ms)
+            // 1. Instant Cache Hit (0ms) - only return if underlying texture is alive and valid
             if (portraitCache.TryGetValue(cacheKey, out Sprite cachedSprite))
             {
-                if (cachedSprite != null && cachedSprite.Pointer != IntPtr.Zero)
+                if (IsSpriteValid(cachedSprite))
                     return cachedSprite;
                 else
                     portraitCache.Remove(cacheKey);
@@ -549,7 +604,7 @@ namespace PKCore.Patches
             if (customTex != null && customTex.Pointer != IntPtr.Zero)
             {
                 Sprite customSprite = CreateSquareFaceSprite(customTex);
-                if (customSprite != null && customSprite.Pointer != IntPtr.Zero)
+                if (IsSpriteValid(customSprite))
                 {
                     portraitCache[cacheKey] = customSprite;
                     return customSprite;
@@ -562,7 +617,7 @@ namespace PKCore.Patches
                 try
                 {
                     Sprite nativeSprite = ImageLoader.LoadImage(charId);
-                    if (nativeSprite != null && nativeSprite.Pointer != IntPtr.Zero)
+                    if (IsSpriteValid(nativeSprite))
                     {
                         nativeSprite.hideFlags = HideFlags.DontUnloadUnusedAsset;
                         UnityEngine.Object.DontDestroyOnLoad(nativeSprite);
@@ -583,7 +638,7 @@ namespace PKCore.Patches
                     Action<Sprite> callback = (Sprite loadedSprite) =>
                     {
                         pendingLoadIds.Remove(cacheKey);
-                        if (loadedSprite != null && loadedSprite.Pointer != IntPtr.Zero)
+                        if (IsSpriteValid(loadedSprite))
                         {
                             loadedSprite.hideFlags = HideFlags.DontUnloadUnusedAsset;
                             UnityEngine.Object.DontDestroyOnLoad(loadedSprite);
@@ -594,6 +649,7 @@ namespace PKCore.Patches
                             {
                                 targetImage.sprite = loadedSprite;
                                 targetImage.preserveAspect = true;
+                                targetImage.color = Color.white;
                                 if (!targetImage.gameObject.activeSelf)
                                     targetImage.gameObject.SetActive(true);
                             }

@@ -27,7 +27,7 @@
 
 ---
 
-## Location Map: `vc01`
+## Location Map: `vc01` — Muse City Main Plaza & Entrance Gate
 
 - **Master Map Container**: `vc01.json`
 - **Submap Layer Files**: vc01_03.json, vc01_04.json, vc01_05.json, vc01_07.json, vc01_09.json, vc01_10.json, vc01_11.json, vc01_12.json, vc01_14.json, vc01_21.json, vc01_27.json, vc01_28.json, vc01_30.json
@@ -35,7 +35,7 @@
 - **Sprite Animation Bundles**: None
 - **Submap Room Count**: 2
 
-### Submap Layer `vc01_00` (Index 0)
+### Submap Layer `vc01_00` (Index 0) — Outer Gate Approach (Fitcher Pass Entry Check)
 
 - **Map Number (`mapno`)**: `0`
 - **Battle Encounter Zone (`batlno`)**: `0` (Timer: `0`, Rate: `0`)
@@ -118,7 +118,7 @@
 
 ---
 
-### Submap Layer `vc01_01` (Index 1)
+### Submap Layer `vc01_01` (Index 1) — Town Square & Plaza with Open City Hall Gates (Entrance at X: 101..107, Y: 18..19)
 
 - **Map Number (`mapno`)**: `1`
 - **Battle Encounter Zone (`batlno`)**: `0` (Timer: `0`, Rate: `0`)
@@ -508,7 +508,7 @@
 
 
 
-## Location Map: `vc02`
+## Location Map: `vc02` — Muse City Night Infiltration & Highland Siege State
 
 - **Master Map Container**: `vc02.json`
 - **Submap Layer Files**: vc02_00.json
@@ -941,7 +941,7 @@
 
 
 
-## Location Map: `vc03`
+## Location Map: `vc03` — Muse City Leona's Tavern & Inn
 
 - **Master Map Container**: `vc03.json`
 - **Submap Layer Files**: vc03_04.json
@@ -1037,7 +1037,7 @@
 
 
 
-## Location Map: `vc09`
+## Location Map: `vc09` — Muse City City Hall Interior (Mayor Annabelle's Office & Council Chamber)
 
 - **Master Map Container**: `vc09.json`
 - **Submap Layer Files**: vc09_01.json, vc09_02.json, vc09_03.json, vc09_04.json, vc09_05.json, vc09_06.json, vc09_07.json, vc09_10.json, vc09_14.json, vc09_17.json, vc09_19.json, vc09_20.json, vc09_21.json, vc09_22.json
@@ -1045,7 +1045,7 @@
 - **Sprite Animation Bundles**: None
 - **Submap Room Count**: 1
 
-### Submap Layer `vc09_00` (Index 0)
+### Submap Layer `vc09_00` (Index 0) — City Hall Ground Floor & Council Chamber (Exit Doors at X: 161..165, Y: 111..112)
 
 - **Map Number (`mapno`)**: `0`
 - **Battle Encounter Zone (`batlno`)**: `0` (Timer: `0`, Rate: `0`)
@@ -1332,7 +1332,7 @@
 
 
 
-## Location Map: `vc10`
+## Location Map: `vc10` — Jowston Hill Flashback Chamber & Hilltop Path
 
 - **Master Map Container**: `vc10.json`
 - **Submap Layer Files**: vc10_00.json, vc10_04.json, vc10_05.json, vc10_06.json, vc10_10.json, vc10_11.json, vc10_12.json, vc10_13.json, vc10_14.json, vc10_18.json, vc10_20.json, vc10_26.json, vc10_27.json, vc10_28.json, vc10_29.json
@@ -1671,7 +1671,7 @@
 
 
 
-## Location Map: `vc11`
+## Location Map: `vc11` — Muse Outskirts Forest Edge (Clive & Elza Encounter)
 
 - **Master Map Container**: `vc11.json`
 - **Submap Layer Files**: vc11_08.json, vc11_11.json
@@ -1840,7 +1840,7 @@
 
 
 
-## Location Map: `vc15`
+## Location Map: `vc15` — Muse Outskirts Hill Overlook (Highland Encampment Vantage)
 
 - **Master Map Container**: `vc15.json`
 - **Submap Layer Files**: Embedded in master
@@ -1875,7 +1875,7 @@
 
 
 
-## Location Map: `vc21`
+## Location Map: `vc21` — Muse Commercial District & Market Avenue
 
 - **Master Map Container**: `vc21.json`
 - **Submap Layer Files**: vc21_08.json, vc21_09.json, vc21_11.json, vc21_12.json, vc21_13.json, vc21_14.json, vc21_17.json, vc21_30.json, vc21_31.json, vc21_32.json, vc21_34.json
@@ -2489,7 +2489,7 @@
 
 
 
-## Location Map: `vc22`
+## Location Map: `vc22` — Muse City Highland Infiltration & Gate Siege State
 
 - **Master Map Container**: `vc22.json`
 - **Submap Layer Files**: Embedded in master
@@ -2573,7 +2573,7 @@
 
 
 
-## Location Map: `vc24`
+## Location Map: `vc24` — Muse City Rooftops & Secret Escape Route
 
 - **Master Map Container**: `vc24.json`
 - **Submap Layer Files**: vc24_00.json
@@ -3016,7 +3016,7 @@
 
 
 
-## Location Map: `vc25`
+## Location Map: `vc25` — Muse City Highland Military Occupation & Liberation Campaign
 
 - **Master Map Container**: `vc25.json`
 - **Submap Layer Files**: vc25_03.json, vc25_07.json
@@ -3208,7 +3208,7 @@
 
 
 
-## Location Map: `vc26`
+## Location Map: `vc26` — Muse City Post-Liberation City Square & War-Torn Streets
 
 - **Master Map Container**: `vc26.json`
 - **Submap Layer Files**: Embedded in master
@@ -3242,7 +3242,7 @@
 
 ---
 
-### Submap Layer `vc26_01` (Index 1)
+### Submap Layer `vc26_01` (Index 1) — Muse City Post-Liberation City Square & Rebuilding State (Late-Game Town Plaza)
 
 - **Map Number (`mapno`)**: `1`
 - **Battle Encounter Zone (`batlno`)**: `0` (Timer: `0`, Rate: `0`)
@@ -3415,7 +3415,7 @@
 
 
 
-## Location Map: `vc27`
+## Location Map: `vc27` — Muse City Post-Liberation City Hall Interior
 
 - **Master Map Container**: `vc27.json`
 - **Submap Layer Files**: vc27_00.json
@@ -3581,7 +3581,7 @@
 
 
 
-## Location Map: `vc28`
+## Location Map: `vc28` — Muse City Hall Evacuation & Story Cutscene State
 
 - **Master Map Container**: `vc28.json`
 - **Submap Layer Files**: vc28_06.json, vc28_07.json, vc28_08.json, vc28_09.json
@@ -3844,7 +3844,7 @@
 
 
 
-## Location Map: `vc29`
+## Location Map: `vc29` — Muse City Secret Rendezvous & Altar
 
 - **Master Map Container**: `vc29.json`
 - **Submap Layer Files**: Embedded in master
@@ -3888,7 +3888,7 @@
 
 
 
-## Location Map: `vc31`
+## Location Map: `vc31` — Jowston Hill State Council Hall Courtyard
 
 - **Master Map Container**: `vc31.json`
 - **Submap Layer Files**: vc31_01.json, vc31_02.json

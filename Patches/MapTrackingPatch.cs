@@ -12,15 +12,57 @@ public static class MACHICON_OnMapInitPatch
 {
     public static string CurrentMapId = "";
 
+    public static MACHICON CurrentMachicon;
+
     [HarmonyPostfix]
     public static void Postfix(MACHICON __instance)
     {
         if (__instance == null) return;
 
+        CurrentMachicon = __instance;
         string machiName = __instance.GetMapName();
         CurrentMapId = ParseMapIdFromMachiName(machiName);
 
         Plugin.Log.LogInfo($"[Map Tracking] MACHICON MapID resolved to: {CurrentMapId ?? "null"} (Raw: {machiName})");
+    }
+
+    public static int PlayerX => CurrentMachicon != null ? CurrentMachicon.px : 0;
+    public static int PlayerY => CurrentMachicon != null ? CurrentMachicon.py : 0;
+
+    public static void SetPlayerPos(int x, int y)
+    {
+        if (CurrentMachicon != null)
+        {
+            CurrentMachicon.px = x;
+            CurrentMachicon.py = y;
+            CurrentMachicon.mx = x * 16;
+            CurrentMachicon.my = y * 16;
+        }
+    }
+
+    public static int CurrentSubmapIndex
+    {
+        get
+        {
+            if (CurrentMachicon != null)
+            {
+                try
+                {
+                    string machiName = CurrentMachicon.GetMapName();
+                    if (!string.IsNullOrEmpty(machiName))
+                    {
+                        var parts = machiName.Split(' ');
+                        foreach (var part in parts)
+                        {
+                            if (part.StartsWith("mno:") && int.TryParse(part.Substring(4), out int mno))
+                                return mno;
+                        }
+                    }
+                }
+                catch { }
+            }
+            return 0;
+        }
     }
 
     public static string ParseMapIdFromMachiName(string machiName)
@@ -56,12 +98,18 @@ public static class MACHICON_OnMapInitPatch
 public static class MachiLoader_Load_Patch
 {
     public static MACHIDAT LastLoadedMachiDat;
+    public static EVENTCON LastLoadedEventcon;
 
     [HarmonyPostfix]
     public static void Postfix(MACHICON __instance, EVENTCON __result)
     {
+        if (__instance != null)
+        {
+            MACHICON_OnMapInitPatch.CurrentMachicon = __instance;
+        }
         if (__result != null)
         {
+            LastLoadedEventcon = __result;
             LastLoadedMachiDat = __result.mdat;
         }
     }

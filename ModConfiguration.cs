@@ -109,6 +109,8 @@ public sealed class ModConfiguration
 
     // Suikoden 1 UI Settings
     public ConfigEntry<bool> S1ScaledDownWorldMap { get; private set; }
+    public ConfigEntry<bool> EnableS1QuickStorage { get; private set; }
+    public ConfigEntry<bool> S1QuickStorageRequireRock { get; private set; }
 
     // UI Settings
     public ConfigEntry<bool> ScaleDownDialogBox { get; private set; }
@@ -556,6 +558,21 @@ public sealed class ModConfiguration
             "EnableNPCBathVisitors",
             true,
             "Restores unused NPC bathhouse sprites and prevents the engine crash when bathing with non-combatant recruits or convoy members. Automatically fills unoccupied bath slots with recruited castle companions (e.g. Apple, Shu, Leona, Richmond, Barbara, Pilika, Teresa, etc.)."
+        );
+
+        // Suikoden 1 Castle Vault (Quick Storage)
+        EnableS1QuickStorage = _config.Bind(
+            "06 Game : Suikoden 1",
+            "EnableS1QuickStorage",
+            true,
+            "Press Right Stick Up (or R3 / [F6] on keyboard) to open Rock's Castle Vault directly from anywhere on the field, immune to glitches and softlocks."
+        );
+
+        S1QuickStorageRequireRock = _config.Bind(
+            "06 Game : Suikoden 1",
+            "S1QuickStorageRequireRock",
+            false,
+            "When enabled, Castle Vault requires Rock to be recruited (Toran Castle warehouse unlocked) before it can be accessed. Set to false to allow opening anytime after obtaining the castle."
         );
 
 

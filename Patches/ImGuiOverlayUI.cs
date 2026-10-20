@@ -1,11 +1,14 @@
+extern alias GSD1;
 extern alias GSD2;
 
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Numerics;
+using HarmonyLib;
 using ImGuiNET;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using Vector2 = System.Numerics.Vector2;
 using Vector3 = System.Numerics.Vector3;
 using Vector4 = System.Numerics.Vector4;
@@ -43,6 +46,14 @@ public static class ImGuiOverlayUI
     }
 
     public static bool IsInjectorAvailable { get; private set; } = false;
+
+    /// <summary>
+    /// Thread-safe indicator for whether the game's pad and controller/keyboard input should be silenced.
+    /// Active when the Dear ImGui overlay is open, bathhouse inspector is open, note input is active,
+    /// or when the mouse cursor is hovering over any Dear ImGui window/widget (io.WantCaptureMouse).
+    /// </summary>
+    public static volatile bool IsInputBlocked = false;
+
     private static bool _initialized = false;
     private static float _lastToggleTime = 0f;
     private static string _searchQuery = "";
@@ -104,6 +115,25 @@ public static class ImGuiOverlayUI
         {
             IsInjectorAvailable = false;
             Plugin.Log.LogWarning($"[ImGuiOverlayUI] DearImGuiInjection not available: {ex.Message}");
+        }
+
+        try
+        {
+            var harmony = new Harmony("faospark.pkcore.imguiinputblocker");
+            try { harmony.PatchAll(typeof(GRInputManagerBlockerPatch)); }
+            catch (Exception ex) { Plugin.Log.LogWarning($"[ImGuiOverlayUI] GRInputManager blocker skipped: {ex.Message}"); }
+
+            try { harmony.PatchAll(typeof(G2PadBlockerPatch)); }
+            catch (Exception ex) { Plugin.Log.LogWarning($"[ImGuiOverlayUI] G2_PAD blocker skipped: {ex.Message}"); }
+
+            try { harmony.PatchAll(typeof(G1PadBlockerPatch)); }
+            catch (Exception ex) { Plugin.Log.LogWarning($"[ImGuiOverlayUI] G1 Pad blocker skipped: {ex.Message}"); }
+
+            Plugin.Log.LogInfo("[ImGuiOverlayUI] Successfully registered input blocker hooks.");
+        }
+        catch (Exception ex)
+        {
+            Plugin.Log.LogError($"[ImGuiOverlayUI] Failed to register input blocker hooks: {ex}");
         }
     }
 
@@ -481,6 +511,7 @@ public static class ImGuiOverlayUI
                 {
                     _lastToggleTime = Time.time;
                     IsOpen = !IsOpen;
+                    IsInputBlocked = IsOpen || ShowBathhouseWindow || _showHudNoteInput;
 
                     SetImGuiCursorVisible(IsOpen || ShowBathhouseWindow || _showHudNoteInput);
                     Plugin.Log.LogInfo($"[ImGuiOverlayUI] Toggled Dear ImGui Overlay (Open: {IsOpen})");
@@ -498,6 +529,7 @@ public static class ImGuiOverlayUI
                         ShowBathhouseWindow = false;
                         SetImGuiCursorVisible(false);
                     }
+                    IsInputBlocked = IsOpen || ShowBathhouseWindow || _showHudNoteInput;
                 }
                 else if (keyboard.numpad5Key.wasPressedThisFrame)
                 {
@@ -507,6 +539,7 @@ public static class ImGuiOverlayUI
                 {
                     _showHudNoteInput = !_showHudNoteInput;
                     _focusNoteInputNextFrame = _showHudNoteInput;
+                    IsInputBlocked = _showHudNoteInput || IsOpen || ShowBathhouseWindow;
                     SetImGuiCursorVisible(_showHudNoteInput || IsOpen || ShowBathhouseWindow);
                 }
             }
@@ -522,6 +555,7 @@ public static class ImGuiOverlayUI
                     {
                         _showHudNoteInput = true;
                         _focusNoteInputNextFrame = true;
+                        IsInputBlocked = true;
                         SetImGuiCursorVisible(true);
                     }
                 }
@@ -788,6 +822,7 @@ public static class ImGuiOverlayUI
 
         if (!anyInteractiveOpen && !ShowLocationHUD)
         {
+            IsInputBlocked = false;
             return;
         }
 
@@ -824,32 +859,55 @@ public static class ImGuiOverlayUI
 
         if (!IsOpen)
         {
+            UpdateInputCaptureState(anyInteractiveOpen);
             return;
         }
 
-        ImGui.SetNextWindowSize(new System.Numerics.Vector2(1060, 740), ImGuiCond.FirstUseEver);
-        if (ImGui.Begin("PKCore - Dear ImGui Runtime Feature & Diagnostics Inspector###PKCoreMain", ref IsOpen, ImGuiWindowFlags.MenuBar))
+        try
         {
-            DrawMenuBar();
-
-            if (ImGui.BeginTable("PKCoreTwoColumnLayout", 2, ImGuiTableFlags.BordersInnerV | ImGuiTableFlags.Resizable, new System.Numerics.Vector2(0, -26)))
+            ImGui.SetNextWindowSize(new System.Numerics.Vector2(1060, 740), ImGuiCond.FirstUseEver);
+            if (ImGui.Begin("PKCore - Dear ImGui Runtime Feature & Diagnostics Inspector###PKCoreMain", ref IsOpen, ImGuiWindowFlags.MenuBar))
             {
-                ImGui.TableSetupColumn("SidebarNav", ImGuiTableColumnFlags.WidthFixed, 240f);
-                ImGui.TableSetupColumn("MainContent", ImGuiTableColumnFlags.WidthStretch);
+                DrawMenuBar();
 
-                ImGui.TableNextColumn();
+                ImGui.Columns(2, "PKCoreColumns", true);
+                if (ImGui.GetColumnWidth(0) < 50f || ImGui.GetColumnWidth(0) > 400f)
+                {
+                    ImGui.SetColumnWidth(0, 240f);
+                }
+
                 DrawSidebar();
 
-                ImGui.TableNextColumn();
+                ImGui.NextColumn();
+
                 DrawMainContentPane();
 
-                ImGui.EndTable();
-            }
+                ImGui.Columns(1);
 
-            ImGui.Separator();
-            DrawFooterStatusBar();
+                ImGui.Separator();
+                DrawFooterStatusBar();
+            }
+            ImGui.End();
         }
-        ImGui.End();
+        catch (Exception ex)
+        {
+            Plugin.Log.LogError($"[PKCore] ImGui Overlay render error: {ex}");
+        }
+
+        UpdateInputCaptureState(anyInteractiveOpen);
+    }
+
+    private static void UpdateInputCaptureState(bool anyInteractiveOpen)
+    {
+        try
+        {
+            var io = ImGui.GetIO();
+            IsInputBlocked = anyInteractiveOpen || io.WantCaptureMouse || io.WantCaptureKeyboard;
+        }
+        catch
+        {
+            IsInputBlocked = anyInteractiveOpen;
+        }
     }
 
     private static void DrawMenuBar()
@@ -913,7 +971,7 @@ public static class ImGuiOverlayUI
 
     private static void DrawSidebar()
     {
-        if (ImGui.BeginChild("PKCoreSidebarChild", new System.Numerics.Vector2(0, 0), false))
+        if (ImGui.BeginChild("PKCoreSidebarChild", new System.Numerics.Vector2(0, -28), false))
         {
             // 1. Search Box
             ImGui.AlignTextToFramePadding();
@@ -940,125 +998,9 @@ public static class ImGuiOverlayUI
             DrawNavSelectable(4, "Castle Bathhouse");
             DrawNavSelectable(5, "Party & Roster");
             DrawNavSelectable(6, "Scene & Engine");
-
-            ImGui.Spacing();
-            ImGui.Separator();
-
-            // 3. Theme Quick Switcher
-            ImGui.TextDisabled("THEME");
-            string currentThemeName = GetCurrentThemeName();
-
-            ImGui.SetNextItemWidth(-1);
-            if (ImGui.BeginCombo("##ThemeCombo", currentThemeName))
-            {
-                if (ImGui.Selectable("Classic Blue", _currentTheme == ThemePreset.ClassicBlue)) SetTheme(ThemePreset.ClassicBlue);
-                if (ImGui.Selectable("Matrix", _currentTheme == ThemePreset.Matrix)) SetTheme(ThemePreset.Matrix);
-                if (ImGui.Selectable("Obsidian Black", _currentTheme == ThemePreset.ObsidianBlack)) SetTheme(ThemePreset.ObsidianBlack);
-                if (ImGui.Selectable("Dark Magenta", _currentTheme == ThemePreset.DarkMagenta)) SetTheme(ThemePreset.DarkMagenta);
-                ImGui.EndCombo();
-            }
-
-            if (ImGui.BeginTable("ThemePillsGrid", 2, ImGuiTableFlags.SizingStretchSame))
-            {
-                ImGui.TableNextColumn();
-                if (ImGui.Button((_currentTheme == ThemePreset.ClassicBlue ? "[Blue]" : "Blue") + "##p", new Vector2(-1, 22))) SetTheme(ThemePreset.ClassicBlue);
-
-                ImGui.TableNextColumn();
-                if (ImGui.Button((_currentTheme == ThemePreset.Matrix ? "[Matrix]" : "Matrix") + "##p", new Vector2(-1, 22))) SetTheme(ThemePreset.Matrix);
-
-                ImGui.TableNextRow();
-                ImGui.TableNextColumn();
-                if (ImGui.Button((_currentTheme == ThemePreset.ObsidianBlack ? "[Obsidian]" : "Obsidian") + "##p", new Vector2(-1, 22))) SetTheme(ThemePreset.ObsidianBlack);
-
-                ImGui.TableNextColumn();
-                if (ImGui.Button((_currentTheme == ThemePreset.DarkMagenta ? "[Magenta]" : "Magenta") + "##p", new Vector2(-1, 22))) SetTheme(ThemePreset.DarkMagenta);
-
-                ImGui.EndTable();
-            }
-
-            ImGui.Spacing();
-            ImGui.Separator();
-
-            // 4. Dedicated Bathhouse Button
-            ImGui.TextDisabled("BATHHOUSE");
-            string bathBtnText = "Castle Bathhouse";
-            if (ImGui.Button(bathBtnText + "##SidebarBathBtn", new System.Numerics.Vector2(-1, 28)))
-            {
-                _selectedSection = 4;
-                _searchQuery = "";
-            }
-
-            ImGui.Spacing();
-            ImGui.Separator();
-
-            // 5. Quick Debug Shortcuts
-            ImGui.TextDisabled("QUICK TOGGLES");
-
-            bool noEnc = EncounterNonePatch.IsEncounterNone;
-            if (ImGui.Button((noEnc ? "[F4] Battles: OFF" : "[F4] Battles: Normal") + "##QuickF4", new System.Numerics.Vector2(-1, 26)))
-            {
-                RunOnMainThread(() => EncounterNonePatch.Toggle());
-            }
-
-            bool mouseOn = MouseCursorPatch.IsEnabled;
-            if (ImGui.Button((mouseOn ? "Mouse: VISIBLE" : "Mouse: HIDDEN") + "##QuickMouse", new System.Numerics.Vector2(-1, 26)))
-            {
-                RunOnMainThread(() => MouseCursorPatch.Toggle());
-            }
-
-            if (ImGui.Button("Full Party Heal##QuickHeal", new System.Numerics.Vector2(-1, 26)))
-            {
-                RunOnMainThread(QuickHealParty);
-            }
-
-            ImGui.Spacing();
-            ImGui.Separator();
-
-            // 6. Current Data Location Box
-            ImGui.TextDisabled("CURRENT DATA LOCATION");
-            ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(0.06f, 0.10f, 0.16f, 0.85f));
-            if (ImGui.BeginChild("MiniLocationBoxChild", new Vector2(-1, 155), true))
-            {
-                ImGui.TextColored(new Vector4(1f, 0.9f, 0.4f, 1f), $"Map: {_cachedMapId}");
-                ImGui.Text($"Stars: {_cachedStars} / 108");
-
-                ImGui.Spacing();
-                ImGui.TextDisabled("Area Notes:");
-                ImGui.SetNextItemWidth(-30);
-                ImGui.InputTextWithHint("##LocNotes", "Description / notes...", ref _locationNotes, 256);
-                ImGui.SameLine();
-                if (ImGui.Button("X##ClearLocNotes"))
-                {
-                    _locationNotes = "";
-                }
-
-                if (ImGui.Button("Dump [NumPad 5]##DumpLocBtn", new Vector2(-65, 22)))
-                {
-                    DumpCurrentLocation();
-                }
-                ImGui.SameLine();
-                if (ImGui.Button("Open##OpenDumpLogSidebar", new Vector2(-1, 22)))
-                {
-                    OpenDumpLocation();
-                }
-
-                bool hudOn = ShowLocationHUD;
-                if (ImGui.Checkbox("Bottom Screen HUD##ToggleHudSidebar", ref hudOn))
-                {
-                    ShowLocationHUD = hudOn;
-                }
-
-                if (!string.IsNullOrEmpty(_dumpFeedback) && Time.time - _dumpFeedbackTime < 4f)
-                {
-                    ImGui.TextColored(new Vector4(0.2f, 0.9f, 0.55f, 1f), _dumpFeedback);
-                }
-
-                ImGui.EndChild();
-            }
-            ImGui.PopStyleColor();
-
-            ImGui.EndChild();
+            DrawNavSelectable(7, "Themes & Settings");
         }
+        ImGui.EndChild();
     }
 
     private static void DrawNavSelectable(int index, string label)
@@ -1074,7 +1016,7 @@ public static class ImGuiOverlayUI
 
     private static void DrawMainContentPane()
     {
-        if (ImGui.BeginChild("PKCoreMainContentChild", new System.Numerics.Vector2(0, 0), false, ImGuiWindowFlags.HorizontalScrollbar))
+        if (ImGui.BeginChild("PKCoreMainContentChild", new System.Numerics.Vector2(0, -28), false, ImGuiWindowFlags.HorizontalScrollbar))
         {
             if (!string.IsNullOrWhiteSpace(_searchQuery))
             {
@@ -1101,6 +1043,9 @@ public static class ImGuiOverlayUI
 
                 if (MatchesSearch("scene map flags telemetry stats engine"))
                     DrawSceneSection();
+
+                if (MatchesSearch("theme settings appearance ui style color preset"))
+                    DrawSettingsThemeSection();
             }
             else
             {
@@ -1113,11 +1058,11 @@ public static class ImGuiOverlayUI
                     case 4: DrawBathhouseSection(); break;
                     case 5: DrawPartyRosterSection(); break;
                     case 6: DrawSceneSection(); break;
+                    case 7: DrawSettingsThemeSection(); break;
                 }
             }
-
-            ImGui.EndChild();
         }
+        ImGui.EndChild();
     }
 
     // =========================================================================
@@ -1129,6 +1074,9 @@ public static class ImGuiOverlayUI
         {
             if (ImGui.BeginTable("GeneralTwoCol", 2, ImGuiTableFlags.SizingStretchSame))
             {
+                ImGui.TableSetupColumn("GeneralColLeft", ImGuiTableColumnFlags.WidthStretch);
+                ImGui.TableSetupColumn("GeneralColRight", ImGuiTableColumnFlags.WidthStretch);
+
                 ImGui.TableNextColumn();
                 ImGui.TextColored(GetAccentColor(), "Runtime Controls & Hotkeys");
                 ImGui.Separator();
@@ -1160,7 +1108,7 @@ public static class ImGuiOverlayUI
                 }
 
                 ImGui.TableNextColumn();
-                ImGui.TextColored(GetAccentColor(), "Telemetry & Snapshots");
+                ImGui.TextColored(GetAccentColor(), "Telemetry & Location Data");
                 ImGui.Separator();
 
                 ImGui.TextColored(GetAccentColor(), "Live Location & Stars Context");
@@ -1168,11 +1116,25 @@ public static class ImGuiOverlayUI
                 ImGui.Text($"Stars of Destiny: {_cachedStars} / 108");
 
                 ImGui.Spacing();
-                ImGui.TextColored(GetAccentColor(), "Snapshot Export [NumPad 5]");
-                ImGui.TextWrapped("Dumps a formatted timestamped record of current map ID and stars to locationdump.log.");
-                if (ImGui.Button("Append to locationdump.log [NumPad 5]##DumpActionBtn", new Vector2(-1, 26)))
+                ImGui.TextColored(GetAccentColor(), "Area Notes & Snapshot Export [NumPad 5]");
+                ImGui.TextWrapped("Attach custom notes to the current location and export to locationdump.log.");
+
+                ImGui.SetNextItemWidth(-32);
+                ImGui.InputTextWithHint("##GeneralAreaNotes", "Description / area notes...", ref _locationNotes, 256);
+                ImGui.SameLine();
+                if (ImGui.Button("X##ClearGenNotes"))
+                {
+                    _locationNotes = "";
+                }
+
+                if (ImGui.Button("Append to locationdump.log [NumPad 5]##DumpActionBtn", new Vector2(-75, 26)))
                 {
                     DumpCurrentLocation();
+                }
+                ImGui.SameLine();
+                if (ImGui.Button("Open Log##OpenLogGenBtn", new Vector2(-1, 26)))
+                {
+                    OpenDumpLocation();
                 }
 
                 if (!string.IsNullOrEmpty(_dumpFeedback) && Time.time - _dumpFeedbackTime < 4f)
@@ -1203,6 +1165,9 @@ public static class ImGuiOverlayUI
         {
             if (ImGui.BeginTable("CombatTwoCol", 2, ImGuiTableFlags.SizingStretchSame))
             {
+                ImGui.TableSetupColumn("CombatColLeft", ImGuiTableColumnFlags.WidthStretch);
+                ImGui.TableSetupColumn("CombatColRight", ImGuiTableColumnFlags.WidthStretch);
+
                 ImGui.TableNextColumn();
                 ImGui.TextColored(GetAccentColor(), "Battle Actions & Memory Auto-Battle");
                 ImGui.Separator();
@@ -1257,6 +1222,9 @@ public static class ImGuiOverlayUI
         {
             if (ImGui.BeginTable("RecoveryTwoCol", 2, ImGuiTableFlags.SizingStretchSame))
             {
+                ImGui.TableSetupColumn("RecColLeft", ImGuiTableColumnFlags.WidthStretch);
+                ImGui.TableSetupColumn("RecColRight", ImGuiTableColumnFlags.WidthStretch);
+
                 ImGui.TableNextColumn();
                 ImGui.TextColored(GetAccentColor(), "Smart Auto-Healing");
                 ImGui.Separator();
@@ -1303,6 +1271,9 @@ public static class ImGuiOverlayUI
         {
             if (ImGui.BeginTable("VisualsTwoCol", 2, ImGuiTableFlags.SizingStretchSame))
             {
+                ImGui.TableSetupColumn("VisColLeft", ImGuiTableColumnFlags.WidthStretch);
+                ImGui.TableSetupColumn("VisColRight", ImGuiTableColumnFlags.WidthStretch);
+
                 ImGui.TableNextColumn();
                 ImGui.TextColored(GetAccentColor(), "Save Point Orb Variant");
                 ImGui.Separator();
@@ -1315,6 +1286,9 @@ public static class ImGuiOverlayUI
                 ImGui.TextDisabled("Select Color Variant:");
                 if (ImGui.BeginTable("SavePointPresets", 3, ImGuiTableFlags.SizingStretchSame))
                 {
+                    ImGui.TableSetupColumn("OrbCol1", ImGuiTableColumnFlags.WidthStretch);
+                    ImGui.TableSetupColumn("OrbCol2", ImGuiTableColumnFlags.WidthStretch);
+                    ImGui.TableSetupColumn("OrbCol3", ImGuiTableColumnFlags.WidthStretch);
                     string[] variants = { "default", "cyan", "blue", "green", "yellow", "red", "purple", "pink", "white", "black", "navy", "random" };
                     for (int i = 0; i < variants.Length; i++)
                     {
@@ -1386,6 +1360,9 @@ public static class ImGuiOverlayUI
 
             if (ImGui.BeginTable("BathTubsTable", 2, ImGuiTableFlags.BordersInnerV | ImGuiTableFlags.Resizable))
             {
+                ImGui.TableSetupColumn("MenCol", ImGuiTableColumnFlags.WidthStretch);
+                ImGui.TableSetupColumn("WomenCol", ImGuiTableColumnFlags.WidthStretch);
+
                 ImGui.TableNextColumn();
                 ImGui.TextColored(new Vector4(0.4f, 0.75f, 1.0f, 1f), "MEN'S TUB (Positions 0 to 5)");
                 ImGui.Separator();
@@ -1507,6 +1484,9 @@ public static class ImGuiOverlayUI
         {
             if (ImGui.BeginTable("SceneTelemetryTable", 2, ImGuiTableFlags.SizingStretchSame))
             {
+                ImGui.TableSetupColumn("SceneColLeft", ImGuiTableColumnFlags.WidthStretch);
+                ImGui.TableSetupColumn("SceneColRight", ImGuiTableColumnFlags.WidthStretch);
+
                 ImGui.TableNextColumn();
                 ImGui.TextColored(GetAccentColor(), "Live Scene Telemetry");
                 ImGui.Separator();
@@ -1564,6 +1544,100 @@ public static class ImGuiOverlayUI
 
                 ImGui.EndTable();
             }
+            ImGui.Spacing();
+        }
+    }
+
+    // =========================================================================
+    // SECTION 7: THEMES & OVERLAY SETTINGS
+    // =========================================================================
+    private static void DrawSettingsThemeSection()
+    {
+        if (ImGui.CollapsingHeader("UI Themes & Overlay Appearance", ImGuiTreeNodeFlags.DefaultOpen))
+        {
+            ImGui.TextColored(GetAccentColor(), "Overlay Theme Preset");
+            ImGui.TextWrapped("Select a visual style preset for the Dear ImGui runtime overlay and diagnostics windows.");
+            ImGui.Spacing();
+
+            string currentThemeName = GetCurrentThemeName();
+            ImGui.Text("Active Preset: ");
+            ImGui.SameLine();
+            ImGui.TextColored(GetAccentColor(), currentThemeName);
+
+            ImGui.Spacing();
+            ImGui.Separator();
+
+            if (ImGui.BeginTable("ThemesGridTable", 2, ImGuiTableFlags.SizingStretchSame))
+            {
+                ImGui.TableSetupColumn("ThemeColLeft", ImGuiTableColumnFlags.WidthStretch);
+                ImGui.TableSetupColumn("ThemeColRight", ImGuiTableColumnFlags.WidthStretch);
+
+                // Row 1: Classic Blue & Matrix Green
+                ImGui.TableNextColumn();
+                bool isBlue = _currentTheme == ThemePreset.ClassicBlue;
+                if (ImGui.Button((isBlue ? "★ Classic Blue (Active)" : "Classic Blue") + "##PresetBlue", new Vector2(-1, 32)))
+                {
+                    SetTheme(ThemePreset.ClassicBlue);
+                }
+                ImGui.TextDisabled("Modern deep blue with cobalt accents and high contrast text.");
+
+                ImGui.TableNextColumn();
+                bool isMatrix = _currentTheme == ThemePreset.Matrix;
+                if (ImGui.Button((isMatrix ? "★ Matrix Green (Active)" : "Matrix Green") + "##PresetMatrix", new Vector2(-1, 32)))
+                {
+                    SetTheme(ThemePreset.Matrix);
+                }
+                ImGui.TextDisabled("Cyberpunk emerald terminal palette with vibrant mint headers.");
+
+                // Row 2: Obsidian Black & Dark Magenta
+                ImGui.TableNextRow();
+                ImGui.TableNextColumn();
+                bool isObsidian = _currentTheme == ThemePreset.ObsidianBlack;
+                if (ImGui.Button((isObsidian ? "★ Obsidian Black (Active)" : "Obsidian Black") + "##PresetObsidian", new Vector2(-1, 32)))
+                {
+                    SetTheme(ThemePreset.ObsidianBlack);
+                }
+                ImGui.TextDisabled("Stealth OLED dark gray and charcoal with clean slate accents.");
+
+                ImGui.TableNextColumn();
+                bool isMagenta = _currentTheme == ThemePreset.DarkMagenta;
+                if (ImGui.Button((isMagenta ? "★ Dark Magenta (Active)" : "Dark Magenta") + "##PresetMagenta", new Vector2(-1, 32)))
+                {
+                    SetTheme(ThemePreset.DarkMagenta);
+                }
+                ImGui.TextDisabled("Royal plum and violet tones with bright fuchsia accents.");
+
+                ImGui.EndTable();
+            }
+
+            ImGui.Spacing();
+            ImGui.Separator();
+
+            ImGui.TextColored(GetAccentColor(), "Overlay & Input Preferences");
+            ImGui.Spacing();
+
+            bool hudActive = ShowLocationHUD;
+            if (ImGui.Checkbox("In-Game Bottom Location HUD Indicator", ref hudActive))
+            {
+                ShowLocationHUD = hudActive;
+            }
+            ImGui.TextDisabled("Shows current map ID and stars at the bottom-left of the game screen.");
+
+            ImGui.Spacing();
+            bool mouseActive = MouseCursorPatch.IsEnabled;
+            if (ImGui.Checkbox("Show System Hardware Mouse Cursor", ref mouseActive))
+            {
+                RunOnMainThread(() => MouseCursorPatch.Toggle());
+            }
+            ImGui.TextDisabled("Ensures mouse cursor is visible when navigating menus or playing with mouse.");
+
+            ImGui.Spacing();
+            ImGui.Separator();
+            ImGui.TextColored(GetAccentColor(), "Quick Hotkey Reminders");
+            ImGui.BulletText("[F10] : Toggle this Dear ImGui Runtime Feature & Diagnostics Inspector");
+            ImGui.BulletText("[F4]  : Toggle Encounter None (Instant battle suppression)");
+            ImGui.BulletText("[NumPad 5] : Instant location & notes snapshot to locationdump.log");
+            ImGui.BulletText("[ESC] : Close overlay (when open)");
             ImGui.Spacing();
         }
     }
@@ -1855,4 +1929,189 @@ public static class ImGuiOverlayUI
         { 143, "Klaus" },
         { 172, "Elza" }
     };
+
+    // =========================================================================
+    // INPUT BLOCKER HARMONY PATCHES
+    // =========================================================================
+
+    [HarmonyPatch(typeof(GRInputManager))]
+    private static class GRInputManagerBlockerPatch
+    {
+        [HarmonyPatch(nameof(GRInputManager.IsOn))]
+        [HarmonyPrefix]
+        public static bool IsOn_Prefix(ref bool __result)
+        {
+            if (IsInputBlocked)
+            {
+                __result = false;
+                return false;
+            }
+            return true;
+        }
+
+        [HarmonyPatch(nameof(GRInputManager.IsPress))]
+        [HarmonyPrefix]
+        public static bool IsPress_Prefix(ref bool __result)
+        {
+            if (IsInputBlocked)
+            {
+                __result = false;
+                return false;
+            }
+            return true;
+        }
+
+        [HarmonyPatch(nameof(GRInputManager.IsHold))]
+        [HarmonyPrefix]
+        public static bool IsHold_Prefix(ref bool __result)
+        {
+            if (IsInputBlocked)
+            {
+                __result = false;
+                return false;
+            }
+            return true;
+        }
+
+        [HarmonyPatch(nameof(GRInputManager.IsRepeat))]
+        [HarmonyPrefix]
+        public static bool IsRepeat_Prefix(ref bool __result)
+        {
+            if (IsInputBlocked)
+            {
+                __result = false;
+                return false;
+            }
+            return true;
+        }
+
+        [HarmonyPatch(nameof(GRInputManager.IsOff))]
+        [HarmonyPrefix]
+        public static bool IsOff_Prefix(ref bool __result)
+        {
+            if (IsInputBlocked)
+            {
+                __result = true;
+                return false;
+            }
+            return true;
+        }
+
+        [HarmonyPatch(nameof(GRInputManager.IsAny))]
+        [HarmonyPrefix]
+        public static bool IsAny_Prefix(ref bool __result)
+        {
+            if (IsInputBlocked)
+            {
+                __result = false;
+                return false;
+            }
+            return true;
+        }
+
+        [HarmonyPatch(nameof(GRInputManager.IsKeyDown))]
+        [HarmonyPrefix]
+        public static bool IsKeyDown_Prefix(ref bool __result)
+        {
+            if (IsInputBlocked)
+            {
+                __result = false;
+                return false;
+            }
+            return true;
+        }
+
+        [HarmonyPatch(nameof(GRInputManager.IsKeyPress))]
+        [HarmonyPrefix]
+        public static bool IsKeyPress_Prefix(ref bool __result)
+        {
+            if (IsInputBlocked)
+            {
+                __result = false;
+                return false;
+            }
+            return true;
+        }
+
+        [HarmonyPatch(nameof(GRInputManager.GetValue))]
+        [HarmonyPrefix]
+        public static bool GetValue_Prefix(ref float __result)
+        {
+            if (IsInputBlocked)
+            {
+                __result = 0f;
+                return false;
+            }
+            return true;
+        }
+
+        [HarmonyPatch(nameof(GRInputManager.IsRunValue))]
+        [HarmonyPrefix]
+        public static bool IsRunValue_Prefix(ref bool __result)
+        {
+            if (IsInputBlocked)
+            {
+                __result = false;
+                return false;
+            }
+            return true;
+        }
+    }
+
+    [HarmonyPatch(typeof(GSD2::G2_PAD))]
+    private static class G2PadBlockerPatch
+    {
+        [HarmonyPatch(nameof(GSD2::G2_PAD.PadRead))]
+        [HarmonyPrefix]
+        public static bool PadRead_Prefix(ref uint __result, ref bool g_shu_dash)
+        {
+            if (IsInputBlocked)
+            {
+                g_shu_dash = false;
+                __result = 0;
+                return false;
+            }
+            return true;
+        }
+
+        [HarmonyPatch(nameof(GSD2::G2_PAD.PadRRead))]
+        [HarmonyPrefix]
+        public static bool PadRRead_Prefix(ref uint __result)
+        {
+            if (IsInputBlocked)
+            {
+                __result = 0;
+                return false;
+            }
+            return true;
+        }
+    }
+
+    [HarmonyPatch(typeof(GSD1::Pad))]
+    private static class G1PadBlockerPatch
+    {
+        [HarmonyPatch(nameof(GSD1::Pad.PadRead))]
+        [HarmonyPrefix]
+        public static bool PadRead_Prefix(ref uint __result)
+        {
+            if (IsInputBlocked)
+            {
+                __result = 0;
+                return false;
+            }
+            return true;
+        }
+
+        [HarmonyPatch(nameof(GSD1::Pad.PadRRead))]
+        [HarmonyPrefix]
+        public static bool PadRRead_Prefix(ref uint __result)
+        {
+            if (IsInputBlocked)
+            {
+                __result = 0;
+                return false;
+            }
+            return true;
+        }
+    }
 }

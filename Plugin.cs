@@ -98,6 +98,7 @@ public class Plugin : BasePlugin
             Patches.RoomItemPatch.Update();
         Patches.MenuScalePatch.ApplyLauncherConfigScaling();
         Patches.EncounterNonePatch.UpdateInput();
+        Patches.S1QuickStoragePatch.Update();
         Patches.ImGuiOverlayUI.Update();
         AssetLoader.Update();
     }
@@ -417,10 +418,11 @@ public class Plugin : BasePlugin
             harmony.PatchAll(typeof(SajahShopUnlockPatch));
         }
 
-        // Liberated Muse City Hall Re-entry Patch (Suikoden 2) - Abandoned for now
+        // Liberated Muse City Hall Re-entry Patch (Suikoden 2)
         if (Config.UnlockLiberatedMuseCityHall.Value)
         {
-            // harmony.PatchAll(typeof(LiberatedMuseCityHallPatch));
+            Log.LogInfo("Applying Liberated Muse City Hall Re-entry patch...");
+            harmony.PatchAll(typeof(LiberatedMuseCityHallPatch));
         }
 
         // Muse Ruins Survivors & 108 Stars Restoration Patch (Suikoden 2)
