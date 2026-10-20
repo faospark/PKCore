@@ -146,3 +146,20 @@ public class DiscoveredObject
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
     public int EventMapNo { get; set; } = -1;
 }
+
+public class Vector3Config
+{
+    public float X { get; set; }
+    public float Y { get; set; }
+    public float Z { get; set; }
+
+    public Vector3 ToVector3() => new Vector3(X, Y, Z);
+}
+
+public class Vector2Config
+{
+    public float X { get; set; }
+    public float Y { get; set; }
+
+    public Vector2 ToVector2() => new Vector2(X, Y);
+}

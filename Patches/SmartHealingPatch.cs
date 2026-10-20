@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using HarmonyLib;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
+using ShareUI.Menu;
 using UnityEngine.SceneManagement;
 
 namespace PKCore.Patches;
@@ -93,43 +94,35 @@ public static class SmartHealingPatch
     }
 
     /// <summary>
-    /// Trigger smart healing when victory experience is calculated.
-    /// </summary>
-    [HarmonyPatch(typeof(GSD2::BattleManager), "calc_exp")]
-    [HarmonyPostfix]
-    public static void BattleManager_calc_exp_Postfix(GSD2::BattleManager __instance)
-    {
-        TryPerformSmartHeal(__instance, "Victory (calc_exp)");
-    }
-
-    /// <summary>
-    /// Trigger smart healing at victory exit routine start.
-    /// </summary>
-    [HarmonyPatch(typeof(GSD2::BattleManager), "exit_sub00")]
-    [HarmonyPrefix]
-    public static void BattleManager_exit_sub00_Prefix(GSD2::BattleManager __instance)
-    {
-        TryPerformSmartHeal(__instance, "Victory (exit_sub00)");
-    }
-
-    /// <summary>
-    /// Trigger smart healing at battle exit (catches escapes / early exits).
-    /// </summary>
-    [HarmonyPatch(typeof(GSD2::BattleManager), "battle_exit99")]
-    [HarmonyPrefix]
-    public static void BattleManager_battle_exit99_Prefix(GSD2::BattleManager __instance)
-    {
-        TryPerformSmartHeal(__instance, "Battle Exit (battle_exit99)");
-    }
-
-    /// <summary>
-    /// Trigger smart healing when battle data is stored back to party.
+    /// Trigger smart healing when battle player data is stored back to the party upon confirming exit.
+    /// This is the primary trigger that executes towards the end of battle when confirming exit.
     /// </summary>
     [HarmonyPatch(typeof(GSD2::BattleManager), "StorePlayerData")]
     [HarmonyPostfix]
     public static void BattleManager_StorePlayerData_Postfix(GSD2::BattleManager __instance)
     {
-        TryPerformSmartHeal(__instance, "StorePlayerData");
+        TryPerformSmartHeal(__instance, "Battle Exit Confirm (StorePlayerData)");
+    }
+
+    /// <summary>
+    /// Trigger smart healing at battle exit cleanup (fallback for escapes / early exits).
+    /// </summary>
+    [HarmonyPatch(typeof(GSD2::BattleManager), "battle_exit99")]
+    [HarmonyPostfix]
+    public static void BattleManager_battle_exit99_Postfix(GSD2::BattleManager __instance)
+    {
+        TryPerformSmartHeal(__instance, "Battle Exit (battle_exit99)");
+    }
+
+    /// <summary>
+    /// Safety net: Trigger smart healing when accessing the field menu.
+    /// Ensures any consumed items and restored health are instantly applied when checking the party list.
+    /// </summary>
+    [HarmonyPatch(typeof(UIMainMenu), nameof(UIMainMenu.Open))]
+    [HarmonyPrefix]
+    public static void UIMainMenu_Open_Prefix()
+    {
+        TryPerformSmartHeal(null, "Menu Access (UIMainMenu.Open)");
     }
 
     public static void TryPerformSmartHeal(GSD2::BattleManager battleManager, string sourceTrigger)
@@ -139,10 +132,12 @@ public static class SmartHealingPatch
             if (!GameDetection.IsGSD2() || Plugin.Config == null || !Plugin.Config.EnableSmartHealing.Value)
                 return;
 
-            if (_hasHealedThisBattle)
-                return;
-
-            _hasHealedThisBattle = true;
+            if (battleManager != null)
+            {
+                if (_hasHealedThisBattle)
+                    return;
+                _hasHealedThisBattle = true;
+            }
 
             PerformSmartHealGSD2(battleManager, sourceTrigger);
         }
@@ -154,14 +149,21 @@ public static class SmartHealingPatch
 
     private static GSD2::BattlePlayerCharacter FindBattlePlayerCharacter(GSD2::BattleManager battleManager, int charaNo)
     {
-        if (battleManager != null && battleManager.PlayerParty != null)
+        if (battleManager != null)
         {
-            for (int p = 0; p < battleManager.PlayerParty.Count; p++)
+            var party = battleManager.PlayerParty;
+            if (party == null && battleManager.parties != null && battleManager.parties.Length > 0)
+                party = battleManager.parties[0];
+
+            if (party != null)
             {
-                var pm = battleManager.PlayerParty[p];
-                if (pm != null && pm.chara_no == charaNo)
+                for (int p = 0; p < party.Count; p++)
                 {
-                    return pm.TryCast<GSD2::BattlePlayerCharacter>();
+                    var pm = party[p];
+                    if (pm != null && (pm.chara_no == charaNo || pm.chara_id == charaNo))
+                    {
+                        return pm.TryCast<GSD2::BattlePlayerCharacter>();
+                    }
                 }
             }
         }
@@ -192,8 +194,14 @@ public static class SmartHealingPatch
             if (varia == null) continue;
 
             var bpc = FindBattlePlayerCharacter(battleManager, charaNo);
-            int curHp = bpc != null ? Math.Max(0, (int)bpc.hp) : (int)varia.now_hp;
-            bool isDead = curHp <= 0 || (bpc != null && bpc.dead_flg != 0);
+            ushort pamemHp = 0;
+            try { GSD2::G2_SYS.G2_pamem_hp(0, 0, i, ref pamemHp); } catch { }
+
+            int curHp = (int)varia.now_hp;
+            if (pamemHp > 0) curHp = pamemHp;
+            if (bpc != null) curHp = Math.Max(0, (int)bpc.hp);
+
+            bool isDead = curHp <= 0 || (bpc != null && bpc.dead_flg != 0) || (partyData.status != null && i < partyData.status.Length && (partyData.status[i] & 0x08) != 0);
 
             if (isDead)
             {
@@ -222,7 +230,13 @@ public static class SmartHealingPatch
             if (varia == null) continue;
 
             var bpc = FindBattlePlayerCharacter(battleManager, charaNo);
-            int curHp = bpc != null ? Math.Max(0, (int)bpc.hp) : (int)varia.now_hp;
+            ushort pamemHp = 0;
+            try { GSD2::G2_SYS.G2_pamem_hp(0, 0, i, ref pamemHp); } catch { }
+
+            int curHp = (int)varia.now_hp;
+            if (pamemHp > 0) curHp = pamemHp;
+            if (bpc != null) curHp = Math.Max(0, (int)bpc.hp);
+
             // Skip unrevived dead characters
             if (curHp <= 0 || (bpc != null && bpc.dead_flg != 0))
                 continue;
@@ -240,7 +254,7 @@ public static class SmartHealingPatch
 
         // Phase 3: Gather living injured party members (including newly revived)
         var injuredMembers = new List<InjuredMember>();
-        const int minDeficit = 20;
+        const int minDeficit = 10;
 
         for (int i = 0; i < partyChaNo.Length; i++)
         {
@@ -251,7 +265,13 @@ public static class SmartHealingPatch
             if (varia == null) continue;
 
             var bpc = FindBattlePlayerCharacter(battleManager, charaNo);
-            int curHp = bpc != null ? Math.Max(0, (int)bpc.hp) : (int)varia.now_hp;
+            ushort pamemHp = 0;
+            try { GSD2::G2_SYS.G2_pamem_hp(0, 0, i, ref pamemHp); } catch { }
+
+            int curHp = (int)varia.now_hp;
+            if (pamemHp > 0) curHp = pamemHp;
+            if (bpc != null) curHp = Math.Max(0, (int)bpc.hp);
+
             int maxHp = Math.Max((int)varia.max_hp, bpc != null ? (int)bpc.max_hp : 0);
 
             // Skip unrevived dead characters
@@ -284,11 +304,9 @@ public static class SmartHealingPatch
             // Sort by HP percentage ascending: lowest HP% gets healed first!
             injuredMembers.Sort((a, b) => ((float)a.CurHp / a.MaxHp).CompareTo((float)b.CurHp / b.MaxHp));
 
-            var availableItems = GatherHealingItemsGSD2(partyData, injuredMembers);
+            var availableItems = GatherHealingItemsGSD2(partyData);
             if (availableItems.Count > 0)
             {
-                bool allowOverheal = false;
-
                 foreach (var member in injuredMembers)
                 {
                     bool memberHealed = false;
@@ -299,7 +317,7 @@ public static class SmartHealingPatch
                         if (deficit < minDeficit)
                             break;
 
-                        var chosen = SelectBestItemGSD2(availableItems, deficit, allowOverheal);
+                        var chosen = SelectBestItemGSD2(availableItems, deficit, minDeficit);
                         if (chosen == null)
                             break;
 
@@ -329,11 +347,8 @@ public static class SmartHealingPatch
                         if (chosen.IsBag)
                             bagModified = true;
 
-                        if (Plugin.Config != null && Plugin.Config.DetailedLogs.Value)
-                        {
-                            string source = chosen.IsBag ? "Party Bag" : $"{chosen.OwnerName}'s Inventory";
-                            Plugin.Log.LogInfo($"[SmartHealing] {member.CharaName} healed +{heal} HP ({member.CurHp}/{member.MaxHp}) using {chosen.ItemName} from {source} ({chosen.UseCnt} use(s) left).");
-                        }
+                        string source = chosen.IsBag ? "Party Bag" : $"{chosen.OwnerName}'s Inventory";
+                        Plugin.Log.LogInfo($"[SmartHealing] {member.CharaName} healed +{heal} HP ({member.CurHp}/{member.MaxHp}) using {chosen.ItemName} from {source} ({chosen.UseCnt} use(s) left).");
 
                         if (chosen.UseCnt <= 0)
                         {
@@ -367,29 +382,7 @@ public static class SmartHealingPatch
 
     public static (int healAmount, string name) GetItemInfo(byte itemNo)
     {
-        // Item 1: Medicine (100 HP)
-        if (itemNo == 1) return (100, "Medicine");
-        // Item 2: Mega Medicine (500 HP)
-        if (itemNo == 2) return (500, "Mega Medicine");
-        // Item 3: Kindness Drops (Full heal)
-        if (itemNo == 3) return (999, "Kindness Drops");
-        // Item 4: Dragon Mist (100 HP)
-        if (itemNo == 4) return (100, "Dragon Mist");
-        // Item 5: Antitoxin (Poison cure)
-        if (itemNo == 5) return (0, "Antitoxin");
-        // Item 9: Water Card 1 (Drops of Kindness - 300 HP)
-        if (itemNo == 9) return (300, "Water Card (Drops of Kindness)");
-
-        // Item 13: Wind Card 2 (Healing Wind - Full heal)
-        int windCard2 = 13;
-        try { windCard2 = GSD2::g2_data_h.I_WIND_CARD2; } catch { }
-        if (itemNo == windCard2 || itemNo == 13)
-        {
-            return (999, "Healing Wind");
-        }
-
-        // Item 30: Sacrificial Jizo (Revive)
-        if (itemNo == 30) return (0, "Sacrificial Jizo");
+        if (itemNo == 0) return (0, null);
 
         // Dynamic query via game's ovit_data if available
         try
@@ -400,23 +393,44 @@ public static class SmartHealingPatch
                 var dogu = ovit.dogu_data[itemNo];
                 if (dogu != null && dogu.eff_val > 0)
                 {
-                    string name = null;
-                    try
+                    // CRITICAL: In Suikoden 2, dogu.info[1] & 0x20 specifies HP recovery items!
+                    // (Bit 0x04 specifies permanent stat-booster stones such as Stone of Power, Stone of Magic, etc.)
+                    // NEVER consume stat booster stones or non-HP items!
+                    bool isHpHeal = false;
+                    if (dogu.info != null && dogu.info.Length > 1)
                     {
-                        name = GSD2::G2_SYS.G2_item_name(ovit, 0, itemNo);
+                        isHpHeal = (dogu.info[1] & 0x20) != 0;
                     }
-                    catch { }
 
-                    return (dogu.eff_val, string.IsNullOrEmpty(name) ? $"Item #{itemNo}" : name);
+                    if (isHpHeal)
+                    {
+                        string name = null;
+                        try { name = GSD2::G2_SYS.G2_item_name(ovit, 0, itemNo); } catch { }
+                        return (dogu.eff_val, string.IsNullOrEmpty(name) ? $"Item #{itemNo}" : name);
+                    }
                 }
             }
         }
         catch { }
 
+        // Fallback to static lookup for standard known items if ovit_data is unavailable
+        if (itemNo == 1) return (100, "Medicine");
+        if (itemNo == 2) return (500, "Mega Medicine");
+        if (itemNo == 3) return (999, "Kindness Drops");
+        if (itemNo == 4) return (100, "Dragon Mist");
+        if (itemNo == 9) return (300, "Water Card (Drops of Kindness)");
+
+        int windCard2 = 13;
+        try { windCard2 = GSD2::g2_data_h.I_WIND_CARD2; } catch { }
+        if (itemNo == windCard2 || itemNo == 13)
+        {
+            return (999, "Healing Wind");
+        }
+
         return (0, null);
     }
 
-    private static List<ItemSourceRef> GatherHealingItemsGSD2(GSD2::PARTY_DATA partyData, List<InjuredMember> partyMembers)
+    private static List<ItemSourceRef> GatherHealingItemsGSD2(GSD2::PARTY_DATA partyData)
     {
         var list = new List<ItemSourceRef>();
 
@@ -448,17 +462,25 @@ public static class SmartHealingPatch
             }
         }
 
-        // 2. Character Equips (fallback to personal inventory)
-        if (partyMembers != null)
+        // 2. Character Equips across ALL party members in the active party
+        var partyChaNo = partyData.party_cha_no;
+        if (partyChaNo != null)
         {
-            for (int m = 0; m < partyMembers.Count; m++)
+            for (int p = 0; p < partyChaNo.Length; p++)
             {
-                var mem = partyMembers[m];
-                if (mem.Varia != null && mem.Varia.item_eqp != null)
+                int pCharaNo = partyChaNo[p];
+                if (pCharaNo <= 0) continue;
+
+                var varia = GSD2::G2_SYS.G2_varia_dat(pCharaNo);
+                if (varia != null && varia.item_eqp != null)
                 {
-                    for (int s = 0; s < mem.Varia.item_eqp.Length; s++)
+                    string pName = null;
+                    try { pName = GSD2::G2_SYS.G2_name_get(pCharaNo); } catch { }
+                    if (string.IsNullOrEmpty(pName)) pName = $"Chara #{pCharaNo}";
+
+                    for (int s = 0; s < varia.item_eqp.Length; s++)
                     {
-                        var it = mem.Varia.item_eqp[s];
+                        var it = varia.item_eqp[s];
                         if (it == null || it.item_no == 0 || it.use_cnt == 0)
                             continue;
 
@@ -468,8 +490,8 @@ public static class SmartHealingPatch
                             list.Add(new ItemSourceRef
                             {
                                 IsBag = false,
-                                CharaNo = mem.CharaNo,
-                                OwnerName = mem.CharaName,
+                                CharaNo = pCharaNo,
+                                OwnerName = pName,
                                 SlotIndex = s,
                                 ItemRef = it,
                                 ItemNo = it.item_no,
@@ -486,11 +508,11 @@ public static class SmartHealingPatch
         return list;
     }
 
-    private static ItemSourceRef SelectBestItemGSD2(List<ItemSourceRef> items, int deficit, bool allowOverheal)
+    private static ItemSourceRef SelectBestItemGSD2(List<ItemSourceRef> items, int deficit, int minDeficit)
     {
-        if (items == null || items.Count == 0) return null;
+        if (items == null || items.Count == 0 || deficit < minDeficit) return null;
 
-        // 1. If deficit is large (>= 300), look for an appropriate heavy heal
+        // 1. If deficit is large (>= 300), prioritize heavy / mid heals
         if (deficit >= 300)
         {
             // For massive wounds (>= 600 HP deficit), look for full-heal items like Healing Wind (>= 900)
@@ -503,22 +525,25 @@ public static class SmartHealingPatch
                 }
             }
 
-            // Otherwise prioritize Mega Medicine / mid-tier heals (400-899)
+            // Otherwise prioritize Mega Medicine / mid-tier heals (300-899)
             for (int i = 0; i < items.Count; i++)
             {
-                if (items[i].HealAmount >= 400 && items[i].HealAmount < 900)
+                if (items[i].HealAmount >= 300 && items[i].HealAmount < 900)
                     return items[i];
             }
 
-            // If no Mega Medicine is available, allow Healing Wind (>= 900) for large wounds
-            for (int i = 0; i < items.Count; i++)
+            // If no mid-tier heal is available, allow full heals for wounds >= 450
+            if (deficit >= 450)
             {
-                if (items[i].HealAmount >= 900)
-                    return items[i];
+                for (int i = 0; i < items.Count; i++)
+                {
+                    if (items[i].HealAmount >= 900)
+                        return items[i];
+                }
             }
         }
 
-        // 2. Look for items that don't overheal (healAmount <= deficit), picking the largest one
+        // 2. Look for items that don't overheal (healAmount <= deficit), picking the largest one to minimize item usage
         int maxNonOverheal = 0;
         ItemSourceRef largestNonOverheal = null;
         for (int i = 0; i < items.Count; i++)
@@ -536,7 +561,7 @@ public static class SmartHealingPatch
         if (largestNonOverheal != null)
             return largestNonOverheal;
 
-        // 3. All available items overheal.
+        // 3. All available items overheal (healAmount > deficit).
         // Pick the item with the smallest healAmount to minimize overheal waste.
         int minOverheal = int.MaxValue;
         ItemSourceRef smallestOverheal = null;
@@ -551,21 +576,25 @@ public static class SmartHealingPatch
 
         if (smallestOverheal != null)
         {
-            // For Medicine (100 HP), allow if deficit >= 40 or if allowOverheal is true
-            if (smallestOverheal.HealAmount <= 100)
+            // Standard/minor heals (Medicine, Dragon Mist, recovery food <= 150 HP):
+            // Always allow topping off party members if missing health is at or above minDeficit!
+            if (smallestOverheal.HealAmount <= 150)
             {
-                if (deficit >= 40 || allowOverheal)
-                    return smallestOverheal;
+                return smallestOverheal;
             }
-            else if (smallestOverheal.HealAmount <= 500) // For Mega Medicine (500 HP)
+
+            // Mid-tier heals (Mega Medicine <= 500 HP):
+            // Allow if deficit is substantial (>= 200 HP)
+            if (smallestOverheal.HealAmount <= 500 && deficit >= 200)
             {
-                if (deficit >= 250 || allowOverheal)
-                    return smallestOverheal;
+                return smallestOverheal;
             }
-            else // For Healing Wind / full heals (999 HP), only allow if deficit >= 400 or allowOverheal is true
+
+            // Massive heals (Healing Wind / Kindness Drops >= 900 HP):
+            // Only allow if deficit is massive (>= 450 HP)
+            if (smallestOverheal.HealAmount >= 900 && deficit >= 450)
             {
-                if (deficit >= 400 || allowOverheal)
-                    return smallestOverheal;
+                return smallestOverheal;
             }
         }
 
@@ -662,11 +691,17 @@ public static class SmartHealingPatch
                 }
                 catch { }
 
+                if (partyData != null && partyData.status != null && slotIndex < partyData.status.Length)
+                {
+                    partyData.status[slotIndex] = 0;
+                }
+
                 if (bpc != null)
                 {
                     bpc.dead_flg = 0;
                     bpc.hp = (short)reviveHp;
                     bpc.disp_hp = (short)reviveHp;
+                    bpc.status &= ~0x800000u;
                     if (bpc.c_varia_dat != null)
                         bpc.c_varia_dat.now_hp = (ushort)reviveHp;
 
@@ -686,6 +721,25 @@ public static class SmartHealingPatch
             Plugin.Log.LogWarning($"[SmartHealing] Error attempting to revive {charaName} with Jizo: {ex.Message}");
         }
 
+        return false;
+    }
+
+    private static bool IsAntitoxinItem(byte itemNo)
+    {
+        if (itemNo == 5) return true;
+        try
+        {
+            var ovit = GSD2::OldSrcBase.game_work?.ovit_data;
+            if (ovit != null && ovit.dogu_data != null && itemNo < ovit.dogu_data.Length)
+            {
+                var dogu = ovit.dogu_data[itemNo];
+                if (dogu != null && dogu.status != null && dogu.status.Length > 0)
+                {
+                    return (dogu.status[0] & 4) != 0;
+                }
+            }
+        }
+        catch { }
         return false;
     }
 
@@ -729,7 +783,7 @@ public static class SmartHealingPatch
                 for (int i = 0; i < partyData.party_item.Length; i++)
                 {
                     var it = partyData.party_item[i];
-                    if (it != null && it.item_no == 5 && it.use_cnt > 0)
+                    if (it != null && IsAntitoxinItem(it.item_no) && it.use_cnt > 0)
                     {
                         antitoxin = it;
                         isBag = true;
@@ -755,7 +809,7 @@ public static class SmartHealingPatch
                             for (int s = 0; s < pVaria.item_eqp.Length; s++)
                             {
                                 var it = pVaria.item_eqp[s];
-                                if (it != null && it.item_no == 5 && it.use_cnt > 0)
+                                if (it != null && IsAntitoxinItem(it.item_no) && it.use_cnt > 0)
                                 {
                                     antitoxin = it;
                                     isBag = false;
@@ -783,6 +837,10 @@ public static class SmartHealingPatch
 
                 // G2_SYS.G2_poison mode 2 clears poison
                 try { GSD2::G2_SYS.G2_poison(2, 0, slotIndex); } catch { }
+                if (partyData != null && partyData.status != null && slotIndex < partyData.status.Length)
+                {
+                    partyData.status[slotIndex] = (byte)(partyData.status[slotIndex] & ~1);
+                }
                 if (bpc != null)
                 {
                     try

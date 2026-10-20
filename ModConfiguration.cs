@@ -20,6 +20,8 @@ public sealed class ModConfiguration
     // Display Settings
     public ConfigEntry<bool> EnableBorderlessWindow { get; private set; }
     public ConfigEntry<bool> ShowMouseCursor { get; private set; }
+    public ConfigEntry<string> ImGuiTheme { get; private set; }
+    public ConfigEntry<bool> ShowLocationHUD { get; private set; }
 
     // Controller Prompt Settings
     public HiddenConfigEntry<bool> ForceControllerPrompts { get; private set; }
@@ -243,6 +245,20 @@ public sealed class ModConfiguration
             "Compact dialog box. false = Normal, true = 80% size with adjusted position"
         );
 
+        ImGuiTheme = _config.Bind(
+            "02 User Interface",
+            "ImGuiTheme",
+            "Classic Blue",
+            "Dear ImGui Overlay color theme. Options: 'Classic Blue', 'Matrix', 'Obsidian Black', 'Dark Magenta'."
+        );
+
+        ShowLocationHUD = _config.Bind(
+            "02 User Interface",
+            "ShowLocationHUD",
+            true,
+            "Displays a small HUD box at the bottom of the screen showing current map location telemetry when the Dear ImGui overlay is closed."
+        );
+
         ScaledDownMenu = _config.Bind(
             "02 User Interface",
             "ScaledDownMenu",
@@ -426,7 +442,7 @@ public sealed class ModConfiguration
         UnlockLiberatedMuseCityHall = _config.Bind(
             "05 Game : Suikoden 2",
             "UnlockLiberatedMuseCityHall",
-            true,
+            false,
             "Restores the City Hall doorway warp in Liberated Muse (vc25) post-liberation, allowing re-entry to retrieve missed items such as Old Book Vol. 4 from the council archive bookshelf."
         );
 

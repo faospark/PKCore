@@ -6,11 +6,87 @@ All notable changes to PKCore (formerly PKextended) are documented in this file.
 
 ## [2026.10.20]
 
-- **Suikoden II Liberated Muse City Hall Re-entry (`UnlockLiberatedMuseCityHall`)**:
-  - Implemented in [LiberatedMuseCityHallPatch.cs](Patches/LiberatedMuseCityHallPatch.cs).
-  - Resolves a permanent lock-out oversight in vanilla Suikoden II where completing the liberation victory cutscene permanently sets `Story Flag 22 (bit 4)` but provides no door script for that state at the City Hall entrance in `vc25` (Submaps 1 & 2), locking players out of City Hall for the remainder of the game.
-  - Updates doorway event `ev[03]` at coordinates `(101..107, 18..19)` to allow free re-entry post-liberation, enabling players to retrieve missable items such as **Old Book Vol. 4** from the council archive bookshelf (`obj[25]`). City Hall's exit doorway automatically routes back to `vc25`.
-  - Configurable via `UnlockLiberatedMuseCityHall` (Default: `true`).
+- **Dear ImGui Current Data Location Box, Bottom HUD & Hotkey Dump (`[NumPad 5]`)**:
+  - Implemented strictly within [ImGuiOverlayUI.cs](Patches/ImGuiOverlayUI.cs) and [ModConfiguration.cs](ModConfiguration.cs).
+  - **Bottom-Screen Location HUD (When Overlay Closed)**: When the main Dear ImGui overlay is closed, a compact, unobtrusive semi-transparent HUD box is displayed at the bottom of the screen showing strictly and exclusively `Location: <MapId>`. Removed Stars count and NumPad 5 text from the in-game HUD to avoid screen clutter.
+  - **In-Overlay Stars & Telemetry Cleanup**: Stars of Destiny count resides cleanly inside the main overlay sidebar (`Stars: <Count> / 108`). Completely removed confusing bathhouse `Tub` telemetry from the location box, location dump logs, and button labels.
+  - **In-Overlay Toggle & Persistence**: Can be toggled on/off at any time from inside the overlay via **MenuBar > Overlays > Bottom Screen Location HUD**, the **Sidebar** checkbox under *CURRENT DATA LOCATION*, or the **General & Debug** section. Persists cleanly across sessions in `PKCore.cfg` via `ShowLocationHUD`.
+  - **Gameplay Input Pass-Through**: The bottom HUD uses `ImGuiWindowFlags.NoInputs` so clicks pass straight through to the game and controller/keyboard gameplay is completely uninhibited.
+  - **Hotkey Dump (`[NumPad 5]`)**: Pressing **`[NumPad 5]`** at any point in gameplay immediately appends a formatted location snapshot to `\Suikoden I and II HD Remaster\PKCore\Logs\locationdump.log`.
+
+- **Dead Code Pruning & Map Object Architecture Cleanup**:
+  - Cleaned up in [CustomObjectInsertion.cs](Patches/CustomObjectInsertion.cs), [DiscoveredObject.cs](Patches/DiscoveredObject.cs), and [GameObjectPatch.cs](Patches/GameObjectPatch.cs).
+  - **Deleted Orphaned Files**: Removed `ObjectConfigLoader.cs` and `CustomObjectConfig.cs` (unused alternative JSON config and model classes).
+  - **Pruned Legacy GameObject Pipeline**: Removed ~780 lines of dead Unity GameObject reflection, unused scale/depth sorting routines, and uncalled methods (`FindMapBGManagerHD`, `FindBgManagerRecursive`, `ResetForNewScene`, `RefleshObjectPatch`, `MapBGManagerHDSetMapPostfix`) from `CustomObjectInsertion.cs`, leaving a streamlined native `EVENT_OBJ` injection pipeline (`InjectNativeEventObjects` via `MachiLoader_Load_Patch`).
+  - **Relocated Core Geometry Models**: Moved active models `Vector3Config` and `Vector2Config` into `DiscoveredObject.cs`.
+  - **Cleaned Up Unused Hooks**: Removed uncalled `FindHeroPortraitSprite` from [PortraitSystemPatch.cs](Patches/PortraitSystemPatch.cs) and wired `RefreshNames()` into `OnSaveLoaded` in [SaveDataProcessor.cs](Patches/SaveDataProcessor.cs).
+
+- **Battle Monster Selection Window Expansion (`Win_Enemy`)**:
+  - Enhanced in [BattleEnemyLevelPatch.cs](Patches/BattleEnemyLevelPatch.cs) and [ImGuiOverlayUI.cs](Patches/ImGuiOverlayUI.cs).
+  - **Thread-Safe Main Thread Dispatching**: Completely eliminated game deadlocks and freezes caused by invoking Unity GameObject APIs directly from DirectX 11 Present render hooks by enforcing `RunOnMainThread` dispatching and adding self-defensive `Plugin.IsMainThread` guards inside `TryExpandWinEnemy()`.
+  - **Comprehensive uGUI Layout & Monster Cell Widening**: Rather than attempting to scale the invisible root container transform (which DOTween overwrites on open/close animations), the patch now directly expands the actual visible layout containers and elements: `m_GS1Layout` (Suikoden 1), `m_GS2Layout` & `m_GS2BackLayout` (Suikoden 2), child background frames, `GridLayoutGroup.cellSize`, and all individual monster selection rows (`UIWindowListCell`) with their `leftText` TextMeshProUGUI containers.
+  - **Dynamic Multi-Column Repositioning**: Automatically detects and adjusts horizontal column spacing in multi-column monster layouts (Suikoden 2) so wider monster cells never overlap adjacent columns.
+  - **Zero-Drift Baseline Caching**: Caches original baseline dimensions (`sizeDelta`, `cellSize`, and column offsets) so that switching between `1.0x`, `1.25x`, and `1.5x` dynamically updates in real-time, and setting `1.0x` cleanly restores exact vanilla dimensions.
+  - **Stable Battle Lifecycle Hooks**: Driven safely and predictably via `UIBattleWindowMonster.BattleInitialize` and `UIBattleWindowMonster.SetMonsterName`, completely avoiding engine-level hooks like `GameObject.SetActive`.
+
+- **Smart After-Battle Auto-Healing Fixes & Safeguards**:
+  - Fixed in [SmartHealingPatch.cs](Patches/SmartHealingPatch.cs).
+  - **Battle Exit Confirmation Execution**: Relocated smart healing execution from premature mid-victory routines (`calc_exp` / `exit_sub00`) to the exact battle conclusion point: `BattleManager.StorePlayerData` Postfix (when the player confirms exit from the victory results screen) and `BattleManager.battle_exit99` Postfix (battle exit cleanup fallback). This guarantees all victory EXP, level-up calculations, and native character storage have finished before healing items are consumed and HP is applied.
+  - **Field Menu Access Safety Net**: Added an additional trigger on `UIMainMenu.Open` Prefix (`ShareUI.Menu`), ensuring that whenever the field menu is accessed, any unhealed damage or poison is immediately treated before the party list is drawn.
+  - **Direct Data Persistence**: Explicitly synchronizes healed HP and revived status across `G2_SYS.G2_pamem_hp`, `G2_SYS.G2_varia_dat(charaNo).now_hp`, and `G2_SYS.G2_party_dat().status[slot]`, ensuring that full recovery persists seamlessly when returning to the world map and opening menus.
+  - **Stat-Booster Item Safeguard**: Fixed critical flaw in `GetItemInfo` dynamic discovery where permanent stat-boosting items (e.g. Stone of Power, Stone of Magic, Stone of Defense) were erroneously identified as healing items due to having positive `eff_val`. Enforced strict verification of the game's actual HP recovery flag `(dogu.info[1] & 0x20) != 0`, guaranteeing permanent stat stones are never consumed as potions.
+  - **Top-Off & Overheal Policy**: Fixed flawed logic in `SelectBestItemGSD2` where `allowOverheal = false` and an artificial `deficit >= 40` floor blocked standard Medicine from healing characters missing under 40 (or under 100) HP. Standard/minor heals (`HealAmount <= 150`, such as Medicine) now reliably top off party members when missing health meets or exceeds `minDeficit` (10 HP), while mid-tier (`Mega Medicine`) and full-heal (`Healing Wind`) items remain strictly guarded against small-wound waste.
+  - **Whole-Party Personal Inventory Gathering**: Fixed `GatherHealingItemsGSD2` to scan personal equipment inventories across all active party members (`partyChaNo`) rather than exclusively inspecting already-injured members, allowing backline or unhurt members' spare Medicines to be utilized if the Party Bag runs dry.
+  - **Revived Character Status Flag Clearing**: Added clearing of dead status bit (`bpc.status &= ~0x800000u`) and `partyData.status[slot] = 0` during Sacrificial Jizo revival to prevent `BattleManager.StorePlayerData` from re-zeroing HP on battle transition.
+  - **Dynamic Poison Cure Items**: Added `IsAntitoxinItem` to check both standard Antitoxin (#5) and any items/food with poison-curing status bit (`status[0] & 4 != 0`).
+
+- **Encounter None Hotkey & Overlay Toggle (`[F4]`)**:
+  - Implemented in [EncounterNonePatch.cs](Patches/EncounterNonePatch.cs).
+  - Toggled via keyboard key **`[F4]`** or directly through the Dear ImGui overlay interface.
+  - **SuikoFix Synergy**: Automatically detects whether `Suikoden_Fix` is loaded. If present, it directly manipulates `Suikoden_Fix.Plugin.Config.EncounterRateMultiplier` (setting it to `0.0f` to prevent battles, and cleanly restoring the player's prior multiplier when disabled).
+  - **Native PKCore Fallback**: If Suikoden_Fix is not installed, it executes native Harmony prefix hooks on `EVENTCON.EventBatlleCheck` (Suikoden II), `Village_c.v_wanderingMonsterChk` (Suikoden I), and `Fmain_c.f_wanderingMonsterChk` (Suikoden I), ensuring zero random encounters across both games.
+  - Displays real-time status badges and backend attribution in the Dear ImGui overlay.
+
+- **Native Dear ImGui Overlay Engine (Multi-Theme & Two-Column Layout)**:
+  - Completely re-architected in [ImGuiOverlayUI.cs](Patches/ImGuiOverlayUI.cs) using genuine **Dear ImGui** (via `DearImGuiInjection` / `ImGui.NET`), completely replacing the stripped Unity IMGUI pipeline.
+  - Rendered natively in DirectX 11 via swapchain present hooks with zero overhead, hardware mouse cursor acceleration, and thread-safe main loop action queues.
+  - **Clean ASCII Typography**: Replaced all non-ASCII unicode characters, emojis, and geometric symbols with clean ASCII characters to eliminate Dear ImGui font atlas fallback `?` question marks.
+  - **Harmonious Button Styling**: Removed hardcoded neon green, violet, and teal button color overrides; buttons now blend seamlessly into whichever color theme is selected (`Classic Blue`, `Matrix`, `Obsidian Black`, `Dark Magenta`).
+  - **4 Selectable Themes**:
+    - **Classic Blue**: Deep navy and dark slate styling with vibrant blue headers, sky blue highlights, and clean borders.
+    - **Matrix**: Pure carbon black with glowing phosphor green text, cyber-hacker accents, and electric green borders.
+    - **Obsidian Black**: Sleek monochrome pure graphite obsidian with sophisticated ice silver and platinum accents.
+    - **Dark Magenta**: Cyberpunk royal purple and midnight indigo with electric magenta and vivid fuchsia accents.
+    - Switchable in real-time via the top MenuBar (`Themes -> ...`), the Sidebar theme selector combo, or one-click 2x2 theme preset pill buttons. Persists to `PKCore.cfg` under `ImGuiTheme`.
+  - **Ergonomic Two-Column Design**:
+    - **Outer Split**: Resizable Left Sidebar (240px default) for Search, Theme switching, Section navigation, Bathhouse launcher, Quick toggles (`[F4] No Battles`, `Mouse Cursor`, `✨ Full Party Heal`), and Context snapshot; coupled with a spacious Right Content Pane.
+    - **Inner Two-Column Cards**: Every section pane utilizes balanced side-by-side two-column tables (Controls/Toggles on the left, Live Diagnostics/Context/Tables on the right) for General, Combat, Recovery, Visuals, Bathhouse, Party Roster, and Scene Telemetry.
+  - **Unbundled Plugin Design**: Installed as an independent standalone plugin in `BepInEx/plugins/DearImGuiInjection/` (referenced with `<Private>false</Private>` in `PKCore.csproj`), ensuring zero bloat bundled inside `PKCore.dll`.
+  - **Combat & Runes Section**: Interactive controls for Memory Auto-Battle (S2) with memory reset, Unlimited Command Runes (Trick, Groundhog, Spider Slay, Angry Dragon), Rune Unbalance Removal, Range Overrides, and Enemy Level & HP with scaling presets (`1.0x`, `1.25x`, `1.5x`).
+  - **Recovery & Progression Section**: Smart After-Battle Auto-Healing, Quick Party Heal, Early Sajah Village Rare Shop & Sage (vj17), Tenzan Pass Chimera Encounters Restoration with drop rates (`100%`, `50%`, `25%`, `2%`), and Muse Ruins Survivors Restoration.
+  - **Visuals & World Section**: Save Point Crystal Color Picker (9 presets + cache clearing + glow toggle), World Map Clouds & Sunrays toggles, and Sprite Filtering (SMAA / Point) toggle.
+  - **Party & Roster Section**: Active 8-character roster table (Slots 0..7) with live HP, Max HP, and Castle Recruit visitor pools.
+  - **Scene & Telemetry Section**: Live Map ID, Stars of Destiny count (108), bath status, encounter backend, and active subsystems.
+
+- **Runtime Mouse Cursor Visibility Toggle**:
+  - Enhanced in [MouseCursorPatch.cs](Patches/MouseCursorPatch.cs).
+  - Added dynamic `IsEnabled` getter/setter and `Toggle()` method, enabling live OS cursor unlocking from the ImGui overlay without requiring game restarts.
+
+- **Dear ImGui In-Game Debug & Bathhouse Inspector Overlay (`[F10]` Initial Release)**:
+  - Implemented in [ImGuiOverlayUI.cs](Patches/ImGuiOverlayUI.cs).
+  - Toggled dynamically via keyboard key **`[F10]`** (and closed with `[Escape]` or window `[X]`).
+  - Authored with an authentic Dear ImGui dark-theme aesthetic (`#171A1F` background, `#242933` frame styling, `#2E5994` active tabs, and `#3B82F6` accent borders) powered natively by Unity's IMGUI pipeline without requiring any external DLLs or native wrapper dependencies.
+  - Local static ImGui layout configuration is untracked by git (`.gitignore`).
+  - **Castle Bathhouse Live Monitor**: Real-time inspection of who is soaking in the castle bathhouse:
+    - **Men's Tub (Right basin, slots 0..5)**: Shows bather names, character IDs, gender classifications (Male / Transgressor / Special), origin (Combat Party vs Castle Visitor NPC), and texture atlas coordinates (`chara_01_atlus` & `chara_sub_slot`).
+    - **Women's Tub (Left basin w/ golden lamp, slots 6..11)**: Shows bather names, character IDs, gender classifications (Female / Transgressor / Special), origin, and texture atlas coordinates.
+    - Displays unoccupied bath positions as `[Empty Slot]`.
+    - Live temperature and session telemetry: water heat / cool gauges and active bath status.
+  - **Party & Roster Inspector**: Inspects all 8 party slots (combatants, convoy, support) and Castle recruit visitor pools.
+  - **Scene & World State**: Displays current active map asset identifier and Stars of Destiny count.
+
+- **Suikoden II Muse City Hall Re-entry (`UnlockLiberatedMuseCityHall`) [Shelved / Disabled]**:
+  - Disabled by default and registration commented out in [Plugin.cs](Plugin.cs) while under investigation.
 
 - **Suikoden II Muse Ruins Survivors Restoration & 108 Stars Spiritual Reward (`EnableMuseRuinsSurvivorsRestoration`)**:
   - Implemented in [MuseRuinsSurvivorsPatch.cs](Patches/MuseRuinsSurvivorsPatch.cs).

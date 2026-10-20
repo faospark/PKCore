@@ -388,7 +388,7 @@ Patches
         [HarmonyPostfix]
         public static void OnSaveLoaded()
         {
-            // Patch applied - RefreshNames() will be called when needed via getter methods
+            RefreshNames();
         }
     }
 }

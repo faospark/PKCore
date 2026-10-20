@@ -35,5 +35,10 @@ scratch/
 # Helper scripts (not for distribution)
 *.bat
 
+# ImGui local static files / layout state
+imgui.ini
+imgui/
+*.imgui
+
 # Agent
 #.agent/

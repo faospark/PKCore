@@ -83,7 +83,7 @@ public partial class CustomTexturePatch
     /// <summary>
     /// Clears only save point-related texture/sprite caches so Random mode can swap variants.
     /// </summary>
-    private static void ClearSavePointVariantCaches()
+    public static void ClearSavePointVariantCaches()
     {
         var textureKeys = new System.Collections.Generic.List<string>();
         foreach (var key in customTextureCache.Keys)

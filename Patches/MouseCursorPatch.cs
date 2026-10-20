@@ -9,6 +9,16 @@ namespace PKCore.Patches;
 public class MouseCursorPatch
 {
     private static bool _isEnabled = false;
+    public static bool IsEnabled
+    {
+        get => _isEnabled;
+        set => _isEnabled = value;
+    }
+
+    public static void Toggle()
+    {
+        _isEnabled = !_isEnabled;
+    }
 
     public static void Initialize(bool enabled)
     {

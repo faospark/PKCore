@@ -236,38 +236,6 @@ public class PortraitSystemPatch
     }
     // -------------------------------
 
-    /// <summary>
-    /// Find and cache the Hero's portrait sprite from the UI
-    /// </summary>
-    private static Sprite FindHeroPortraitSprite()
-    {
-        if (cachedPortraitSprite != null)
-            return cachedPortraitSprite;
-
-        // Search for the Hero's portrait in common UI locations
-        // The Hero's portrait is often in UI_Root or similar hierarchies
-        try
-        {
-            // Try to find any Image component with a sprite that looks like a portrait
-            var allImages = UnityEngine.Object.FindObjectsOfType<UnityEngine.UI.Image>();
-
-            foreach (var image in allImages)
-            {
-                if (image.sprite != null && image.gameObject.name.Contains("Face"))
-                {
-                    Plugin.Log.LogInfo($"[PotraitSystem] Found potential portrait sprite: {image.gameObject.name}");
-                    cachedPortraitSprite = image.sprite;
-                    return cachedPortraitSprite;
-                }
-            }
-        }
-        catch (System.Exception ex)
-        {
-            Plugin.Log.LogError($"[PotraitSystem] Error finding Hero portrait: {ex.Message}");
-        }
-
-        return null;
-    }
 
     /// <summary>
     /// Initialize the portrait system

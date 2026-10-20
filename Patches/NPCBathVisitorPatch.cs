@@ -15,6 +15,11 @@ public static class NPCBathVisitorPatch
 {
     private static bool _initialized = false;
     public static bool IsInsideBath { get; private set; } = false;
+    public static GSD2::EventOverlayClass.furo_h.FURO_WORK CurrentFuroWork { get; private set; }
+    public static readonly Dictionary<int, int> CharacterToFuroSlot = new Dictionary<int, int>();
+    public static readonly Dictionary<int, int> FuroSlotToCharacter = new Dictionary<int, int>();
+    public static readonly HashSet<byte> ActiveBathVisitors = new HashSet<byte>();
+    public static readonly List<byte> ActivePartyInBath = new List<byte>();
 
     private static byte[] _savedPartyMembers = null;
     private static bool _isPartyModified = false;
@@ -181,6 +186,8 @@ public static class NPCBathVisitorPatch
     [HarmonyPostfix]
     public static void GetFuroPos_Postfix(GSD2::EventOverlayClass.furo_h.FURO_WORK fw, int chara_id, int __result)
     {
+        CharacterToFuroSlot[chara_id] = __result;
+        FuroSlotToCharacter[__result] = chara_id;
         string tubSide = (__result >= 6 && __result <= 11) ? "Women's tub" : "Men's tub";
         Plugin.Log.LogInfo($"[NPCBathVisitorPatch] GetFuroPos: Character ID {chara_id} placed in slot {__result} ({tubSide}).");
     }
@@ -300,6 +307,12 @@ public static class NPCBathVisitorPatch
     [HarmonyPrefix]
     public static void FuroInit_Prefix(GSD2::EventOverlayClass.furo_h.FURO_WORK fw)
     {
+        CurrentFuroWork = fw;
+        CharacterToFuroSlot.Clear();
+        FuroSlotToCharacter.Clear();
+        ActiveBathVisitors.Clear();
+        ActivePartyInBath.Clear();
+
         if (!Plugin.Config.EnableNPCBathVisitors.Value) return;
 
         IsInsideBath = true;
@@ -314,6 +327,7 @@ public static class NPCBathVisitorPatch
     public static void FuroEnd_Postfix(GSD2::EventOverlayClass.furo_h.FURO_WORK fw)
     {
         IsInsideBath = false;
+        CurrentFuroWork = null;
         RestoreParty();
     }
 
@@ -463,6 +477,7 @@ public static class NPCBathVisitorPatch
                     {
                         chaNoArray[i] = chosenId;
                         activeIds.Add(chosenId);
+                        ActiveBathVisitors.Add(chosenId);
                         string genderStr = FemaleCharaIds.Contains(chosenId) ? "Female (Women's tub)" : "Male (Men's tub)";
                         Plugin.Log.LogInfo($"[NPCBathVisitorPatch] Added castle visitor NPC ID {chosenId} [{genderStr}] to bath slot {i}. Total bathers now: {maleCount + femaleCount} (Men: {maleCount}, Women: {femaleCount}).");
                     }

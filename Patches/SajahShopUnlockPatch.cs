@@ -9,6 +9,7 @@ public static class SajahShopUnlockPatch
     [HarmonyPostfix]
     public static void Postfix(MACHICON __instance, EVENTCON __result)
     {
+        if (Plugin.Config != null && !Plugin.Config.UnlockSajahRareShopEarly.Value) return;
         if (__result == null || __result.mdat?.eventdata?.mapeventdat == null) return;
         
         string mapId = MACHICON_OnMapInitPatch.CurrentMapId;

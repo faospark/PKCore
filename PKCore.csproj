@@ -84,6 +84,7 @@
       <HintPath>$(GamePath)\BepInEx\plugins\Suikoden_Fix.dll</HintPath>
       <Private>false</Private>
     </Reference>
+
     
     <!-- Game assemblies -->
     <Reference Include="GSD1">

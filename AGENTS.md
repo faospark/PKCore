@@ -65,9 +65,18 @@
   - Never invent, split, decouple, or add extra configuration options or architecture variations that the user did not explicitly request (e.g., splitting a unified auto-battle feature into separate memory and persistence toggles).
   - One requested feature must remain **ONE single, unified implementation**.
   - Do not fantasize edge cases or unilaterally create secondary toggles/flags that undermine or reset the feature's expected baseline behavior (e.g., adding an unasked-for `PlayerInit` wipe hook).
+- **Strict File & Subsystem Boundaries (Zero Unrelated File Edits)**:
+  - When implementing or updating a feature for a specific subsystem (e.g., the Dear ImGui overlay in `ImGuiOverlayUI.cs`), do **NOT** modify or add fields to unrelated files or systems (such as `CustomObjectInsertion.cs`, map object injection, or entity loaders).
+  - Use existing cached data and properties (`MACHICON_OnMapInitPatch.CurrentMapId`, etc.) and keep all UI, caching, and input handling localized strictly within the component itself.
+- **Zero Over-Research on Straightforward Features**:
+  - When a task requests a routine, well-understood edit in our own project files (such as adding a HUD widget, a menu toggle, or a config entry), do **NOT** launch exploratory greps, multi-slice file reads, or treat it as an unknown binary mystery.
+  - Target the exact known file and function immediately, apply the edit cleanly, and run `dotnet build`.
 - **Immediate Accountability & No Evasion**:
   - If the user questions a decision, catches a regression, or calls out unrequested changes, **STOP all background tool executions immediately**.
   - Never fire off silent background searches, log inspections, or evasive tool calls to cover tracks or stall.
   - Directly, plainly, and immediately acknowledge what was done, own the mistake, and apply the exact fix requested without further debate or side-tangents.
 
-
+## Planning & User Alignment
+- **Course of Action & User Approval**:
+  - Always outline a clear plan / course of action before starting work on complex tasks, refactors, or new features.
+  - Present the proposed steps directly to the user and ask how they would like to proceed before modifying code or executing changes.

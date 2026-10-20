@@ -22,7 +22,7 @@ The **core DLL component** for **[Project Kyaro](https://www.nexusmods.com/suiko
 * Early Sajah Village Rare Shop & Rune Sage Vendor Unlock (S2)
 * Memory Auto-Battle (Replays last manually chosen action, S2)
 * Smart After-Battle Auto-Healing (Automatic Medicine & Healing Wind HP recovery, Sacrificial Jizo revival, and Antitoxin poison curing, S2)
-* Battle Enemy Level & HP Display with 1.5x Expanded Target Window (S1 & S2)
+* Battle Enemy Level & HP Display with Configurable Target Window Width (1.0x–2.0x, S1 & S2)
 * Battle Party Current / Max HP Display (S1 & S2)
 * Unlimited & Reusable Command Runes in Battle (Trick, Groundhog, Spider Slay, Angry Dragon, S2)
 * Rune Unbalance Removal (S2)
@@ -44,6 +44,7 @@ The **core DLL component** for **[Project Kyaro](https://www.nexusmods.com/suiko
 * Alternative Run Animation for Tir (Project Kyaro sprites)
 * Restore Bamboo Fence on Mercenary Fortress
 * NPC Bathhouse Sprites & Castle Visitors Restoration (S2)
+* Muse Ruins Survivors Restoration & 108 Stars Spiritual Reward (S2)
 
 **[Performance Features]**
 
@@ -61,7 +62,10 @@ The **core DLL component** for **[Project Kyaro](https://www.nexusmods.com/suiko
 * Replaced Low‑Quality Upscaled Doors in the Inn Area (S2)
 
 **[Utility]**
-* Show Mouse Cursor
+* Dear ImGui In-Game Runtime Feature & Diagnostics Suite (Toggle with F10; searchable live controls for Combat, Runes, Auto-Healing, Sajah Shop, Tenzan Chimera, Crystal Customizer, dedicated Castle Bathhouse inspector button, Current Data Location box with [NumPad 5] log dump, and party/scene telemetry)
+* Location Dump [NumPad 5] (Press [NumPad 5] anytime in gameplay or click the overlay button to instantly dump current map and location telemetry to `\Suikoden I and II HD Remaster\PKCore\Logs\locationdump.log`)
+* Encounter None [F4] (Toggle random battle encounters on/off with [F4] or via Dear ImGui overlay; automatically delegates to Suikoden_Fix multiplier when present, with native fallback hooks for S1 & S2)
+* Show Mouse Cursor (Live runtime toggle via Dear ImGui overlay and configuration to unlock and force OS cursor visibility)
 * Clean Exit on ALT+F4 (Force immediate shutdown instead of hanging)
 * High-Speed Decompiled Symbol Indexer & CLI Query Tool (Sub-millisecond lookups for C# types, members, and native IL2CPP addresses)
 
@@ -84,7 +88,6 @@ Replace game textures with custom PNG or DDS files in `BepInEx/plugins/PKCore/Te
 
 - **Tenzan Pass Chimera Encounters Restoration**: Restores omitted Chimera monster encounters (Parties 6, 7, and 8) in Tenzan Pass (`va11`) with Pyriel's community fix layout (~30% encounter rate), guaranteed or configurable Cyclone Rune drops, and multi-tier engine bounds protection against Remaster crash bugs. See [Tenzan Pass Guide](Documentation/tenzan_pass_chimera_va11.md).
 - **Sajah Village Rare Shop & Rune Sage Unlock**: Early access unlock for the hidden late-game rare item/rune vendor and counter trigger in Sajah Village (`vj17`) bypassing story flag 143 via in-memory map patching. See [Sajah Shop Guide](Documentation/sajah_village_rare_shop_vj17.md).
-- **Liberated Muse City Hall Re-entry**: Fixes the vanilla oversight in Liberated Muse (`vc25`) where the City Hall doorway becomes permanently inert after the liberation celebration, allowing Riou to re-enter City Hall (`vc02`) post-liberation and collect missable items such as Old Book Vol. 4 from the archive bookshelf (`obj[25]`).
 - **Muse Ruins Survivors & 108 Stars Spiritual Reward**: Restores interaction triggers and authored dialogues for the 8 dormant/silent actors (`obj[02]`–`obj[09]`) in Muse Ruins (`vc26_01`) by re-targeting orphaned interaction scripts (`ev[62]`–`ev[77]`). Uniting all 108 Stars of Destiny cleanses all 33 spirits and survivors, switching them to their hidden, peaceful dialogue as a spiritual reward.
 - **NPC Bathhouse Sprites & Castle Visitors Restoration**: Restores unused bathhouse sprites for non-combatant recruits and convoy members in Suikoden 2, unlocks full 8-character bathhouse capacity (+2 convoy/visitor slots over a 6-man party), eliminates engine null-dereference crashes, guarantees accurate gender-based tub separation via verified sprite atlases (routes Tenkou [99] and Boris [123] to men's tub; routes Teresa [95/102] to women's tub), preserves vanilla Case 2 unisex routing for Simone and Vincent (allowing them into the other tub), preserves native implementations for Gadget and beasts (Abizboah, Rulodia, Feather, Siegfried, Shiro, Mukumuku), and populates vacant bath positions with recruited castle companions (Apple, Shu, Leona, Richmond, Barbara, Pilika, Teresa, etc.). See [Bath Attributes Guide](Documentation/suikoden_2_character_attributes_gender_and_baths.md).
 - **Memory Auto-Battle**: Replays last manually chosen actions (Attack vs Rune/Magic) in Auto-Battle with resource and status checks.
@@ -95,6 +98,12 @@ Replace game textures with custom PNG or DDS files in `BepInEx/plugins/PKCore/Te
 - **Placeholder Text Replacement**: Automatic replacement of protagonist and HQ name placeholders in dialogs. See [Placeholder Text Guide](Documentation/PlaceholderText.md).
 - **Active Launcher Language Detection**: Automatically detects the active launcher language on startup (English, Traditional Chinese, Simplified Chinese, Japanese, French, German, Spanish, Italian, Korean) and tracks manual language changes via `LanguageSelectionPatch`.
 - **High-Speed Decompiled Symbol & Map Indexer**: Instant lookup tool for C# classes, methods, fields, native IL2CPP memory addresses, and all 360 Maps & World Environments across both Suikoden 1 and Suikoden 2 (`tools\sym.bat <Query>`, `tools\sym.bat --maps <MapID>`). See [Symbol Indexer Guide](Documentation/symbol_indexer_guide.md).
+- **Dear ImGui In-Game Runtime Inspector & Diagnostics Overlay**: Toggled with keyboard key **`[F10]`** (and closed with `[Escape]` or `[X]`). Powered natively by **Dear ImGui** (via `DearImGuiInjection` / `ImGui.NET` over DirectX 11 Present injection), with zero bundle bloat inside `PKCore.dll`. Features an ergonomic **Two-Column Split Layout**:
+  - **Bottom-Screen Location HUD & Hotkey Dump (`[NumPad 5]`)**: Displays a compact, semi-transparent location box at the bottom-center of the screen during gameplay when the main overlay is closed (`Location: <MapId>`). Pressing **`[NumPad 5]`** immediately appends a formatted location snapshot to `\PKCore\Logs\locationdump.log`. Can be toggled on/off in the overlay menu or sidebar and persists in `PKCore.cfg` (`ShowLocationHUD`). Uses input pass-through so gameplay controls are never intercepted.
+  - **4 Selectable Visual Themes**: **Classic Blue** (traditional Dear ImGui deep navy & royal blue), **Matrix** (deep black & phosphor terminal green), **Obsidian Black** (monochrome pure graphite obsidian & ice silver), and **Dark Magenta** (midnight indigo & neon fuchsia). Switchable on the fly via MenuBar or Sidebar presets.
+  - **Left Sidebar**: Real-time keyword filter search box, theme quick switcher, clean selectable section list, quick debug toggles (**Encounter None `[F4]`**, **Show Mouse Cursor**, and full party HP/MP restoration), live map/stars context box with HUD toggle, and dedicated Castle Bathhouse launcher button.
+  - **Right Content Pane**: Balanced two-column cards across Combat & Runes (Memory Auto-Battle, Unlimited Runes, Unbalance Removal, Range Overrides, Battle HUD), Recovery & Progression toggles, Save Crystal Color Picker, 12-slot Castle Bathhouse Inspector (Men's slots 0..5 vs Women's slots 6..11, origin, character IDs, atlas coordinates), and live scene telemetry.
+- **Encounter None Hotkey & Toggle (`[F4]`)**: Quickly suppress random wandering and field encounters for testing and exploration. Automatically integrates with `Suikoden_Fix` if installed (setting its `EncounterRateMultiplier` to 0.0), or activates native Harmony hooks across both Suikoden I and Suikoden II.
 - **NPC Portraits**: Inject custom high-resolution portraits for any NPC.
 - **War Battle Modding**: Customize character stats, abilities, and subunit bonus values in Suikoden 2 war battles via JSON.
 - **UI Scaling**: Presets for dialog box size and menu layout scaling.

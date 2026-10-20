@@ -15,9 +15,12 @@ public class Plugin : BasePlugin
     public static Plugin Instance { get; private set; }
     public static new ManualLogSource Log;
     public static new ModConfiguration Config;
+    public static int MainThreadId { get; private set; }
+    public static bool IsMainThread => System.Threading.Thread.CurrentThread.ManagedThreadId == MainThreadId;
 
     public override void Load()
     {
+        MainThreadId = System.Threading.Thread.CurrentThread.ManagedThreadId;
         Instance = this;
         Log = base.Log;
 
@@ -93,6 +96,7 @@ public class Plugin : BasePlugin
         if (Config.EnableRoomItemRestoration.Value)
             Patches.RoomItemPatch.Update();
         Patches.MenuScalePatch.ApplyLauncherConfigScaling();
+        Patches.EncounterNonePatch.UpdateInput();
         AssetLoader.Update();
     }
 
@@ -133,6 +137,10 @@ public class Plugin : BasePlugin
             MouseCursorPatch.Initialize(true);
             harmony.PatchAll(typeof(MouseCursorPatch));
         }
+
+        // Encounter None (F4 Hotkey)
+        EncounterNonePatch.Initialize();
+        harmony.PatchAll(typeof(EncounterNonePatch));
 
         // Controller Prompt Override
         if (Config.ForceControllerPrompts.Value)
@@ -242,14 +250,7 @@ public class Plugin : BasePlugin
         //     MapBGManagerHDDiagnostics.Initialize(Config.EnableObjectDiagnostics.Value, harmony);
         // }
 
-        // EXPERIMENTAL: Custom Object Insertion
-        // Note: Feature is functional but objects are invisible due to MapSpriteHD interference
-        // Enable at your own risk for testing/development
-        if (Config.EnableCustomObjects.Value)
-        {
-            Log.LogInfo("Applying Custom Object Insertion patch...");
-            CustomObjectInsertion.Initialize(Config.EnableCustomObjects.Value, harmony);
-        }
+
 
         if (Config.EnableCustomTextures.Value)
         {
@@ -411,11 +412,10 @@ public class Plugin : BasePlugin
             harmony.PatchAll(typeof(SajahShopUnlockPatch));
         }
 
-        // Liberated Muse City Hall Re-entry Patch (Suikoden 2)
+        // Liberated Muse City Hall Re-entry Patch (Suikoden 2) - Abandoned for now
         if (Config.UnlockLiberatedMuseCityHall.Value)
         {
-            Log.LogInfo("Applying Liberated Muse City Hall Re-entry patch...");
-            harmony.PatchAll(typeof(LiberatedMuseCityHallPatch));
+            // harmony.PatchAll(typeof(LiberatedMuseCityHallPatch));
         }
 
         // Muse Ruins Survivors & 108 Stars Restoration Patch (Suikoden 2)
