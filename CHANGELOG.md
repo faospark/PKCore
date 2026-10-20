@@ -13,6 +13,7 @@ All notable changes to PKCore (formerly PKextended) are documented in this file.
   - **Open Dump Log Button**: Added an **`[Open Log]`** button directly beside every Dump button (in the bottom-left HUD, overlay sidebar, and Scene Telemetry). Clicking it immediately opens `\Suikoden I and II HD Remaster\PKCore\Logs\locationdump.log` (or the containing folder) in Windows Explorer / default text editor.
   - **In-Overlay Stars & Telemetry Cleanup**: Stars of Destiny count resides cleanly inside the main overlay sidebar (`Stars: <Count> / 108`).
   - **In-Overlay Toggle & Persistence**: Can be toggled on/off at any time from inside the overlay via **MenuBar > Overlays > Bottom Screen Location HUD**, the **Sidebar** checkbox under *CURRENT DATA LOCATION*, or the **General & Debug** section. Persists cleanly across sessions in `PKCore.cfg` via `ShowLocationHUD`.
+  - **Thread-Safe Input & Non-Blocking Log Launching**: Fixed cross-thread data race by decoupling `ImGui.GetIO()` from the Unity main thread (`Update`), dispatching cursor reflection state via `RequestCursorVisible`, and offloading `Process.Start` to a worker thread so opening `locationdump.log` never freezes or blocks the DirectX 11 Present loop.
   - **Hotkey Dump (`[NumPad 5]`)**: Pressing **`[NumPad 5]`** at any point in gameplay immediately appends a formatted location snapshot (with any current notes) to `\Suikoden I and II HD Remaster\PKCore\Logs\locationdump.log`.
 
 - **Dead Code Pruning & Map Object Architecture Cleanup**:

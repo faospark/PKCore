@@ -410,6 +410,12 @@ public static class ImGuiOverlayUI
 
     private static System.Reflection.PropertyInfo _isCursorVisibleProp;
     private static System.Reflection.MethodInfo _updateCursorVisibilityMethod;
+    private static bool? _pendingCursorVisible = null;
+
+    public static void RequestCursorVisible(bool visible)
+    {
+        _pendingCursorVisible = visible;
+    }
 
     public static void SetImGuiCursorVisible(bool visible)
     {
@@ -424,18 +430,6 @@ public static class ImGuiOverlayUI
 
             _isCursorVisibleProp?.SetValue(null, visible);
             _updateCursorVisibilityMethod?.Invoke(null, null);
-
-            var io = ImGui.GetIO();
-            if (visible)
-            {
-                io.ConfigFlags &= ~ImGuiConfigFlags.NoMouse;
-                io.MouseDrawCursor = true;
-            }
-            else
-            {
-                io.ConfigFlags |= ImGuiConfigFlags.NoMouse;
-                io.MouseDrawCursor = false;
-            }
 
             MouseCursorPatch.IsEnabled = visible;
         }
@@ -467,6 +461,14 @@ public static class ImGuiOverlayUI
                 try { _mainThreadQueue.Dequeue().Invoke(); }
                 catch (Exception ex) { Plugin.Log.LogError($"[ImGuiOverlayUI] Queue error: {ex}"); }
             }
+        }
+
+        // 2. Process pending cursor visibility requested from render thread
+        if (_pendingCursorVisible.HasValue)
+        {
+            bool val = _pendingCursorVisible.Value;
+            _pendingCursorVisible = null;
+            SetImGuiCursorVisible(val);
         }
 
         // 2. Hotkey check [F10]
@@ -643,36 +645,31 @@ public static class ImGuiOverlayUI
 
     public static void OpenDumpLocation()
     {
-        try
+        System.Threading.ThreadPool.QueueUserWorkItem(_ =>
         {
-            string logsDir = Path.Combine(BepInEx.Paths.GameRootPath, "PKCore", "Logs");
-            if (!Directory.Exists(logsDir))
+            try
             {
-                Directory.CreateDirectory(logsDir);
-            }
+                string logsDir = Path.Combine(BepInEx.Paths.GameRootPath, "PKCore", "Logs");
+                if (!Directory.Exists(logsDir))
+                {
+                    Directory.CreateDirectory(logsDir);
+                }
 
-            string logPath = Path.Combine(logsDir, "locationdump.log");
-            if (File.Exists(logPath))
-            {
-                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                string logPath = Path.Combine(logsDir, "locationdump.log");
+                string target = File.Exists(logPath) ? logPath : logsDir;
+
+                var psi = new System.Diagnostics.ProcessStartInfo
                 {
-                    FileName = logPath,
+                    FileName = target,
                     UseShellExecute = true
-                });
+                };
+                System.Diagnostics.Process.Start(psi);
             }
-            else
+            catch (Exception ex)
             {
-                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
-                {
-                    FileName = logsDir,
-                    UseShellExecute = true
-                });
+                Plugin.Log.LogError($"[ImGuiOverlayUI] Failed to open dump location: {ex}");
             }
-        }
-        catch (Exception ex)
-        {
-            Plugin.Log.LogError($"[ImGuiOverlayUI] Failed to open dump location: {ex}");
-        }
+        });
     }
 
     /// <summary>
@@ -711,7 +708,7 @@ public static class ImGuiOverlayUI
                 {
                     _showHudNoteInput = !_showHudNoteInput;
                     _focusNoteInputNextFrame = _showHudNoteInput;
-                    SetImGuiCursorVisible(_showHudNoteInput || IsOpen || ShowBathhouseWindow);
+                    RequestCursorVisible(_showHudNoteInput || IsOpen || ShowBathhouseWindow);
                 }
 
                 ImGui.SameLine();
@@ -754,7 +751,7 @@ public static class ImGuiOverlayUI
                     {
                         DumpCurrentLocation();
                         _showHudNoteInput = false;
-                        SetImGuiCursorVisible(IsOpen || ShowBathhouseWindow);
+                        RequestCursorVisible(IsOpen || ShowBathhouseWindow);
                     }
 
                     ImGui.SameLine();
@@ -767,7 +764,7 @@ public static class ImGuiOverlayUI
                     if (ImGui.SmallButton("Save & Close##SaveCloseHudNote"))
                     {
                         _showHudNoteInput = false;
-                        SetImGuiCursorVisible(IsOpen || ShowBathhouseWindow);
+                        RequestCursorVisible(IsOpen || ShowBathhouseWindow);
                     }
                 }
 
@@ -799,16 +796,21 @@ public static class ImGuiOverlayUI
             ApplyCurrentTheme();
         }
 
-        if (anyInteractiveOpen)
+        try
         {
-            try
+            var io = ImGui.GetIO();
+            if (anyInteractiveOpen)
             {
-                var io = ImGui.GetIO();
                 io.ConfigFlags &= ~ImGuiConfigFlags.NoMouse;
                 io.MouseDrawCursor = true;
             }
-            catch { }
+            else
+            {
+                io.ConfigFlags |= ImGuiConfigFlags.NoMouse;
+                io.MouseDrawCursor = false;
+            }
         }
+        catch { }
 
         if (!IsOpen && ShowLocationHUD)
         {
