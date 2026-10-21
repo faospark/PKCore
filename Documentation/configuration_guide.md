@@ -32,7 +32,6 @@ This document outlines all available configuration options for PKCore located in
 | **ShowBattleMaxHP** | `bool` | `true` | Displays both current and maximum HP (e.g. `587/587`) in the battle party status window for Suikoden 1 & 2. |
 | **ShowEnemyLevelInBattle** | `bool` | `true` | Displays enemy level in the battle target selection window for Suikoden 1 & 2 (e.g. `Bonapart Lv.25`). |
 | **ShowEnemyHpInBattle** | `bool` | `true` | Displays enemy current and maximum HP on a new line in the battle target selection window for Suikoden 1 & 2 (e.g. `HP 120/120`). |
-| **MonsterWindowWidthScale** | `float` | `1.5` | Width multiplier for the battle monster target selection window container and cells in Suikoden 1 & 2 (1.5 = 50% wider, 1.0 = original width). |
 | **ScaleDownDialogBox** | `bool` | `true` | Compact dialog box (`80%` size with adjusted positioning for improved scene visibility). |
 | **ScaledDownMenu** | `string` / `bool` | `true` | Scaled-down main pause/status menu (`80%` size with adjusted positioning). |
 | **PSPLauncher** | `bool` | `false` | Enable the PSP-inspired launcher interface. |

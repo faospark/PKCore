@@ -472,7 +472,7 @@ public class Plugin : BasePlugin
         }
 
         // Battle Enemy Level & HP Display (Suikoden 1 & 2)
-        if (Config.ShowEnemyLevelInBattle.Value || Config.ShowEnemyHpInBattle.Value || Config.MonsterWindowWidthScale.Value > 1.0f)
+        if (Config.ShowEnemyLevelInBattle.Value || Config.ShowEnemyHpInBattle.Value)
         {
             Log.LogInfo("Applying Battle Enemy Level & HP patch...");
             harmony.PatchAll(typeof(BattleEnemyLevelPatch));

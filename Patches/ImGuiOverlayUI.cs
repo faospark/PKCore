@@ -1205,7 +1205,6 @@ public static class ImGuiOverlayUI
                 ImGui.TextColored(GetAccentColor(), "Battle Enemy Target Window");
                 ImGui.BulletText($"Show Enemy Levels: {(Plugin.Config.ShowEnemyLevelInBattle.Value ? "ON" : "OFF")}");
                 ImGui.BulletText($"Show Enemy HP: {(Plugin.Config.ShowEnemyHpInBattle.Value ? "ON" : "OFF")}");
-                ImGui.BulletText($"Target Window Scale: {Plugin.Config.MonsterWindowWidthScale.Value:0.##}x");
 
                 ImGui.EndTable();
             }

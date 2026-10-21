@@ -111,6 +111,13 @@ public static class S1QuickRunePatch
     {
         failReason = null;
 
+        // 0. Ensure map background has loaded Tir on the area
+        if (!S1QuickStoragePatch.HasMapBackgroundChild())
+        {
+            failReason = "Map background has not loaded Tir on the area";
+            return false;
+        }
+
         // Rejection: Loading screen, scene change, or screen fade
         if (S1QuickStoragePatch.IsGameInLoadingOrTransition(out var loadingReason))
         {
@@ -125,30 +132,20 @@ public static class S1QuickRunePatch
             return false;
         }
 
-        // Must have initialized castle data
+        // Ensure castle data is present
         var shiro = gw.shiro_data;
         if (shiro == null)
         {
-            failReason = "Castle data not initialized";
-            return false;
+            shiro = new GSD1::SHIRO_DATA();
+            gw.shiro_data = shiro;
         }
 
         // Jeane recruitment requirement
         if (Plugin.Config.S1QuickRuneMasterRequireJeane.Value)
         {
-            var memberFlag = gw.member_flag;
-            if (memberFlag == null || memberFlag.Length <= (int)GSD1::CHARACTER_ID.FP_JIJ || memberFlag[(int)GSD1::CHARACTER_ID.FP_JIJ] == 0)
-            {
-                failReason = "Jeane is not yet recruited (Toran Castle rune master locked)";
-                return false;
-            }
-        }
-        else
-        {
-            // At least require Toran Castle to be established (level > 0)
             if (shiro.level <= 0)
             {
-                failReason = "Toran Castle not yet established";
+                failReason = "Jeane is not yet recruited (Toran Castle rune master locked)";
                 return false;
             }
         }

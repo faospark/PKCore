@@ -13,15 +13,13 @@ using UnityEngine.UI;
 namespace PKCore.Patches
 {
     /// <summary>
-    /// Displays enemy levels and HP in the battle target selection window for Suikoden 1 and Suikoden 2,
-    /// and widens the container of the monster names to accommodate long names and multi-line stats.
+    /// Displays enemy levels and HP in the battle target selection window for Suikoden 1 and Suikoden 2.
     /// </summary>
     [HarmonyPatch]
     public static class BattleEnemyLevelPatch
     {
         private static readonly Dictionary<int, int> _slotLevels = new();
         private static readonly Dictionary<int, (int curHp, int maxHp)> _slotHps = new();
-        private static readonly HashSet<int> _widenedInstanceIds = new();
 
         [HarmonyPatch(typeof(UIBattleWindowMonster), nameof(UIBattleWindowMonster.BattleInitialize))]
         [HarmonyPostfix]
@@ -31,15 +29,6 @@ namespace PKCore.Patches
             {
                 _slotLevels.Clear();
                 _slotHps.Clear();
-
-                if (__instance != null)
-                {
-                    float widthScale = Plugin.Config.MonsterWindowWidthScale.Value;
-                    if (widthScale > 1.0f)
-                    {
-                        WidenMonsterWindow(__instance, widthScale);
-                    }
-                }
             }
             catch (Exception ex)
             {
@@ -55,12 +44,6 @@ namespace PKCore.Patches
             {
                 if (string.IsNullOrEmpty(name))
                     return;
-
-                float widthScale = Plugin.Config.MonsterWindowWidthScale.Value;
-                if (widthScale > 1.0f && __instance != null)
-                {
-                    WidenMonsterWindow(__instance, widthScale);
-                }
 
                 if (Plugin.Config.ShowEnemyLevelInBattle.Value)
                 {
@@ -401,177 +384,7 @@ namespace PKCore.Patches
             return (0, 0);
         }
 
-        private static void WidenMonsterWindow(UIBattleWindowMonster window, float widthScale)
-        {
-            try
-            {
-                if (window == null)
-                    return;
-
-                int instanceId = window.GetInstanceID();
-                if (!_widenedInstanceIds.Add(instanceId))
-                    return;
-
-                Plugin.Log.LogInfo($"[BattleEnemyLevelPatch] Widening monster selection window by {widthScale:0.##}x (Instance ID: {instanceId})");
-
-                // 1. Widen root window RectTransform
-                var rootRt = window.GetComponent<RectTransform>();
-                if (rootRt != null && rootRt.sizeDelta.x > 0f)
-                {
-                    rootRt.sizeDelta = new Vector2(rootRt.sizeDelta.x * widthScale, rootRt.sizeDelta.y);
-                }
-
-                // 2. Widen game-specific layout containers and backgrounds
-                if (window.m_GS1Layout != null)
-                {
-                    WidenLayoutAndChildren(window.m_GS1Layout, widthScale);
-                }
-                if (window.m_GS2Layout != null)
-                {
-                    WidenLayoutAndChildren(window.m_GS2Layout, widthScale);
-                }
-                if (window.m_GS2BackLayout != null)
-                {
-                    WidenLayoutAndChildren(window.m_GS2BackLayout, widthScale);
-                }
-
-                // 3. Widen cells
-                var cells = window.m_monsterList;
-                if (cells == null || cells.Count == 0)
-                    cells = GameDetection.IsGSD1() ? window.m_monsterListGS1 : window.m_monsterListGS2;
-
-                if (cells != null && cells.Count > 0)
-                {
-                    WidenCells(cells, widthScale);
-                }
-            }
-            catch (Exception ex)
-            {
-                Plugin.Log.LogError($"[BattleEnemyLevelPatch] WidenMonsterWindow error: {ex}");
-            }
-        }
-
-        private static void WidenLayoutAndChildren(GameObject layoutObj, float widthScale)
-        {
-            if (layoutObj == null)
-                return;
-
-            var rt = layoutObj.GetComponent<RectTransform>();
-            if (rt != null && rt.sizeDelta.x > 0f)
-            {
-                rt.sizeDelta = new Vector2(rt.sizeDelta.x * widthScale, rt.sizeDelta.y);
-            }
-
-            var grid = layoutObj.GetComponent<GridLayoutGroup>();
-            if (grid != null)
-            {
-                grid.cellSize = new Vector2(grid.cellSize.x * widthScale, grid.cellSize.y);
-                grid.spacing = new Vector2(grid.spacing.x * widthScale, grid.spacing.y);
-            }
-
-            var horizontal = layoutObj.GetComponent<HorizontalLayoutGroup>();
-            if (horizontal != null)
-            {
-                horizontal.spacing *= widthScale;
-            }
-
-            // Widen direct child background frames / graphics (that are not cells themselves)
-            for (int i = 0; i < layoutObj.transform.childCount; i++)
-            {
-                var child = layoutObj.transform.GetChild(i);
-                if (child.GetComponent<UIWindowListCell>() == null)
-                {
-                    var childRt = child.TryCast<RectTransform>();
-                    if (childRt != null && childRt.sizeDelta.x > 0f)
-                    {
-                        childRt.sizeDelta = new Vector2(childRt.sizeDelta.x * widthScale, childRt.sizeDelta.y);
-                    }
-                }
-            }
-        }
-
-        private static void WidenCells(Il2CppSystem.Collections.Generic.List<UIWindowListCell> cells, float widthScale)
-        {
-            var cellRts = new List<RectTransform>();
-
-            for (int i = 0; i < cells.Count; i++)
-            {
-                var cell = cells[i];
-                if (cell == null)
-                    continue;
-
-                var cellRt = cell.rectTransform ?? cell.GetComponent<RectTransform>();
-                if (cellRt != null)
-                {
-                    cellRts.Add(cellRt);
-                    if (cellRt.sizeDelta.x > 0f)
-                    {
-                        cellRt.sizeDelta = new Vector2(cellRt.sizeDelta.x * widthScale, cellRt.sizeDelta.y);
-                    }
-                }
-
-                if (cell.leftText != null)
-                {
-                    var textRt = cell.leftText.rectTransform;
-                    if (textRt != null && textRt.sizeDelta.x > 0f)
-                    {
-                        textRt.sizeDelta = new Vector2(textRt.sizeDelta.x * widthScale, textRt.sizeDelta.y);
-                    }
-                }
-
-                if (cell.rightText != null)
-                {
-                    var rightRt = cell.rightText.rectTransform;
-                    if (rightRt != null && rightRt.sizeDelta.x > 0f)
-                    {
-                        rightRt.sizeDelta = new Vector2(rightRt.sizeDelta.x * widthScale, rightRt.sizeDelta.y);
-                    }
-                }
-            }
-
-            // Adjust horizontal cell positions if cells are placed in multiple columns without an auto-layout group
-            if (cellRts.Count >= 2)
-            {
-                var parent = cellRts[0].parent;
-                bool hasAutoLayout = parent != null && (parent.GetComponent<LayoutGroup>() != null);
-                if (!hasAutoLayout)
-                {
-                    float minX = float.MaxValue;
-                    float maxX = float.MinValue;
-                    for (int i = 0; i < cellRts.Count; i++)
-                    {
-                        float x = cellRts[i].anchoredPosition.x;
-                        if (x < minX) minX = x;
-                        if (x > maxX) maxX = x;
-                    }
-
-                    // Only adjust if there are distinct columns (horizontal spread > 5)
-                    if (maxX - minX > 5f)
-                    {
-                        if (minX < -5f && maxX > 5f)
-                        {
-                            // Center-anchored columns
-                            for (int i = 0; i < cellRts.Count; i++)
-                            {
-                                var pos = cellRts[i].anchoredPosition;
-                                cellRts[i].anchoredPosition = new Vector2(pos.x * widthScale, pos.y);
-                            }
-                        }
-                        else
-                        {
-                            // Left- or offset-anchored columns
-                            for (int i = 0; i < cellRts.Count; i++)
-                            {
-                                var pos = cellRts[i].anchoredPosition;
-                                float offsetX = pos.x - minX;
-                                cellRts[i].anchoredPosition = new Vector2(minX + (offsetX * widthScale), pos.y);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
         #endregion
     }
 }
+

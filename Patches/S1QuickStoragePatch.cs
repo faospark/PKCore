@@ -2,6 +2,7 @@ extern alias GSD1;
 
 using System;
 using HarmonyLib;
+using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -24,6 +25,22 @@ public static class S1QuickStoragePatch
     private static GSD1::SHIRO_FUNC_DELEGATE _activeStorageDelegate = null;
     private static float _lastToggleTime = 0f;
     private static bool _wasRightStickUpPrev = false;
+
+    /// <summary>
+    /// Checks if AppRoot/Map/MapBackGround/ has at least one child, ensuring Tir is loaded on the area.
+    /// </summary>
+    public static bool HasMapBackgroundChild()
+    {
+        try
+        {
+            var mapBg = GameObject.Find("AppRoot/Map/MapBackGround");
+            return mapBg != null && mapBg.transform != null && mapBg.transform.childCount > 0;
+        }
+        catch
+        {
+            return false;
+        }
+    }
 
     /// <summary>
     /// Checks if the game is currently in a loading screen, scene change, or screen fade.
@@ -155,6 +172,13 @@ public static class S1QuickStoragePatch
     {
         failReason = null;
 
+        // 0. Ensure map background has loaded Tir on the area
+        if (!HasMapBackgroundChild())
+        {
+            failReason = "Map background has not loaded Tir on the area";
+            return false;
+        }
+
         // 1. Loading screen / scene transition guard
         if (IsGameInLoadingOrTransition(out failReason))
         {
@@ -168,30 +192,28 @@ public static class S1QuickStoragePatch
             return false;
         }
 
-        // Must have initialized castle data and warehouse buffer
+        // Ensure castle data and warehouse buffer are present
         var shiro = gw.shiro_data;
-        if (shiro == null || shiro.azukari == null)
+        if (shiro == null)
         {
-            failReason = "Castle storage array not initialized";
-            return false;
+            shiro = new GSD1::SHIRO_DATA();
+            gw.shiro_data = shiro;
+        }
+        if (shiro.azukari == null)
+        {
+            shiro.azukari = new Il2CppStructArray<byte>(60);
+        }
+        if (shiro.azukari_kantei == null)
+        {
+            shiro.azukari_kantei = new Il2CppReferenceArray<Il2CppStructArray<byte>>(60);
         }
 
         // Rock recruitment requirement
         if (Plugin.Config.S1QuickStorageRequireRock.Value)
         {
-            var memberFlag = gw.member_flag;
-            if (memberFlag == null || memberFlag.Length <= (int)GSD1::CHARACTER_ID.FP_LOK || memberFlag[(int)GSD1::CHARACTER_ID.FP_LOK] == 0)
-            {
-                failReason = "Rock is not yet recruited (Toran Castle vault locked)";
-                return false;
-            }
-        }
-        else
-        {
-            // At least require Toran Castle to be established (level > 0)
             if (shiro.level <= 0)
             {
-                failReason = "Toran Castle not yet established";
+                failReason = "Rock is not yet recruited (Toran Castle vault locked)";
                 return false;
             }
         }

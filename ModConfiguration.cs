@@ -121,7 +121,6 @@ public sealed class ModConfiguration
     public ConfigEntry<bool> ShowBattleMaxHP { get; private set; }
     public ConfigEntry<bool> ShowEnemyLevelInBattle { get; private set; }
     public ConfigEntry<bool> ShowEnemyHpInBattle { get; private set; }
-    public ConfigEntry<float> MonsterWindowWidthScale { get; private set; }
     public ConfigEntry<bool> PSPLauncher { get; private set; }
     public ConfigEntry<bool> EnhancedGallery { get; private set; }
     public ConfigEntry<bool> DisableUITips { get; private set; }
@@ -289,13 +288,6 @@ public sealed class ModConfiguration
             "ShowEnemyHpInBattle",
             true,
             "Displays enemy current and maximum HP on a new line in the battle target selection window for Suikoden 1 & 2 (e.g. 'HP 120/120')."
-        );
-
-        MonsterWindowWidthScale = _config.Bind(
-            "02 User Interface",
-            "MonsterWindowWidthScale",
-            1.5f,
-            "Width multiplier for the battle monster target selection window container and cells in Suikoden 1 & 2 (1.5 = 50% wider, 1.0 = original width)."
         );
 
         PSPLauncher = _config.Bind(
@@ -574,7 +566,7 @@ public sealed class ModConfiguration
             "06 Game : Suikoden 1",
             "S1QuickStorageRequireRock",
             false,
-            "When enabled, Castle Vault requires Rock to be recruited (Toran Castle warehouse unlocked) before it can be accessed. Set to false to allow opening anytime after obtaining the castle."
+            "When enabled, Castle Vault requires Rock to be recruited (Toran Castle warehouse unlocked) before it can be accessed. Set to false to allow opening anytime without recruitment or castle restrictions."
         );
 
         // Suikoden 1 Castle Rune Master (Quick Rune)
@@ -589,7 +581,7 @@ public sealed class ModConfiguration
             "06 Game : Suikoden 1",
             "S1QuickRuneMasterRequireJeane",
             false,
-            "When enabled, Remote Rune Master requires Jeane to be recruited in Antei before it can be accessed. Set to false to allow opening anytime after obtaining Toran Castle."
+            "When enabled, Remote Rune Master requires Jeane to be recruited in Antei before it can be accessed. Set to false to allow opening anytime without recruitment or castle restrictions."
         );
 
 

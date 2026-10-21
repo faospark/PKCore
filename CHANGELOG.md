@@ -4,6 +4,21 @@ All notable changes to PKCore (formerly PKextended) are documented in this file.
 
 ---
 
+## [2026.10.21]
+
+- **Battle Enemy Level & HP Window Cleanup**:
+  - Removed faulty `WidenMonsterWindow` layout scaling and the `MonsterWindowWidthScale` configuration option in [BattleEnemyLevelPatch.cs](Patches/BattleEnemyLevelPatch.cs).
+  - Resolved `System.ArgumentOutOfRangeException` thrown when accessing empty cell elements (`UIWindowListCell.get_rightText()`).
+  - TextMeshPro auto-sizing (`fontSizeMin = 10f`, `fontSizeMax = 18f`) and hard newline formatting continue to cleanly fit multi-line enemy level and HP info within standard target window cells.
+
+- **Suikoden I: Quick Storage & Rune Master Area Load Verification**:
+  - Implemented in [S1QuickStoragePatch.cs](Patches/S1QuickStoragePatch.cs) and [S1QuickRunePatch.cs](Patches/S1QuickRunePatch.cs).
+  - Added `HasMapBackgroundChild()` check inspecting `AppRoot/Map/MapBackGround` for active child transforms (`childCount > 0`).
+  - Ensures Remote Castle Vault (Rock) and Remote Rune Master (Jeane) are only functional once Suikoden I has fully loaded the map background and placed Tir McDohl on the active area, preventing activation during scene loading or transitions.
+  - Reverted unnecessary overengineered transition and fade checks, restoring the fast, clean baseline behavior.
+  - Streamlined Castle recruit requirements: when `S1QuickStorageRequireRock` or `S1QuickRuneMasterRequireJeane` is true, verified against established Toran Castle status (`shiro.level > 0`), ensuring non-combatant castle staff recruits are correctly recognized without relying on party member slots. When false, unlocks access unconditionally from anywhere.
+    - Both features can now be accessed anywhere on the field without requiring Rock, Jeane, or Toran Castle establishment.
+
 ## [2026.10.20]
 
 - **Suikoden I: Audio Feedback & Input Robustness for Quick Storage & Quick Rune Master**:
@@ -11,6 +26,11 @@ All notable changes to PKCore (formerly PKextended) are documented in this file.
   - **Native Open & Close Sound Effects**:
     - Triggering either menu (Right Stick Up for Castle Vault or Right Stick Down for Castle Rune Master) now plays the authentic Suikoden 1 menu open chime (`P_sound_c.Qsd_call(G_cmd_c.SE_OK)`).
     - Closing either menu (via native Back/Cancel button, selecting "Exit"/"Quit" in the menu, or toggling with R3 / Right Stick / function keys) plays the authentic Suikoden 1 menu cancel/close chime (`P_sound_c.Qsd_call(G_cmd_c.SE_CANCEL)`).
+  - **Castle Vault Black Flash Elimination**:
+    - Identified that `IsQuickStorageOpen` was being set after `D_azukar_c.azukari_demo()` returned, which allowed native `Initialize()` and `SetFadeBright(0f)` to execute on frame 0, rendering a brief black transition quad before suppression applied.
+    - Switched state flag activation to frame 0 *before* calling `azukari_demo()`, ensuring all suppression patches are active from the very first instruction.
+    - Extended background suppression to disable both `bg_obj` and `azukari_obj` across `UIAzukari.Initialize`, `CriateAzukari`, and `SetFadeBright`.
+    - Hooked `UIManager.FadeOut`, `FadeIn`, and `Fade` during quick menus to completely block full-screen screen fades while retaining callback completion. Result: completely seamless, zero-flash transparent overlay opening.
   - **Rune Master Input Edge-Detection Fix**:
     - Replaced raw synthetic button checks with clean single-edge analog threshold detection (`isStickDown && !_wasRightStickDownPrev`).
     - Resolved an issue where moving the analog stick down to browse runes or menu options within Rune Master could trigger an early close.
@@ -32,7 +52,7 @@ All notable changes to PKCore (formerly PKextended) are documented in this file.
     - Suppresses wandering monster encounters (`v_wanderingMonsterChk` / `f_wanderingMonsterChk`) and normal pause menu activation while open.
   - **Configuration Settings**:
     - `EnableS1QuickRuneMaster` (default: `true`) — Toggles the feature.
-    - `S1QuickRuneMasterRequireJeane` (default: `false`) — When true, restricts access until Jeane is recruited in Antei (`member_flag[FP_JIJ] != 0`). By default (`false`), unlocks as soon as Toran Castle is established (`shiro.level > 0`).
+    - `S1QuickRuneMasterRequireJeane` (default: `false`) — When true, restricts access until Jeane is recruited in Antei (`member_flag[FP_JIJ] != 0`). When `false`, unlocks access anytime from anywhere without recruitment or castle restrictions.
 
 - **Suikoden I: Right Stick Up Castle Vault Remote Access (Rock's Warehouse Anywhere)**:
   - Implemented in [S1QuickStoragePatch.cs](Patches/S1QuickStoragePatch.cs).
@@ -53,7 +73,7 @@ All notable changes to PKCore (formerly PKextended) are documented in this file.
     - Suppresses wandering monster encounters (`v_wanderingMonsterChk` / `f_wanderingMonsterChk`) and standard menu open calls while open.
   - **Configuration Settings**:
     - `EnableS1QuickStorage` (default: `true`) — Toggles the feature.
-    - `S1QuickStorageRequireRock` (default: `false`) — When true, restricts vault access until Rock is recruited (`member_flag[FP_LOK] != 0`). By default (`false`), unlocks as soon as Toran Castle is established (`shiro.level > 0`).
+    - `S1QuickStorageRequireRock` (default: `false`) — When true, restricts vault access until Rock is recruited (`member_flag[FP_LOK] != 0`). When `false`, unlocks access anytime from anywhere without recruitment or castle restrictions.
 
 - **Dear ImGui Overlay Input Isolation & Controller/Keyboard Game Silencing**:
   - Implemented in [ImGuiOverlayUI.cs](Patches/ImGuiOverlayUI.cs).
