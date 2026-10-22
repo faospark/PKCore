@@ -492,6 +492,12 @@ public class Plugin : BasePlugin
             harmony.PatchAll(typeof(Patches.S1QuickRunePatch));
         }
 
+        // Suikoden 1 Castle Rune Master (Jeane Shop Expansion)
+        if (Config.EnableS1JeaneRuneShop.Value)
+        {
+            Patches.S1JeaneRuneShopPatch.Initialize(harmony);
+        }
+
         // PSP Launcher Patch
         // Now handled by Update loop instead of Harmony postfix
     }

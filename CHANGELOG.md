@@ -4,6 +4,28 @@ All notable changes to PKCore (formerly PKextended) are documented in this file.
 
 ---
 
+## [2026.10.22]
+
+- **Suikoden I: Castle Rune Master (Jeane) Shop Expansion & Progressive Crystal Store**:
+  - Implemented in [S1JeaneRuneShopPatch.cs](Patches/S1JeaneRuneShopPatch.cs).
+  - **Menu Expansion & Re-Indexing**:
+    - Re-indexed Jeane's command selection menu to 4 options: `[0] Attach`, `[1] Remove`, `[2] Buy`, and `[3] Exit`.
+    - Dynamically resizes the selection window (`KAU_WIN`) to cleanly accommodate 4 rows without visual overlap or text clipping.
+    - Integrated native menu navigation for 4-way cursor wrapping with standard sound effects (`D_azukar_c.SE_MOVE`, `G_cmd_c.SE_OK`, `G_cmd_c.SE_CANCEL`).
+  - **Native Buy Sub-Shop Integration (`h_omise_c`)**:
+    - Selecting `Buy` launches the native item purchase interface (`h_omise_c`) populated exclusively with Rune Crystals, bypassing redundant shop sub-menus.
+    - Players can view crystal prices, read in-game lore/help descriptions, select party members to receive items, and confirm purchases with full audio feedback and inventory checks.
+    - Exiting the buy catalog returns smoothly to Jeane's main menu, allowing players to immediately attach newly purchased runes.
+  - **Progressive Town Rune Stock (Chandler-Style)**:
+    - Automatically aggregates Rune Crystals from town rune shops visited across the world (Gregminster, Lenankamp, Kaku, Kouan, Sarady, Antei, Rikon, Warriors' Village, Kirov, and Qlon Temple).
+    - Excludes Holy Rune as it is exclusive to Stallion and Suikoden HD Remaster has built-in running.
+    - Unlocks items in real-time as Tir explores towns and verifies visited locations via save data points (`Event_c.point_chk`).
+    - Multi-tiered fallback ensures elemental runes and progression crystals align with Toran Castle recruit tiers.
+  - **Remote Access Synergy**:
+    - Fully compatible with direct in-person interaction at Toran Castle and remote field access via [S1QuickRunePatch.cs](Patches/S1QuickRunePatch.cs) (**Right Stick Down** / **[F7]**).
+  - **Configuration Setting**:
+    - `EnableS1JeaneRuneShop` (default: `true`) — Toggles Jeane's expanded 4-choice menu and progressive crystal shop.
+
 ## [2026.10.21]
 
 - **Battle Enemy Level & HP Window Cleanup**:

@@ -48,6 +48,7 @@ The **core DLL component** for **[Project Kyaro](https://www.nexusmods.com/suiko
 * Muse City Hall Re-entry (Unlock re-entry into City Hall across all storyline phases, S2)
 * Remote Castle Vault Access via Right Stick Up / R3 (Open Rock's warehouse from anywhere on the field with transparent background overlay, area background load verification, loading screen immunity, and complete background player movement silencing, S1)
 * Remote Castle Rune Master Access via Right Stick Down (Open Jeane's rune shop from anywhere on the field with area background load verification, loading screen immunity, and complete background player movement silencing, S1)
+* Castle Rune Master (Jeane) Shop Expansion & Progressive Crystal Store (Re-indexes Jeane's menu to Attach, Remove, Buy, and Exit; introduces Chandler-style progressive Rune Crystal purchasing unlocked from town rune shops visited across the world, S1)
 
 **[Performance Features]**
 
