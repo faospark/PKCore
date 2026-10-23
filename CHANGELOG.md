@@ -65,11 +65,6 @@ All notable changes to PKCore (formerly PKextended) are documented in this file.
 
 ## [2026.10.21]
 
-- **Battle Enemy Level & HP Window Cleanup**:
-  - Removed faulty `WidenMonsterWindow` layout scaling and the `MonsterWindowWidthScale` configuration option in [BattleEnemyLevelPatch.cs](Patches/BattleEnemyLevelPatch.cs).
-  - Resolved `System.ArgumentOutOfRangeException` thrown when accessing empty cell elements (`UIWindowListCell.get_rightText()`).
-  - TextMeshPro auto-sizing (`fontSizeMin = 10f`, `fontSizeMax = 18f`) and hard newline formatting continue to cleanly fit multi-line enemy level and HP info within standard target window cells.
-
 - **Suikoden I: Quick Storage & Rune Master Area Load Verification**:
   - Implemented in [S1QuickStoragePatch.cs](Patches/S1QuickStoragePatch.cs) and [S1QuickRunePatch.cs](Patches/S1QuickRunePatch.cs).
   - Added `HasMapBackgroundChild()` check inspecting `AppRoot/Map/MapBackGround` for active child transforms (`childCount > 0`).
@@ -183,30 +178,14 @@ All notable changes to PKCore (formerly PKextended) are documented in this file.
   - **Scene & Save Window Lifecycle Cache Purging**: Registered a listener on `SceneManager.sceneLoaded` and hooked `UISaveLoad1.Init` / `UISaveLoad2.Init` to call `ResetCache()`, guaranteeing that `portraitCache`, `pendingLoadIds`, `gcRoots`, and `slotPortraitContainers` are cleared across soft resets and scene loads so all character portraits are loaded cleanly from disk/resources.
   - **Active Coroutine Runner & Null Guard**: Provided a guaranteed fallback runner (`slotInstance`) for async portrait loading if `SaveSlotPortraitMonitor.Instance` is destroyed or resetting, and initialized portrait images to transparent while awaiting async decoding to prevent untextured white box rendering.
 
-
 - **Dear ImGui Current Data Location Box, Bottom HUD & Hotkey Dump (`[NumPad 5]`)**:
   - Implemented strictly within [ImGuiOverlayUI.cs](Patches/ImGuiOverlayUI.cs) and [ModConfiguration.cs](ModConfiguration.cs).
   - **Bottom-Left Location HUD**: When the main Dear ImGui overlay is closed, the compact HUD is anchored at the **bottom-left** of the screen (`Location: <MapId>`). Clicking anywhere on the HUD or pressing **`[NumPad 6]`** / **`[F9]`** seamlessly activates the inline text field and transfers input focus.
   - **Inline Notes & Dump in HUD**: Players can write an area description right in the HUD, press Enter or click **`[Dump]`** (or hotkey **`[NumPad 5]`**), and see active notes right alongside the location.
   - **Open Dump Log Button**: Added an **`[Open Log]`** button directly beside every Dump button (in the bottom-left HUD, overlay sidebar, and Scene Telemetry). Clicking it immediately opens `\Suikoden I and II HD Remaster\PKCore\Logs\locationdump.log` (or the containing folder) in Windows Explorer / default text editor.
-  - **In-Overlay Stars & Telemetry Cleanup**: Stars of Destiny count resides cleanly inside the main overlay sidebar (`Stars: <Count> / 108`).
-  - **In-Overlay Toggle & Persistence**: Can be toggled on/off at any time from inside the overlay via **MenuBar > Overlays > Bottom Screen Location HUD**, the **Sidebar** checkbox under *CURRENT DATA LOCATION*, or the **General & Debug** section. Persists cleanly across sessions in `PKCore.cfg` via `ShowLocationHUD`.
+  - **In-Overlay Stars & Telemetry Cleanup**: Stars of Destiny count resides cleanly inside the main overlay (`Stars: <Count> / 108`).
+  - **In-Overlay Toggle & Persistence**: Can be toggled on/off at any time from inside the overlay via **MenuBar > Overlays > Bottom Screen Location HUD** or the **General & Debug** section. Persists cleanly across sessions in `PKCore.cfg` via `ShowLocationHUD`.
   - **Hotkey Dump (`[NumPad 5]`)**: Pressing **`[NumPad 5]`** at any point in gameplay immediately appends a formatted location snapshot (with any current notes) to `\Suikoden I and II HD Remaster\PKCore\Logs\locationdump.log`.
-
-- **Dead Code Pruning & Map Object Architecture Cleanup**:
-  - Cleaned up in [CustomObjectInsertion.cs](Patches/CustomObjectInsertion.cs), [DiscoveredObject.cs](Patches/DiscoveredObject.cs), and [GameObjectPatch.cs](Patches/GameObjectPatch.cs).
-  - **Deleted Orphaned Files**: Removed `ObjectConfigLoader.cs` and `CustomObjectConfig.cs` (unused alternative JSON config and model classes).
-  - **Pruned Legacy GameObject Pipeline**: Removed ~780 lines of dead Unity GameObject reflection, unused scale/depth sorting routines, and uncalled methods (`FindMapBGManagerHD`, `FindBgManagerRecursive`, `ResetForNewScene`, `RefleshObjectPatch`, `MapBGManagerHDSetMapPostfix`) from `CustomObjectInsertion.cs`, leaving a streamlined native `EVENT_OBJ` injection pipeline (`InjectNativeEventObjects` via `MachiLoader_Load_Patch`).
-  - **Relocated Core Geometry Models**: Moved active models `Vector3Config` and `Vector2Config` into `DiscoveredObject.cs`.
-  - **Cleaned Up Unused Hooks**: Removed uncalled `FindHeroPortraitSprite` from [PortraitSystemPatch.cs](Patches/PortraitSystemPatch.cs) and wired `RefreshNames()` into `OnSaveLoaded` in [SaveDataProcessor.cs](Patches/SaveDataProcessor.cs).
-
-- **Battle Monster Selection Window Expansion (`Win_Enemy`)**:
-  - Enhanced in [BattleEnemyLevelPatch.cs](Patches/BattleEnemyLevelPatch.cs) and [ImGuiOverlayUI.cs](Patches/ImGuiOverlayUI.cs).
-  - **Thread-Safe Main Thread Dispatching**: Completely eliminated game deadlocks and freezes caused by invoking Unity GameObject APIs directly from DirectX 11 Present render hooks by enforcing `RunOnMainThread` dispatching and adding self-defensive `Plugin.IsMainThread` guards inside `TryExpandWinEnemy()`.
-  - **Comprehensive uGUI Layout & Monster Cell Widening**: Rather than attempting to scale the invisible root container transform (which DOTween overwrites on open/close animations), the patch now directly expands the actual visible layout containers and elements: `m_GS1Layout` (Suikoden 1), `m_GS2Layout` & `m_GS2BackLayout` (Suikoden 2), child background frames, `GridLayoutGroup.cellSize`, and all individual monster selection rows (`UIWindowListCell`) with their `leftText` TextMeshProUGUI containers.
-  - **Dynamic Multi-Column Repositioning**: Automatically detects and adjusts horizontal column spacing in multi-column monster layouts (Suikoden 2) so wider monster cells never overlap adjacent columns.
-  - **Zero-Drift Baseline Caching**: Caches original baseline dimensions (`sizeDelta`, `cellSize`, and column offsets) so that switching between `1.0x`, `1.25x`, and `1.5x` dynamically updates in real-time, and setting `1.0x` cleanly restores exact vanilla dimensions.
-  - **Stable Battle Lifecycle Hooks**: Driven safely and predictably via `UIBattleWindowMonster.BattleInitialize` and `UIBattleWindowMonster.SetMonsterName`, completely avoiding engine-level hooks like `GameObject.SetActive`.
 
 - **Smart After-Battle Auto-Healing Fixes & Safeguards**:
   - Fixed in [SmartHealingPatch.cs](Patches/SmartHealingPatch.cs).
@@ -226,50 +205,27 @@ All notable changes to PKCore (formerly PKextended) are documented in this file.
   - **Native PKCore Fallback**: If Suikoden_Fix is not installed, it executes native Harmony prefix hooks on `EVENTCON.EventBatlleCheck` (Suikoden II), `Village_c.v_wanderingMonsterChk` (Suikoden I), and `Fmain_c.f_wanderingMonsterChk` (Suikoden I), ensuring zero random encounters across both games.
   - Displays real-time status badges and backend attribution in the Dear ImGui overlay.
 
-- **Native Dear ImGui Overlay Engine (Multi-Theme & Two-Column Layout)**:
-  - Completely re-architected in [ImGuiOverlayUI.cs](Patches/ImGuiOverlayUI.cs) using genuine **Dear ImGui** (via `DearImGuiInjection` / `ImGui.NET`), completely replacing the stripped Unity IMGUI pipeline.
+- **Native Dear ImGui Overlay Engine (`[F10]` Multi-Theme & Two-Column Layout)**:
+  - Implemented in [ImGuiOverlayUI.cs](Patches/ImGuiOverlayUI.cs) using genuine **Dear ImGui** (via `DearImGuiInjection` / `ImGui.NET`).
   - Rendered natively in DirectX 11 via swapchain present hooks with zero overhead, hardware mouse cursor acceleration, and thread-safe main loop action queues.
-  - **Clean ASCII Typography**: Replaced all non-ASCII unicode characters, emojis, and geometric symbols with clean ASCII characters to eliminate Dear ImGui font atlas fallback `?` question marks.
-  - **Harmonious Button Styling**: Removed hardcoded neon green, violet, and teal button color overrides; buttons now blend seamlessly into whichever color theme is selected (`Classic Blue`, `Matrix`, `Obsidian Black`, `Dark Magenta`).
+  - **Clean ASCII Typography**: Uses clean ASCII characters to prevent Dear ImGui font atlas fallback `?` question marks.
   - **4 Selectable Themes**:
     - **Classic Blue**: Deep navy and dark slate styling with vibrant blue headers, sky blue highlights, and clean borders.
     - **Matrix**: Pure carbon black with glowing phosphor green text, cyber-hacker accents, and electric green borders.
     - **Obsidian Black**: Sleek monochrome pure graphite obsidian with sophisticated ice silver and platinum accents.
     - **Dark Magenta**: Cyberpunk royal purple and midnight indigo with electric magenta and vivid fuchsia accents.
-    - Switchable in real-time via the top MenuBar (`Themes -> ...`), the Sidebar theme selector combo, or one-click 2x2 theme preset pill buttons. Persists to `PKCore.cfg` under `ImGuiTheme`.
-  - **Ergonomic Two-Column Design**:
-    - **Outer Split**: Resizable Left Sidebar (240px default) for Search, Theme switching, Section navigation, Bathhouse launcher, Quick toggles (`[F4] No Battles`, `Mouse Cursor`, `✨ Full Party Heal`), and Context snapshot; coupled with a spacious Right Content Pane.
-    - **Inner Two-Column Cards**: Every section pane utilizes balanced side-by-side two-column tables (Controls/Toggles on the left, Live Diagnostics/Context/Tables on the right) for General, Combat, Recovery, Visuals, Bathhouse, Party Roster, and Scene Telemetry.
+    - Switchable in real-time and persisted to `PKCore.cfg` under `ImGuiTheme`.
   - **Unbundled Plugin Design**: Installed as an independent standalone plugin in `BepInEx/plugins/DearImGuiInjection/` (referenced with `<Private>false</Private>` in `PKCore.csproj`), ensuring zero bloat bundled inside `PKCore.dll`.
-  - **Combat & Runes Section**: Interactive controls for Memory Auto-Battle (S2) with memory reset, Unlimited Command Runes (Trick, Groundhog, Spider Slay, Angry Dragon), Rune Unbalance Removal, Range Overrides, and Enemy Level & HP with scaling presets (`1.0x`, `1.25x`, `1.5x`).
+  - **Combat & Runes Section**: Interactive controls for Memory Auto-Battle (S2) with memory reset, Unlimited Command Runes (Trick, Groundhog, Spider Slay, Angry Dragon), Rune Unbalance Removal, Range Overrides, and Enemy Level & HP toggles.
   - **Recovery & Progression Section**: Smart After-Battle Auto-Healing, Quick Party Heal, Early Sajah Village Rare Shop & Sage (vj17), Tenzan Pass Chimera Encounters Restoration with drop rates (`100%`, `50%`, `25%`, `2%`), and Muse Ruins Survivors Restoration.
   - **Visuals & World Section**: Save Point Crystal Color Picker (9 presets + cache clearing + glow toggle), World Map Clouds & Sunrays toggles, and Sprite Filtering (SMAA / Point) toggle.
+  - **Castle Bathhouse Live Monitor**: Real-time inspection of who is soaking in the castle bathhouse across Men's Tub (slots 0..5) and Women's Tub (slots 6..11), displaying bather names, character IDs, gender classifications, origin, texture atlas coordinates, and water temperature gauges.
   - **Party & Roster Section**: Active 8-character roster table (Slots 0..7) with live HP, Max HP, and Castle Recruit visitor pools.
   - **Scene & Telemetry Section**: Live Map ID, Stars of Destiny count (108), bath status, encounter backend, and active subsystems.
 
 - **Runtime Mouse Cursor Visibility Toggle**:
   - Enhanced in [MouseCursorPatch.cs](Patches/MouseCursorPatch.cs).
   - Added dynamic `IsEnabled` getter/setter and `Toggle()` method, enabling live OS cursor unlocking from the ImGui overlay without requiring game restarts.
-
-- **Dear ImGui In-Game Debug & Bathhouse Inspector Overlay (`[F10]` Initial Release)**:
-  - Implemented in [ImGuiOverlayUI.cs](Patches/ImGuiOverlayUI.cs).
-  - Toggled dynamically via keyboard key **`[F10]`** (and closed with `[Escape]` or window `[X]`).
-  - Authored with an authentic Dear ImGui dark-theme aesthetic (`#171A1F` background, `#242933` frame styling, `#2E5994` active tabs, and `#3B82F6` accent borders) powered natively by Unity's IMGUI pipeline without requiring any external DLLs or native wrapper dependencies.
-  - Local static ImGui layout configuration is untracked by git (`.gitignore`).
-  - **Castle Bathhouse Live Monitor**: Real-time inspection of who is soaking in the castle bathhouse:
-    - **Men's Tub (Right basin, slots 0..5)**: Shows bather names, character IDs, gender classifications (Male / Transgressor / Special), origin (Combat Party vs Castle Visitor NPC), and texture atlas coordinates (`chara_01_atlus` & `chara_sub_slot`).
-    - **Women's Tub (Left basin w/ golden lamp, slots 6..11)**: Shows bather names, character IDs, gender classifications (Female / Transgressor / Special), origin, and texture atlas coordinates.
-    - Displays unoccupied bath positions as `[Empty Slot]`.
-    - Live temperature and session telemetry: water heat / cool gauges and active bath status.
-  - **Party & Roster Inspector**: Inspects all 8 party slots (combatants, convoy, support) and Castle recruit visitor pools.
-  - **Scene & World State**: Displays current active map asset identifier and Stars of Destiny count.
-
-- **Suikoden II Muse City Hall Re-entry (`UnlockLiberatedMuseCityHall`) [Restored & Verified]**:
-  - Fully enabled and registered in [Plugin.cs](Plugin.cs), implemented in [LiberatedMuseCityHallPatch.cs](Patches/LiberatedMuseCityHallPatch.cs).
-  - Grounded using verified runtime locations (`vc09_00` for inside City Hall, `vc01_01` for outside plaza with open gates).
-  - Fixed map identifiers and exit door coordinates: City Hall interior double doors at `(X: 161..165, Y: 111..112)` in `vc09_00` and `vc27_00` dynamically return Riou to his origin exterior map (`vc26_01`, `vc25_01`, `vc31_00`, or `vc01_01`).
-  - Restored exterior doorway triggers at `(X: 101..107, Y: 18..19)` in ruined Muse (`vc26_01`) and liberated Muse (`vc25_01`), properly warping into `vc09_00` / `vc27_00` at `(163, 110/112)`.
-  - Configurable via `UnlockLiberatedMuseCityHall` (Default: `false` or toggleable via config).
 
 - **Suikoden II Muse Ruins Survivors Restoration & 108 Stars Spiritual Reward (`EnableMuseRuinsSurvivorsRestoration`)**:
   - Implemented in [MuseRuinsSurvivorsPatch.cs](Patches/MuseRuinsSurvivorsPatch.cs).
@@ -387,19 +343,14 @@ All notable changes to PKCore (formerly PKextended) are documented in this file.
 
 ## [2026.10.18]
 
-- **Battle Enemy HP Display & Expanded Target Selection Window (Suikoden I & II)**:
+- **Battle Enemy HP Display (Suikoden I & II)**:
   - Enhanced [BattleEnemyLevelPatch.cs](Patches/BattleEnemyLevelPatch.cs) to display both current and maximum enemy HP on a new line beneath the enemy name and level (e.g. `Bonapart Lv.25\nHP 120/120`).
   - Implemented live enemy HP retrieval across combatants:
     - **Suikoden I**: Reads live HP and Max HP from `GSD1::BattleBase.battle_work.pm_data` with fallback to `monster_data_table` base parameters.
     - **Suikoden II**: Reads live HP (`pm.hp`) and Max HP (`pm.max_hp` / `pm.monster_data.hp`) directly from `GSD2::BattleManager.Instance.battle_work.pm_data` across front and back row formation slots.
-  - **Expanded Monster Window Container Width (+50%)**:
-    - Automatically widens `UIBattleWindowMonster`, its game-specific sub-layouts (`m_GS1Layout`, `m_GS2Layout`, `m_GS2BackLayout`), and child background frames by 50% (`1.5x` multiplier) to prevent text clipping and cramped layouts.
-    - Proportionally widens each target selection cell (`UIWindowListCell.rectTransform`) and text component (`leftText.rectTransform`).
-    - Intelligently scales and redistributes column horizontal positions (`anchoredPosition.x`) across both center-anchored and offset-anchored multi-column grids (such as Suikoden II's 2x3 target grid), as well as auto-layout groups (`GridLayoutGroup.cellSize` and `spacing`).
-    - Configures TextMeshPro multi-line rendering with auto-sizing (`fontSizeMin = 10f`, `fontSizeMax = 18f`), hard newline separation (`enableWordWrapping = false`), and `TextOverflowModes.Overflow` to guarantee full, crisp visibility for multi-line stats.
-  - Added dedicated configuration settings under `[02 User Interface]`:
+  - Configures TextMeshPro multi-line rendering with auto-sizing (`fontSizeMin = 10f`, `fontSizeMax = 18f`), hard newline separation (`enableWordWrapping = false`), and `TextOverflowModes.Overflow` to guarantee full, crisp visibility for multi-line stats.
+  - Added dedicated configuration setting under `[02 User Interface]`:
     - `ShowEnemyHpInBattle` (Default: `true`)
-    - `MonsterWindowWidthScale` (Default: `1.5`, range `1.0`-`2.0`)
 
 - **Smart After-Battle Auto-Healing (Suikoden II)**:
   - Implemented in [SmartHealingPatch.cs](Patches/SmartHealingPatch.cs).
@@ -658,8 +609,6 @@ All notable changes to PKCore (formerly PKextended) are documented in this file.
 - **UI Scaling**:
   - Compact dialog box sizing (`ScaleDownDialogBox`) and compact main menu layout (`ScaledDownMenu`).
   - Borderless fullscreen window mode and cursor visibility toggle (`ShowMouseCursor`).
-- **Static Object Insertion**:
-  - Framework for inserting static objects into scenes via `fixed_objects.json`.
 
 ---
 

@@ -70,8 +70,7 @@ public sealed class ModConfiguration
     // Suikoden 2 Sajah Village Rare Shop Early Unlock
     public ConfigEntry<bool> UnlockSajahRareShopEarly { get; private set; }
 
-    // Suikoden 2 Muse City Hall Re-entry & Ruins Survivors Restoration
-    public ConfigEntry<bool> UnlockLiberatedMuseCityHall { get; private set; }
+    // Suikoden 2 Muse Ruins Survivors Restoration
     public ConfigEntry<bool> EnableMuseRuinsSurvivorsRestoration { get; private set; }
 
     // Suikoden 2 Character Range Override Settings
@@ -95,10 +94,6 @@ public sealed class ModConfiguration
 
     // Suikoden 2 Smart After-Battle Healing Settings (Master Toggle)
     public ConfigEntry<bool> EnableSmartHealing { get; private set; }
-
-    // Suikoden 2 Hero Bedroom Decoration System (room_item restoration)
-    public ConfigEntry<bool> EnableRoomItemRestoration { get; private set; }
-    public ConfigEntry<bool> RoomItemDebugLog { get; private set; }
 
     // Suikoden 2 NPC Bathhouse Sprites & Castle Visitors Restoration
     public ConfigEntry<bool> EnableNPCBathVisitors { get; private set; }
@@ -148,9 +143,6 @@ public sealed class ModConfiguration
     }
 
 
-    public HiddenConfigEntry<bool> EnableCustomObjects { get; private set; }
-    public HiddenConfigEntry<bool> DebugCustomObjects { get; private set; }
-    public HiddenConfigEntry<bool> LogExistingMapObjects { get; private set; }
     public HiddenConfigEntry<bool> EnableDialogOverrides { get; private set; }
     public HiddenConfigEntry<float> SpriteMipmapBias { get; private set; }
     public ConfigEntry<bool> LogReplaceableTextures { get; private set; }
@@ -436,13 +428,6 @@ public sealed class ModConfiguration
             "Unlocks the hidden rare item vendor and counter trigger inside the Sajah Village item shop before defeating the Beast Rune."
         );
 
-        UnlockLiberatedMuseCityHall = _config.Bind(
-            "05 Game : Suikoden 2",
-            "UnlockLiberatedMuseCityHall",
-            false,
-            "Restores the City Hall doorway warp in Liberated Muse (vc25) post-liberation, allowing re-entry to retrieve missed items such as Old Book Vol. 4 from the council archive bookshelf."
-        );
-
         EnableMuseRuinsSurvivorsRestoration = _config.Bind(
             "05 Game : Suikoden 2",
             "EnableMuseRuinsSurvivorsRestoration",
@@ -532,20 +517,6 @@ public sealed class ModConfiguration
             "EnableSmartHealing",
             true,
             "Master toggle for after-battle automatic party recovery. Automatically revives fallen allies with Sacrificial Jizo, cures Poison with Antitoxin, and heals wounds using Medicine, Mega Medicine, and Healing Wind scrolls."
-        );
-
-        EnableRoomItemRestoration = _config.Bind(
-            "05 Game : Suikoden 2",
-            "EnableRoomItemRestoration",
-            true,
-            "Restores the unused 1998 cut-content Hero Bedroom Decoration System using GAME_DATA.room_item (8 slots). Allows placing, displaying, and inspecting collected antiques in Riou's room (vk16)."
-        );
-
-        RoomItemDebugLog = _config.Bind(
-            "05 Game : Suikoden 2",
-            "RoomItemDebugLog",
-            false,
-            "Enable verbose logging and diagnostic output for the Room Item Decoration System."
         );
 
         EnableNPCBathVisitors = _config.Bind(
@@ -709,9 +680,6 @@ public sealed class ModConfiguration
         // If you need to enable them for development, replace these with _config.Bind() calls
         EnableSoundRedirect = new HiddenConfigEntry<bool>(true);
         EnableDialogOverrides = new HiddenConfigEntry<bool>(true);
-        EnableCustomObjects = new HiddenConfigEntry<bool>(false);
-        DebugCustomObjects = new HiddenConfigEntry<bool>(false);
-        LogExistingMapObjects = new HiddenConfigEntry<bool>(false);
         SpriteMipmapBias = new HiddenConfigEntry<float>(-0.5f);
         ForceControllerPrompts = new HiddenConfigEntry<bool>(true);
         EnableCustomTextures = new HiddenConfigEntry<bool>(true);

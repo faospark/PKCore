@@ -22,7 +22,7 @@ The **core DLL component** for **[Project Kyaro](https://www.nexusmods.com/suiko
 * Early Sajah Village Rare Shop & Rune Sage Vendor Unlock (S2)
 * Memory Auto-Battle (Replays last manually chosen action, S2)
 * Smart After-Battle Auto-Healing (Automatic Medicine & Healing Wind HP recovery, Sacrificial Jizo revival, and Antitoxin poison curing, S2)
-* Battle Enemy Level & HP Display with Configurable Target Window Width (1.0x–2.0x, S1 & S2)
+* Battle Enemy Level & HP Display (S1 & S2)
 * Battle Party Current / Max HP Display (S1 & S2)
 * Unlimited & Reusable Command Runes in Battle (Trick, Groundhog, Spider Slay, Angry Dragon, S2)
 * Rune Unbalance Removal (S2)
@@ -45,7 +45,6 @@ The **core DLL component** for **[Project Kyaro](https://www.nexusmods.com/suiko
 * Restore Bamboo Fence on Mercenary Fortress
 * NPC Bathhouse Sprites & Castle Visitors Restoration (S2)
 * Muse Ruins Survivors Restoration & 108 Stars Spiritual Reward (S2)
-* Muse City Hall Re-entry (Unlock re-entry into City Hall across all storyline phases, S2)
 * Remote Castle Vault Access via Right Stick Up / R3 (Open Rock's warehouse from anywhere on the field with transparent background overlay, area background load verification, loading screen immunity, and complete background player movement silencing, S1)
 * Remote Castle Rune Master Access via Right Stick Down (Open Jeane's rune shop from anywhere on the field with area background load verification, loading screen immunity, and complete background player movement silencing, S1)
 * Castle Rune Master (Jeane) Shop Expansion & Progressive Crystal Store (Re-indexes Jeane's menu to Attach, Remove, Buy, and Exit; introduces Chandler-style progressive Rune Crystal purchasing unlocked from town rune shops visited across the world, S1)
@@ -94,7 +93,6 @@ Replace game textures with custom PNG or DDS files in `BepInEx/plugins/PKCore/Te
 - **Tenzan Pass Chimera Encounters Restoration**: Restores omitted Chimera monster encounters (Parties 6, 7, and 8) in Tenzan Pass (`va11`) with Pyriel's community fix layout (~30% encounter rate), guaranteed or configurable Cyclone Rune drops, and multi-tier engine bounds protection against Remaster crash bugs. See [Tenzan Pass Guide](Documentation/tenzan_pass_chimera_va11.md).
 - **Sajah Village Rare Shop & Rune Sage Unlock**: Early access unlock for the hidden late-game rare item/rune vendor and counter trigger in Sajah Village (`vj17`) bypassing story flag 143 via in-memory map patching. See [Sajah Shop Guide](Documentation/sajah_village_rare_shop_vj17.md).
 - **Muse Ruins Survivors & 108 Stars Spiritual Reward**: Restores interaction triggers and authored dialogues for the 8 dormant/silent actors (`obj[02]`–`obj[09]`) in Muse Ruins (`vc26_01`) by re-targeting orphaned interaction scripts (`ev[62]`–`ev[77]`). Uniting all 108 Stars of Destiny cleanses all 33 spirits and survivors, switching them to their hidden, peaceful dialogue as a spiritual reward.
-- **Muse City Hall Re-entry Across Story Phases**: Restores access to Muse City Hall (`vc09_00` / `vc27_00`), Mayor Annabelle's office, and the 2nd-floor library archive (Old Book Vol. 4) across all story phases. Dynamically links exterior entrance doors in Ruined Muse (`vc26_01`), Liberated Muse (`vc25_01`), and Jowston Hill (`vc31_00`) to the municipal interior, while configuring lobby exit double doors (`X: 161..165, Y: 111..112`) to return Riou to his origin street map.
 - **NPC Bathhouse Sprites & Castle Visitors Restoration**: Restores unused bathhouse sprites for non-combatant recruits and convoy members in Suikoden 2, unlocks full 8-character bathhouse capacity (+2 convoy/visitor slots over a 6-man party), eliminates engine null-dereference crashes, guarantees accurate gender-based tub separation via verified sprite atlases (routes Tenkou [99] and Boris [123] to men's tub; routes Teresa [95/102] to women's tub), preserves vanilla Case 2 unisex routing for Simone and Vincent (allowing them into the other tub), preserves native implementations for Gadget and beasts (Abizboah, Rulodia, Feather, Siegfried, Shiro, Mukumuku), and populates vacant bath positions with recruited castle companions (Apple, Shu, Leona, Richmond, Barbara, Pilika, Teresa, etc.). See [Bath Attributes Guide](Documentation/suikoden_2_character_attributes_gender_and_baths.md).
 - **Memory Auto-Battle**: Replays last manually chosen actions (Attack vs Rune/Magic) in Auto-Battle with resource and status checks.
 - **Suikoden I Map Identifiers & Regional Breakdown Reference Guide**: Complete architectural reference and regional sector catalog for Suikoden 1, documenting all 12 regional sectors (`area_a` through `area_k`, `area_z`), 85 background map assets (`bg_va1`–`bg_vz5`), C# decompiled handlers (`G1_fdata_c.cs`, `VillageManager.cs`, `Village_c.cs`, `Event_c.cs`), and the 70+ `EVENT_COMMAND` bytecode opcodes. See [Suikoden 1 Map Guide](Documentation/suikoden_1_map_ids_and_areas_breakdown.md).
@@ -105,23 +103,22 @@ Replace game textures with custom PNG or DDS files in `BepInEx/plugins/PKCore/Te
 - **Active Launcher Language Detection**: Automatically detects the active launcher language on startup (English, Traditional Chinese, Simplified Chinese, Japanese, French, German, Spanish, Italian, Korean) and tracks manual language changes via `LanguageSelectionPatch`.
 - **High-Speed Decompiled Symbol & Map Indexer**: Instant lookup tool for C# classes, methods, fields, native IL2CPP memory addresses, and all 360 Maps & World Environments across both Suikoden 1 and Suikoden 2 (`tools\sym.bat <Query>`, `tools\sym.bat --maps <MapID>`). See [Symbol Indexer Guide](Documentation/symbol_indexer_guide.md).
 - **Dear ImGui In-Game Runtime Inspector & Diagnostics Overlay**: Toggled with keyboard key **`[F10]`** (and closed with `[Escape]` or `[X]`). Powered natively by **Dear ImGui** (via `DearImGuiInjection` / `ImGui.NET` over DirectX 11 Present injection), with zero bundle bloat inside `PKCore.dll`. Features an ergonomic **Two-Column Split Layout**:
-  - **Bottom-Screen Location HUD & Hotkey Dump (`[NumPad 5]`)**: Displays a compact, semi-transparent location box at the bottom-center of the screen during gameplay when the main overlay is closed (`Location: <MapId>`). Pressing **`[NumPad 5]`** immediately appends a formatted location snapshot to `\PKCore\Logs\locationdump.log`. Can be toggled on/off in the overlay menu or sidebar and persists in `PKCore.cfg` (`ShowLocationHUD`). Uses input pass-through so gameplay controls are never intercepted.
-  - **4 Selectable Visual Themes**: **Classic Blue** (traditional Dear ImGui deep navy & royal blue), **Matrix** (deep black & phosphor terminal green), **Obsidian Black** (monochrome pure graphite obsidian & ice silver), and **Dark Magenta** (midnight indigo & neon fuchsia). Switchable on the fly via MenuBar or Sidebar presets.
-  - **Left Sidebar**: Real-time keyword filter search box, theme quick switcher, clean selectable section list, quick debug toggles (**Encounter None `[F4]`**, **Show Mouse Cursor**, and full party HP/MP restoration), live map/stars context box with HUD toggle, and dedicated Castle Bathhouse launcher button.
-  - **Right Content Pane**: Balanced two-column cards across Combat & Runes (Memory Auto-Battle, Unlimited Runes, Unbalance Removal, Range Overrides, Battle HUD), Recovery & Progression toggles, Save Crystal Color Picker, 12-slot Castle Bathhouse Inspector (Men's slots 0..5 vs Women's slots 6..11, origin, character IDs, atlas coordinates), live scene telemetry, the **Map Teleport & Time-Phase Re-entry Warper** (jump to any story map state or reposition player coordinates on the active grid), and the **Tile & Entity Editor** (inspect any tile's physical objects and trigger scripts, inject custom actors, props, save crystals, or warp doors in memory, and export placements to JSON; see [Tile & Entity Editor Guide](Documentation/tile_and_entity_editor_guide.md)).
+  - **Bottom-Screen Location HUD & Hotkey Dump (`[NumPad 5]`)**: Displays a compact, semi-transparent location box at the bottom-left of the screen during gameplay when the main overlay is closed (`Location: <MapId>`). Pressing **`[NumPad 5]`** immediately appends a formatted location snapshot to `\PKCore\Logs\locationdump.log`. Can be toggled on/off in the overlay menu or sidebar and persists in `PKCore.cfg` (`ShowLocationHUD`).
+  - **4 Selectable Visual Themes**: **Classic Blue** (traditional Dear ImGui deep navy & royal blue), **Matrix** (deep black & phosphor terminal green), **Obsidian Black** (monochrome pure graphite obsidian & ice silver), and **Dark Magenta** (midnight indigo & neon fuchsia). Switchable on the fly via MenuBar or Themes & Settings section.
+  - **Left Sidebar**: Real-time keyword filter search box and clean selectable section list.
+  - **Right Content Pane**: Balanced two-column cards across General & Debug, Combat & Runes (Memory Auto-Battle, Unlimited Runes, Unbalance Removal, Range Overrides, Battle HUD), Recovery & Progression toggles, Save Crystal Color Picker, 12-slot Castle Bathhouse Inspector (Men's slots 0..5 vs Women's slots 6..11, origin, character IDs, atlas coordinates), live scene telemetry, the **Map Teleport & Time-Phase Re-entry Warper** (jump to any story map state or reposition player coordinates on the active grid), and the **Tile & Entity Editor** (inspect any tile's physical objects and trigger scripts, inject custom actors, props, save crystals, or warp doors in memory, and export placements to JSON; see [Tile & Entity Editor Guide](Documentation/tile_and_entity_editor_guide.md)).
 - **Encounter None Hotkey & Toggle (`[F4]`)**: Quickly suppress random wandering and field encounters for testing and exploration. Automatically integrates with `Suikoden_Fix` if installed (setting its `EncounterRateMultiplier` to 0.0), or activates native Harmony hooks across both Suikoden I and Suikoden II.
 - **NPC Portraits**: Inject custom high-resolution portraits for any NPC.
 - **War Battle Modding**: Customize character stats, abilities, and subunit bonus values in Suikoden 2 war battles via JSON.
 - **UI Scaling**: Presets for dialog box size and menu layout scaling.
 - **Classic UI**: Revert Suikoden 2 save windows to the classic PSX look.
 - **Controller Prompt Override**: Force specific button icons (Xbox/PS4/PS5/Switch) regardless of detected controller.
-- **Experimental Object Insertion**: Add new static objects to scenes via configuration.
 
 
 ## Requirements
 
 - **BepInEx 6.0.0-pre.2 IL2CPP**
-- **Suikoden I & II HD Remaster** (U`nity 2022.3.28f1)
+- **Suikoden I & II HD Remaster** (Unity 2022.3.28f1)
 - **Highly Recommended**: [Suikoden Fix](https://github.com/d3xMachina/BepInEx.Suikoden) for best experience
 
 ## Installation

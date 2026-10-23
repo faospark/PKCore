@@ -94,8 +94,6 @@ public class Plugin : BasePlugin
             Patches.RuneUnbalancePatch.Update();
         if (Config.EnableUnlimitedCommandRunes.Value)
             Patches.CommandRuneUnlimitedPatch.Update();
-        if (Config.EnableRoomItemRestoration.Value)
-            Patches.RoomItemPatch.Update();
         Patches.MenuScalePatch.ApplyLauncherConfigScaling();
         Patches.EncounterNonePatch.UpdateInput();
         Patches.S1QuickStoragePatch.Update();
@@ -250,15 +248,6 @@ public class Plugin : BasePlugin
         }
 
 
-        // ARCHIVED: MapBGManagerHD Object Diagnostics (moved to ObjectReserve folder)
-        // if (Config.EnableObjectDiagnostics.Value)
-        // {
-        //     Log.LogInfo("Applying MapBGManagerHD diagnostic patches...");
-        //     MapBGManagerHDDiagnostics.Initialize(Config.EnableObjectDiagnostics.Value, harmony);
-        // }
-
-
-
         if (Config.EnableCustomTextures.Value)
         {
             if (Config.DetailedLogs.Value)
@@ -302,9 +291,6 @@ public class Plugin : BasePlugin
         // Language selection detection patch (TitlePanel)
         Log.LogInfo("Applying LanguageSelection patch...");
         harmony.PatchAll(typeof(LanguageSelectionPatch));
-
-        // Apply Voice Acting Patch (Text-to-Speech)
-
 
         // Apply Menu Scale Patch (Menu Scaling)
         if (Config.ScaledDownMenu.Value.Equals("true", System.StringComparison.OrdinalIgnoreCase))
@@ -419,13 +405,6 @@ public class Plugin : BasePlugin
             harmony.PatchAll(typeof(SajahShopUnlockPatch));
         }
 
-        // Liberated Muse City Hall Re-entry Patch (Suikoden 2)
-        if (Config.UnlockLiberatedMuseCityHall.Value)
-        {
-            Log.LogInfo("Applying Liberated Muse City Hall Re-entry patch...");
-            harmony.PatchAll(typeof(LiberatedMuseCityHallPatch));
-        }
-
         // Muse Ruins Survivors & 108 Stars Restoration Patch (Suikoden 2)
         if (Config.EnableMuseRuinsSurvivorsRestoration.Value)
         {
@@ -515,14 +494,6 @@ public class PkCoreMainLoop : MonoBehaviour
         if (Plugin.Instance != null)
         {
             Plugin.Instance.Update();
-        }
-    }
-
-    public void OnGUI()
-    {
-        if (Plugin.Instance != null && Plugin.Config.EnableRoomItemRestoration.Value)
-        {
-            RoomItemUI.OnGUI();
         }
     }
 }

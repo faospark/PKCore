@@ -2,7 +2,6 @@ using HarmonyLib;
 using UnityEngine;
 using System;
 using ShareUI.Menu;
-using PKCore.Utils;
 
 namespace PKCore.Patches;
 
@@ -44,12 +43,6 @@ public partial class CustomTexturePatch
             if (Plugin.Config.DetailedLogs.Value)
             {
                 Plugin.Log.LogInfo($"Background manager activated: {objectPath}");
-            }
-
-            // If this is a map clone (e.g. vk07_01(Clone)) under bgManagerHD, trigger object discovery if enabled
-            if (__instance.name.EndsWith("(Clone)") && Plugin.Config.LogExistingMapObjects.Value)
-            {
-                ObjectDiscovery.DiscoverObjectsInScene(__instance);
             }
 
             // Track unique texture and sprite names replaced during this activation pass to avoid duplicate log spam
