@@ -19,6 +19,8 @@ public static class S1QuickStoragePatch
 
     public static bool IsAnyQuickWindowOpen => IsQuickStorageOpen || S1QuickRunePatch.IsQuickRuneMasterOpen;
 
+    public static bool IsInBattle { get; internal set; } = false;
+
     public static GSD1::Village_c CurrentVillage { get; private set; }
     public static GSD1::Fmain_c CurrentField { get; private set; }
 
@@ -73,11 +75,14 @@ public static class S1QuickStoragePatch
                 return true;
             }
 
-            // 4. World map transition in progress
-            if (CurrentField != null && (CurrentField.loadVillage != 0 || CurrentField.field_exit_flg != 0))
+            // 4. World map transition in progress (only valid when actively on world map)
+            if (CurrentVillage == null && CurrentField != null)
             {
-                reason = "World map transition in progress";
-                return true;
+                if (CurrentField.loadVillage != 0 || CurrentField.field_exit_flg != 0)
+                {
+                    reason = "World map transition in progress";
+                    return true;
+                }
             }
         }
         catch { }
@@ -219,7 +224,7 @@ public static class S1QuickStoragePatch
         }
 
         // Rejection: In Battle
-        if (gw.battle_data != null)
+        if (IsInBattle)
         {
             failReason = "Currently in battle";
             return false;
@@ -418,6 +423,8 @@ public static class S1QuickStoragePatch
     public static void Village_village_main_Prefix(GSD1::Village_c __instance)
     {
         CurrentVillage = __instance;
+        CurrentField = null;
+        IsInBattle = false;
     }
 
     [HarmonyPatch(typeof(GSD1::Fmain_c), nameof(GSD1::Fmain_c.fieldMain))]
@@ -425,6 +432,31 @@ public static class S1QuickStoragePatch
     public static void Fmain_fieldMain_Prefix(GSD1::Fmain_c __instance)
     {
         CurrentField = __instance;
+        CurrentVillage = null;
+        IsInBattle = false;
+    }
+
+    // --- Battle State Tracking ---
+
+    [HarmonyPatch(typeof(GSD1::BattleChapter), nameof(GSD1::BattleChapter.Start))]
+    [HarmonyPrefix]
+    public static void BattleChapter_Start_Prefix()
+    {
+        IsInBattle = true;
+    }
+
+    [HarmonyPatch(typeof(GSD1::BattleChapter), nameof(GSD1::BattleChapter.BattleEnd))]
+    [HarmonyPostfix]
+    public static void BattleChapter_BattleEnd_Postfix()
+    {
+        IsInBattle = false;
+    }
+
+    [HarmonyPatch(typeof(GSD1::BattleChapter), nameof(GSD1::BattleChapter.OnDestroy))]
+    [HarmonyPostfix]
+    public static void BattleChapter_OnDestroy_Postfix()
+    {
+        IsInBattle = false;
     }
 
     // --- Movement Blockers (Towns, Dungeons, Castles) ---

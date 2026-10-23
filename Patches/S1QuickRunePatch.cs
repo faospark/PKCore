@@ -151,7 +151,7 @@ public static class S1QuickRunePatch
         }
 
         // Rejection: In Battle
-        if (gw.battle_data != null)
+        if (S1QuickStoragePatch.IsInBattle)
         {
             failReason = "Currently in battle";
             return false;

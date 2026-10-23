@@ -4,6 +4,39 @@ All notable changes to PKCore (formerly PKextended) are documented in this file.
 
 ---
 
+## [2026.10.23]
+
+- **Suikoden I: Castle Rune Master (Jeane) Shop Catalog & Scrolling Fix**:
+  - Implemented in [S1JeaneRuneShopPatch.cs](Patches/S1JeaneRuneShopPatch.cs).
+  - **Shop Catalog Population & Scrolling Resolution**:
+    - Fixed an issue where the Buy shop item list stopped at "Lightning Orb" (index 3) and could not be scrolled down further.
+    - Resolved root cause: IL2CPP static constants in `GSD1.G_monsyo_h.monsyo_*` evaluated to `0` at runtime, causing castle tier progression runes to fail item ID resolution and be omitted from the shop catalog.
+    - Replaced runtime static field lookups with explicit canonical rune ID integer constants for Castle Tiers 1 through 4:
+      - Castle Level 1: Water (`1`), Fire (`2`), Wind (`3`), Earth (`4`), Lightning (`5`), Fortune (`23`), Prosperity (`24`).
+      - Castle Level 2: Resurrection (`7`), Clone (`13`), Counter (`14`), Killer (`15`), Phero (`16`), Spark (`17`), Haziness (`18`), Gale (`19`).
+      - Castle Level 3: Rage (`28`), Flowing (`29`), Cyclone (`30`), Mother Earth (`31`), Thunder (`32`).
+      - Castle Level 4: Sunbeam (`20`), Champion's (`25`), Turtle (`26`), Double-Beat (`27`).
+    - Added Fire Orb (`2`) and Earth Orb (`4`) to the baseline starter shop catalog alongside Water (`1`), Wind (`3`), and Lightning (`5`) Orbs.
+    - Corrected Warriors' Village catalog entry from duplicate Fortune Rune (`23`) to Killer Rune (`15`).
+    - Added direct table lookup fallback against `h_monsyo_c.monsyo_fuuin_table` to guarantee rune crystal item ID resolution across all game states.
+
+- **Suikoden I: Quick Castle Vault & Quick Rune Master Battle Guard False-Positive Fix**:
+  - Implemented in [S1QuickStoragePatch.cs](Patches/S1QuickStoragePatch.cs) and [S1QuickRunePatch.cs](Patches/S1QuickRunePatch.cs).
+  - Fixed an issue where Quick Castle Vault (Right Stick Up) and Quick Rune Master (Right Stick Down) became permanently disabled with `"Cannot open: Currently in battle"` after fighting any battle or entering an encounter area:
+    - Root cause: The guard check inspected `GAME_WORK.battle_data != null`. In Suikoden 1 (`BATTLE_DATA`), this object is actually the map encounter counter and step probability structure, which is allocated once when entering any encounter zone or fighting a monster party and remains allocated for the rest of the game session.
+    - Replaced the `gw.battle_data != null` check with explicit battle lifecycle tracking (`IsInBattle`).
+    - Added Harmony hooks to `GSD1.BattleChapter`:
+      - `BattleChapter.Start()` sets `IsInBattle = true`.
+      - `BattleChapter.BattleEnd()` and `BattleChapter.OnDestroy()` reset `IsInBattle = false`.
+      - `Village_c.village_main` and `Fmain_c.fieldMain` also guarantee `IsInBattle = false` whenever village or world map updates execute.
+
+- **Suikoden I: Quick Rune Master & Quick Vault Transition Guard Fix**:
+  - Implemented in [S1QuickStoragePatch.cs](Patches/S1QuickStoragePatch.cs).
+  - Fixed a false-positive state lock where Quick Rune Master and Quick Vault became unresponsive after entering a village, castle, or reloading a save:
+    - Root cause: `CurrentField` (`Fmain_c`) retained references across map transitions when moving from world map to village/interior. The transition exit flags (`loadVillage` / `field_exit_flg`) remained non-zero on the stale field instance, permanently triggering the `"World map transition in progress"` safety guard.
+    - Updated `CurrentVillage_main` prefix to clear `CurrentField = null` when active in a village/castle, and updated `fieldMain` prefix to clear `CurrentVillage = null` when on the world map.
+    - Guard check now explicitly requires `CurrentVillage == null && CurrentField != null` before checking world map transition flags.
+
 ## [2026.10.22]
 
 - **Suikoden I: Castle Rune Master (Jeane) Shop Expansion & Progressive Crystal Store**:
@@ -20,7 +53,11 @@ All notable changes to PKCore (formerly PKextended) are documented in this file.
     - Automatically aggregates Rune Crystals from town rune shops visited across the world (Gregminster, Lenankamp, Kaku, Kouan, Sarady, Antei, Rikon, Warriors' Village, Kirov, and Qlon Temple).
     - Excludes Holy Rune as it is exclusive to Stallion and Suikoden HD Remaster has built-in running.
     - Unlocks items in real-time as Tir explores towns and verifies visited locations via save data points (`Event_c.point_chk`).
-    - Multi-tiered fallback ensures elemental runes and progression crystals align with Toran Castle recruit tiers.
+    - **Castle Level Progression Tiers**:
+      - **Castle Level 1**: Water, Fire, Wind, Earth, Lightning, Fortune, Prosperity.
+      - **Castle Level 2**: Clone, Resurrection, Killer, Gale, Counter, Spark, Haziness.
+      - **Castle Level 3**: Rage, Cyclone, Flowing, Thunder, Mother Earth.
+      - **Castle Level 4**: Turtle, Phero (Pheromone), Sunbeam, Double-Beat, Champion's.
   - **Remote Access Synergy**:
     - Fully compatible with direct in-person interaction at Toran Castle and remote field access via [S1QuickRunePatch.cs](Patches/S1QuickRunePatch.cs) (**Right Stick Down** / **[F7]**).
   - **Configuration Setting**:

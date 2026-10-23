@@ -65,8 +65,8 @@ public static class S1JeaneRuneShopPatch
         ["rikon"] = new[] { 2, 1 },
 
         // Warriors' Village: Killer Rune, Wind
-        ["vj"] = new[] { 23, 3 },
-        ["warriors"] = new[] { 23, 3 },
+        ["vj"] = new[] { 15, 3 },
+        ["warriors"] = new[] { 15, 3 },
 
         // Kirov: Fire, Earth
         ["vk"] = new[] { 2, 4 },
@@ -119,9 +119,11 @@ public static class S1JeaneRuneShopPatch
     {
         var unlockedRuneIds = new HashSet<int>();
 
-        // 1. Gregminster starter catalog (always unlocked)
+        // 1. Starter / Base elemental catalog (always unlocked)
         unlockedRuneIds.Add(1); // Water
+        unlockedRuneIds.Add(2); // Fire
         unlockedRuneIds.Add(3); // Wind
+        unlockedRuneIds.Add(4); // Earth
         unlockedRuneIds.Add(5); // Lightning
 
         // 2. Check all visited towns
@@ -146,15 +148,15 @@ public static class S1JeaneRuneShopPatch
                     if (pop != null && GSD1::Event_c.point_chk(pop))
                     {
                         // Pop area_no maps to visited area
-                        int area = pop.area_no;
                         // Area mappings in S1:
                         // 1=Gregminster, 2=Sarady, 3=Lenankamp, 4=Kouan/Kaku, 7=Antei, 8=Rikon, 9=Warriors, 10=Kirov, 11=Qlon
+                        int area = pop.area_no;
                         if (area == 3) { unlockedRuneIds.Add(2); unlockedRuneIds.Add(1); unlockedRuneIds.Add(3); } // Lenankamp: Fire, Water, Wind
                         else if (area == 4) { unlockedRuneIds.Add(2); unlockedRuneIds.Add(4); } // Kouan: Fire, Earth
                         else if (area == 2) { unlockedRuneIds.Add(1); unlockedRuneIds.Add(3); unlockedRuneIds.Add(4); } // Sarady: Water, Wind, Earth
                         else if (area == 7) { unlockedRuneIds.Add(5); unlockedRuneIds.Add(3); } // Antei: Lightning, Wind
                         else if (area == 8) { unlockedRuneIds.Add(2); unlockedRuneIds.Add(1); } // Rikon: Fire, Water
-                        else if (area == 9) { unlockedRuneIds.Add(23); unlockedRuneIds.Add(3); } // Warriors: Killer, Wind
+                        else if (area == 9) { unlockedRuneIds.Add(15); unlockedRuneIds.Add(3); } // Warriors: Killer, Wind
                         else if (area == 10) { unlockedRuneIds.Add(2); unlockedRuneIds.Add(4); } // Kirov: Fire, Earth
                         else if (area == 11) { unlockedRuneIds.Add(25); } // Qlon: Champion
                     }
@@ -163,43 +165,92 @@ public static class S1JeaneRuneShopPatch
         }
         catch { }
 
-        // 4. Toran Castle Level progression fallback (guarantees appropriate tier for recruited army size)
+        // 4. Toran Castle Level progression (unlocks higher rune tiers as castle expands)
         try
         {
             var gw = GSD1::OldSrcBase.game_work;
             if (gw != null && gw.shiro_data != null)
             {
                 int castleLevel = gw.shiro_data.level;
+
+                // Castle Level 1: Basic Elementals & Fortune/Prosperity
                 if (castleLevel >= 1)
                 {
-                    unlockedRuneIds.Add(1); // Water
-                    unlockedRuneIds.Add(2); // Fire
-                    unlockedRuneIds.Add(3); // Wind
-                    unlockedRuneIds.Add(4); // Earth
+                    unlockedRuneIds.Add(1);  // Water
+                    unlockedRuneIds.Add(2);  // Fire
+                    unlockedRuneIds.Add(3);  // Wind
+                    unlockedRuneIds.Add(4);  // Earth
+                    unlockedRuneIds.Add(5);  // Lightning
+                    unlockedRuneIds.Add(23); // Fortune
+                    unlockedRuneIds.Add(24); // Prosperity
                 }
+
+                // Castle Level 2: Advanced Combat & Utility
                 if (castleLevel >= 2)
                 {
-                    unlockedRuneIds.Add(5); // Lightning
+                    unlockedRuneIds.Add(7);  // Resurrection
+                    unlockedRuneIds.Add(13); // Clone
+                    unlockedRuneIds.Add(14); // Counter
+                    unlockedRuneIds.Add(15); // Killer
+                    unlockedRuneIds.Add(16); // Phero (Pheromone)
+                    unlockedRuneIds.Add(17); // Spark
+                    unlockedRuneIds.Add(18); // Haziness
+                    unlockedRuneIds.Add(19); // Gale
                 }
+
+                // Castle Level 3: Advanced High-Tier Magic Runes
                 if (castleLevel >= 3)
                 {
-                    unlockedRuneIds.Add(23); // Killer
+                    unlockedRuneIds.Add(28); // Rage
+                    unlockedRuneIds.Add(29); // Flowing
+                    unlockedRuneIds.Add(30); // Cyclone
+                    unlockedRuneIds.Add(31); // Mother Earth
+                    unlockedRuneIds.Add(32); // Thunder
                 }
+
+                // Castle Level 4: Master Runes
                 if (castleLevel >= 4)
                 {
-                    unlockedRuneIds.Add(25); // Champion
+                    unlockedRuneIds.Add(20); // Sunbeam
+                    unlockedRuneIds.Add(25); // Champion's
+                    unlockedRuneIds.Add(26); // Turtle
+                    unlockedRuneIds.Add(27); // Double-Beat
                 }
             }
         }
         catch { }
 
-        // Convert Rune IDs to exact Item IDs via game's native GetMonsyoItemId
+        // Convert Rune IDs to exact Item IDs via game's native GetMonsyoItemId with monsyo_fuuin_table lookup
         var itemIds = new List<byte>();
+
+        var fuuinMap = new Dictionary<int, int>();
+        try
+        {
+            var table = GSD1::h_monsyo_c.monsyo_fuuin_table;
+            if (table != null)
+            {
+                for (int i = 0; i < table.Count; i++)
+                {
+                    var entry = table[i];
+                    if (entry != null && entry.monsyo_id > 0 && entry.item_id > 0)
+                    {
+                        fuuinMap[entry.monsyo_id] = entry.item_id;
+                    }
+                }
+            }
+        }
+        catch { }
+
         foreach (int runeId in unlockedRuneIds)
         {
             try
             {
-                int itemId = GSD1::h_monsyo_c.GetMonsyoItemId(runeId);
+                int itemId = 0;
+                if (!fuuinMap.TryGetValue(runeId, out itemId) || itemId <= 0)
+                {
+                    itemId = GSD1::h_monsyo_c.GetMonsyoItemId(runeId);
+                }
+
                 if (itemId > 0 && itemId <= 255)
                 {
                     byte bId = (byte)itemId;
