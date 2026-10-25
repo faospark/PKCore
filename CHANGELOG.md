@@ -6,6 +6,27 @@ All notable changes to PKCore (formerly PKextended) are documented in this file.
 
 ## [2026.10.25]
 
+- **Dear ImGui Overlay Streamlining & Movement Input De-Interference**:
+  - Streamlined `ImGuiOverlayUI.cs` from ~2,000 lines down to a dedicated, lightweight Location & Notes tool, eliminating the heavy debug inspector panes, multi-tab layout, and bathhouse/roster diagnostic windows.
+  - **Zero Input Interference**: Completely eliminated invasive input blockers (`GRInputManagerBlockerPatch`, `G2PadBlockerPatch`, and `G1PadBlockerPatch`). Gamepad inputs, analog sticks, and keyboard inputs are no longer intercepted or zeroed out, resolving movement stutter and restoring full compatibility with player movement and movement mods.
+  - **Streamlined Location & Notes HUD**: Retained the live Map ID telemetry display in the bottom-left corner with interactive notes editing (`[+ Note]` / `[Edit Note]`), inline area notes text box with Enter-to-save, `[Dump]` button / `[NumPad 5]` shortcut to append to `locationdump.log`, and `[Open Log]` direct launcher.
+  - **Hotkeys & Ergonomics**: Added `[NumPad 6]` / `[F9]` (or clicking inside HUD bounds) to open note input, `[Escape]` to dismiss, and dynamic mouse cursor unlocking only when note editing is active.
+
+- **Project Kyaro Suite Realignment: Dedicated Combat & Battle Plugin (`PKBattlePatch`)**:
+  - Graduated all combat, battle HUD, and battle balance systems from PKCore into a standalone BepInEx IL2CPP plugin: `PKBattlePatch.dll` (`faospark.pkbattlepatch`).
+  - Decoupled 9 battle patches and their respective configuration settings from PKCore:
+    - **Battle HUD**: `BattleEnemyLevelPatch.cs` (enemy Level & HP display for S1 & S2), `BattlePartyHPPatch.cs` (party status window Max HP display for S1 & S2).
+    - **Combat QoL**: `MemoryAutoBattlePatch.cs` (command memory auto-battle loop for S2), `SmartHealingPatch.cs` (post-battle automated triage & item healing for S2), `BattlePositionPatch.cs` (formation spacing adjustments for S2).
+    - **Combat Balance**: `CommandRuneUnlimitedPatch.cs` (unlimited uses for Trick, Groundhog, Spider Slay, Angry Dragon runes for S2), `RuneUnbalancePatch.cs` (unbalance status removal for S2), `CharacterRangePatch.cs` (character weapon range adjustments for S2).
+    - **Diagnostics**: `BattleUnitWindowDiagnostics.cs` (party status window layout dump for S1 & S2), `BattlePositionPatch.cs` (formation coordinate reporting for S2).
+  - Updated `ImGuiOverlayUI.cs` to document the migration of battle settings to `PKBattlePatch.cfg`.
+  - Removed obsolete battle configuration entries from `ModConfiguration.cs` and lifecycle calls from `Plugin.cs`.
+
+- **Project Kyaro Suite Realignment: Dedicated Button Prompts Plugin (`PKButtonPrompts`)**:
+  - Migrated controller button prompt override features from PKCore into a standalone BepInEx plugin (`PKButtonPrompts`).
+  - Removed `Patches/GlobalControllerPromptPatch.cs` and configuration bindings (`ForceControllerPrompts`, `ControllerPromptType`) from PKCore.
+  - Purged button prompt cache keys from texture manifest calculation in `Patches/CustomTexturePatch.Caching.cs`.
+
 - **Suikoden I & II: Assembly Alias Conflict Resolution (`S1` / `S2`)**:
   - Configured dedicated `S1` and `S2` assembly aliases in [PKCore.csproj](PKCore.csproj) (`<Aliases>global,GSD1,S1</Aliases>` and `<Aliases>global,GSD2,S2</Aliases>`).
   - Migrated Suikoden 1 patch files ([S1JeaneRuneShopPatch.cs](Patches/S1JeaneRuneShopPatch.cs), [S1QuickRunePatch.cs](Patches/S1QuickRunePatch.cs), [S1QuickStoragePatch.cs](Patches/S1QuickStoragePatch.cs), [BattleEnemyLevelPatch.cs](Patches/BattleEnemyLevelPatch.cs), [EncounterNonePatch.cs](Patches/EncounterNonePatch.cs), and [ImGuiOverlayUI.cs](Patches/ImGuiOverlayUI.cs)) from `extern alias GSD1;` to `extern alias S1;`.

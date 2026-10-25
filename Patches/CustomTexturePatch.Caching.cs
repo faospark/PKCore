@@ -98,8 +98,6 @@ public partial class CustomTexturePatch
             Plugin.Config.LoadLauncherUITextures.Value,
             Plugin.Config.EnableProjectKyaroSprites.Value,
             Plugin.Config.MinimalUI.Value,
-            Plugin.Config.ForceControllerPrompts.Value,
-            Plugin.Config.ControllerPromptType.Value,
             Plugin.Config.MercFortFence.Value,
             Plugin.Config.ClassicSaveWindow.Value,
             Plugin.Config.TirRunTexture.Value

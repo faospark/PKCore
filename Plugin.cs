@@ -88,12 +88,6 @@ public class Plugin : BasePlugin
             Patches.PSPLauncherPatch.Update();
         if (Config.EnhancedGallery.Value)
             Patches.PSPGalleryEnhanced.Update();
-        if (Config.EnableCharacterRangeOverrides.Value)
-            Patches.CharacterRangePatch.Update();
-        if (Config.EnableRuneUnbalanceRemoval.Value)
-            Patches.RuneUnbalancePatch.Update();
-        if (Config.EnableUnlimitedCommandRunes.Value)
-            Patches.CommandRuneUnlimitedPatch.Update();
         Patches.MenuScalePatch.ApplyLauncherConfigScaling();
         Patches.EncounterNonePatch.UpdateInput();
         Patches.S1QuickStoragePatch.Update();
@@ -146,13 +140,6 @@ public class Plugin : BasePlugin
 
         // Dear ImGui Overlay (F10 Hotkey, DirectX Present Hook via DearImGuiInjection)
         Patches.ImGuiOverlayUI.Initialize();
-
-        // Controller Prompt Override
-        if (Config.ForceControllerPrompts.Value)
-        {
-            Log.LogInfo($"Applying Controller Prompt patch (type: {Config.ControllerPromptType.Value})...");
-            harmony.PatchAll(typeof(GlobalControllerPromptPatch));
-        }
 
         // Custom Texture Replacement
         if (Config.EnableCustomTextures.Value || Config.LogReplaceableTextures.Value)
@@ -346,53 +333,11 @@ public class Plugin : BasePlugin
             WarAbilityPatch.Initialize(Log);
         }
 
-        // Battle Position Adjustment Patch (Suikoden 2)
-        if (Config.EnableBattlePositionAdjustments.Value)
-        {
-            Log.LogInfo("Applying Battle Position Adjustment patch...");
-            BattlePositionPatch.Initialize(harmony);
-        }
-
         // Tenzan Pass Chimera Encounters Restoration Patch (Suikoden 2)
         if (Config.EnableTenzanChimeraFix.Value)
         {
             Log.LogInfo("Applying Tenzan Pass Chimera Encounters Restoration patch...");
             TenzanPassEncounterPatch.Initialize(harmony);
-        }
-
-        // Character Battle Range Patch (Suikoden 2)
-        if (Config.EnableCharacterRangeOverrides.Value)
-        {
-            Log.LogInfo("Applying Character Range Overrides patch...");
-            CharacterRangePatch.Initialize(harmony);
-        }
-
-        // Rune Unbalance Removal Patch (Suikoden 2)
-        if (Config.EnableRuneUnbalanceRemoval.Value)
-        {
-            Log.LogInfo("Applying Rune Unbalance Removal patch...");
-            RuneUnbalancePatch.Initialize(harmony);
-        }
-
-        // Unlimited Command Runes Patch (Suikoden 2)
-        if (Config.EnableUnlimitedCommandRunes.Value)
-        {
-            Log.LogInfo("Applying Unlimited Command Runes patch...");
-            CommandRuneUnlimitedPatch.Initialize(harmony);
-        }
-
-        // Memory Auto-Battle Patch (Suikoden 2)
-        if (Config.EnableMemoryAutoBattle.Value)
-        {
-            Log.LogInfo("Applying Memory Auto-Battle patch...");
-            MemoryAutoBattlePatch.Initialize(harmony);
-        }
-
-        // Smart After-Battle Healing Patch (Suikoden 2)
-        if (Config.EnableSmartHealing.Value)
-        {
-            Log.LogInfo("Applying Smart After-Battle Healing patch...");
-            SmartHealingPatch.Initialize(harmony);
         }
 
         // Map ID Tracking (shared by Map Object & S2 patches)
@@ -410,13 +355,6 @@ public class Plugin : BasePlugin
         {
             Log.LogInfo("Applying Muse Ruins Survivors & 108 Stars Restoration patch...");
             harmony.PatchAll(typeof(MuseRuinsSurvivorsPatch));
-        }
-
-        // Battle Unit Window Diagnostics (both games)
-        if (Config.LogBattleUnitWindow.Value)
-        {
-            Log.LogInfo("Applying Battle Unit Window diagnostics...");
-            harmony.PatchAll(typeof(BattleUnitWindowDiagnostics));
         }
 
         // Reaction Monitor (MapChara/r_action trigger)
@@ -441,20 +379,6 @@ public class Plugin : BasePlugin
         {
             Log.LogInfo("Applying Save Slot Party Portrait patch...");
             harmony.PatchAll(typeof(SaveSlotPartyPortraitPatch));
-        }
-
-        // Battle Party Max HP Display (Suikoden 1 & 2)
-        if (Config.ShowBattleMaxHP.Value)
-        {
-            Log.LogInfo("Applying Battle Party Max HP patch...");
-            harmony.PatchAll(typeof(BattlePartyHPPatch));
-        }
-
-        // Battle Enemy Level & HP Display (Suikoden 1 & 2)
-        if (Config.ShowEnemyLevelInBattle.Value || Config.ShowEnemyHpInBattle.Value)
-        {
-            Log.LogInfo("Applying Battle Enemy Level & HP patch...");
-            harmony.PatchAll(typeof(BattleEnemyLevelPatch));
         }
 
         // Suikoden 1 Castle Vault (Quick Storage)

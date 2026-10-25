@@ -91,18 +91,18 @@ This is the flagship mod: visuals only.
 
 ### 3.3 PK Classic UI (Interface / PSP-PSX feel)
 - `ClassicSaveWindow`, `ShowSaveSlotPartyPortraits`, `ScaleDownDialogBox`, `ScaledDownMenu`, `MinimalUI`
-- `DisablePortraitDialogMask`, `DisableUITips`, `ControllerPromptType`, `S1ScaledDownWorldMap`
+- `DisablePortraitDialogMask`, `DisableUITips`, `S1ScaledDownWorldMap`
 - `LoadLauncherUITextures`, `PSPLauncher`, `EnhancedGallery`, `BetterLauncherBGM`
-- **About 13 settings**
+- *(Note: `ControllerPromptType` / `ForceControllerPrompts` migrated to dedicated `PKButtonPrompts` plugin on 2026-10-25)*
+- **About 12 settings**
 
-### 3.4 PK Battle QoL (S1 + S2 combat)
+### 3.4 PK Battle Patch (`PKBattlePatch`, completed on 2026-10-25)
+- **Status: Migrated to dedicated standalone plugin `d:\Appz\PKBattlePatch` (`faospark.pkbattlepatch`)**.
 - Info display: `ShowBattleMaxHP`, `ShowEnemyLevelInBattle`, `ShowEnemyHpInBattle`
 - Convenience: `EnableMemoryAutoBattle`, `EnableSmartHealing`, `EnableBattlePositionAdjustments` and its preset
-- Balance (optional sub-group): unlimited command runes, rune unbalance removal, range overrides, war ability mod
-- **About 19 settings** (fewer if the changes in section 4 are applied)
-
-> [!TIP]
-> If Battle QoL still feels too big, split **balance** changes (runes, range, war abilities) into a separate **PK Rebalance** mod. QoL is safe for everyone; rebalancing is a matter of taste.
+- Balance: `EnableUnlimitedCommandRunes` (and 4 per-rune toggles), `EnableRuneUnbalanceRemoval` (and list/all), `EnableCharacterRangeOverrides` (and list)
+- Diagnostics: `LogBattlePositions`, `LogBattleUnitWindow`, `DetailedLogs`
+- **19 settings completely decoupled from PKCore**.
 
 ### 3.5 PK S2 Restorations (Cut / bugged content)
 These changes are all lore- or content-faithful and are a natural fit for "restoration" players.

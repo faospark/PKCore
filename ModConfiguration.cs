@@ -23,10 +23,6 @@ public sealed class ModConfiguration
     public ConfigEntry<string> ImGuiTheme { get; private set; }
     public ConfigEntry<bool> ShowLocationHUD { get; private set; }
 
-    // Controller Prompt Settings
-    public HiddenConfigEntry<bool> ForceControllerPrompts { get; private set; }
-    public ConfigEntry<string> ControllerPromptType { get; private set; }
-
     // Custom Texture Settings
     public HiddenConfigEntry<bool> EnableCustomTextures { get; private set; }
     public ConfigEntry<bool> DetailedLogs { get; private set; }
@@ -40,9 +36,6 @@ public sealed class ModConfiguration
     public ConfigEntry<bool> DumpJsonAssets { get; private set; }
     public ConfigEntry<bool> EnableJsonOverrides { get; private set; }
     public ConfigEntry<bool> EnablePortraitSystem { get; private set; }
-    public ConfigEntry<bool> LogBattlePositions { get; private set; }
-    public ConfigEntry<bool> LogBattleUnitWindow { get; private set; }
-
 
     // Save Point Settings
     public ConfigEntry<string> SavePointColor { get; private set; }
@@ -58,10 +51,6 @@ public sealed class ModConfiguration
     // War Ability Mod
     public ConfigEntry<bool> EnableWarAbilityMod { get; private set; }
 
-    // Suikoden 2 Battle Positioning Settings
-    public ConfigEntry<bool> EnableBattlePositionAdjustments { get; private set; }
-    public ConfigEntry<string> S2BattlePositionPreset { get; private set; }
-
     // Suikoden 2 Tenzan Pass Chimera Encounters Restoration
     public ConfigEntry<bool> EnableTenzanChimeraFix { get; private set; }
     public ConfigEntry<bool> ForceTenzanChimeraEncounter { get; private set; }
@@ -72,28 +61,6 @@ public sealed class ModConfiguration
 
     // Suikoden 2 Muse Ruins Survivors Restoration
     public ConfigEntry<bool> EnableMuseRuinsSurvivorsRestoration { get; private set; }
-
-    // Suikoden 2 Character Range Override Settings
-    public ConfigEntry<bool> EnableCharacterRangeOverrides { get; private set; }
-    public ConfigEntry<string> S2CharacterRangeOverrides { get; private set; }
-
-    // Suikoden 2 Rune Unbalance Removal Settings
-    public ConfigEntry<bool> EnableRuneUnbalanceRemoval { get; private set; }
-    public ConfigEntry<bool> DisableAllRuneUnbalance { get; private set; }
-    public ConfigEntry<string> DisabledRuneUnbalanceList { get; private set; }
-
-    // Suikoden 2 Unlimited Command Runes Settings
-    public ConfigEntry<bool> EnableUnlimitedCommandRunes { get; private set; }
-    public ConfigEntry<bool> UnlimitedTrickRune { get; private set; }
-    public ConfigEntry<bool> UnlimitedGroundhogRune { get; private set; }
-    public ConfigEntry<bool> UnlimitedSpiderSlayRune { get; private set; }
-    public ConfigEntry<bool> AlwaysAvailableAngryDragon { get; private set; }
-
-    // Suikoden 2 Memory Auto-Battle Settings
-    public ConfigEntry<bool> EnableMemoryAutoBattle { get; private set; }
-
-    // Suikoden 2 Smart After-Battle Healing Settings (Master Toggle)
-    public ConfigEntry<bool> EnableSmartHealing { get; private set; }
 
     // Suikoden 2 NPC Bathhouse Sprites & Castle Visitors Restoration
     public ConfigEntry<bool> EnableNPCBathVisitors { get; private set; }
@@ -114,9 +81,6 @@ public sealed class ModConfiguration
     public ConfigEntry<bool> ScaleDownDialogBox { get; private set; }
     public ConfigEntry<string> ScaledDownMenu { get; private set; }
     public ConfigEntry<string> SMAAQuality { get; private set; }
-    public ConfigEntry<bool> ShowBattleMaxHP { get; private set; }
-    public ConfigEntry<bool> ShowEnemyLevelInBattle { get; private set; }
-    public ConfigEntry<bool> ShowEnemyHpInBattle { get; private set; }
     public ConfigEntry<bool> PSPLauncher { get; private set; }
     public ConfigEntry<bool> EnhancedGallery { get; private set; }
     public ConfigEntry<bool> DisableUITips { get; private set; }
@@ -186,19 +150,6 @@ public sealed class ModConfiguration
         );
 
 
-        ControllerPromptType = _config.Bind(
-            "02 User Interface",
-            "ControllerPromptType",
-            "PlayStation",
-            "Controller type to display:\n" +
-            "- PS4: 'PlayStation', 'PlayStation4', 'DS4', 'PS4' (_01 suffix)\n" +
-            "- PS5: 'PlayStation5', 'DualSense', 'PS5' (_02 suffix)\n" +
-            "-Generic/PC: 'Generic', 'PC', 'Keyboard' (_00 suffix)\n" +
-            "- Xbox: 'Xbox' (_03 suffix - use with custom textures)\n" +
-            "- Switch: 'Switch', 'Nintendo' (_04 suffix - use with custom textures)\n" +
-            "Only applies if ForceControllerPrompts is enabled."
-        );
-
         LoadLauncherUITextures = _config.Bind(
             "02 User Interface",
             "LoadLauncherUITextures",
@@ -260,27 +211,6 @@ public sealed class ModConfiguration
             "ScaledDownMenu",
             "true",
             "Main menu layout preset. false = Normal , true: scaled down 80% with adjusted position)."
-        );
-
-        ShowBattleMaxHP = _config.Bind(
-            "02 User Interface",
-            "ShowBattleMaxHP",
-            true,
-            "Displays both current and maximum HP (e.g. 587/587) in the battle party window for Suikoden 1 & 2."
-        );
-
-        ShowEnemyLevelInBattle = _config.Bind(
-            "02 User Interface",
-            "ShowEnemyLevelInBattle",
-            true,
-            "Displays enemy level in battle target selection window for Suikoden 1 & 2 (e.g. 'Bonapart Lv.25')."
-        );
-
-        ShowEnemyHpInBattle = _config.Bind(
-            "02 User Interface",
-            "ShowEnemyHpInBattle",
-            true,
-            "Displays enemy current and maximum HP on a new line in the battle target selection window for Suikoden 1 & 2 (e.g. 'HP 120/120')."
         );
 
         PSPLauncher = _config.Bind(
@@ -383,20 +313,6 @@ public sealed class ModConfiguration
             "Enable war battle ability modification. Allows you to customize character abilities in Suikoden 2's war battles. Wont appear on the game menu of Apple but will have an effect on battle. Base is already boosted but can be further configures in PKCore/Config/S2WarAbilities.json"
         );
 
-        EnableBattlePositionAdjustments = _config.Bind(
-            "05 Game : Suikoden 2",
-            "EnableBattlePositionAdjustments",
-            true,
-            "Adjust the 6 character battle positions in Suikoden 2 so back row characters do not block front row characters."
-        );
-
-        S2BattlePositionPreset = _config.Bind(
-            "05 Game : Suikoden 2",
-            "S2BattlePositionPreset",
-            "wide",
-            "Battle position preset for Suikoden 2. Options: 'default' (vanilla), 'wide' (moderate spacing, front row shifted left), 'widest' (large spacing, high visibility)."
-        );
-
         EnableTenzanChimeraFix = _config.Bind(
             "05 Game : Suikoden 2",
             "EnableTenzanChimeraFix",
@@ -433,90 +349,6 @@ public sealed class ModConfiguration
             "EnableMuseRuinsSurvivorsRestoration",
             true,
             "Restores interaction triggers for the 8 dormant actors in Muse Ruins (vc26). When all 108 Stars of Destiny are gathered, all 33 survivors speak their cleansed, peaceful dialogue as a spiritual reward."
-        );
-
-        EnableCharacterRangeOverrides = _config.Bind(
-            "05 Game : Suikoden 2",
-            "EnableCharacterRangeOverrides",
-            true,
-            "Enable custom character battle range overrides for Suikoden 2 (e.g. Medium range Kasumi, Luc, Mazus, Viki, Gantetsu, Badeaux, Sierra)."
-        );
-
-        S2CharacterRangeOverrides = _config.Bind(
-            "05 Game : Suikoden 2",
-            "S2CharacterRangeOverrides",
-            "Kasumi:M, Luc:M, Mazus:M, Viki:M, Gantetsu:M, Badeaux:M, Sierra:M",
-            "Comma-separated list of character range overrides for Suikoden 2 in 'Character:Range' format (e.g. 'Kasumi:M, Luc:M, Mazus:M, Viki:M, Gantetsu:M, Badeaux:M, Sierra:M'). Range values: S (Short), M (Medium), L (Long)."
-        );
-
-        EnableRuneUnbalanceRemoval = _config.Bind(
-            "05 Game : Suikoden 2",
-            "EnableRuneUnbalanceRemoval",
-            true,
-            "Disable unbalance status effect penalty when using ability command runes (e.g. Titan, Falcon, Viper, Shrike, Swallow, Trick, Fire Breath, Mayfly, Lion, Unicorn, Pixie)."
-        );
-
-        DisableAllRuneUnbalance = _config.Bind(
-            "05 Game : Suikoden 2",
-            "DisableAllRuneUnbalance",
-            true,
-            "When true, disables unbalance penalty for all ability runes regardless of list."
-        );
-
-        DisabledRuneUnbalanceList = _config.Bind(
-            "05 Game : Suikoden 2",
-            "DisabledRuneUnbalanceList",
-            "Titan, Falcon, Viper, Shrike, Swallow, Trick, Fire Breath, Mayfly, Lion, Unicorn, Pixie",
-            "Comma-separated list of ability rune names or IDs to remove unbalance penalty for in Suikoden 2."
-        );
-
-        EnableUnlimitedCommandRunes = _config.Bind(
-            "05 Game : Suikoden 2",
-            "EnableUnlimitedCommandRunes",
-            true,
-            "Enable reusable command runes in battle without 1-use-per-battle lockouts in Suikoden 2 (Meg Trick Rune, Millie Groundhog Rune, Shin Spider Slay Rune, Oulan Angry Dragon)."
-        );
-
-        UnlimitedTrickRune = _config.Bind(
-            "05 Game : Suikoden 2",
-            "UnlimitedTrickRune",
-            true,
-            "Allow Meg/Gadget Trick Rune to be used unlimited times per battle."
-        );
-
-        UnlimitedGroundhogRune = _config.Bind(
-            "05 Game : Suikoden 2",
-            "UnlimitedGroundhogRune",
-            true,
-            "Allow Millie/Bonaparte Groundhog Rune to be used unlimited times per battle."
-        );
-
-        UnlimitedSpiderSlayRune = _config.Bind(
-            "05 Game : Suikoden 2",
-            "UnlimitedSpiderSlayRune",
-            true,
-            "Allow Shin Spider Slay Rune to be used unlimited times per battle."
-        );
-
-        AlwaysAvailableAngryDragon = _config.Bind(
-            "05 Game : Suikoden 2",
-            "AlwaysAvailableAngryDragon",
-            true,
-            "Allow Oulan Angry Dragon Rune to always be available/usable in battle without requiring initial damage or losing Fury."
-        );
-
-        EnableMemoryAutoBattle = _config.Bind(
-            "05 Game : Suikoden 2",
-            "EnableMemoryAutoBattle",
-            true,
-            "Remember the last manually chosen action (Attack vs Rune/Magic) and replay it during Auto-Battle (Omakase). Persists across battles. Falls back to Attack if MP is depleted or character is silenced."
-        );
-
-        EnableSmartHealing = _config.Bind(
-            "05 Game : Suikoden 2",
-            "EnableSmartHealing",
-            true,
-            "Master toggle for after-battle automatic party recovery. Automatically revives fallen allies with Sacrificial Jizo, cures Poison with Antitoxin, and heals wounds using Medicine, Mega Medicine, and Healing Wind scrolls."
         );
 
         EnableNPCBathVisitors = _config.Bind(
@@ -646,20 +478,6 @@ public sealed class ModConfiguration
             "Log all replaceable texture names discovered during gameplay. Useful for identifying texture names to create custom replacements. Independent of DetailedLogs setting."
         );
 
-        LogBattlePositions = _config.Bind(
-            "zz - Diagnostics",
-            "LogBattlePositions",
-            false,
-            "Log party member coordinates and battle position adjustments to the console on battle start. Useful for diagnosing formation spacing."
-        );
-
-        LogBattleUnitWindow = _config.Bind(
-            "zz - Diagnostics",
-            "LogBattleUnitWindow",
-            false,
-            "Log the battle party window layout (HP/MP text elements, max HP visibility, slot hierarchy) once per slot per battle. Works for both games."
-        );
-
         // ========================================
         // EXPERIMENTAL FEATURES
         // ========================================
@@ -681,7 +499,6 @@ public sealed class ModConfiguration
         EnableSoundRedirect = new HiddenConfigEntry<bool>(true);
         EnableDialogOverrides = new HiddenConfigEntry<bool>(true);
         SpriteMipmapBias = new HiddenConfigEntry<float>(-0.5f);
-        ForceControllerPrompts = new HiddenConfigEntry<bool>(true);
         EnableCustomTextures = new HiddenConfigEntry<bool>(true);
 
     }
