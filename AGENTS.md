@@ -48,6 +48,25 @@
   - **Phase 4: Harmony Patch Implementation**:
     - With both high-level C# decompilation and low-level native flow confirmed, implement the final, robust Harmony hook or patch in PKCore.
 
+## Codebase Knowledge Graph (Graphify)
+- **PKCore Knowledge Graph (`graphify-out/`)**:
+  - The workspace codebase and documentation are indexed into a local knowledge graph in `graphify-out/` using `graphify`.
+  - **How to Use It**:
+    - **Explain a class/component**:
+      ```powershell
+      graphify explain "plugin_pkcore_plugin"
+      ```
+    - **Find relationships & paths between systems**:
+      ```powershell
+      graphify path "ModConfiguration" "Plugin"
+      ```
+    - **Query the graph**:
+      ```powershell
+      graphify query "<question>"
+      ```
+    - **Keep it updated**:
+      After modifying code in the workspace, run `graphify update .` to sync the graph with AST changes.
+
 ## Game Architecture & Direct Reference Blueprints
 - **Suikoden I (GSD1) & Suikoden II (GSD2) Discrepancies**:
   - Always check game-specific namespaces and aliases:

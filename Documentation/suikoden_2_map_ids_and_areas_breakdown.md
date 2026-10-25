@@ -200,7 +200,7 @@ $100100 + [Region Code (01-11)] + [Map Number (01-37)] + [Local Message Offset (
 | `vc18` | **Coronet Town - Port & Docks** | **Genshu recruitment** (`GenshuRecruitmentPatch.cs`), Tai Ho & Yam Koo dice duel, boat to Kuskus. |
 | `vc21` | **Muse / Coronet Commercial District** | Equipment and armor shops. |
 | `vc25` | **Muse City - Highland Military Occupation & Liberation Campaign** | Story battle and military occupation state where Highland commanders (Seed, Culgan, Gorudo, Rowd) and garrison patrols barricade the city and City Hall (`vc25_01` / `vc25_02`). |
-| `vc26` | **Muse City - Post-Liberation City Square & Rebuilding State** | Permanent active late-game / post-liberation city map (`vc26_01`). The central town square where surviving citizens rebuild after the Beast Rune sacrifice; features 33 spirits & survivors who speak peaceful post-liberation dialogue upon 108 Stars completion (`MuseRuinsSurvivorsPatch.cs`). Central City Hall entrance doors at X: 101..107, Y: 18..19. |
+| `vc26` | **Muse City - Post-Liberation City Square & Rebuilding State** | Permanent active late-game / post-liberation city map (`vc26_01`). The central town square where surviving citizens rebuild after the Beast Rune sacrifice; features 33 spirits & survivors. Central City Hall entrance doors at X: 101..107, Y: 18..19. |
 | `vc27` | **Muse City - Post-Liberation City Hall (Interior)** | Liberated Municipal Council Hall interior with exit double doors at (X: 161..165, Y: 111..112). |
 | `vc31` | **Jowston Hill - State Council Hall Courtyard** | Exterior municipal courtyard leading to Council Hall entrance doors (X: 23..32, Y: 35..36). |
 

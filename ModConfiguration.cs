@@ -59,9 +59,6 @@ public sealed class ModConfiguration
     // Suikoden 2 Sajah Village Rare Shop Early Unlock
     public ConfigEntry<bool> UnlockSajahRareShopEarly { get; private set; }
 
-    // Suikoden 2 Muse Ruins Survivors Restoration
-    public ConfigEntry<bool> EnableMuseRuinsSurvivorsRestoration { get; private set; }
-
     // Suikoden 2 NPC Bathhouse Sprites & Castle Visitors Restoration
     public ConfigEntry<bool> EnableNPCBathVisitors { get; private set; }
 
@@ -342,13 +339,6 @@ public sealed class ModConfiguration
             "UnlockSajahRareShopEarly",
             true,
             "Unlocks the hidden rare item vendor and counter trigger inside the Sajah Village item shop before defeating the Beast Rune."
-        );
-
-        EnableMuseRuinsSurvivorsRestoration = _config.Bind(
-            "05 Game : Suikoden 2",
-            "EnableMuseRuinsSurvivorsRestoration",
-            true,
-            "Restores interaction triggers for the 8 dormant actors in Muse Ruins (vc26). When all 108 Stars of Destiny are gathered, all 33 survivors speak their cleansed, peaceful dialogue as a spiritual reward."
         );
 
         EnableNPCBathVisitors = _config.Bind(

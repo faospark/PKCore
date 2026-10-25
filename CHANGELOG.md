@@ -6,6 +6,18 @@ All notable changes to PKCore (formerly PKextended) are documented in this file.
 
 ## [2026.10.25]
 
+- **Suikoden II: Muse Ruins Survivors Restoration Removal**:
+  - Removed `Patches/MuseRuinsSurvivorsPatch.cs` and disabled runtime patching.
+  - Removed configuration entry `EnableMuseRuinsSurvivorsRestoration` from `ModConfiguration.cs` and `Plugin.cs`.
+  - Updated documentation to reflect the removal of the patch.
+
+- **Project Kyaro: Multi-Tier Game Context Detection Architecture**:
+  - Upgraded `GameDetection.cs` across PKCore and PKBattlePatch to a high-reliability, zero-latency detection algorithm.
+  - **Tier 1 (Instant Scene Matching)**: Inspects the active Unity scene container (`GSD1`, `GSD2`, `main`, `init`).
+  - **Tier 2 (Event-Driven Scene Dispatch)**: Subscribes to `SceneManager.sceneLoaded` upon startup so game transitions update immediately without waiting a frame for the `Update` loop.
+  - **Tier 3 (Native Ground-Truth Memory Validation)**: Falls back to verifying native memory structures (`GSD2::G2_SYS.G2_party_dat()`, `GSD2::OldSrcBase.game_work`, `UISaveLoad2.Inst` for S2; `S1::OldSrcBase.game_work`, `UISaveLoad1.Inst` for S1).
+  - **Tier 4 (On-Demand Query Resolution)**: `GetCurrentGame()`, `IsGSD1()`, and `IsGSD2()` now resolve on-demand if queried during early startup or scene transitions, eliminating race conditions across texture replacement, portraits, and combat patches.
+
 - **Dear ImGui Overlay Streamlining & Movement Input De-Interference**:
   - Streamlined `ImGuiOverlayUI.cs` from ~2,000 lines down to a dedicated, lightweight Location & Notes tool, eliminating the heavy debug inspector panes, multi-tab layout, and bathhouse/roster diagnostic windows.
   - **Zero Input Interference**: Completely eliminated invasive input blockers (`GRInputManagerBlockerPatch`, `G2PadBlockerPatch`, and `G1PadBlockerPatch`). Gamepad inputs, analog sticks, and keyboard inputs are no longer intercepted or zeroed out, resolving movement stutter and restoring full compatibility with player movement and movement mods.

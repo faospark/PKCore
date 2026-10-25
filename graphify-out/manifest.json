@@ -1,0 +1,1136 @@
+{
+  ".github/workflows/build.yml": {
+    "mtime": 1765497434.8985493,
+    "seen": 1792917255.7181404,
+    "ast_hash": "db4c01abe98c4b777c2c5fe0461f6ff9",
+    "semantic_hash": ""
+  },
+  ".vscode/settings.json": {
+    "mtime": 1785343264.306008,
+    "seen": 1792917255.7181404,
+    "ast_hash": "f9e4603b95300a08a1ca184af3e79f94",
+    "semantic_hash": ""
+  },
+  "Documentation/mobobehaviour_index.json": {
+    "mtime": 1792425270.8963616,
+    "seen": 1792917255.7181404,
+    "ast_hash": "e75f9bd383cce4df1408dd29bbe91e0d",
+    "semantic_hash": ""
+  },
+  "GSD2.dll.c": {
+    "mtime": 1791815267.0718567,
+    "seen": 1792917255.7181404,
+    "ast_hash": "8ac067859e12339c60c8c45be01abf16",
+    "semantic_hash": ""
+  },
+  "IL2CPP/WAR_CHARA_TYPE.cs": {
+    "mtime": 1770565734.0630555,
+    "seen": 1792917255.7181404,
+    "ast_hash": "27140bb198dc3f5e3117ece15996814c",
+    "semantic_hash": ""
+  },
+  "IL2CPP/WAR_DATA.cs": {
+    "mtime": 1769265875.5404966,
+    "seen": 1792917255.7181404,
+    "ast_hash": "f7611b496b7f1da2bf6255047cbb7a95",
+    "semantic_hash": ""
+  },
+  "IL2CPP/war_data_h.cs": {
+    "mtime": 1770565734.064056,
+    "seen": 1792917255.7181404,
+    "ast_hash": "366cfe72383df681a95ad5406953ca80",
+    "semantic_hash": ""
+  },
+  "IL2CPP/war_sys.cs": {
+    "mtime": 1770565734.064056,
+    "seen": 1792917255.7181404,
+    "ast_hash": "326205b507b17bd10d16e1262a418d02",
+    "semantic_hash": ""
+  },
+  "ModConfiguration.cs": {
+    "mtime": 1792915637.852372,
+    "seen": 1792917255.7181404,
+    "ast_hash": "94ce84be267e21a136f5cadb8cb74c2a",
+    "semantic_hash": ""
+  },
+  "PKCore.csproj": {
+    "mtime": 1792894274.3127568,
+    "seen": 1792917255.7181404,
+    "ast_hash": "cd0fcdeb9620eefccb3edf15e1a5f8dd",
+    "semantic_hash": ""
+  },
+  "PKCore.sln": {
+    "mtime": 1767508135.7273765,
+    "seen": 1792917255.7181404,
+    "ast_hash": "d7686aa858825bdcc3b6bf84f6955ccd",
+    "semantic_hash": ""
+  },
+  "Patches/AnimatedTexturePatch.cs": {
+    "mtime": 1773503773.4103186,
+    "seen": 1792917255.7181404,
+    "ast_hash": "8a52aba53e3aa16ced91ff51fb0e5e3d",
+    "semantic_hash": ""
+  },
+  "Patches/AssetAddressTracker.cs": {
+    "mtime": 1785232955.6984587,
+    "seen": 1792917255.7181404,
+    "ast_hash": "c408c6cd0af22c4a20f4d2dea5392fd6",
+    "semantic_hash": ""
+  },
+  "Patches/AssetLoader.cs": {
+    "mtime": 1789399452.05364,
+    "seen": 1792917255.7181404,
+    "ast_hash": "5b8e9072458157d59042bc25d1012d91",
+    "semantic_hash": ""
+  },
+  "Patches/BathTexturePatch.cs": {
+    "mtime": 1770378687.7659829,
+    "seen": 1792917255.7181404,
+    "ast_hash": "e958f9ffb9ad363efedcc5717247182e",
+    "semantic_hash": ""
+  },
+  "Patches/CovertMissionPortraitMonitor.cs": {
+    "mtime": 1771405719.96056,
+    "seen": 1792917255.7181404,
+    "ast_hash": "8d67c1d859f90f26bbcb0cd734c67019",
+    "semantic_hash": ""
+  },
+  "Patches/CustomTexturePatch.Caching.cs": {
+    "mtime": 1792900573.288113,
+    "seen": 1792917255.7181404,
+    "ast_hash": "fcf40614aa1aa8b8494f6893bab58e93",
+    "semantic_hash": ""
+  },
+  "Patches/CustomTexturePatch.cs": {
+    "mtime": 1791166993.8699596,
+    "seen": 1792917255.7181404,
+    "ast_hash": "02ed686c6c698e614205c278ec57078b",
+    "semantic_hash": ""
+  },
+  "Patches/CustomTexturePersist.cs": {
+    "mtime": 1791182739.7992332,
+    "seen": 1792917255.7181404,
+    "ast_hash": "5286736e7b4d334a3049620198ab2236",
+    "semantic_hash": ""
+  },
+  "Patches/DDSLoader.cs": {
+    "mtime": 1788724677.7570395,
+    "seen": 1792917255.7181404,
+    "ast_hash": "23058850f51bfe10daca7c07b4c36773",
+    "semantic_hash": ""
+  },
+  "Patches/DialogBoxScalePatch.cs": {
+    "mtime": 1771324702.890996,
+    "seen": 1792917255.7181404,
+    "ast_hash": "1f4e1effa5a3288517fe5f8ef0c77a91",
+    "semantic_hash": ""
+  },
+  "Patches/DisableCustomPostEffect.cs": {
+    "mtime": 1767728112.569302,
+    "seen": 1792917255.7181404,
+    "ast_hash": "4cb1513aecdd2ade55e06fcdd4893c2d",
+    "semantic_hash": ""
+  },
+  "Patches/DisablePortraitDialogMask.cs": {
+    "mtime": 1789399896.0395975,
+    "seen": 1792917255.7181404,
+    "ast_hash": "4acfc2bd3ef3b720a1dcf3415cb47b3d",
+    "semantic_hash": ""
+  },
+  "Patches/DisableSpritePostProcessing.cs": {
+    "mtime": 1769606698.5309849,
+    "seen": 1792917255.7181404,
+    "ast_hash": "2681074de07bf237e47ed8a5cbcc4df5",
+    "semantic_hash": ""
+  },
+  "Patches/DisableUITipsPatch.cs": {
+    "mtime": 1791811360.4543438,
+    "seen": 1792917255.7181404,
+    "ast_hash": "59b722043d1d6f4af8e1f84cfcf0392e",
+    "semantic_hash": ""
+  },
+  "Patches/EnableDebugMenu2.cs": {
+    "mtime": 1767736600.7425907,
+    "seen": 1792917255.7181404,
+    "ast_hash": "fd3d404d81d828ec506aae855404d1d8",
+    "semantic_hash": ""
+  },
+  "Patches/EncounterNonePatch.cs": {
+    "mtime": 1792888942.5097208,
+    "seen": 1792917255.7181404,
+    "ast_hash": "6d76ba730fd4434e31665e59399c47cd",
+    "semantic_hash": ""
+  },
+  "Patches/GRSpriteRendererPatch.cs": {
+    "mtime": 1771328259.1649706,
+    "seen": 1792917255.7181404,
+    "ast_hash": "de30a984a6b37ea5c7835ebbd970b8e8",
+    "semantic_hash": ""
+  },
+  "Patches/GameDetection.cs": {
+    "mtime": 1792906440.9140854,
+    "seen": 1792917255.7181404,
+    "ast_hash": "7ebc0be26d4d2230a22ea726eff2cf2a",
+    "semantic_hash": ""
+  },
+  "Patches/GameObjectPatch.cs": {
+    "mtime": 1792749410.177104,
+    "seen": 1792917255.7181404,
+    "ast_hash": "e6ff03e3e2c051786d5a838d155c37d4",
+    "semantic_hash": ""
+  },
+  "Patches/ImGuiOverlayUI.cs": {
+    "mtime": 1792903876.8736632,
+    "seen": 1792917255.7181404,
+    "ast_hash": "f74568f1624e4f4da67b281bcf0c2c78",
+    "semantic_hash": ""
+  },
+  "Patches/LanguageSelectionPatch.cs": {
+    "mtime": 1788092816.3296387,
+    "seen": 1792917255.7181404,
+    "ast_hash": "8374f13d66ba63a8b1c7658aba311758",
+    "semantic_hash": ""
+  },
+  "Patches/LocalizedOverrideMap.cs": {
+    "mtime": 1788092938.426163,
+    "seen": 1792917255.7181404,
+    "ast_hash": "136a8e0cdc4358fc925479d737870f75",
+    "semantic_hash": ""
+  },
+  "Patches/MapSpriteHDPatch.cs": {
+    "mtime": 1771328259.1649706,
+    "seen": 1792917255.7181404,
+    "ast_hash": "24dd73616610bce5a689470d0e744d85",
+    "semantic_hash": ""
+  },
+  "Patches/MapTexturePatch.cs": {
+    "mtime": 1770378687.7547283,
+    "seen": 1792917255.7181404,
+    "ast_hash": "6346c133d35782063b5582424c0dafbe",
+    "semantic_hash": ""
+  },
+  "Patches/MapTrackingPatch.cs": {
+    "mtime": 1792488288.2954233,
+    "seen": 1792917255.7181404,
+    "ast_hash": "fa096492c29bdb9534d518bfe93aaffa",
+    "semantic_hash": ""
+  },
+  "Patches/MenuScale.cs": {
+    "mtime": 1773573780.3577902,
+    "seen": 1792917255.7181404,
+    "ast_hash": "ccb70141a9dca45575d73f805dc9a646",
+    "semantic_hash": ""
+  },
+  "Patches/MouseCursorPatch.cs": {
+    "mtime": 1792477871.141929,
+    "seen": 1792917255.7181404,
+    "ast_hash": "39ab1f7ef51243c24487528153419ce3",
+    "semantic_hash": ""
+  },
+  "Patches/NPCBathVisitorPatch.cs": {
+    "mtime": 1792460763.6958592,
+    "seen": 1792917255.7181404,
+    "ast_hash": "2bb91a88c7d56f18420f4fe3636fec40",
+    "semantic_hash": ""
+  },
+  "Patches/PSPGalleryEnhanced.cs": {
+    "mtime": 1774248562.1390154,
+    "seen": 1792917255.7181404,
+    "ast_hash": "c9ab2dde7484aeef1f1e95a88b310de1",
+    "semantic_hash": ""
+  },
+  "Patches/PSPLaucherPatch.cs": {
+    "mtime": 1773813939.0145044,
+    "seen": 1792917255.7181404,
+    "ast_hash": "ff70783a95a4f5735b98bd7b9bf1ee4e",
+    "semantic_hash": ""
+  },
+  "Patches/PortraitIndexCache.cs": {
+    "mtime": 1770378687.7547283,
+    "seen": 1792917255.7181404,
+    "ast_hash": "dc6de5841feab492a272a2885e9fbf47",
+    "semantic_hash": ""
+  },
+  "Patches/PortraitSystemPatch.cs": {
+    "mtime": 1792475515.0097249,
+    "seen": 1792917255.7181404,
+    "ast_hash": "e919821b1fa55c312025c74fed5ea7e1",
+    "semantic_hash": ""
+  },
+  "Patches/PortraitVariants.cs": {
+    "mtime": 1789399378.1624255,
+    "seen": 1792917255.7181404,
+    "ast_hash": "003c0452b5eadf06f8a58c9d7b7438b5",
+    "semantic_hash": ""
+  },
+  "Patches/ResolutionPatch.cs": {
+    "mtime": 1767508135.7411852,
+    "seen": 1792917255.7181404,
+    "ast_hash": "824c36fac4da05da097948acde29d4c5",
+    "semantic_hash": ""
+  },
+  "Patches/RestoreBaseWindow.cs": {
+    "mtime": 1770135583.9917285,
+    "seen": 1792917255.7181404,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": ""
+  },
+  "Patches/S1DisableObjects.cs": {
+    "mtime": 1774937223.7481277,
+    "seen": 1792917255.7181404,
+    "ast_hash": "4b73f58ebea8ab387fd29c469efd952e",
+    "semantic_hash": ""
+  },
+  "Patches/S1JeaneRuneShopPatch.cs": {
+    "mtime": 1792894694.4029937,
+    "seen": 1792917255.7181404,
+    "ast_hash": "bc52afb0360869ac021346200558f431",
+    "semantic_hash": ""
+  },
+  "Patches/S1QuickRunePatch.cs": {
+    "mtime": 1792894724.0428112,
+    "seen": 1792917255.7181404,
+    "ast_hash": "77aa4765c3fd8748ad13478804fd7c9c",
+    "semantic_hash": ""
+  },
+  "Patches/S1QuickStoragePatch.cs": {
+    "mtime": 1792888915.2225378,
+    "seen": 1792917255.7181404,
+    "ast_hash": "e613413c7807e29ae673666d9c88b259",
+    "semantic_hash": ""
+  },
+  "Patches/S1WorldMapScaleUI.cs": {
+    "mtime": 1771335212.5431843,
+    "seen": 1792917255.7181404,
+    "ast_hash": "9b1e68fa289c8b965ab12e8e107c6a1e",
+    "semantic_hash": ""
+  },
+  "Patches/S2CookOffPortraitMonitor.cs": {
+    "mtime": 1770902760.426971,
+    "seen": 1792917255.7181404,
+    "ast_hash": "0d0eb142780e02180b9d78c1d992757c",
+    "semantic_hash": ""
+  },
+  "Patches/S2WorldMiniMap.cs": {
+    "mtime": 1770378687.7543426,
+    "seen": 1792917255.7181404,
+    "ast_hash": "73274eaaeef251592486355db3482d3a",
+    "semantic_hash": ""
+  },
+  "Patches/SMAAPatch.cs": {
+    "mtime": 1770135583.9937365,
+    "seen": 1792917255.7181404,
+    "ast_hash": "e6d86fc5043a634b96322fd070cd3d2d",
+    "semantic_hash": ""
+  },
+  "Patches/SajahShopUnlockPatch.cs": {
+    "mtime": 1792463634.507686,
+    "seen": 1792917255.7181404,
+    "ast_hash": "96ff9509a810a2070dd1847e35bab920",
+    "semantic_hash": ""
+  },
+  "Patches/SaveDataProcessor.cs": {
+    "mtime": 1792475544.857889,
+    "seen": 1792917255.7181404,
+    "ast_hash": "f35976f5cc87b2fdc7240661fff3f97b",
+    "semantic_hash": ""
+  },
+  "Patches/SavePointMonitor.cs": {
+    "mtime": 1770378687.7543426,
+    "seen": 1792917255.7181404,
+    "ast_hash": "f9ee7372d82a2e7162525acbcc3e5405",
+    "semantic_hash": ""
+  },
+  "Patches/SavePointPatch.cs": {
+    "mtime": 1792463650.8115256,
+    "seen": 1792917255.7181404,
+    "ast_hash": "e27739ff07e5d4883cf93745c269547c",
+    "semantic_hash": ""
+  },
+  "Patches/SaveSlotPartyPortraitPatch.cs": {
+    "mtime": 1792483162.0658362,
+    "seen": 1792917255.7181404,
+    "ast_hash": "726101a7d86630982bf5ed158262d199",
+    "semantic_hash": ""
+  },
+  "Patches/SaveWindowPatch.cs": {
+    "mtime": 1791182783.447713,
+    "seen": 1792917255.7181404,
+    "ast_hash": "6cd75d246aa7b54a27dfb515f6d008d1",
+    "semantic_hash": ""
+  },
+  "Patches/SoundRedirectPatch.cs": {
+    "mtime": 1773074444.8921278,
+    "seen": 1792917255.7181404,
+    "ast_hash": "4780613ec22726f8379bab320b01bfb2",
+    "semantic_hash": ""
+  },
+  "Patches/SpriteAtlasPatch.cs": {
+    "mtime": 1773763569.1519806,
+    "seen": 1792917255.7181404,
+    "ast_hash": "ed7b84bfa41ba75aece414464eb2bde1",
+    "semantic_hash": ""
+  },
+  "Patches/SpriteFilteringPatch.cs": {
+    "mtime": 1770135583.997769,
+    "seen": 1792917255.7181404,
+    "ast_hash": "e08dd6e1f3eb59a190f10c8eb0f7eece",
+    "semantic_hash": ""
+  },
+  "Patches/SpriteRendererPatch.cs": {
+    "mtime": 1771328259.163584,
+    "seen": 1792917255.7181404,
+    "ast_hash": "eeb78504978022b66abbed4c8819e19a",
+    "semantic_hash": ""
+  },
+  "Patches/TenzanPassEncounterPatch.cs": {
+    "mtime": 1792278467.067048,
+    "seen": 1792917255.7181404,
+    "ast_hash": "69803bf324ab4a71004a85e199714698",
+    "semantic_hash": ""
+  },
+  "Patches/TextDatabasePatch.cs": {
+    "mtime": 1788092626.1956866,
+    "seen": 1792917255.7181404,
+    "ast_hash": "9d5c48ea3f656df2d8eaf3056e907ab2",
+    "semantic_hash": ""
+  },
+  "Patches/TextureMemoryCachePatch.cs": {
+    "mtime": 1791182748.6778505,
+    "seen": 1792917255.7181404,
+    "ast_hash": "28d7636327fd76437b3612a76e394a44",
+    "semantic_hash": ""
+  },
+  "Patches/TextureOptions.cs": {
+    "mtime": 1789212800.4392955,
+    "seen": 1792917255.7181404,
+    "ast_hash": "a107401d329531def75dc5dba891d7cd",
+    "semantic_hash": ""
+  },
+  "Patches/UIImagePatch.cs": {
+    "mtime": 1772639370.0340223,
+    "seen": 1792917255.7181404,
+    "ast_hash": "3246a94b193ec3b318b0a0e7e27db94f",
+    "semantic_hash": ""
+  },
+  "Patches/UnitySpriteRendererPatch.cs": {
+    "mtime": 1771328259.163584,
+    "seen": 1792917255.7181404,
+    "ast_hash": "e5dbda54f85b913df56f1842d4b3e2c9",
+    "semantic_hash": ""
+  },
+  "Patches/WarAbilityConfigLoader.cs": {
+    "mtime": 1771334360.848215,
+    "seen": 1792917255.7181404,
+    "ast_hash": "fc0b633d0ae996d758b3b81411ac4b91",
+    "semantic_hash": ""
+  },
+  "Patches/WarAbilityPatch.cs": {
+    "mtime": 1771334360.848215,
+    "seen": 1792917255.7181404,
+    "ast_hash": "df5d67b84e37d83d294c17ff9716f8c2",
+    "semantic_hash": ""
+  },
+  "Patches/WarRoomBGPatch.cs": {
+    "mtime": 1771485989.1383739,
+    "seen": 1792917255.7181404,
+    "ast_hash": "3201789571ba23f0768795d51645b6b4",
+    "semantic_hash": ""
+  },
+  "Patches/WorldMapEffectsPatch.cs": {
+    "mtime": 1770378687.752834,
+    "seen": 1792917255.7181404,
+    "ast_hash": "195f5b90df8f3af64f5627ff2ce209a5",
+    "semantic_hash": ""
+  },
+  "Plugin.cs": {
+    "mtime": 1792915637.9015079,
+    "seen": 1792917255.7181404,
+    "ast_hash": "c02feef27848a8efc8c8683dd8f9bc2c",
+    "semantic_hash": ""
+  },
+  "Properties/AssemblyInfo.cs": {
+    "mtime": 1770536786.220044,
+    "seen": 1792917255.7181404,
+    "ast_hash": "c73edbbf057a8abadfc7a35f8b622b63",
+    "semantic_hash": ""
+  },
+  "tools/insert_collated.py": {
+    "mtime": 1792426464.9870503,
+    "seen": 1792917255.7181404,
+    "ast_hash": "0b5be45cb375faf5318bd3167fbd51d3",
+    "semantic_hash": ""
+  },
+  "tools/insert_master_table.py": {
+    "mtime": 1792426821.860054,
+    "seen": 1792917255.7181404,
+    "ast_hash": "ffd73ee398e01c1658cf6cd81a90ac4e",
+    "semantic_hash": ""
+  },
+  "tools/mobo_cataloger.py": {
+    "mtime": 1792425220.3515055,
+    "seen": 1792917255.7181404,
+    "ast_hash": "d192608bbe4c7f329074b73f1b65cda2",
+    "semantic_hash": ""
+  },
+  "tools/mobo_indexer.py": {
+    "mtime": 1792424959.1822886,
+    "seen": 1792917255.7181404,
+    "ast_hash": "8f1e73b9540f0fb3cf60f3f6bd77827d",
+    "semantic_hash": ""
+  },
+  "tools/symbol_indexer/indexer.py": {
+    "mtime": 1792430833.083553,
+    "seen": 1792917255.7181404,
+    "ast_hash": "5b2813c03fd49d08d28bcf0c1a7a485d",
+    "semantic_hash": ""
+  },
+  "tools/symbol_indexer/map_data.py": {
+    "mtime": 1792486315.645062,
+    "seen": 1792917255.7181404,
+    "ast_hash": "68a8a782107095c31a22d8f36f0c3950",
+    "semantic_hash": ""
+  },
+  "tools/symbol_indexer/sym.py": {
+    "mtime": 1792430883.4187553,
+    "seen": 1792917255.7181404,
+    "ast_hash": "c93aa54524d1533605cdd1d382e73c48",
+    "semantic_hash": ""
+  },
+  "tools/test_inspect.py": {
+    "mtime": 1792425051.2515905,
+    "seen": 1792917255.7181404,
+    "ast_hash": "51f2fc8c49893d953a58d243e079aba5",
+    "semantic_hash": ""
+  },
+  ".agents/skills/symbol-indexer/SKILL.md": {
+    "mtime": 1792888921.2247493,
+    "seen": 1792917255.7181404,
+    "ast_hash": "d83ff8130b3d18582610d69a10d75c27",
+    "semantic_hash": ""
+  },
+  ".github/copilot-instructions.md": {
+    "mtime": 1769332195.6955838,
+    "seen": 1792917255.7181404,
+    "ast_hash": "8fb6bbe619dc46528e751fbb7abe0472",
+    "semantic_hash": ""
+  },
+  "AGENTS.md": {
+    "mtime": 1792888934.69641,
+    "seen": 1792917255.7181404,
+    "ast_hash": "252cfb11430b881d4855c68d02be41df",
+    "semantic_hash": ""
+  },
+  "CHANGELOG.md": {
+    "mtime": 1792915120.6691236,
+    "seen": 1792917255.7181404,
+    "ast_hash": "d793f62d09371bf41c4d5f995aa21d04",
+    "semantic_hash": ""
+  },
+  "ChangeLog.txt": {
+    "mtime": 1789469451.9770489,
+    "seen": 1792917255.7181404,
+    "ast_hash": "e51bb889f692c15d8492e8284aff672c",
+    "semantic_hash": ""
+  },
+  "Documentation/00-mods_guide.md": {
+    "mtime": 1773071625.787787,
+    "seen": 1792917255.7181404,
+    "ast_hash": "027d38068e6cb557e482ab2d592006e6",
+    "semantic_hash": ""
+  },
+  "Documentation/areas/banner_village.md": {
+    "mtime": 1792430746.445886,
+    "seen": 1792917255.7181404,
+    "ast_hash": "3117466142e34c53d17eb9b83504befb",
+    "semantic_hash": ""
+  },
+  "Documentation/areas/cave_of_the_wind.md": {
+    "mtime": 1792430744.817389,
+    "seen": 1792917255.7181404,
+    "ast_hash": "0f0bbe7cba3216d98879dc66d0e8cda2",
+    "semantic_hash": ""
+  },
+  "Documentation/areas/coronet_town_and_port.md": {
+    "mtime": 1792430743.5757353,
+    "seen": 1792917255.7181404,
+    "ast_hash": "648a20f7c0edc60a2ee5ba318ccf4583",
+    "semantic_hash": ""
+  },
+  "Documentation/areas/crom_village.md": {
+    "mtime": 1792430747.779264,
+    "seen": 1792917255.7181404,
+    "ast_hash": "0b5283bd24fd474e25999316be9ab30f",
+    "semantic_hash": ""
+  },
+  "Documentation/areas/drakemouth_village.md": {
+    "mtime": 1792430747.1833174,
+    "seen": 1792917255.7181404,
+    "ast_hash": "59de008c68cbe5d438fe6e06af596bb0",
+    "semantic_hash": ""
+  },
+  "Documentation/areas/dunan_castle_hq_bathhouse.md": {
+    "mtime": 1792430751.9766128,
+    "seen": 1792917255.7181404,
+    "ast_hash": "8056cc0b93b752add114aa4193eadec4",
+    "semantic_hash": ""
+  },
+  "Documentation/areas/dunan_castle_hq_cartography_room.md": {
+    "mtime": 1792430752.4767632,
+    "seen": 1792917255.7181404,
+    "ast_hash": "fe31f5aa79a6bbb592c6142ae46472b6",
+    "semantic_hash": ""
+  },
+  "Documentation/areas/dunan_castle_hq_commanders_quarters.md": {
+    "mtime": 1792430752.2985432,
+    "seen": 1792917255.7181404,
+    "ast_hash": "9fa9f2750fff6bc52d61b672e611491e",
+    "semantic_hash": ""
+  },
+  "Documentation/areas/dunan_castle_hq_concert_stage.md": {
+    "mtime": 1792430752.236475,
+    "seen": 1792917255.7181404,
+    "ast_hash": "6b6a84e73a857f8e30d8e10ee46305e3",
+    "semantic_hash": ""
+  },
+  "Documentation/areas/dunan_castle_hq_docks_and_fishing.md": {
+    "mtime": 1792430753.3618388,
+    "seen": 1792917255.7181404,
+    "ast_hash": "91fbd34b8fdb94310c2a13d69dc825f2",
+    "semantic_hash": ""
+  },
+  "Documentation/areas/dunan_castle_hq_dojo_and_training.md": {
+    "mtime": 1792430751.7733426,
+    "seen": 1792917255.7181404,
+    "ast_hash": "ca364085aac2537bf3ad77637689b812",
+    "semantic_hash": ""
+  },
+  "Documentation/areas/dunan_castle_hq_farm_and_pastures.md": {
+    "mtime": 1792430753.2666934,
+    "seen": 1792917255.7181404,
+    "ast_hash": "49cc494f475114fb771f37f79849a342",
+    "semantic_hash": ""
+  },
+  "Documentation/areas/dunan_castle_hq_great_hall_and_entry.md": {
+    "mtime": 1792430751.618569,
+    "seen": 1792917255.7181404,
+    "ast_hash": "ee9babd849b9374940eb935c05b5f08d",
+    "semantic_hash": ""
+  },
+  "Documentation/areas/dunan_castle_hq_grounds_and_sanctuary.md": {
+    "mtime": 1792430752.4302018,
+    "seen": 1792917255.7181404,
+    "ast_hash": "490a43b9e50f94a0c011f5f6b355f0d1",
+    "semantic_hash": ""
+  },
+  "Documentation/areas/dunan_castle_hq_guardian_deity_shrine.md": {
+    "mtime": 1792430753.7985208,
+    "seen": 1792917255.7181404,
+    "ast_hash": "8764f8b3c6217df151ce654e07dd97f1",
+    "semantic_hash": ""
+  },
+  "Documentation/areas/dunan_castle_hq_infirmary_and_clinic.md": {
+    "mtime": 1792430751.908022,
+    "seen": 1792917255.7181404,
+    "ast_hash": "e7f48a5d3550d3606ca84fe5da09c09b",
+    "semantic_hash": ""
+  },
+  "Documentation/areas/dunan_castle_hq_inn_and_lodging.md": {
+    "mtime": 1792430753.694259,
+    "seen": 1792917255.7181404,
+    "ast_hash": "b2728821cb512cbb91aedf9141d97e53",
+    "semantic_hash": ""
+  },
+  "Documentation/areas/dunan_castle_hq_living_quarters_and_corridors.md": {
+    "mtime": 1792430753.1815698,
+    "seen": 1792917255.7181404,
+    "ast_hash": "4b9fd31bbbb82f2ff988b80fce206c65",
+    "semantic_hash": ""
+  },
+  "Documentation/areas/dunan_castle_hq_memorial_graveyard.md": {
+    "mtime": 1792430753.415933,
+    "seen": 1792917255.7181404,
+    "ast_hash": "c6b514cfaacaba6d65732670bfda66cd",
+    "semantic_hash": ""
+  },
+  "Documentation/areas/dunan_castle_hq_restaurant_and_kitchen.md": {
+    "mtime": 1792430753.3142798,
+    "seen": 1792917255.7181404,
+    "ast_hash": "b6792a673415e6b2e7920812adff8925",
+    "semantic_hash": ""
+  },
+  "Documentation/areas/dunan_castle_hq_tavern_and_dice.md": {
+    "mtime": 1792430751.8429303,
+    "seen": 1792917255.7181404,
+    "ast_hash": "bfaac3abc452f1bd5ae918d5979bbe8a",
+    "semantic_hash": ""
+  },
+  "Documentation/areas/dunan_castle_hq_teleport_and_elevator.md": {
+    "mtime": 1792430753.613667,
+    "seen": 1792917255.7181404,
+    "ast_hash": "f11b2bd7deaf1081f76c4bb40e353052",
+    "semantic_hash": ""
+  },
+  "Documentation/areas/dunan_castle_hq_vault_and_detective.md": {
+    "mtime": 1792430751.7277162,
+    "seen": 1792917255.7181404,
+    "ast_hash": "0dc3d3c91acc198d9ff01ad4bf9b9c0c",
+    "semantic_hash": ""
+  },
+  "Documentation/areas/dunan_castle_hq_war_strategy_room.md": {
+    "mtime": 1792430752.0722382,
+    "seen": 1792917255.7181404,
+    "ast_hash": "6ba21216e1b3b1baa35be13638d2655e",
+    "semantic_hash": ""
+  },
+  "Documentation/areas/dunan_castle_hq_watchtower_and_roof.md": {
+    "mtime": 1792430753.2166357,
+    "seen": 1792917255.7181404,
+    "ast_hash": "5078bc532f7c7484285e82155126d5fb",
+    "semantic_hash": ""
+  },
+  "Documentation/areas/dunan_castle_hq_workshop_and_library.md": {
+    "mtime": 1792430752.1613643,
+    "seen": 1792917255.7181404,
+    "ast_hash": "7e2f9570e9ec6b96a0365a38ece9bdb1",
+    "semantic_hash": ""
+  },
+  "Documentation/areas/forest_village.md": {
+    "mtime": 1792430745.7014775,
+    "seen": 1792917255.7181404,
+    "ast_hash": "93f59093cdeeec71d0906eff36709796",
+    "semantic_hash": ""
+  },
+  "Documentation/areas/greenhill_city.md": {
+    "mtime": 1792430745.4157815,
+    "seen": 1792917255.7181404,
+    "ast_hash": "379e06a22bf4116bf8c2a4a0b2fc3730",
+    "semantic_hash": ""
+  },
+  "Documentation/areas/greenhill_matilda_path_and_border.md": {
+    "mtime": 1792430746.145411,
+    "seen": 1792917255.7181404,
+    "ast_hash": "b13f42ef084b7fd16d86e11237cfcc7f",
+    "semantic_hash": ""
+  },
+  "Documentation/areas/gregminster_capital.md": {
+    "mtime": 1792430746.6352499,
+    "seen": 1792917255.7181404,
+    "ast_hash": "1e85bba51bffc4fbf077db7171cda1b0",
+    "semantic_hash": ""
+  },
+  "Documentation/areas/highland_recon_camp_muse.md": {
+    "mtime": 1792430743.4593296,
+    "seen": 1792917255.7181404,
+    "ast_hash": "c9bbc80ac5393ee55c30389819039902",
+    "semantic_hash": ""
+  },
+  "Documentation/areas/highland_youth_brigade_camp.md": {
+    "mtime": 1792430739.100552,
+    "seen": 1792917255.7181404,
+    "ast_hash": "9815c1750352ba7c58310e46918781e9",
+    "semantic_hash": ""
+  },
+  "Documentation/areas/highway_village.md": {
+    "mtime": 1792430749.815005,
+    "seen": 1792917255.7181404,
+    "ast_hash": "c8506e3afaa6c171ce923352ad302fc8",
+    "semantic_hash": ""
+  },
+  "Documentation/areas/kobold_village.md": {
+    "mtime": 1792430748.7926767,
+    "seen": 1792917255.7181404,
+    "ast_hash": "ae8726a47d9a89187a369842a43077ca",
+    "semantic_hash": ""
+  },
+  "Documentation/areas/kuskus_town.md": {
+    "mtime": 1792430744.922483,
+    "seen": 1792917255.7181404,
+    "ast_hash": "08ba364b39ce85394420a905dd5f0ab4",
+    "semantic_hash": ""
+  },
+  "Documentation/areas/kyaro_town.md": {
+    "mtime": 1792430740.219512,
+    "seen": 1792917255.7181404,
+    "ast_hash": "cb3ce1aba3f87003296257a6f45e8de5",
+    "semantic_hash": ""
+  },
+  "Documentation/areas/l_renouille_citadel.md": {
+    "mtime": 1792430751.2936196,
+    "seen": 1792917255.7181404,
+    "ast_hash": "24fc90a01660aec03bf0dc85b08de67a",
+    "semantic_hash": ""
+  },
+  "Documentation/areas/lakewest_town.md": {
+    "mtime": 1792430748.6130083,
+    "seen": 1792917255.7181404,
+    "ast_hash": "f1d30654030ad6e7252ee513fc5ce0a6",
+    "semantic_hash": ""
+  },
+  "Documentation/areas/mercenary_fortress.md": {
+    "mtime": 1792430740.7469263,
+    "seen": 1792917255.7181404,
+    "ast_hash": "c8c22260ced92e55f52a8d69b049498d",
+    "semantic_hash": ""
+  },
+  "Documentation/areas/mt_rakutei.md": {
+    "mtime": 1792430749.6642416,
+    "seen": 1792917255.7181404,
+    "ast_hash": "a78b0250ce5fea999a06d1d1bb970443",
+    "semantic_hash": ""
+  },
+  "Documentation/areas/mt_ryukan_pass.md": {
+    "mtime": 1792430746.5536008,
+    "seen": 1792917255.7181404,
+    "ast_hash": "a97218d30b23e1903c4004353df19c09",
+    "semantic_hash": ""
+  },
+  "Documentation/areas/mt_tigerwolf.md": {
+    "mtime": 1792430741.8137317,
+    "seen": 1792917255.7181404,
+    "ast_hash": "825c2acf14e6ac9172380a0ac9bc5290",
+    "semantic_hash": ""
+  },
+  "Documentation/areas/muse_city.md": {
+    "mtime": 1792486564.6788745,
+    "seen": 1792917255.7181404,
+    "ast_hash": "50ef7f204d42676f86b29f4737bdbd94",
+    "semantic_hash": ""
+  },
+  "Documentation/areas/new_leaf_academy.md": {
+    "mtime": 1792430745.9491265,
+    "seen": 1792917255.7181404,
+    "ast_hash": "1ca16f460fc15581dcbe6bf170ebc63b",
+    "semantic_hash": ""
+  },
+  "Documentation/areas/north_sparrow_pass.md": {
+    "mtime": 1792430739.401926,
+    "seen": 1792917255.7181404,
+    "ast_hash": "9070a30d82dc4be2ab328d1c7f104330",
+    "semantic_hash": ""
+  },
+  "Documentation/areas/north_window_ruins.md": {
+    "mtime": 1792430744.4663873,
+    "seen": 1792917255.7181404,
+    "ast_hash": "e1afdb03456d4624fe14df3c4e48d219",
+    "semantic_hash": ""
+  },
+  "Documentation/areas/radat_town.md": {
+    "mtime": 1792430744.360573,
+    "seen": 1792917255.7181404,
+    "ast_hash": "bb8c5043d05b7a975811e63d464c9b1e",
+    "semantic_hash": ""
+  },
+  "Documentation/areas/rockaxe_citadel_and_castle.md": {
+    "mtime": 1792430749.4137046,
+    "seen": 1792917255.7181404,
+    "ast_hash": "5d5e1b8aadd5d53687a58a96f3038502",
+    "semantic_hash": ""
+  },
+  "Documentation/areas/ryube_village.md": {
+    "mtime": 1792430741.0595088,
+    "seen": 1792917255.7181404,
+    "ast_hash": "248510d804b3e5d8bbbc434d4cfd6d98",
+    "semantic_hash": ""
+  },
+  "Documentation/areas/sajah_village.md": {
+    "mtime": 1792430751.3526819,
+    "seen": 1792917255.7181404,
+    "ast_hash": "4355e92864fe85e1328ed7b57922f910",
+    "semantic_hash": ""
+  },
+  "Documentation/areas/sindar_ruins.md": {
+    "mtime": 1792430743.1929927,
+    "seen": 1792917255.7181404,
+    "ast_hash": "222d46d6a7b09aa2fa45ce99a38c3a73",
+    "semantic_hash": ""
+  },
+  "Documentation/areas/south_window_city.md": {
+    "mtime": 1792430744.1716914,
+    "seen": 1792917255.7181404,
+    "ast_hash": "6bb44e07eda3f3780c70cb39c97085cf",
+    "semantic_hash": ""
+  },
+  "Documentation/areas/swallow_pass_ryube_forest.md": {
+    "mtime": 1792430741.3555112,
+    "seen": 1792917255.7181404,
+    "ast_hash": "1404184077dc3c1c1ddc7014497ac20a",
+    "semantic_hash": ""
+  },
+  "Documentation/areas/tenzan_pass.md": {
+    "mtime": 1792430739.2502208,
+    "seen": 1792917255.7181404,
+    "ast_hash": "f5918e1667e3e009189b43071c0f1d76",
+    "semantic_hash": ""
+  },
+  "Documentation/areas/tiger_cave_mt_senai.md": {
+    "mtime": 1792430747.9859548,
+    "seen": 1792917255.7181404,
+    "ast_hash": "54d19f2d981daeb116e2ef28003b768b",
+    "semantic_hash": ""
+  },
+  "Documentation/areas/tinto_city.md": {
+    "mtime": 1792430747.0605261,
+    "seen": 1792917255.7181404,
+    "ast_hash": "b2d8bcb73f1e01dfa1556d2cacef98b2",
+    "semantic_hash": ""
+  },
+  "Documentation/areas/tinto_mines.md": {
+    "mtime": 1792430747.5531726,
+    "seen": 1792917255.7181404,
+    "ast_hash": "e49e8bc2b127c6aa71336b8a18908e8f",
+    "semantic_hash": ""
+  },
+  "Documentation/areas/toran_castle_palace.md": {
+    "mtime": 1792430746.70417,
+    "seen": 1792917255.7186408,
+    "ast_hash": "46431e5e3d17a16275e5461a92c14fa6",
+    "semantic_hash": ""
+  },
+  "Documentation/areas/toto_village.md": {
+    "mtime": 1792430740.888965,
+    "seen": 1792917255.7186408,
+    "ast_hash": "cc354dfba3dd9e7cbac4fcccfaa89777",
+    "semantic_hash": ""
+  },
+  "Documentation/areas/two_river_city.md": {
+    "mtime": 1792430748.4445443,
+    "seen": 1792917255.7186408,
+    "ast_hash": "bd354e3a784285b64f4bd5b226fd0680",
+    "semantic_hash": ""
+  },
+  "Documentation/areas/two_river_sewers.md": {
+    "mtime": 1792430748.8863666,
+    "seen": 1792917255.7186408,
+    "ast_hash": "5fd8834b55038c5e6cf2074ef6c1a82c",
+    "semantic_hash": ""
+  },
+  "Documentation/areas/white_deer_inn.md": {
+    "mtime": 1792430742.7565832,
+    "seen": 1792917255.7186408,
+    "ast_hash": "1e7067cb738ece0adfaa9f4f0080dea0",
+    "semantic_hash": ""
+  },
+  "Documentation/caching_mechanism.md": {
+    "mtime": 1789568064.2159612,
+    "seen": 1792917255.7186408,
+    "ast_hash": "435d95ddf5bf0f3bfdbd62ee06963964",
+    "semantic_hash": ""
+  },
+  "Documentation/configuration_guide.md": {
+    "mtime": 1792584428.4945867,
+    "seen": 1792917255.7186408,
+    "ast_hash": "fc080053dfa507d805e5f414f066acb0",
+    "semantic_hash": ""
+  },
+  "Documentation/custom_textures_guide.md": {
+    "mtime": 1789568001.8327763,
+    "seen": 1792917255.7186408,
+    "ast_hash": "d8dffe2ae4dd871bc6d9241942c1e6ff",
+    "semantic_hash": ""
+  },
+  "Documentation/feature_realignment.md": {
+    "mtime": 1792915637.6726198,
+    "seen": 1792917255.7186408,
+    "ast_hash": "0ce0a10ec85364fc3975a301a3bdbd7e",
+    "semantic_hash": ""
+  },
+  "Documentation/mobobehaviour_catalog.md": {
+    "mtime": 1792426830.932948,
+    "seen": 1792917255.7186408,
+    "ast_hash": "ac82628426a584f0392da5ca07c0d975",
+    "semantic_hash": ""
+  },
+  "Documentation/place_holder_text.md": {
+    "mtime": 1772160773.652711,
+    "seen": 1792917255.7186408,
+    "ast_hash": "702971fad021eab10d106d051c2ed13e",
+    "semantic_hash": ""
+  },
+  "Documentation/sajah_village_rare_shop_vj17.md": {
+    "mtime": 1792263397.5131013,
+    "seen": 1792917255.7186408,
+    "ast_hash": "77d0b93b186db6c1873c6ab9d74e2c0d",
+    "semantic_hash": ""
+  },
+  "Documentation/sound_modding_guide.md": {
+    "mtime": 1789471300.495657,
+    "seen": 1792917255.7186408,
+    "ast_hash": "807a23f9c6187e0e604d03ee15a511a4",
+    "semantic_hash": ""
+  },
+  "Documentation/suikoden_1_map_ids_and_areas_breakdown.md": {
+    "mtime": 1792430550.457392,
+    "seen": 1792917255.7186408,
+    "ast_hash": "5425d09babf2ebb94bd252a5685c66eb",
+    "semantic_hash": ""
+  },
+  "Documentation/suikoden_1_qol_and_recruitment_proposals.md": {
+    "mtime": 1792511654.8178008,
+    "seen": 1792917255.7186408,
+    "ast_hash": "d3fe3204d24729a2b2f34b98b3d78bf8",
+    "semantic_hash": ""
+  },
+  "Documentation/suikoden_2_character_attributes_gender_and_baths.md": {
+    "mtime": 1792450668.4019606,
+    "seen": 1792917255.7186408,
+    "ast_hash": "48f111324690638cb6c571552b498535",
+    "semantic_hash": ""
+  },
+  "Documentation/suikoden_2_character_battle_ranges.md": {
+    "mtime": 1789471273.3757782,
+    "seen": 1792917255.7186408,
+    "ast_hash": "8b966993ff7c1681303ac0af29e163b0",
+    "semantic_hash": ""
+  },
+  "Documentation/suikoden_2_map_ids_and_areas_breakdown.md": {
+    "mtime": 1792915637.7505205,
+    "seen": 1792917255.7186408,
+    "ast_hash": "a15465e092fb42342d71023f810d0768",
+    "semantic_hash": ""
+  },
+  "Documentation/suikoden_2_master_map_entities_and_triggers_catalog.md": {
+    "mtime": 1792430016.5104947,
+    "seen": 1792917255.7186408,
+    "ast_hash": "a84af2d83ccd35de3979460aa66faf34",
+    "semantic_hash": ""
+  },
+  "Documentation/suikoden_2_room_item_restoration_whitepaper.md": {
+    "mtime": 1792319606.0175474,
+    "seen": 1792917255.7186408,
+    "ast_hash": "160bbe9aab9df1cd7e60654f4105a1bf",
+    "semantic_hash": ""
+  },
+  "Documentation/symbol_indexer_guide.md": {
+    "mtime": 1792417404.717426,
+    "seen": 1792917255.7186408,
+    "ast_hash": "88b2617e47eaabe2f0a4c07cf26024c9",
+    "semantic_hash": ""
+  },
+  "Documentation/tenzan_pass_chimera_va11.md": {
+    "mtime": 1792278491.845955,
+    "seen": 1792917255.7186408,
+    "ast_hash": "11717efcd40c81a32be25ef66444aac4",
+    "semantic_hash": ""
+  },
+  "Documentation/treasure_chests_catalog.md": {
+    "mtime": 1792448303.3330176,
+    "seen": 1792917255.7186408,
+    "ast_hash": "59df0b6ec542d3a0fa03c4a2f7f484f4",
+    "semantic_hash": ""
+  },
+  "Documentation/walkthrough_npc_portraits.md": {
+    "mtime": 1789471265.0062003,
+    "seen": 1792917255.7186408,
+    "ast_hash": "688825d874bab62503457f105f97e57b",
+    "semantic_hash": ""
+  },
+  "Documentation/war_battle_modding.md": {
+    "mtime": 1789471308.0992992,
+    "seen": 1792917255.7186408,
+    "ast_hash": "2755b40c03f3c1bb06596daf68d81fec",
+    "semantic_hash": ""
+  },
+  "LICENSE.txt": {
+    "mtime": 1767508135.725209,
+    "seen": 1792917255.7186408,
+    "ast_hash": "7ecd43e26ad1ae396ebfc0be27873820",
+    "semantic_hash": ""
+  },
+  "Plugin architecture.md": {
+    "mtime": 1792264706.3446622,
+    "seen": 1792917255.7186408,
+    "ast_hash": "09592b6a857830511e57ccb2c58f069c",
+    "semantic_hash": ""
+  },
+  "README.md": {
+    "mtime": 1792915637.956646,
+    "seen": 1792917255.7186408,
+    "ast_hash": "e06795d0d6166bb306f323f01500be0b",
+    "semantic_hash": ""
+  },
+  "Suikoden 2 architecture.md": {
+    "mtime": 1792324107.104007,
+    "seen": 1792917255.7186408,
+    "ast_hash": "73799f7175acb3551e923fd7d91c40ba",
+    "semantic_hash": ""
+  },
+  "wiki/00-mods_guide.md": {
+    "mtime": 1773071625.787787,
+    "seen": 1792917255.7186408,
+    "ast_hash": "027d38068e6cb557e482ab2d592006e6",
+    "semantic_hash": ""
+  },
+  "wiki/Home.md": {
+    "mtime": 1789471288.8495102,
+    "seen": 1792917255.7186408,
+    "ast_hash": "b4cd37fc211ab666cccb8e73638b3bce",
+    "semantic_hash": ""
+  },
+  "wiki/_Footer.md": {
+    "mtime": 1789371387.8610094,
+    "seen": 1792917255.7186408,
+    "ast_hash": "c9863b1af28ab41478d5b5af12edb440",
+    "semantic_hash": ""
+  },
+  "wiki/_Sidebar.md": {
+    "mtime": 1792324941.7484252,
+    "seen": 1792917255.7186408,
+    "ast_hash": "90a505701fe01ea78e217a3b132c578a",
+    "semantic_hash": ""
+  },
+  "wiki/caching_mechanism.md": {
+    "mtime": 1789568068.4611545,
+    "seen": 1792917255.7186408,
+    "ast_hash": "435d95ddf5bf0f3bfdbd62ee06963964",
+    "semantic_hash": ""
+  },
+  "wiki/configuration_guide.md": {
+    "mtime": 1789471244.6340685,
+    "seen": 1792917255.7186408,
+    "ast_hash": "2a564b2af4d97ff7fd2b2e075ed1ddd1",
+    "semantic_hash": ""
+  },
+  "wiki/custom_textures_guide.md": {
+    "mtime": 1789568006.1625102,
+    "seen": 1792917255.7186408,
+    "ast_hash": "d8dffe2ae4dd871bc6d9241942c1e6ff",
+    "semantic_hash": ""
+  },
+  "wiki/place_holder_text.md": {
+    "mtime": 1772160773.652711,
+    "seen": 1792917255.7186408,
+    "ast_hash": "702971fad021eab10d106d051c2ed13e",
+    "semantic_hash": ""
+  },
+  "wiki/sound_modding_guide.md": {
+    "mtime": 1789471300.495657,
+    "seen": 1792917255.7186408,
+    "ast_hash": "807a23f9c6187e0e604d03ee15a511a4",
+    "semantic_hash": ""
+  },
+  "wiki/suikoden_2_character_battle_ranges.md": {
+    "mtime": 1789471273.3757782,
+    "seen": 1792917255.7186408,
+    "ast_hash": "8b966993ff7c1681303ac0af29e163b0",
+    "semantic_hash": ""
+  },
+  "wiki/suikoden_2_map_ids_and_areas_breakdown.md": {
+    "mtime": 1792915638.0227616,
+    "seen": 1792917255.7186408,
+    "ast_hash": "5bb389ab044cc01a232f115795e67134",
+    "semantic_hash": ""
+  },
+  "wiki/walkthrough_npc_portraits.md": {
+    "mtime": 1789471265.0062003,
+    "seen": 1792917255.7186408,
+    "ast_hash": "688825d874bab62503457f105f97e57b",
+    "semantic_hash": ""
+  },
+  "wiki/war_battle_modding.md": {
+    "mtime": 1789471308.0992992,
+    "seen": 1792917255.7186408,
+    "ast_hash": "2755b40c03f3c1bb06596daf68d81fec",
+    "semantic_hash": ""
+  }
+}

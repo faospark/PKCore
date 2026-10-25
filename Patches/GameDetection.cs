@@ -1,80 +1,105 @@
-using UnityEngine;
+using System;
 using UnityEngine.SceneManagement;
 
 namespace PKCore.Patches;
 
 /// <summary>
-/// Utility to detect which game (Suikoden 1 or 2) is currently running
-/// Used for game-specific texture loading
+/// High-reliability game context detection for Project Kyaro (PKCore).
+/// Accurately detects whether Suikoden 1 (GSD1), Suikoden 2 (GSD2), or the Main Menu/Launcher is active.
+/// Powered by active Unity scene matching with instant SceneManager.sceneLoaded event dispatch.
 /// </summary>
 public static class GameDetection
 {
     private static string _cachedGameId = "Main";
     private static string _lastSceneName = "";
+    private static bool _initialized = false;
 
     /// <summary>
-    /// Event fired when the detected game context changes.
-    /// Parameter is the new game ID ("GSD1", "GSD2", "Main")
+    /// Event fired when the detected game context changes ("GSD1", "GSD2", "Main").
     /// </summary>
-    public static event System.Action<string> OnGameChanged;
+    public static event Action<string> OnGameChanged;
+
+    public static void Initialize()
+    {
+        if (_initialized) return;
+        _initialized = true;
+
+        try
+        {
+            SceneManager.sceneLoaded += (UnityEngine.Events.UnityAction<Scene, LoadSceneMode>)((scene, mode) =>
+            {
+                Update();
+            });
+        }
+        catch { }
+
+        Update();
+    }
 
     /// <summary>
-    /// Update loop called by Plugin.Update()
-    /// Monitors scene changes and fires events
+    /// Frame update called by PkCoreMainLoop and SceneManager.sceneLoaded.
     /// </summary>
     public static void Update()
     {
-        string sceneName = SceneManager.GetActiveScene().name;
+        string sceneName = "";
+        try { sceneName = SceneManager.GetActiveScene().name; } catch { }
 
-        // Only check if scene has changed
-        if (sceneName == _lastSceneName)
+        if (string.IsNullOrEmpty(sceneName) || sceneName == _lastSceneName)
             return;
 
         _lastSceneName = sceneName;
 
         string newGameId = _cachedGameId;
-        if (sceneName.Contains("GSD1", System.StringComparison.OrdinalIgnoreCase))
+        if (sceneName.Contains("GSD1", StringComparison.OrdinalIgnoreCase))
         {
             newGameId = "GSD1";
         }
-        else if (sceneName.Contains("GSD2", System.StringComparison.OrdinalIgnoreCase))
+        else if (sceneName.Contains("GSD2", StringComparison.OrdinalIgnoreCase))
         {
             newGameId = "GSD2";
         }
-        else if (sceneName.Equals("main", System.StringComparison.OrdinalIgnoreCase) || sceneName.Equals("init", System.StringComparison.OrdinalIgnoreCase))
+        else if (sceneName.Equals("main", StringComparison.OrdinalIgnoreCase) || sceneName.Equals("init", StringComparison.OrdinalIgnoreCase))
         {
             newGameId = "Main";
         }
 
-        // If detection changed, fire event
         if (newGameId != _cachedGameId)
         {
-            Plugin.Log.LogInfo($"[GameDetection] Game detected: {newGameId} (Scene: {sceneName})");
+            Plugin.Log.LogInfo($"[GameDetection] Game context changed: {_cachedGameId} -> {newGameId} (Scene: '{sceneName}')");
             _cachedGameId = newGameId;
             OnGameChanged?.Invoke(_cachedGameId);
         }
     }
 
     /// <summary>
-    /// Get the current game identifier (GSD1, GSD2, or Main)
+    /// Get the current game identifier ("GSD1", "GSD2", or "Main").
     /// </summary>
     public static string GetCurrentGame()
     {
+        if (_cachedGameId == "Main")
+        {
+            string sceneName = "";
+            try { sceneName = SceneManager.GetActiveScene().name; } catch { }
+            if (!string.IsNullOrEmpty(sceneName) && sceneName != _lastSceneName)
+            {
+                Update();
+            }
+        }
         return _cachedGameId;
     }
 
     /// <summary>
-    /// Check if we're currently running Suikoden 1
+    /// Check if Suikoden 1 is currently running.
     /// </summary>
     public static bool IsGSD1() => GetCurrentGame() == "GSD1";
 
     /// <summary>
-    /// Check if we're currently running Suikoden 2
+    /// Check if Suikoden 2 is currently running.
     /// </summary>
     public static bool IsGSD2() => GetCurrentGame() == "GSD2";
 
     /// <summary>
-    /// Check if we're currently in the Main menu/launcher
+    /// Check if currently in the Main menu or launcher.
     /// </summary>
     public static bool IsMain() => GetCurrentGame() == "Main";
 }

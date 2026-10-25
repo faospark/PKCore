@@ -106,7 +106,7 @@ This is the flagship mod: visuals only.
 
 ### 3.5 PK S2 Restorations (Cut / bugged content)
 These changes are all lore- or content-faithful and are a natural fit for "restoration" players.
-- Tenzan Chimera (3 settings), Sajah Rare Shop, Muse Ruins Survivors, NPC Bath Visitors, room_item antiques
+- Tenzan Chimera (3 settings), Sajah Rare Shop, NPC Bath Visitors
 - **About 7 settings**
 
 ### 3.6 PK S1 Castle Anywhere (S1 QoL)

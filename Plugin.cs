@@ -31,6 +31,7 @@ public class Plugin : BasePlugin
         Config.Init();
 
         AssetLoader.Initialize();
+        GameDetection.Initialize();
 
         // Force immediate exit on quit to prevent Alt+F4 hangs (Unity 2022/BepInEx 6 issue)
         Application.SetStackTraceLogType(LogType.Error, StackTraceLogType.None);
@@ -348,13 +349,6 @@ public class Plugin : BasePlugin
         {
             Log.LogInfo("Applying Sajah Village Rare Shop Unlock patch...");
             harmony.PatchAll(typeof(SajahShopUnlockPatch));
-        }
-
-        // Muse Ruins Survivors & 108 Stars Restoration Patch (Suikoden 2)
-        if (Config.EnableMuseRuinsSurvivorsRestoration.Value)
-        {
-            Log.LogInfo("Applying Muse Ruins Survivors & 108 Stars Restoration patch...");
-            harmony.PatchAll(typeof(MuseRuinsSurvivorsPatch));
         }
 
         // Reaction Monitor (MapChara/r_action trigger)
