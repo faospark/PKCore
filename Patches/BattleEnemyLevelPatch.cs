@@ -1,4 +1,4 @@
-extern alias GSD1;
+extern alias S1;
 extern alias GSD2;
 
 using HarmonyLib;
@@ -86,9 +86,9 @@ namespace PKCore.Patches
 
         #region Suikoden 1 Hooks
 
-        [HarmonyPatch(typeof(GSD1::UIBattleManager), nameof(GSD1::UIBattleManager.UpdateEnemyWindowUI))]
+        [HarmonyPatch(typeof(S1::UIBattleManager), nameof(S1::UIBattleManager.UpdateEnemyWindowUI))]
         [HarmonyPrefix]
-        public static void GSD1_UpdateEnemyWindowUI_Prefix(GSD1::UIBattleManager __instance, int index, ref string name, bool enable)
+        public static void GSD1_UpdateEnemyWindowUI_Prefix(S1::UIBattleManager __instance, int index, ref string name, bool enable)
         {
             try
             {
@@ -120,8 +120,8 @@ namespace PKCore.Patches
         {
             try
             {
-                var bw = GSD1::BattleBase.battle_work;
-                var ww = GSD1::BattleBase.window_work;
+                var bw = S1::BattleBase.battle_work;
+                var ww = S1::BattleBase.window_work;
                 if (bw == null || ww == null || bw.monster_data_table == null || ww.monster_window_data == null || ww.monster_position_data == null)
                     return 0;
 
@@ -150,8 +150,8 @@ namespace PKCore.Patches
         {
             try
             {
-                var bw = GSD1::BattleBase.battle_work;
-                var ww = GSD1::BattleBase.window_work;
+                var bw = S1::BattleBase.battle_work;
+                var ww = S1::BattleBase.window_work;
                 if (bw == null || ww == null || bw.monster_data_table == null || ww.monster_window_data == null || ww.monster_position_data == null)
                     return (0, 0);
 

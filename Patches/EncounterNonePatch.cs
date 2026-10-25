@@ -1,4 +1,4 @@
-extern alias GSD1;
+extern alias S1;
 extern alias GSD2;
 
 using System;
@@ -162,7 +162,7 @@ public static class EncounterNonePatch
         return true;
     }
 
-    [HarmonyPatch(typeof(GSD1::Village_c), "v_wanderingMonsterChk")]
+    [HarmonyPatch(typeof(S1::Village_c), "v_wanderingMonsterChk")]
     [HarmonyPrefix]
     public static bool GSD1_Village_MonsterChk_Prefix(ref int __result)
     {
@@ -174,7 +174,7 @@ public static class EncounterNonePatch
         return true;
     }
 
-    [HarmonyPatch(typeof(GSD1::Fmain_c), "f_wanderingMonsterChk")]
+    [HarmonyPatch(typeof(S1::Fmain_c), "f_wanderingMonsterChk")]
     [HarmonyPrefix]
     public static bool GSD1_Fmain_MonsterChk_Prefix(ref int __result)
     {

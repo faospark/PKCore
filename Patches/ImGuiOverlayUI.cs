@@ -1,4 +1,4 @@
-extern alias GSD1;
+extern alias S1;
 extern alias GSD2;
 
 using System;
@@ -2086,10 +2086,10 @@ public static class ImGuiOverlayUI
         }
     }
 
-    [HarmonyPatch(typeof(GSD1::Pad))]
+    [HarmonyPatch(typeof(S1::Pad))]
     private static class G1PadBlockerPatch
     {
-        [HarmonyPatch(nameof(GSD1::Pad.PadRead))]
+        [HarmonyPatch(nameof(S1::Pad.PadRead))]
         [HarmonyPrefix]
         public static bool PadRead_Prefix(ref uint __result)
         {
@@ -2101,7 +2101,7 @@ public static class ImGuiOverlayUI
             return true;
         }
 
-        [HarmonyPatch(nameof(GSD1::Pad.PadRRead))]
+        [HarmonyPatch(nameof(S1::Pad.PadRRead))]
         [HarmonyPrefix]
         public static bool PadRRead_Prefix(ref uint __result)
         {

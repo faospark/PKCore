@@ -17,6 +17,13 @@
   - **Suikoden I**: `d:\Appz\Suisource\GSD1` (`d:\Appz\Suisource\GSD1\GSD1`)
   - **Suikoden II**: `d:\Appz\Suisource\GSD2` (`d:\Appz\Suisource\GSD2\GSD2`)
   - **Shared / Engine Core**: `d:\Appz\Suisource\GSDShare` (`d:\Appz\Suisource\GSDShare\GSDShare`)
+- **Pre-Extracted Symbols & IL2CPP Metadata Storage**:
+  - The repository has already dumped and collated all IL2CPP symbols and metadata:
+    - `d:\Appz\Suisource\Il2CppDump\symbols.txt` (and `GSD2\GSD2\symbols.txt`): 189,523 native function addresses with exact signatures.
+    - `d:\Appz\Suisource\Il2CppDump\script.json`: Complete metadata dump (types, methods, strings, RVAs).
+    - `d:\Appz\Suisource\Il2CppDump\il2cpp.h`: 42 MB of C headers defining all structs, classes, and native layout offsets.
+    - `tools\symbol_indexer\symbols.db`: SQLite database indexing all 189k symbols, 6,147 types, and 259,139 members for sub-millisecond retrieval.
+  - **NEVER attempt full Ghidra decompiler runs on `GameAssembly.dll`**: Full headless decompile times out and hangs because the 63 MB binary is too massive. All symbols and addresses are ALREADY known and indexed!
 - **MANDATORY Grounding Tool - High-Speed Symbol Search (`tools\sym.bat`)**:
   - **Always query the local symbol index before doing broad grep searches across Suisource.** Broad greps across 2,282 files are slow and frequently hit limits. The SQLite symbol index contains all 6,147 types, 259,139 members, and 189,523 native IL2CPP addresses and responds in <1ms to 3ms.
   - **Usage**:
@@ -40,6 +47,40 @@
     - When REA disassembly reveals sub-procedure calls, data offsets, or unlabelled jump targets, feed those addresses back into `tools\sym.bat <address>` to instantly map them back to decompiled C# types and members.
   - **Phase 4: Harmony Patch Implementation**:
     - With both high-level C# decompilation and low-level native flow confirmed, implement the final, robust Harmony hook or patch in PKCore.
+
+## Game Architecture & Direct Reference Blueprints
+- **Suikoden I (GSD1) & Suikoden II (GSD2) Discrepancies**:
+  - Always check game-specific namespaces and aliases:
+    - `GSD1` uses `extern alias GSD1;` (types under `GSD1::` like `h_monsyo_c`, `h_omise_c`, `Village_c`, `Event_c`, `D_azukar_c`, `OldSrcBase`).
+    - `GSD2` uses `extern alias GSD2;` (types under `GSD2::` like `MACHICON`, `G2_SYS`, `G2_PAD`, `s_phase`).
+  - **Game Detection**: Use `Plugin.CurrentGame` or `GameDetection.CurrentGame` (`GameType.Suikoden1` vs `GameType.Suikoden2`) to guard patches when a hook applies universally or dynamically.
+
+## Direct Fast-Disassembly (Zero Slow Decompilers)
+- **Do NOT run heavy headless Ghidra runs or wait on multi-minute REA decompiler timeouts**:
+  - Full decompilation of 63 MB `GameAssembly.dll` times out.
+  - To inspect native assembly logic for ANY function in <100ms:
+    1. Resolve the address with `tools\sym.bat <Symbol>` (e.g. `0x18123c300`).
+    2. Convert Virtual Address (VA) to file offset:
+       `FileOffset = (VA - 0x180000000) - 0x003af000 + 0x003adc00`.
+    3. Use Python + Capstone (installed in the environment) to instantly disassemble the exact instructions:
+       ```powershell
+       python -c "import capstone; md=capstone.Cs(capstone.CS_ARCH_X86,capstone.CS_MODE_64); f=open(r'D:\SteamLibrary\steamapps\common\Suikoden I and II HD Remaster\GameAssembly.dll','rb'); f.seek(file_offset); print('\n'.join(f'0x{i.address:x}: {i.mnemonic} {i.op_str}' for i in md.disasm(f.read(256), va)))"
+       ```
+    4. Pass any sub-procedure call addresses back into `tools\sym.bat <0xAddress>` for instantaneous symbol naming.
+
+## Standard Harmony Patch Lifecycle & Patterns
+1. **Map Change Hooking**:
+   - S1: Hook `MACHICON_OnMapInitPatch.CurrentMapId` or `G1_fdata_c` / map load events. Avoid hooking per-frame step routines like `Village_c.village_main` for map transitions!
+   - S2: Hook `MACHICON.EventInit` (`[HarmonyPostfix]`) to intercept map load, or inspect `MACHICON_OnMapInitPatch.CurrentMapId`.
+2. **Menu & Window Expansion**:
+   - Menu message arrays in IL2CPP must be instantiated as `new Il2CppStructArray<int>(count)` or `Il2CppReferenceArray`.
+   - Cursor boundaries: Native scroll handlers clamp to `max`. Prefix the cursor function (`window_cursor_updown`) to expand `ref int max` to match the new choice count.
+   - Input polling: Poll native pad with `Pad.PadRRead()` (S1) or `G2_PAD.PadRRead()` (S2) checking `P1_OK` / `P1_CANCEL`.
+3. **Execution & Build Discipline**:
+   - Modify the patch in `PKCore/Patches/`.
+   - Run `dotnet build -c Release` (or `dotnet build`).
+   - Check `d:\SteamLibrary\steamapps\common\Suikoden I and II HD Remaster\BepInEx\LogOutput.log` for runtime output.
+   - Update `CHANGELOG.md` and `README.md`.
 
 ## Logging & Diagnostics
 - **Game & BepInEx Logs**: The active log file is located at `d:\SteamLibrary\steamapps\common\Suikoden I and II HD Remaster\BepInEx\LogOutput.log`. Check this log directly for runtime diagnostics, text message IDs, character slot IDs, and errors.

@@ -4,6 +4,17 @@ All notable changes to PKCore (formerly PKextended) are documented in this file.
 
 ---
 
+## [2026.10.25]
+
+- **Suikoden I & II: Assembly Alias Conflict Resolution (`S1` / `S2`)**:
+  - Configured dedicated `S1` and `S2` assembly aliases in [PKCore.csproj](PKCore.csproj) (`<Aliases>global,GSD1,S1</Aliases>` and `<Aliases>global,GSD2,S2</Aliases>`).
+  - Migrated Suikoden 1 patch files ([S1JeaneRuneShopPatch.cs](Patches/S1JeaneRuneShopPatch.cs), [S1QuickRunePatch.cs](Patches/S1QuickRunePatch.cs), [S1QuickStoragePatch.cs](Patches/S1QuickStoragePatch.cs), [BattleEnemyLevelPatch.cs](Patches/BattleEnemyLevelPatch.cs), [EncounterNonePatch.cs](Patches/EncounterNonePatch.cs), and [ImGuiOverlayUI.cs](Patches/ImGuiOverlayUI.cs)) from `extern alias GSD1;` to `extern alias S1;`.
+  - Permanently eliminates Roslyn / VS Code CS0234 false-positive red underlines caused by namespace ambiguity with internal `GSD1.UI.Component` and `GSD2.UI.Component` namespaces.
+
+## [2026.10.24]
+
+- **Suikoden I: Castle Rune Master (Jeane) Earth Rune Level 1 & Canonical Rune Mapping Fix**:
+
 ## [2026.10.23]
 
 - **Suikoden I: Castle Rune Master (Jeane) Shop Catalog & Scrolling Fix**:

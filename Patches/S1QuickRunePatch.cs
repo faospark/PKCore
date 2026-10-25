@@ -1,4 +1,4 @@
-extern alias GSD1;
+extern alias S1;
 
 using System;
 using HarmonyLib;
@@ -17,10 +17,10 @@ public static class S1QuickRunePatch
 {
     public static bool IsQuickRuneMasterOpen { get; private set; } = false;
 
-    public static GSD1::Village_c CurrentVillage => S1QuickStoragePatch.CurrentVillage;
-    public static GSD1::Fmain_c CurrentField => S1QuickStoragePatch.CurrentField;
+    public static S1::Village_c CurrentVillage => S1QuickStoragePatch.CurrentVillage;
+    public static S1::Fmain_c CurrentField => S1QuickStoragePatch.CurrentField;
 
-    private static GSD1::COMMAND_FUNC_TABLE _activeRuneDelegate = null;
+    private static S1::COMMAND_FUNC_TABLE _activeRuneDelegate = null;
     private static float _lastToggleTime = 0f;
     private static bool _wasRightStickDownPrev = false;
 
@@ -125,7 +125,7 @@ public static class S1QuickRunePatch
             return false;
         }
 
-        var gw = GSD1::OldSrcBase.game_work;
+        var gw = S1::OldSrcBase.game_work;
         if (gw == null)
         {
             failReason = "Game session not active";
@@ -136,7 +136,7 @@ public static class S1QuickRunePatch
         var shiro = gw.shiro_data;
         if (shiro == null)
         {
-            shiro = new GSD1::SHIRO_DATA();
+            shiro = new S1::SHIRO_DATA();
             gw.shiro_data = shiro;
         }
 
@@ -179,7 +179,7 @@ public static class S1QuickRunePatch
         }
 
         // Rejection: WindowManager uninitialized
-        if (GSD1::WindowManager.Instance == null)
+        if (S1::WindowManager.Instance == null)
         {
             failReason = "UI WindowManager is not available";
             return false;
@@ -197,10 +197,10 @@ public static class S1QuickRunePatch
         {
             Plugin.Log.LogInfo("[S1QuickRuneMaster] Invoking Castle Rune Master via Right Stick Down...");
 
-            var omiseData = GSD1::Event_c.shiro_monsyou_data;
+            var omiseData = S1::Event_c.shiro_monsyou_data;
             if (omiseData == null)
             {
-                omiseData = new GSD1::OMISE_DATA();
+                omiseData = new S1::OMISE_DATA();
             }
 
             if (omiseData.syohin == null)
@@ -213,12 +213,12 @@ public static class S1QuickRunePatch
                 omiseData.message = new Il2CppStructArray<int>(0);
             }
 
-            if (GSD1::Event_c.shiro_monsyou_data == null)
+            if (S1::Event_c.shiro_monsyou_data == null)
             {
-                GSD1::Event_c.shiro_monsyou_data = omiseData;
+                S1::Event_c.shiro_monsyou_data = omiseData;
             }
 
-            var initialDelegate = GSD1::h_monsyo_c.init_monsyo(omiseData);
+            var initialDelegate = S1::h_monsyo_c.init_monsyo(omiseData);
             if (initialDelegate != null)
             {
                 _activeRuneDelegate = initialDelegate;
@@ -255,7 +255,7 @@ public static class S1QuickRunePatch
         try
         {
             var nextDelegate = _activeRuneDelegate.Invoke();
-            if (nextDelegate != null && GSD1::h_monsyo_c.monsyo_work != null)
+            if (nextDelegate != null && S1::h_monsyo_c.monsyo_work != null)
             {
                 _activeRuneDelegate = nextDelegate;
             }
@@ -287,7 +287,7 @@ public static class S1QuickRunePatch
 
         try
         {
-            GSD1::h_monsyo_c.monsyo_exit();
+            S1::h_monsyo_c.monsyo_exit();
         }
         catch { }
 

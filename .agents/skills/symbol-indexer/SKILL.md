@@ -13,9 +13,10 @@ Always use this tool BEFORE performing broad ripgrep searches across `d:\Appz\Su
 - **GSD1**: Suikoden 1 decompiled C# sources
 - **GSD2**: Suikoden 2 decompiled C# sources
 - **GSDShare**: Shared engine & runtime sources
-- **symbols.txt**: 189,523 native IL2CPP address-to-symbol entries
+- **symbols.txt**: 189,523 native IL2CPP address-to-symbol entries (from `d:\Appz\Suisource\Il2CppDump\symbols.txt`)
+- **Metadata Dumps**: Also refer to `d:\Appz\Suisource\Il2CppDump\script.json` and `il2cpp.h` for complete metadata, field offsets, and struct definitions.
 
-## Quick CLI Reference
+> **CRITICAL**: Do NOT run full headless Ghidra decompilations on `GameAssembly.dll`. The binary is 63 MB and will time out. All symbols, addresses, and C headers are ALREADY extracted in `d:\Appz\Suisource\Il2CppDump\` and queryable in `<3ms` with `sym.bat`.
 
 Run from `d:\Appz\PKCore`:
 

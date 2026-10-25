@@ -477,6 +477,7 @@ public class Plugin : BasePlugin
             Patches.S1JeaneRuneShopPatch.Initialize(harmony);
         }
 
+
         // PSP Launcher Patch
         // Now handled by Update loop instead of Harmony postfix
     }

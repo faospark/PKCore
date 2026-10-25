@@ -1,4 +1,4 @@
-extern alias GSD1;
+extern alias S1;
 
 using System;
 using HarmonyLib;
@@ -21,10 +21,10 @@ public static class S1QuickStoragePatch
 
     public static bool IsInBattle { get; internal set; } = false;
 
-    public static GSD1::Village_c CurrentVillage { get; private set; }
-    public static GSD1::Fmain_c CurrentField { get; private set; }
+    public static S1::Village_c CurrentVillage { get; private set; }
+    public static S1::Fmain_c CurrentField { get; private set; }
 
-    private static GSD1::SHIRO_FUNC_DELEGATE _activeStorageDelegate = null;
+    private static S1::SHIRO_FUNC_DELEGATE _activeStorageDelegate = null;
     private static float _lastToggleTime = 0f;
     private static bool _wasRightStickUpPrev = false;
 
@@ -62,7 +62,7 @@ public static class S1QuickStoragePatch
             }
 
             // 2. Active UILoadingAnim resource loading
-            if (GSD1::UILoadingAnim.IsLoadingAnimeResources)
+            if (S1::UILoadingAnim.IsLoadingAnimeResources)
             {
                 reason = "Loading animation resources active";
                 return true;
@@ -190,7 +190,7 @@ public static class S1QuickStoragePatch
             return false;
         }
 
-        var gw = GSD1::OldSrcBase.game_work;
+        var gw = S1::OldSrcBase.game_work;
         if (gw == null)
         {
             failReason = "Game session not active";
@@ -201,7 +201,7 @@ public static class S1QuickStoragePatch
         var shiro = gw.shiro_data;
         if (shiro == null)
         {
-            shiro = new GSD1::SHIRO_DATA();
+            shiro = new S1::SHIRO_DATA();
             gw.shiro_data = shiro;
         }
         if (shiro.azukari == null)
@@ -252,7 +252,7 @@ public static class S1QuickStoragePatch
         }
 
         // Rejection: WindowManager uninitialized
-        if (GSD1::WindowManager.Instance == null)
+        if (S1::WindowManager.Instance == null)
         {
             failReason = "UI WindowManager is not available";
             return false;
@@ -270,7 +270,7 @@ public static class S1QuickStoragePatch
         {
             Plugin.Log.LogInfo("[S1QuickStorage] Invoking Rock's Castle Vault via Right Stick Up...");
 
-            var initResult = GSD1::D_azukar_c.azukari_demo();
+            var initResult = S1::D_azukar_c.azukari_demo();
             if (initResult.Item1 && initResult.Item2 != null)
             {
                 _activeStorageDelegate = initResult.Item2;
@@ -335,7 +335,7 @@ public static class S1QuickStoragePatch
     {
         try
         {
-            var eventC = GSD1::Village_c.event_c;
+            var eventC = S1::Village_c.event_c;
             if (eventC != null)
             {
                 var uiAzukari = eventC.uiAzukari;
@@ -364,15 +364,15 @@ public static class S1QuickStoragePatch
 
         try
         {
-            GSD1::D_azukar_c.demo_exit();
+            S1::D_azukar_c.demo_exit();
         }
         catch { }
 
         try
         {
-            if (GSD1::WindowManager.Instance != null)
+            if (S1::WindowManager.Instance != null)
             {
-                GSD1::WindowManager.Instance.CloseStorageWindowUI(
+                S1::WindowManager.Instance.CloseStorageWindowUI(
                     Share.UI.Window.StorageMenuType.Deposit,
                     Share.UI.Window.StorageWindowType.Command);
             }
@@ -391,10 +391,10 @@ public static class S1QuickStoragePatch
     {
         try
         {
-            int seId = GSD1::G_cmd_c.SE_OK;
-            if (seId <= 0) seId = GSD1::D_azukar_c.SE_OK;
+            int seId = S1::G_cmd_c.SE_OK;
+            if (seId <= 0) seId = S1::D_azukar_c.SE_OK;
             if (seId <= 0) seId = 1;
-            GSD1::P_sound_c.Qsd_call(seId);
+            S1::P_sound_c.Qsd_call(seId);
         }
         catch { }
     }
@@ -406,10 +406,10 @@ public static class S1QuickStoragePatch
     {
         try
         {
-            int seId = GSD1::G_cmd_c.SE_CANCEL;
-            if (seId <= 0) seId = GSD1::D_azukar_c.SE_CANCEL;
+            int seId = S1::G_cmd_c.SE_CANCEL;
+            if (seId <= 0) seId = S1::D_azukar_c.SE_CANCEL;
             if (seId <= 0) seId = 2;
-            GSD1::P_sound_c.Qsd_call(seId);
+            S1::P_sound_c.Qsd_call(seId);
         }
         catch { }
     }
@@ -418,18 +418,18 @@ public static class S1QuickStoragePatch
     // HARMONY HOOKS (Player Control, Movement & Encounter Guards)
     // =========================================================================
 
-    [HarmonyPatch(typeof(GSD1::Village_c), nameof(GSD1::Village_c.village_main))]
+    [HarmonyPatch(typeof(S1::Village_c), nameof(S1::Village_c.village_main))]
     [HarmonyPrefix]
-    public static void Village_village_main_Prefix(GSD1::Village_c __instance)
+    public static void Village_village_main_Prefix(S1::Village_c __instance)
     {
         CurrentVillage = __instance;
         CurrentField = null;
         IsInBattle = false;
     }
 
-    [HarmonyPatch(typeof(GSD1::Fmain_c), nameof(GSD1::Fmain_c.fieldMain))]
+    [HarmonyPatch(typeof(S1::Fmain_c), nameof(S1::Fmain_c.fieldMain))]
     [HarmonyPrefix]
-    public static void Fmain_fieldMain_Prefix(GSD1::Fmain_c __instance)
+    public static void Fmain_fieldMain_Prefix(S1::Fmain_c __instance)
     {
         CurrentField = __instance;
         CurrentVillage = null;
@@ -438,21 +438,21 @@ public static class S1QuickStoragePatch
 
     // --- Battle State Tracking ---
 
-    [HarmonyPatch(typeof(GSD1::BattleChapter), nameof(GSD1::BattleChapter.Start))]
+    [HarmonyPatch(typeof(S1::BattleChapter), nameof(S1::BattleChapter.Start))]
     [HarmonyPrefix]
     public static void BattleChapter_Start_Prefix()
     {
         IsInBattle = true;
     }
 
-    [HarmonyPatch(typeof(GSD1::BattleChapter), nameof(GSD1::BattleChapter.BattleEnd))]
+    [HarmonyPatch(typeof(S1::BattleChapter), nameof(S1::BattleChapter.BattleEnd))]
     [HarmonyPostfix]
     public static void BattleChapter_BattleEnd_Postfix()
     {
         IsInBattle = false;
     }
 
-    [HarmonyPatch(typeof(GSD1::BattleChapter), nameof(GSD1::BattleChapter.OnDestroy))]
+    [HarmonyPatch(typeof(S1::BattleChapter), nameof(S1::BattleChapter.OnDestroy))]
     [HarmonyPostfix]
     public static void BattleChapter_OnDestroy_Postfix()
     {
@@ -461,42 +461,42 @@ public static class S1QuickStoragePatch
 
     // --- Movement Blockers (Towns, Dungeons, Castles) ---
 
-    [HarmonyPatch(typeof(GSD1::Village_c), nameof(GSD1::Village_c.NewPlayerMove))]
+    [HarmonyPatch(typeof(S1::Village_c), nameof(S1::Village_c.NewPlayerMove))]
     [HarmonyPrefix]
     public static bool Village_NewPlayerMove_Prefix()
     {
         return !IsAnyQuickWindowOpen;
     }
 
-    [HarmonyPatch(typeof(GSD1::Village_c), nameof(GSD1::Village_c.OldPlayerMove))]
+    [HarmonyPatch(typeof(S1::Village_c), nameof(S1::Village_c.OldPlayerMove))]
     [HarmonyPrefix]
     public static bool Village_OldPlayerMove_Prefix()
     {
         return !IsAnyQuickWindowOpen;
     }
 
-    [HarmonyPatch(typeof(GSD1::Village_c), nameof(GSD1::Village_c.playerMoveBase1))]
+    [HarmonyPatch(typeof(S1::Village_c), nameof(S1::Village_c.playerMoveBase1))]
     [HarmonyPrefix]
     public static bool Village_playerMoveBase1_Prefix()
     {
         return !IsAnyQuickWindowOpen;
     }
 
-    [HarmonyPatch(typeof(GSD1::Village_c), nameof(GSD1::Village_c.playerMoveBase2))]
+    [HarmonyPatch(typeof(S1::Village_c), nameof(S1::Village_c.playerMoveBase2))]
     [HarmonyPrefix]
     public static bool Village_playerMoveBase2_Prefix()
     {
         return !IsAnyQuickWindowOpen;
     }
 
-    [HarmonyPatch(typeof(GSD1::Village_c), nameof(GSD1::Village_c.playerMoveBase3))]
+    [HarmonyPatch(typeof(S1::Village_c), nameof(S1::Village_c.playerMoveBase3))]
     [HarmonyPrefix]
     public static bool Village_playerMoveBase3_Prefix()
     {
         return !IsAnyQuickWindowOpen;
     }
 
-    [HarmonyPatch(typeof(GSD1::Village_c), nameof(GSD1::Village_c.player_move))]
+    [HarmonyPatch(typeof(S1::Village_c), nameof(S1::Village_c.player_move))]
     [HarmonyPrefix]
     public static bool Village_player_move_Prefix(ref byte __result)
     {
@@ -508,7 +508,7 @@ public static class S1QuickStoragePatch
         return true;
     }
 
-    [HarmonyPatch(typeof(GSD1::Village_c), nameof(GSD1::Village_c.CheckArrivedEvent))]
+    [HarmonyPatch(typeof(S1::Village_c), nameof(S1::Village_c.CheckArrivedEvent))]
     [HarmonyPrefix]
     public static bool Village_CheckArrivedEvent_Prefix(ref bool __result)
     {
@@ -520,7 +520,7 @@ public static class S1QuickStoragePatch
         return true;
     }
 
-    [HarmonyPatch(typeof(GSD1::Village_c), nameof(GSD1::Village_c.playerOP_move))]
+    [HarmonyPatch(typeof(S1::Village_c), nameof(S1::Village_c.playerOP_move))]
     [HarmonyPrefix]
     public static bool Village_playerOP_move_Prefix()
     {
@@ -529,21 +529,21 @@ public static class S1QuickStoragePatch
 
     // --- Movement & Input Blockers (World Map) ---
 
-    [HarmonyPatch(typeof(GSD1::Fmain_c), nameof(GSD1::Fmain_c.userMove))]
+    [HarmonyPatch(typeof(S1::Fmain_c), nameof(S1::Fmain_c.userMove))]
     [HarmonyPrefix]
     public static bool Fmain_userMove_Prefix()
     {
         return !IsAnyQuickWindowOpen;
     }
 
-    [HarmonyPatch(typeof(GSD1::Fmain_c), nameof(GSD1::Fmain_c.userMoveSet))]
+    [HarmonyPatch(typeof(S1::Fmain_c), nameof(S1::Fmain_c.userMoveSet))]
     [HarmonyPrefix]
     public static bool Fmain_userMoveSet_Prefix()
     {
         return !IsAnyQuickWindowOpen;
     }
 
-    [HarmonyPatch(typeof(GSD1::Fmain_c), nameof(GSD1::Fmain_c.padReaction))]
+    [HarmonyPatch(typeof(S1::Fmain_c), nameof(S1::Fmain_c.padReaction))]
     [HarmonyPrefix]
     public static bool Fmain_padReaction_Prefix()
     {
@@ -552,7 +552,7 @@ public static class S1QuickStoragePatch
 
     // --- Encounter Lockouts ---
 
-    [HarmonyPatch(typeof(GSD1::Village_c), nameof(GSD1::Village_c.v_wanderingMonsterChk))]
+    [HarmonyPatch(typeof(S1::Village_c), nameof(S1::Village_c.v_wanderingMonsterChk))]
     [HarmonyPrefix]
     public static bool Village_MonsterChk_Prefix(ref int __result)
     {
@@ -564,7 +564,7 @@ public static class S1QuickStoragePatch
         return true;
     }
 
-    [HarmonyPatch(typeof(GSD1::Fmain_c), nameof(GSD1::Fmain_c.f_wanderingMonsterChk))]
+    [HarmonyPatch(typeof(S1::Fmain_c), nameof(S1::Fmain_c.f_wanderingMonsterChk))]
     [HarmonyPrefix]
     public static bool Fmain_MonsterChk_Prefix(ref int __result)
     {
@@ -578,9 +578,9 @@ public static class S1QuickStoragePatch
 
     // --- Rock Background Image Suppression & Instant Opening ---
 
-    [HarmonyPatch(typeof(GSD1::D_azukar_c.UIAzukari), nameof(GSD1::D_azukar_c.UIAzukari.Initialize))]
+    [HarmonyPatch(typeof(S1::D_azukar_c.UIAzukari), nameof(S1::D_azukar_c.UIAzukari.Initialize))]
     [HarmonyPrefix]
-    public static bool UIAzukari_Initialize_Prefix(GSD1::D_azukar_c.UIAzukari __instance, ref Il2CppSystem.Collections.IEnumerator __result)
+    public static bool UIAzukari_Initialize_Prefix(S1::D_azukar_c.UIAzukari __instance, ref Il2CppSystem.Collections.IEnumerator __result)
     {
         if (IsQuickStorageOpen)
         {
@@ -594,7 +594,7 @@ public static class S1QuickStoragePatch
         return true;
     }
 
-    [HarmonyPatch(typeof(GSD1::D_azukar_c.UIAzukari), nameof(GSD1::D_azukar_c.UIAzukari.IsCompleteInitialize))]
+    [HarmonyPatch(typeof(S1::D_azukar_c.UIAzukari), nameof(S1::D_azukar_c.UIAzukari.IsCompleteInitialize))]
     [HarmonyPrefix]
     public static bool UIAzukari_IsCompleteInitialize_Prefix(ref bool __result)
     {
@@ -606,9 +606,9 @@ public static class S1QuickStoragePatch
         return true;
     }
 
-    [HarmonyPatch(typeof(GSD1::D_azukar_c.UIAzukari), nameof(GSD1::D_azukar_c.UIAzukari.Terminate))]
+    [HarmonyPatch(typeof(S1::D_azukar_c.UIAzukari), nameof(S1::D_azukar_c.UIAzukari.Terminate))]
     [HarmonyPrefix]
-    public static bool UIAzukari_Terminate_Prefix(GSD1::D_azukar_c.UIAzukari __instance)
+    public static bool UIAzukari_Terminate_Prefix(S1::D_azukar_c.UIAzukari __instance)
     {
         if (IsQuickStorageOpen)
         {
@@ -621,9 +621,9 @@ public static class S1QuickStoragePatch
         return true;
     }
 
-    [HarmonyPatch(typeof(GSD1::D_azukar_c.UIAzukari), nameof(GSD1::D_azukar_c.UIAzukari.SetFadeBright))]
+    [HarmonyPatch(typeof(S1::D_azukar_c.UIAzukari), nameof(S1::D_azukar_c.UIAzukari.SetFadeBright))]
     [HarmonyPrefix]
-    public static bool UIAzukari_SetFadeBright_Prefix(GSD1::D_azukar_c.UIAzukari __instance)
+    public static bool UIAzukari_SetFadeBright_Prefix(S1::D_azukar_c.UIAzukari __instance)
     {
         if (IsQuickStorageOpen)
         {

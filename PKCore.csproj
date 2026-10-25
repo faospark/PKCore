@@ -13,6 +13,8 @@
     <GameRegistryPath>HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Uninstall\Steam App 1932640</GameRegistryPath>
     <GamePath Condition="'$(GamePath)' == ''">$([MSBuild]::GetRegistryValueFromView('$(GameRegistryPath)', 'InstallLocation', null, RegistryView.Registry32))</GamePath>
     <GamePath Condition="'$(GamePath)' == ''">$([MSBuild]::GetRegistryValueFromView('$(GameRegistryPath)', 'InstallLocation', null, RegistryView.Registry64))</GamePath>
+    <GamePath Condition="'$(GamePath)' == '' and Exists('d:\SteamLibrary\steamapps\common\Suikoden I and II HD Remaster')">d:\SteamLibrary\steamapps\common\Suikoden I and II HD Remaster</GamePath>
+    <NoWarn>$(NoWarn);CS0234</NoWarn>
     <OutputPath>$(GamePath)\BepInEx\plugins\</OutputPath>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <ZipFileName>$(MSBuildProjectName).zip</ZipFileName>
@@ -100,7 +102,7 @@
     <Reference Include="GSD1">
       <HintPath>$(GamePath)\BepInEx\interop\GSD1.dll</HintPath>
       <Private>false</Private>
-      <Aliases>global,GSD1</Aliases>
+      <Aliases>global,GSD1,S1</Aliases>
     </Reference>
     <Reference Include="GSDShare">
       <HintPath>$(GamePath)\BepInEx\interop\GSDShare.dll</HintPath>
@@ -109,7 +111,7 @@
     <Reference Include="GSD2">
       <HintPath>$(GamePath)\BepInEx\interop\GSD2.dll</HintPath>
       <Private>false</Private>
-      <Aliases>global,GSD2</Aliases>
+      <Aliases>global,GSD2,S2</Aliases>
     </Reference>
     <Reference Include="ShareUI">
       <HintPath>$(GamePath)\BepInEx\interop\ShareUI.dll</HintPath>
