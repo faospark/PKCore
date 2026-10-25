@@ -6,6 +6,12 @@ All notable changes to PKCore (formerly PKextended) are documented in this file.
 
 ## [2026.10.26]
 
+- **Project Kyaro Suite Realignment: Dedicated Rune Sage Plugin (`PKRuneSagePlus`)**:
+  - Migrated the Suikoden 1 Castle Rune Master Shop Expansion (`S1JeaneRuneShopPatch`) and Suikoden 2 Sajah Village Rare Rune Shop Early Unlock (`SajahShopUnlockPatch`) from PKCore into an independent, standalone BepInEx IL2CPP plugin: `PKRuneSagePlus.dll` (`faospark.pkrunesageplus`).
+  - Jeane's 4-choice menu layout (`Attach`, `Remove`, `Buy`, `Exit`), progressive town rune catalog, and Toran Castle level scaling are now cleanly encapsulated in `PKRuneSagePlus`.
+  - Sajah Village rare rune vendor early unlock in `vj17` is now managed with self-contained map initialization and event patching.
+  - Removed `Patches/S1JeaneRuneShopPatch.cs`, `Patches/SajahShopUnlockPatch.cs`, and corresponding configuration bindings (`EnableS1JeaneRuneShop`, `UnlockSajahRareShopEarly`) from `ModConfiguration.cs` and `Plugin.cs`.
+
 - **Project Kyaro Suite Realignment: Dedicated Castle Storage Plugin (`PKS1CastleStorageAnywhere`)**:
   - Migrated the Suikoden 1 Remote Castle Vault Access feature (`S1QuickStoragePatch`) from PKCore into an independent, standalone BepInEx IL2CPP plugin: `PKS1CastleStorageAnywhere.dll` (`faospark.pks1castlestorageanywhere`).
   - Encapsulated complete vault management, native state machine lifecycle, Rock warehouse background suppression, and input handling (Right Stick Up / R3 / [F6]) into the new dedicated project.

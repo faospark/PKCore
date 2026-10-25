@@ -120,6 +120,15 @@
   - These break in web browsers, GitHub, and markdown viewers.
   - Use relative markdown links (e.g. `[MemoryAutoBattlePatch.cs](Patches/MemoryAutoBattlePatch.cs)`) or plain inline code (e.g. `MemoryAutoBattlePatch.cs`).
 
+## Nexus Mods Description Template (BBCode)
+- Whenever requested to write a Nexus Mods description, always use the standardized BBCode pattern documented in `.agents/rules/nexusmods_template.md`:
+  - Support Campaign banner header (`[quote][b][color=#e67e22][size=3]📢 A Quick Personal Note & Support Campaign:[/size][/color][/b]...[/quote]`).
+  - Title colored with `[b][color=#336699][size=4]...[/size][/color][/b]`, subtitle in `[i][size=3]...[/size][/i]`, and GitHub link.
+  - Divider lines: `--------------------------------------------------------------------------------`.
+  - Sections: `Overview & Background`, `Features`, `Requirements` (`[size=130]`), `Installation` (`[size=130]`), `Configuration`, and `Credits`.
+  - BBCode tags (`[list]`, `[*]...[/*]`, `[font=Courier New]`, `[code]...[/code]`).
+  - Standard credits acknowledging original researchers, `faospark`, and the `Moogles & Mods Community`.
+
 ## Strict Scope Discipline & Zero Hallucinated Features (Anti-Overengineering)
 - **Zero Unilateral Feature Splitting or Scope Creep**:
   - Never invent, split, decouple, or add extra configuration options or architecture variations that the user did not explicitly request (e.g., splitting a unified auto-battle feature into separate memory and persistence toggles).

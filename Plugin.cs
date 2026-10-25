@@ -336,12 +336,6 @@ public class Plugin : BasePlugin
         // Map ID Tracking (shared by Map Object & S2 patches)
         harmony.PatchAll(typeof(MACHICON_OnMapInitPatch));
 
-        // Sajah Village Rare Shop Unlock Patch (Suikoden 2)
-        if (Config.UnlockSajahRareShopEarly.Value)
-        {
-            Log.LogInfo("Applying Sajah Village Rare Shop Unlock patch...");
-            harmony.PatchAll(typeof(SajahShopUnlockPatch));
-        }
 
         // Reaction Monitor (MapChara/r_action trigger)
         S2CookOffPortraitMonitor.Initialize();
@@ -374,11 +368,6 @@ public class Plugin : BasePlugin
             harmony.PatchAll(typeof(Patches.S1QuickRunePatch));
         }
 
-        // Suikoden 1 Castle Rune Master (Jeane Shop Expansion)
-        if (Config.EnableS1JeaneRuneShop.Value)
-        {
-            Patches.S1JeaneRuneShopPatch.Initialize(harmony);
-        }
 
 
         // PSP Launcher Patch
