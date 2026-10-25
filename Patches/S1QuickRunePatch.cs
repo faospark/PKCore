@@ -17,12 +17,75 @@ public static class S1QuickRunePatch
 {
     public static bool IsQuickRuneMasterOpen { get; private set; } = false;
 
-    public static S1::Village_c CurrentVillage => S1QuickStoragePatch.CurrentVillage;
-    public static S1::Fmain_c CurrentField => S1QuickStoragePatch.CurrentField;
+    public static bool IsInBattle { get; internal set; } = false;
+    public static S1::Village_c CurrentVillage { get; private set; }
+    public static S1::Fmain_c CurrentField { get; private set; }
 
     private static S1::COMMAND_FUNC_TABLE _activeRuneDelegate = null;
     private static float _lastToggleTime = 0f;
     private static bool _wasRightStickDownPrev = false;
+
+    /// <summary>
+    /// Checks if AppRoot/Map/MapBackGround/ has at least one child, ensuring Tir is loaded on the area.
+    /// </summary>
+    public static bool HasMapBackgroundChild()
+    {
+        try
+        {
+            var mapBg = GameObject.Find("AppRoot/Map/MapBackGround");
+            return mapBg != null && mapBg.transform != null && mapBg.transform.childCount > 0;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// Checks if the game is currently in a loading screen, scene change, or screen fade.
+    /// </summary>
+    public static bool IsGameInLoadingOrTransition(out string reason)
+    {
+        reason = null;
+
+        try
+        {
+            // 1. Loading UI overlay
+            var uiManager = global::UIManager.Instance;
+            if (uiManager != null && uiManager.loading != null && uiManager.loading.gameObject.activeInHierarchy)
+            {
+                reason = "Loading screen is currently displayed";
+                return true;
+            }
+
+            // 2. Active UILoadingAnim resource loading
+            if (S1::UILoadingAnim.IsLoadingAnimeResources)
+            {
+                reason = "Loading animation resources active";
+                return true;
+            }
+
+            // 3. Map background asset loading in village / field
+            if (CurrentVillage != null && CurrentVillage.bg_manager != null && CurrentVillage.bg_manager.IsLoading)
+            {
+                reason = "Map background asset loading in progress";
+                return true;
+            }
+
+            // 4. World map transition in progress (only valid when actively on world map)
+            if (CurrentVillage == null && CurrentField != null)
+            {
+                if (CurrentField.loadVillage != 0 || CurrentField.field_exit_flg != 0)
+                {
+                    reason = "World map transition in progress";
+                    return true;
+                }
+            }
+        }
+        catch { }
+
+        return false;
+    }
 
     /// <summary>
     /// Per-frame update called on the Unity main thread via Plugin.Update().
@@ -34,13 +97,6 @@ public static class S1QuickRunePatch
 
         if (Plugin.Config == null || !Plugin.Config.EnableS1QuickRuneMaster.Value)
             return;
-
-        // Mutual exclusion: only one quick window can be active or activated at a time
-        if (S1QuickStoragePatch.IsQuickStorageOpen)
-        {
-            _wasRightStickDownPrev = false;
-            return;
-        }
 
         // Check if Right Stick Down, R3 (Right Stick Press), or [F7] was pressed
         bool triggerPressed = false;
@@ -112,14 +168,14 @@ public static class S1QuickRunePatch
         failReason = null;
 
         // 0. Ensure map background has loaded Tir on the area
-        if (!S1QuickStoragePatch.HasMapBackgroundChild())
+        if (!HasMapBackgroundChild())
         {
             failReason = "Map background has not loaded Tir on the area";
             return false;
         }
 
         // Rejection: Loading screen, scene change, or screen fade
-        if (S1QuickStoragePatch.IsGameInLoadingOrTransition(out var loadingReason))
+        if (IsGameInLoadingOrTransition(out var loadingReason))
         {
             failReason = loadingReason;
             return false;
@@ -151,16 +207,9 @@ public static class S1QuickRunePatch
         }
 
         // Rejection: In Battle
-        if (S1QuickStoragePatch.IsInBattle)
+        if (IsInBattle)
         {
             failReason = "Currently in battle";
-            return false;
-        }
-
-        // Rejection: If Quick Storage or another overlay is currently open
-        if (S1QuickStoragePatch.IsQuickStorageOpen)
-        {
-            failReason = "Castle Vault is currently open";
             return false;
         }
 
@@ -223,7 +272,7 @@ public static class S1QuickRunePatch
             {
                 _activeRuneDelegate = initialDelegate;
                 IsQuickRuneMasterOpen = true;
-                S1QuickStoragePatch.PlaySoundOpen();
+                PlaySoundOpen();
                 Plugin.Log.LogInfo("[S1QuickRuneMaster] Rune Master opened successfully.");
             }
             else
@@ -263,7 +312,7 @@ public static class S1QuickRunePatch
             {
                 // Native rune routine finished cleanly (user chose Exit/Back)
                 Plugin.Log.LogInfo("[S1QuickRuneMaster] Rune Master session completed cleanly.");
-                S1QuickStoragePatch.PlaySoundClose();
+                PlaySoundClose();
                 IsQuickRuneMasterOpen = false;
                 _activeRuneDelegate = null;
             }
@@ -282,7 +331,7 @@ public static class S1QuickRunePatch
     {
         if (IsQuickRuneMasterOpen)
         {
-            S1QuickStoragePatch.PlaySoundClose();
+            PlaySoundClose();
         }
 
         try
@@ -294,5 +343,195 @@ public static class S1QuickRunePatch
         IsQuickRuneMasterOpen = false;
         _activeRuneDelegate = null;
         Plugin.Log.LogInfo("[S1QuickRuneMaster] Rune Master closed and player control restored.");
+    }
+
+    /// <summary>
+    /// Plays the authentic Suikoden 1 menu open chime.
+    /// </summary>
+    public static void PlaySoundOpen()
+    {
+        try
+        {
+            int seId = S1::G_cmd_c.SE_OK;
+            if (seId <= 0) seId = 1;
+            S1::P_sound_c.Qsd_call(seId);
+        }
+        catch { }
+    }
+
+    /// <summary>
+    /// Plays the authentic Suikoden 1 menu cancel/close chime.
+    /// </summary>
+    public static void PlaySoundClose()
+    {
+        try
+        {
+            int seId = S1::G_cmd_c.SE_CANCEL;
+            if (seId <= 0) seId = 2;
+            S1::P_sound_c.Qsd_call(seId);
+        }
+        catch { }
+    }
+
+    // =========================================================================
+    // HARMONY HOOKS (Player Control, Movement & Encounter Guards)
+    // =========================================================================
+
+    [HarmonyPatch(typeof(S1::Village_c), nameof(S1::Village_c.village_main))]
+    [HarmonyPrefix]
+    public static void Village_village_main_Prefix(S1::Village_c __instance)
+    {
+        CurrentVillage = __instance;
+        CurrentField = null;
+        IsInBattle = false;
+    }
+
+    [HarmonyPatch(typeof(S1::Fmain_c), nameof(S1::Fmain_c.fieldMain))]
+    [HarmonyPrefix]
+    public static void Fmain_fieldMain_Prefix(S1::Fmain_c __instance)
+    {
+        CurrentField = __instance;
+        CurrentVillage = null;
+        IsInBattle = false;
+    }
+
+    // --- Battle State Tracking ---
+
+    [HarmonyPatch(typeof(S1::BattleChapter), nameof(S1::BattleChapter.Start))]
+    [HarmonyPrefix]
+    public static void BattleChapter_Start_Prefix()
+    {
+        IsInBattle = true;
+    }
+
+    [HarmonyPatch(typeof(S1::BattleChapter), nameof(S1::BattleChapter.BattleEnd))]
+    [HarmonyPostfix]
+    public static void BattleChapter_BattleEnd_Postfix()
+    {
+        IsInBattle = false;
+    }
+
+    [HarmonyPatch(typeof(S1::BattleChapter), nameof(S1::BattleChapter.OnDestroy))]
+    [HarmonyPostfix]
+    public static void BattleChapter_OnDestroy_Postfix()
+    {
+        IsInBattle = false;
+    }
+
+    // --- Movement Blockers (Towns, Dungeons, Castles) ---
+
+    [HarmonyPatch(typeof(S1::Village_c), nameof(S1::Village_c.NewPlayerMove))]
+    [HarmonyPrefix]
+    public static bool Village_NewPlayerMove_Prefix()
+    {
+        return !IsQuickRuneMasterOpen;
+    }
+
+    [HarmonyPatch(typeof(S1::Village_c), nameof(S1::Village_c.OldPlayerMove))]
+    [HarmonyPrefix]
+    public static bool Village_OldPlayerMove_Prefix()
+    {
+        return !IsQuickRuneMasterOpen;
+    }
+
+    [HarmonyPatch(typeof(S1::Village_c), nameof(S1::Village_c.playerMoveBase1))]
+    [HarmonyPrefix]
+    public static bool Village_playerMoveBase1_Prefix()
+    {
+        return !IsQuickRuneMasterOpen;
+    }
+
+    [HarmonyPatch(typeof(S1::Village_c), nameof(S1::Village_c.playerMoveBase2))]
+    [HarmonyPrefix]
+    public static bool Village_playerMoveBase2_Prefix()
+    {
+        return !IsQuickRuneMasterOpen;
+    }
+
+    [HarmonyPatch(typeof(S1::Village_c), nameof(S1::Village_c.playerMoveBase3))]
+    [HarmonyPrefix]
+    public static bool Village_playerMoveBase3_Prefix()
+    {
+        return !IsQuickRuneMasterOpen;
+    }
+
+    [HarmonyPatch(typeof(S1::Village_c), nameof(S1::Village_c.player_move))]
+    [HarmonyPrefix]
+    public static bool Village_player_move_Prefix(ref byte __result)
+    {
+        if (IsQuickRuneMasterOpen)
+        {
+            __result = 0;
+            return false;
+        }
+        return true;
+    }
+
+    [HarmonyPatch(typeof(S1::Village_c), nameof(S1::Village_c.CheckArrivedEvent))]
+    [HarmonyPrefix]
+    public static bool Village_CheckArrivedEvent_Prefix(ref bool __result)
+    {
+        if (IsQuickRuneMasterOpen)
+        {
+            __result = false;
+            return false;
+        }
+        return true;
+    }
+
+    [HarmonyPatch(typeof(S1::Village_c), nameof(S1::Village_c.playerOP_move))]
+    [HarmonyPrefix]
+    public static bool Village_playerOP_move_Prefix()
+    {
+        return !IsQuickRuneMasterOpen;
+    }
+
+    // --- Movement & Input Blockers (World Map) ---
+
+    [HarmonyPatch(typeof(S1::Fmain_c), nameof(S1::Fmain_c.userMove))]
+    [HarmonyPrefix]
+    public static bool Fmain_userMove_Prefix()
+    {
+        return !IsQuickRuneMasterOpen;
+    }
+
+    [HarmonyPatch(typeof(S1::Fmain_c), nameof(S1::Fmain_c.userMoveSet))]
+    [HarmonyPrefix]
+    public static bool Fmain_userMoveSet_Prefix()
+    {
+        return !IsQuickRuneMasterOpen;
+    }
+
+    [HarmonyPatch(typeof(S1::Fmain_c), nameof(S1::Fmain_c.padReaction))]
+    [HarmonyPrefix]
+    public static bool Fmain_padReaction_Prefix()
+    {
+        return !IsQuickRuneMasterOpen;
+    }
+
+    // --- Encounter Lockouts ---
+
+    [HarmonyPatch(typeof(S1::Village_c), nameof(S1::Village_c.v_wanderingMonsterChk))]
+    [HarmonyPrefix]
+    public static bool Village_MonsterChk_Prefix(ref int __result)
+    {
+        if (IsQuickRuneMasterOpen)
+        {
+            __result = 0;
+            return false;
+        }
+        return true;
+    }
+
+    [HarmonyPatch(typeof(S1::Fmain_c), nameof(S1::Fmain_c.f_wanderingMonsterChk))]
+    [HarmonyPrefix]
+    public static bool Fmain_MonsterChk_Prefix(ref int __result)
+    {
+        if (IsQuickRuneMasterOpen)
+        {
+            __result = 0;
+            return false;
+        }
+        return true;
     }
 }

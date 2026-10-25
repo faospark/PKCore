@@ -18,7 +18,7 @@ The **core DLL component** for **[Project Kyaro](https://www.nexusmods.com/suiko
 * Comprehensive Portrait Variant Support
 * Colored Intros and Flashbacks
 * Boosted War Battles (S2)
-* Restore Chimera Encounters in Tenzan Pass (30% encounter rate with Cyclone Rune drop restoration, S2)
+* Restore Chimera Encounters in Tenzan Pass (migrated to dedicated PKTenzanPassPatch plugin, S2)
 * Early Sajah Village Rare Shop & Rune Sage Vendor Unlock (S2)
 * Combat Systems & Battle Enhancements (migrated to dedicated PKBattlePatch plugin: Enemy Level/HP HUD, Party Max HP, Memory Auto-Battle, Smart After-Battle Healing, Battle Formation Spacing, Unlimited Command Runes, Rune Unbalance Removal, Range Overrides)
 * Save Slot Party Member Mini Portraits (S1 & S2)
@@ -37,7 +37,6 @@ The **core DLL component** for **[Project Kyaro](https://www.nexusmods.com/suiko
 * Alternative Run Animation for Tir (Project Kyaro sprites)
 * Restore Bamboo Fence on Mercenary Fortress
 * NPC Bathhouse Sprites & Castle Visitors Restoration (S2)
-* Remote Castle Vault Access via Right Stick Up / R3 (Open Rock's warehouse from anywhere on the field with transparent background overlay, area background load verification, loading screen immunity, and complete background player movement silencing, S1)
 * Remote Castle Rune Master Access via Right Stick Down (Open Jeane's rune shop from anywhere on the field with area background load verification, loading screen immunity, and complete background player movement silencing, S1)
 * Castle Rune Master (Jeane) Shop Expansion & Progressive Crystal Store (Re-indexes Jeane's menu to Attach, Remove, Buy, and Exit; introduces Chandler-style progressive Rune Crystal purchasing unlocked from town rune shops visited across the world, S1)
 
@@ -81,7 +80,7 @@ Replace game textures with custom PNG or DDS files in `BepInEx/plugins/PKCore/Te
 
 ### Advanced Customization
 
-- **Tenzan Pass Chimera Encounters Restoration**: Restores omitted Chimera monster encounters (Parties 6, 7, and 8) in Tenzan Pass (`va11`) with Pyriel's community fix layout (~30% encounter rate), guaranteed or configurable Cyclone Rune drops, and multi-tier engine bounds protection against Remaster crash bugs. See [Tenzan Pass Guide](Documentation/tenzan_pass_chimera_va11.md).
+- **Tenzan Pass Chimera Encounters Restoration**: Migrated to dedicated standalone plugin `PKTenzanPassPatch` (`faospark.pktenzanpasspatch`). Restores omitted Chimera monster encounters (Parties 6, 7, and 8) in Tenzan Pass (`va11`) with Pyriel's community fix layout (~30% encounter rate), guaranteed or configurable Cyclone Rune drops, and multi-tier engine bounds protection against Remaster crash bugs. See [Tenzan Pass Guide](Documentation/tenzan_pass_chimera_va11.md).
 - **Sajah Village Rare Shop & Rune Sage Unlock**: Early access unlock for the hidden late-game rare item/rune vendor and counter trigger in Sajah Village (`vj17`) bypassing story flag 143 via in-memory map patching. See [Sajah Shop Guide](Documentation/sajah_village_rare_shop_vj17.md).
 - **NPC Bathhouse Sprites & Castle Visitors Restoration**: Restores unused bathhouse sprites for non-combatant recruits and convoy members in Suikoden 2, unlocks full 8-character bathhouse capacity (+2 convoy/visitor slots over a 6-man party), eliminates engine null-dereference crashes, guarantees accurate gender-based tub separation via verified sprite atlases (routes Tenkou [99] and Boris [123] to men's tub; routes Teresa [95/102] to women's tub), preserves vanilla Case 2 unisex routing for Simone and Vincent (allowing them into the other tub), preserves native implementations for Gadget and beasts (Abizboah, Rulodia, Feather, Siegfried, Shiro, Mukumuku), and populates vacant bath positions with recruited castle companions (Apple, Shu, Leona, Richmond, Barbara, Pilika, Teresa, etc.). See [Bath Attributes Guide](Documentation/suikoden_2_character_attributes_gender_and_baths.md).
 - **Suikoden I Map Identifiers & Regional Breakdown Reference Guide**: Complete architectural reference and regional sector catalog for Suikoden 1, documenting all 12 regional sectors (`area_a` through `area_k`, `area_z`), 85 background map assets (`bg_va1`–`bg_vz5`), C# decompiled handlers (`G1_fdata_c.cs`, `VillageManager.cs`, `Village_c.cs`, `Event_c.cs`), and the 70+ `EVENT_COMMAND` bytecode opcodes. See [Suikoden 1 Map Guide](Documentation/suikoden_1_map_ids_and_areas_breakdown.md).

@@ -4,6 +4,21 @@ All notable changes to PKCore (formerly PKextended) are documented in this file.
 
 ---
 
+## [2026.10.26]
+
+- **Project Kyaro Suite Realignment: Dedicated Castle Storage Plugin (`PKS1CastleStorageAnywhere`)**:
+  - Migrated the Suikoden 1 Remote Castle Vault Access feature (`S1QuickStoragePatch`) from PKCore into an independent, standalone BepInEx IL2CPP plugin: `PKS1CastleStorageAnywhere.dll` (`faospark.pks1castlestorageanywhere`).
+  - Encapsulated complete vault management, native state machine lifecycle, Rock warehouse background suppression, and input handling (Right Stick Up / R3 / [F6]) into the new dedicated project.
+  - Refactored `S1QuickRunePatch` in PKCore to maintain self-contained field context tracking and input/movement blocking hooks without inter-patch coupling.
+  - Removed `Patches/S1QuickStoragePatch.cs` and configuration bindings (`EnableS1QuickStorage`, `S1QuickStorageRequireRock`) from `ModConfiguration.cs` and `Plugin.cs`.
+
+- **Project Kyaro Suite Realignment: Dedicated Tenzan Pass Plugin (`PKTenzanPassPatch`)**:
+  - Migrated the Tenzan Pass Chimera Encounters Restoration feature from PKCore into an independent, standalone BepInEx IL2CPP plugin: `PKTenzanPassPatch.dll` (`faospark.pktenzanpasspatch`).
+  - Copied the full patch implementation directly to `PKTenzanPassPatch` with built-in map tracking (`MACHICON.EventInit`) and eliminated redundant game context detection dependencies.
+  - Removed `Patches/TenzanPassEncounterPatch.cs` and configuration bindings (`EnableTenzanChimeraFix`, `ForceTenzanChimeraEncounter`, `TenzanChimeraCycloneDropRate`) from `ModConfiguration.cs` and `Plugin.cs`.
+
+---
+
 ## [2026.10.25]
 
 - **Suikoden II: Muse Ruins Survivors Restoration Removal**:

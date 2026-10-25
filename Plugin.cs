@@ -91,7 +91,6 @@ public class Plugin : BasePlugin
             Patches.PSPGalleryEnhanced.Update();
         Patches.MenuScalePatch.ApplyLauncherConfigScaling();
         Patches.EncounterNonePatch.UpdateInput();
-        Patches.S1QuickStoragePatch.Update();
         Patches.S1QuickRunePatch.Update();
         Patches.ImGuiOverlayUI.Update();
         AssetLoader.Update();
@@ -334,13 +333,6 @@ public class Plugin : BasePlugin
             WarAbilityPatch.Initialize(Log);
         }
 
-        // Tenzan Pass Chimera Encounters Restoration Patch (Suikoden 2)
-        if (Config.EnableTenzanChimeraFix.Value)
-        {
-            Log.LogInfo("Applying Tenzan Pass Chimera Encounters Restoration patch...");
-            TenzanPassEncounterPatch.Initialize(harmony);
-        }
-
         // Map ID Tracking (shared by Map Object & S2 patches)
         harmony.PatchAll(typeof(MACHICON_OnMapInitPatch));
 
@@ -373,13 +365,6 @@ public class Plugin : BasePlugin
         {
             Log.LogInfo("Applying Save Slot Party Portrait patch...");
             harmony.PatchAll(typeof(SaveSlotPartyPortraitPatch));
-        }
-
-        // Suikoden 1 Castle Vault (Quick Storage)
-        if (Config.EnableS1QuickStorage.Value)
-        {
-            Log.LogInfo("Applying Suikoden 1 Quick Storage patch...");
-            harmony.PatchAll(typeof(Patches.S1QuickStoragePatch));
         }
 
         // Suikoden 1 Castle Rune Master (Quick Rune)
