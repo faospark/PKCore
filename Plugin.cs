@@ -347,12 +347,6 @@ public class Plugin : BasePlugin
         // War Room BG Patch
         WarRoomBGPatch.Initialize();
 
-        // Suikoden 2 NPC Bathhouse Sprites & Castle Visitors Restoration
-        if (Config.EnableNPCBathVisitors.Value)
-        {
-            Log.LogInfo("Applying Suikoden 2 NPC Bathhouse Sprites & Castle Visitors patch...");
-            NPCBathVisitorPatch.Initialize(harmony);
-        }
 
         // Save Slot Party Portrait Patch
         if (Config.ShowSaveSlotPartyPortraits.Value)

@@ -51,8 +51,6 @@ public sealed class ModConfiguration
     // War Ability Mod
     public ConfigEntry<bool> EnableWarAbilityMod { get; private set; }
 
-    // Suikoden 2 NPC Bathhouse Sprites & Castle Visitors Restoration
-    public ConfigEntry<bool> EnableNPCBathVisitors { get; private set; }
 
     // World Map Settings
     public ConfigEntry<bool> DisableWorldMapClouds { get; private set; }
@@ -299,12 +297,6 @@ public sealed class ModConfiguration
             "Enable war battle ability modification. Allows you to customize character abilities in Suikoden 2's war battles. Wont appear on the game menu of Apple but will have an effect on battle. Base is already boosted but can be further configures in PKCore/Config/S2WarAbilities.json"
         );
 
-        EnableNPCBathVisitors = _config.Bind(
-            "05 Game : Suikoden 2",
-            "EnableNPCBathVisitors",
-            true,
-            "Restores unused NPC bathhouse sprites and prevents the engine crash when bathing with non-combatant recruits or convoy members. Automatically fills unoccupied bath slots with recruited castle companions (e.g. Apple, Shu, Leona, Richmond, Barbara, Pilika, Teresa, etc.)."
-        );
 
         // Suikoden 1 Castle Rune Master (Quick Rune)
         EnableS1QuickRuneMaster = _config.Bind(

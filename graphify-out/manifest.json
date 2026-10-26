@@ -48,9 +48,9 @@
     "semantic_hash": ""
   },
   "ModConfiguration.cs": {
-    "mtime": 1792951781.2541745,
-    "seen": 1792951830.2360861,
-    "ast_hash": "08855345ef5ed8bcf341059ba7e3d46f",
+    "mtime": 1793027290.1517193,
+    "seen": 1793027378.9649506,
+    "ast_hash": "e987b30bdb0bde6afe3b28e84303c5b6",
     "semantic_hash": ""
   },
   "PKCore.csproj": {
@@ -225,12 +225,6 @@
     "mtime": 1792477871.141929,
     "seen": 1792917255.7181404,
     "ast_hash": "39ab1f7ef51243c24487528153419ce3",
-    "semantic_hash": ""
-  },
-  "Patches/NPCBathVisitorPatch.cs": {
-    "mtime": 1792460763.6958592,
-    "seen": 1792917255.7181404,
-    "ast_hash": "2bb91a88c7d56f18420f4fe3636fec40",
     "semantic_hash": ""
   },
   "Patches/PSPGalleryEnhanced.cs": {
@@ -420,9 +414,9 @@
     "semantic_hash": ""
   },
   "Plugin.cs": {
-    "mtime": 1792951781.346399,
-    "seen": 1792951830.2360861,
-    "ast_hash": "7d2da78f26543197f456045d1ffb747c",
+    "mtime": 1793027296.8979895,
+    "seen": 1793027378.9649506,
+    "ast_hash": "a64f4a8cd386f94e6cb418d26255a83e",
     "semantic_hash": ""
   },
   "Properties/AssemblyInfo.cs": {
@@ -498,9 +492,9 @@
     "semantic_hash": ""
   },
   "CHANGELOG.md": {
-    "mtime": 1792951646.3968875,
-    "seen": 1792951690.622963,
-    "ast_hash": "400528aa3d004bf1de0cfb46f99638ff",
+    "mtime": 1793027344.6516478,
+    "seen": 1793027378.9649506,
+    "ast_hash": "93308d74c11b82825795f05c58facc17",
     "semantic_hash": ""
   },
   "ChangeLog.txt": {
@@ -1020,9 +1014,9 @@
     "semantic_hash": ""
   },
   "README.md": {
-    "mtime": 1792951781.4411213,
-    "seen": 1792951830.2365875,
-    "ast_hash": "ffea19d490fa22c36295ae8dac87402c",
+    "mtime": 1793027358.6950784,
+    "seen": 1793027378.9654505,
+    "ast_hash": "c7b462245a1c0dbb1bca25410366875b",
     "semantic_hash": ""
   },
   "Suikoden 2 architecture.md": {
@@ -1110,9 +1104,15 @@
     "semantic_hash": ""
   },
   ".agents/rules/nexusmods_template.md": {
-    "mtime": 1792951810.1723936,
-    "seen": 1792951830.2360861,
-    "ast_hash": "b312c8f10ebb1d62c4f81f70a1ae6494",
+    "mtime": 1792951844.0846083,
+    "seen": 1793023189.1923027,
+    "ast_hash": "97e3cf2e395877645c89aa11c6717e59",
+    "semantic_hash": ""
+  },
+  "Documentation/suikoden_2_t_box_flag_architecture.md": {
+    "mtime": 1792985078.8716612,
+    "seen": 1793023189.192802,
+    "ast_hash": "9fda59a43efc5b21c823eb137c1efe8f",
     "semantic_hash": ""
   }
 }

@@ -6,6 +6,11 @@ All notable changes to PKCore (formerly PKextended) are documented in this file.
 
 ## [2026.10.26]
 
+- **Project Kyaro Suite Realignment: Dedicated Suikoden 2 Bathhouse Plugin (`PKS2BathNPCPatch`)**:
+  - Migrated the Suikoden 2 NPC Bathhouse Visitors feature (restoring the cut 1998 PS1 companion bathing mechanics utilizing accessible sprite assets) from PKCore into an independent, standalone BepInEx IL2CPP plugin: `PKS2BathNPCPatch.dll` (`faospark.pks2bathnpcpatch`).
+  - Includes full native crash prevention (dummy `P_GRAPH_DATA`, safe `G2_varia_dat`/equipment checks), canonical ID roster mapping (IDs `85`..`123`), 8-character capacity expansion, authentic gender separation (men's tub `0..5`, women's tub `6..11`, Case 2 Simone/Vincent unisex preservation), special vanilla vignette preservation (Flik & Viktor, Matilda Knights), and dynamic narrative gating for Pilika (`IsPilikaInCastle()` checking Story Flag 14 / Muse Peace Conference).
+  - Removed `Patches/NPCBathVisitorPatch.cs` and configuration binding `EnableNPCBathVisitors` from `PKCore/ModConfiguration.cs` and `PKCore/Plugin.cs`.
+
 - **Project Kyaro Suite Realignment: Dedicated Rune Sage Plugin (`PKRuneSagePlus`)**:
   - Migrated the Suikoden 1 Castle Rune Master Shop Expansion (`S1JeaneRuneShopPatch`) and Suikoden 2 Sajah Village Rare Rune Shop Early Unlock (`SajahShopUnlockPatch`) from PKCore into an independent, standalone BepInEx IL2CPP plugin: `PKRuneSagePlus.dll` (`faospark.pkrunesageplus`).
   - Jeane's 4-choice menu layout (`Attach`, `Remove`, `Buy`, `Exit`), progressive town rune catalog, and Toran Castle level scaling are now cleanly encapsulated in `PKRuneSagePlus`.
