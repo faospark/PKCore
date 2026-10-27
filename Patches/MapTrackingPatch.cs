@@ -112,5 +112,6 @@ public static class MachiLoader_Load_Patch
             LastLoadedEventcon = __result;
             LastLoadedMachiDat = __result.mdat;
         }
+        ImGuiOverlayUI.OnMapChanged();
     }
 }

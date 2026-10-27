@@ -4,6 +4,28 @@ All notable changes to PKCore (formerly PKextended) are documented in this file.
 
 ---
 
+## [2026.10.27]
+
+- **Fixed & Enhanced Camera Zoom / FOV Controls (`ImGuiOverlayUI.cs`, `Plugin.cs`, `MapTrackingPatch.cs`)**:
+  - **Resolution of Inactive FOV / Camera Zoom**:
+    - Identified that `BindCamera.Sync` (called every frame in `LateUpdate` on `NoFilterCamera` and bound cameras) was continually copying the target camera's unzoomed FOV/orthographic size and overwriting modifications made in `Update`.
+    - Added `BindCamera_Sync_Patch` (`[HarmonyPostfix]` on `BindCamera.Sync`) and wired `LateUpdate` into `PkCoreMainLoop` and `Plugin.cs` so camera scaling is reliably applied and preserved right before rendering.
+    - Updated camera discovery to scan `CameraManager.Instance.ActiveCamera`, `noFilterCamera`, `Camera.main`, `BindCamera.activeCameras`, and `Camera.allCameras` with robust per-camera exception isolation.
+    - Added `ImGuiOverlayUI.OnMapChanged` hook into `MACHICON.EventInit` (`MachiLoader_Load_Patch`) to reset baseline size caches and reapply zoom smoothly upon map transitions.
+    - Moved hotkeys (`PageUp` = zoom in, `PageDown` = zoom out, `Home` = 1.0x reset) to `ImGuiOverlayUI.Update()` directly so shortcuts work regardless of whether the HUD bar is shown or hidden.
+    - Clarified HUD button labels to `FOV: <Scale>x [Out] [In] [1x]`.
+
+
+- **Save/Load Screen Performance Optimization & Stutter Elimination**:
+  - **Negative Lookup Caching (`SaveSlotPartyPortraitPatch.cs`)**:
+    - Introduced `missingPortraitCache` (`HashSet<string>`) to record missing portrait IDs on their very first lookup.
+    - Resolved a severe performance regression in Suikoden 1 where characters lacking custom textures in `PKCore/Textures/` failed all 8 candidate filename lookups, returned `null`, and were never cached. This previously forced the save menu and background monitor to re-run up to 48 filesystem/index searches per slot on every render, scroll, and 0.5s timer tick. With negative caching, subsequent checks now return in 0 ms.
+  - **Save Slot Enumeration Bypass for Name Refresh (`SaveDataProcessor.cs`)**:
+    - Guarded `SaveDataProcessor.OnSaveLoaded` (`SystemSave.Load` postfix) to skip execution when inside the Save/Load menu (`UISaveLoad1.Inst != null || UISaveLoad2.Inst != null`).
+    - Eliminates redundant, heavy synchronous disk directory scanning, timestamp sorting, and JSON parsing that previously fired 142 times consecutively in S1 and 75 times in S2 during initial menu opening.
+
+---
+
 ## [2026.10.26]
 
 - **Project Kyaro Suite Realignment: Dedicated Suikoden 2 Bathhouse Plugin (`PKS2BathNPCPatch`)**:

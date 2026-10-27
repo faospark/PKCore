@@ -23,6 +23,7 @@ namespace PKCore.Patches
         // Optimized static portrait cache keyed by "{game}_{charId}" to ensure 0ms lookup after initial load
         private static Dictionary<string, Sprite> portraitCache = new Dictionary<string, Sprite>(StringComparer.OrdinalIgnoreCase);
         private static HashSet<string> pendingLoadIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        private static HashSet<string> missingPortraitCache = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         private static List<UnityEngine.Object> gcRoots = new List<UnityEngine.Object>();
 
         /// <summary>
@@ -32,6 +33,7 @@ namespace PKCore.Patches
         {
             portraitCache.Clear();
             pendingLoadIds.Clear();
+            missingPortraitCache.Clear();
             slotPortraitContainers.Clear();
             gcRoots.Clear();
         }
@@ -544,6 +546,10 @@ namespace PKCore.Patches
             string gameKey = isGSD1 ? "GSD1" : (isGSD2 ? "GSD2" : GameDetection.GetCurrentGame());
             string cacheKey = $"{gameKey}_{charId}";
 
+            // 0. Instant Cache Hit for Known Missing Portraits (0ms)
+            if (missingPortraitCache.Contains(cacheKey))
+                return null;
+
             // 1. Instant Cache Hit (0ms) - only return if underlying texture is alive and valid
             if (portraitCache.TryGetValue(cacheKey, out Sprite cachedSprite))
             {
@@ -654,6 +660,10 @@ namespace PKCore.Patches
                                     targetImage.gameObject.SetActive(true);
                             }
                         }
+                        else
+                        {
+                            missingPortraitCache.Add(cacheKey);
+                        }
                     };
 
                     var coroutine = ImageLoader.LoadAsyncImage(charId, callback);
@@ -661,11 +671,21 @@ namespace PKCore.Patches
                     {
                         runner.StartCoroutine(coroutine);
                     }
+                    else
+                    {
+                        missingPortraitCache.Add(cacheKey);
+                    }
                 }
                 catch
                 {
                     pendingLoadIds.Remove(cacheKey);
+                    missingPortraitCache.Add(cacheKey);
                 }
+            }
+
+            if (!isGSD2 || (runner == null && !pendingLoadIds.Contains(cacheKey)))
+            {
+                missingPortraitCache.Add(cacheKey);
             }
 
             return null;

@@ -96,6 +96,11 @@ public class Plugin : BasePlugin
         AssetLoader.Update();
     }
 
+    public void LateUpdate()
+    {
+        Patches.ImGuiOverlayUI.LateUpdate();
+    }
+
     private void ApplyPatches()
     {
         var harmony = new Harmony("faospark.pkcore");
@@ -140,6 +145,7 @@ public class Plugin : BasePlugin
 
         // Dear ImGui Overlay (F10 Hotkey, DirectX Present Hook via DearImGuiInjection)
         Patches.ImGuiOverlayUI.Initialize();
+        harmony.PatchAll(typeof(BindCamera_Sync_Patch));
 
         // Custom Texture Replacement
         if (Config.EnableCustomTextures.Value || Config.LogReplaceableTextures.Value)
@@ -381,6 +387,14 @@ public class PkCoreMainLoop : MonoBehaviour
         if (Plugin.Instance != null)
         {
             Plugin.Instance.Update();
+        }
+    }
+
+    public void LateUpdate()
+    {
+        if (Plugin.Instance != null)
+        {
+            Plugin.Instance.LateUpdate();
         }
     }
 }

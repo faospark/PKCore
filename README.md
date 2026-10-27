@@ -21,7 +21,7 @@ The **core DLL component** for **[Project Kyaro](https://www.nexusmods.com/suiko
 * Restore Chimera Encounters in Tenzan Pass (migrated to dedicated PKTenzanPassPatch plugin, S2)
 * Early Sajah Village Rare Shop & Rune Sage Vendor Unlock (migrated to dedicated PKRuneSagePlus plugin, S2)
 * Combat Systems & Battle Enhancements (migrated to dedicated PKBattlePatch plugin: Enemy Level/HP HUD, Party Max HP, Memory Auto-Battle, Smart After-Battle Healing, Battle Formation Spacing, Unlimited Command Runes, Rune Unbalance Removal, Range Overrides)
-* Save Slot Party Member Mini Portraits (S1 & S2)
+* Save Slot Party Member Mini Portraits (S1 & S2 with high-performance caching)
 * Button Controller Prompt Support (migrated to dedicated PKButtonPrompts plugin)
 * Alternative Launcher (based on unused in‑game assets)
 * Minimal UI
@@ -56,7 +56,7 @@ The **core DLL component** for **[Project Kyaro](https://www.nexusmods.com/suiko
 * Replaced Low‑Quality Upscaled Doors in the Inn Area (S2)
 
 **[Utility]**
-* Dear ImGui Location & Notes HUD (Streamlined bottom-left telemetry HUD displaying current map and location name; includes interactive notes entry, [NumPad 5] log dump to `\PKCore\Logs\locationdump.log`, and zero gamepad or movement input interference)
+* Dear ImGui Location & Notes HUD (Streamlined bottom-left telemetry HUD displaying current map and location name, live camera zoom / FOV controls with [PageDown]/[PageUp]/[Home] hotkeys; includes interactive notes entry, [NumPad 5] log dump to `\PKCore\Logs\locationdump.log`, and zero gamepad or movement input interference)
 * Location Dump [NumPad 5] (Press [NumPad 5] anytime in gameplay or click the HUD button to instantly dump current map and location notes to `\Suikoden I and II HD Remaster\PKCore\Logs\locationdump.log`)
 * Encounter None [F4] (Toggle random battle encounters on/off with [F4] or via Dear ImGui overlay; automatically delegates to Suikoden_Fix multiplier when present, with native fallback hooks for S1 & S2)
 * Show Mouse Cursor (Live runtime toggle via Dear ImGui overlay and configuration to unlock and force OS cursor visibility)

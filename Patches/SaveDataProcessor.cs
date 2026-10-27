@@ -388,6 +388,10 @@ Patches
         [HarmonyPostfix]
         public static void OnSaveLoaded()
         {
+            // Do not run during save slot menu enumeration to avoid heavy disk I/O and JSON parsing per slot
+            if (UISaveLoad1.Inst != null || UISaveLoad2.Inst != null)
+                return;
+
             RefreshNames();
         }
     }

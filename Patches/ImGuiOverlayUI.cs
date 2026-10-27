@@ -3,6 +3,7 @@ extern alias GSD2;
 using System;
 using System.IO;
 using System.Numerics;
+using HarmonyLib;
 using ImGuiNET;
 using UnityEngine;
 using Vector2 = System.Numerics.Vector2;
@@ -60,6 +61,144 @@ public static class ImGuiOverlayUI
     // Cached telemetry data updated on Unity main thread
     private static string _cachedMapId = "(None)";
     private static int _cachedStars = 0;
+    private static int _cachedPlayerX = 0;
+    private static int _cachedPlayerY = 0;
+
+    // Camera Zoom / FOV management
+    public static float CameraZoom => _cameraZoom;
+    private static float _cameraZoom = 1.0f;
+    private static readonly System.Collections.Generic.Dictionary<int, float> _originalOrthoSizes = new();
+    private static readonly System.Collections.Generic.Dictionary<int, float> _originalFovs = new();
+
+    public static void SetCameraZoom(float zoom)
+    {
+        _cameraZoom = UnityEngine.Mathf.Clamp(zoom, 0.25f, 5.0f);
+        Plugin.Log.LogInfo($"[ImGuiOverlayUI] SetCameraZoom -> {_cameraZoom:F2}x");
+        UpdateCameras();
+    }
+
+    public static void OnMapChanged()
+    {
+        _originalOrthoSizes.Clear();
+        _originalFovs.Clear();
+        if (Math.Abs(_cameraZoom - 1.0f) > 0.001f)
+        {
+            UpdateCameras();
+        }
+    }
+
+    public static void ApplyZoomToCamera(UnityEngine.Camera cam)
+    {
+        if (cam == null) return;
+        try
+        {
+            string cname = cam.name ?? "";
+            if (cname.IndexOf("UI", StringComparison.OrdinalIgnoreCase) >= 0) return;
+
+            int id = cam.GetInstanceID();
+
+            if (cam.orthographic)
+            {
+                if (!_originalOrthoSizes.TryGetValue(id, out float orig) || orig <= 0f)
+                {
+                    orig = Math.Abs(_cameraZoom - 1.0f) > 0.001f ? cam.orthographicSize / _cameraZoom : cam.orthographicSize;
+                    if (orig > 0f) _originalOrthoSizes[id] = orig;
+                }
+                if (orig > 0f)
+                {
+                    cam.orthographicSize = orig * _cameraZoom;
+                }
+            }
+            else
+            {
+                if (!_originalFovs.TryGetValue(id, out float orig) || orig <= 0f)
+                {
+                    orig = Math.Abs(_cameraZoom - 1.0f) > 0.001f ? cam.fieldOfView / _cameraZoom : cam.fieldOfView;
+                    if (orig > 0f) _originalFovs[id] = orig;
+                }
+                if (orig > 0f)
+                {
+                    cam.fieldOfView = UnityEngine.Mathf.Clamp(orig * _cameraZoom, 5f, 175f);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Plugin.Log.LogError($"[ImGuiOverlayUI] ApplyZoomToCamera error: {ex.Message}");
+        }
+    }
+
+    public static void UpdateCameras()
+    {
+        try
+        {
+            // 1. CameraManager active & filter cameras
+            try
+            {
+                var mgr = CameraManager.Instance;
+                if (mgr != null)
+                {
+                    if (mgr.ActiveCamera != null) ApplyZoomToCamera(mgr.ActiveCamera);
+                    if (mgr.noFilterCamera != null) ApplyZoomToCamera(mgr.noFilterCamera);
+                }
+            }
+            catch { }
+
+            // 2. Camera.main
+            try
+            {
+                var mainCam = UnityEngine.Camera.main;
+                if (mainCam != null) ApplyZoomToCamera(mainCam);
+            }
+            catch { }
+
+            // 3. All scene cameras
+            try
+            {
+                var cameras = UnityEngine.Camera.allCameras;
+                if (cameras != null)
+                {
+                    for (int i = 0; i < cameras.Length; i++)
+                    {
+                        var c = cameras[i];
+                        if (c != null) ApplyZoomToCamera(c);
+                    }
+                }
+            }
+            catch { }
+
+            // 4. BindCamera instances
+            try
+            {
+                var boundList = BindCamera.activeCameras;
+                if (boundList != null)
+                {
+                    for (int i = 0; i < boundList.Count; i++)
+                    {
+                        var b = boundList[i];
+                        if (b != null)
+                        {
+                            if (b.bindTarget != null) ApplyZoomToCamera(b.bindTarget);
+                            if (b.myCamera != null) ApplyZoomToCamera(b.myCamera);
+                        }
+                    }
+                }
+            }
+            catch { }
+        }
+        catch (Exception ex)
+        {
+            Plugin.Log.LogError($"[ImGuiOverlayUI] UpdateCameras error: {ex}");
+        }
+    }
+
+    public static void LateUpdate()
+    {
+        if (Math.Abs(_cameraZoom - 1.0f) > 0.001f)
+        {
+            UpdateCameras();
+        }
+    }
 
     // Cursor visibility management
     private static System.Reflection.PropertyInfo _isCursorVisibleProp;
@@ -290,6 +429,18 @@ public static class ImGuiOverlayUI
                     _focusNoteInputNextFrame = _showHudNoteInput;
                     SetImGuiCursorVisible(_showHudNoteInput);
                 }
+                else if (keyboard.pageUpKey.wasPressedThisFrame)
+                {
+                    SetCameraZoom(_cameraZoom - 0.25f);
+                }
+                else if (keyboard.pageDownKey.wasPressedThisFrame)
+                {
+                    SetCameraZoom(_cameraZoom + 0.25f);
+                }
+                else if (keyboard.homeKey.wasPressedThisFrame)
+                {
+                    SetCameraZoom(1.0f);
+                }
             }
 
             // Detect mouse click inside bottom-left HUD bounds to activate note text field
@@ -322,6 +473,8 @@ public static class ImGuiOverlayUI
         {
             _cachedMapId = MACHICON_OnMapInitPatch.CurrentMapId ?? "(None)";
             try { _cachedStars = GSD2::G2_SYS.Mem108Chk(0); } catch { _cachedStars = 0; }
+            _cachedPlayerX = MACHICON_OnMapInitPatch.PlayerX;
+            _cachedPlayerY = MACHICON_OnMapInitPatch.PlayerY;
         }
         catch { }
     }
@@ -342,7 +495,7 @@ public static class ImGuiOverlayUI
             string timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
             string notePart = !string.IsNullOrWhiteSpace(_locationNotes) ? $" | Note: {_locationNotes.Trim()}" : "";
-            string entry = $"[{timestamp}] Location: {_cachedMapId} | Stars: {_cachedStars} / 108{notePart}" + Environment.NewLine;
+            string entry = $"[{timestamp}] Location: {_cachedMapId} | Pos: ({_cachedPlayerX}, {_cachedPlayerY}) | Stars: {_cachedStars} / 108{notePart}" + Environment.NewLine;
             File.AppendAllText(logPath, entry);
 
             _dumpFeedback = $"Saved! ({DateTime.Now:HH:mm:ss})";
@@ -445,9 +598,13 @@ public static class ImGuiOverlayUI
 
             if (ImGui.Begin("PKCoreLocationHUD###PKCoreLocationHUD", hudFlags))
             {
+                int mx = MACHICON_OnMapInitPatch.CurrentMachicon != null ? MACHICON_OnMapInitPatch.CurrentMachicon.mx : 0;
+                int my = MACHICON_OnMapInitPatch.CurrentMachicon != null ? MACHICON_OnMapInitPatch.CurrentMachicon.my : 0;
                 ImGui.TextColored(GetAccentColor(), "Location:");
                 ImGui.SameLine();
                 ImGui.TextColored(new Vector4(1f, 0.9f, 0.4f, 1f), _cachedMapId);
+                ImGui.SameLine();
+                ImGui.TextColored(new Vector4(0.35f, 0.85f, 1f, 1f), $"P:({_cachedPlayerX},{_cachedPlayerY}) M:({mx},{my}) T:({mx/16},{my/16})");
 
                 ImGui.SameLine();
                 string noteBtnLabel = _showHudNoteInput ? "[Hide Note]" : (string.IsNullOrEmpty(_locationNotes) ? "[+ Note]" : "[Edit Note]");
@@ -468,6 +625,26 @@ public static class ImGuiOverlayUI
                 if (ImGui.SmallButton("Open Log##HudOpenLog"))
                 {
                     OpenDumpLocation();
+                }
+
+                ImGui.SameLine();
+                ImGui.TextDisabled("|");
+                ImGui.SameLine();
+                ImGui.TextColored(new Vector4(0.9f, 0.7f, 0.2f, 1f), $"FOV: {_cameraZoom:F2}x");
+                ImGui.SameLine();
+                if (ImGui.SmallButton("[Out]##ZoomOut"))
+                {
+                    SetCameraZoom(_cameraZoom + 0.25f);
+                }
+                ImGui.SameLine();
+                if (ImGui.SmallButton("[In]##ZoomIn"))
+                {
+                    SetCameraZoom(_cameraZoom - 0.25f);
+                }
+                ImGui.SameLine();
+                if (ImGui.SmallButton("[1x]##ZoomReset"))
+                {
+                    SetCameraZoom(1.0f);
                 }
 
                 if (!string.IsNullOrEmpty(_dumpFeedback) && Time.time - _dumpFeedbackTime < 3f)
@@ -522,6 +699,26 @@ public static class ImGuiOverlayUI
             ImGui.End();
 
             ImGui.PopStyleVar(3);
+        }
+        catch { }
+    }
+}
+
+/// <summary>
+/// Ensures BindCamera.LateUpdate does not wipe out camera zoom when synchronizing cameras.
+/// </summary>
+[HarmonyPatch(typeof(BindCamera), nameof(BindCamera.Sync))]
+public static class BindCamera_Sync_Patch
+{
+    [HarmonyPostfix]
+    public static void Postfix(BindCamera __instance, bool isDetailCopy)
+    {
+        try
+        {
+            if (Math.Abs(ImGuiOverlayUI.CameraZoom - 1.0f) < 0.001f || __instance == null || __instance.myCamera == null)
+                return;
+
+            ImGuiOverlayUI.ApplyZoomToCamera(__instance.myCamera);
         }
         catch { }
     }
