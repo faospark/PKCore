@@ -450,21 +450,21 @@
     "semantic_hash": ""
   },
   "tools/symbol_indexer/indexer.py": {
-    "mtime": 1792430833.083553,
-    "seen": 1792917255.7181404,
-    "ast_hash": "5b2813c03fd49d08d28bcf0c1a7a485d",
+    "mtime": 1793118273.1715367,
+    "seen": 1793118445.318811,
+    "ast_hash": "de4feff470306def056204b50fdbf546",
     "semantic_hash": ""
   },
   "tools/symbol_indexer/map_data.py": {
-    "mtime": 1792486315.645062,
-    "seen": 1792917255.7181404,
-    "ast_hash": "68a8a782107095c31a22d8f36f0c3950",
+    "mtime": 1793121923.1568406,
+    "seen": 1793121987.4885023,
+    "ast_hash": "1304a4cf8809e1eadefeb95617f83a05",
     "semantic_hash": ""
   },
   "tools/symbol_indexer/sym.py": {
-    "mtime": 1792430883.4187553,
-    "seen": 1792917255.7181404,
-    "ast_hash": "c93aa54524d1533605cdd1d382e73c48",
+    "mtime": 1793118362.8703024,
+    "seen": 1793118445.318811,
+    "ast_hash": "6dfede93b7cebbd2a23f526f2e1d92ce",
     "semantic_hash": ""
   },
   "tools/test_inspect.py": {
@@ -510,63 +510,57 @@
     "semantic_hash": ""
   },
   "Documentation/areas/banner_village.md": {
-    "mtime": 1792430746.445886,
-    "seen": 1792917255.7181404,
-    "ast_hash": "3117466142e34c53d17eb9b83504befb",
+    "mtime": 1793120386.298567,
+    "seen": 1793121987.4885023,
+    "ast_hash": "715b6ee323f78b44d533e2767a72adce",
     "semantic_hash": ""
   },
   "Documentation/areas/cave_of_the_wind.md": {
-    "mtime": 1792430744.817389,
-    "seen": 1792917255.7181404,
-    "ast_hash": "0f0bbe7cba3216d98879dc66d0e8cda2",
+    "mtime": 1793120386.3025665,
+    "seen": 1793121987.4885023,
+    "ast_hash": "23c0fc7d8a1c11753e216cd72bdea3ee",
     "semantic_hash": ""
   },
   "Documentation/areas/coronet_town_and_port.md": {
-    "mtime": 1792430743.5757353,
-    "seen": 1792917255.7181404,
-    "ast_hash": "648a20f7c0edc60a2ee5ba318ccf4583",
+    "mtime": 1793120386.3060665,
+    "seen": 1793121987.4885023,
+    "ast_hash": "125e2f66f4fa324b3c28dac36894ef03",
     "semantic_hash": ""
   },
   "Documentation/areas/crom_village.md": {
-    "mtime": 1792430747.779264,
-    "seen": 1792917255.7181404,
-    "ast_hash": "0b5283bd24fd474e25999316be9ab30f",
-    "semantic_hash": ""
-  },
-  "Documentation/areas/drakemouth_village.md": {
-    "mtime": 1792430747.1833174,
-    "seen": 1792917255.7181404,
-    "ast_hash": "59de008c68cbe5d438fe6e06af596bb0",
+    "mtime": 1793120386.3125663,
+    "seen": 1793121987.4885023,
+    "ast_hash": "880942059fc05b9156c9629ae076a849",
     "semantic_hash": ""
   },
   "Documentation/areas/dunan_castle_hq_bathhouse.md": {
-    "mtime": 1792430751.9766128,
-    "seen": 1792917255.7181404,
-    "ast_hash": "8056cc0b93b752add114aa4193eadec4",
+    "mtime": 1793120386.3175666,
+    "seen": 1793121987.4885023,
+    "ast_hash": "043f5e034f24b59d9147c0dbbce21016",
     "semantic_hash": ""
   },
   "Documentation/areas/dunan_castle_hq_cartography_room.md": {
-    "mtime": 1792430752.4767632,
-    "seen": 1792917255.7181404,
-    "ast_hash": "fe31f5aa79a6bbb592c6142ae46472b6",
+    "mtime": 1793120386.3190656,
+    "seen": 1793121987.4885023,
+    "ast_hash": "b41b058e983de4f8782a025b7f3a298e",
     "semantic_hash": ""
   },
   "Documentation/areas/dunan_castle_hq_commanders_quarters.md": {
-    "mtime": 1792430752.2985432,
-    "seen": 1792917255.7181404,
-    "ast_hash": "9fa9f2750fff6bc52d61b672e611491e",
+    "mtime": 1793120386.3250663,
+    "seen": 1793121987.4885023,
+    "ast_hash": "18f63e3fde721f91f259dcd5022868cc",
     "semantic_hash": ""
   },
   "Documentation/areas/dunan_castle_hq_concert_stage.md": {
-    "mtime": 1792430752.236475,
-    "seen": 1792917255.7181404,
-    "ast_hash": "6b6a84e73a857f8e30d8e10ee46305e3",
+    "mtime": 1793120386.3285656,
+    "seen": 1793121987.4885023,
+    "ast_hash": "0bbf1b900eb4adfb331ffb069b266d37",
     "semantic_hash": ""
   },
   "Documentation/areas/dunan_castle_hq_docks_and_fishing.md": {
-    "mtime": 1792430753.3618388,
-    "seen": 1792917255.7181404,
-    "ast_hash": "91fbd34b8fdb94310c2a13d69dc825f2",
+    "mtime": 1793120386.3305657,
+    "seen": 1793121987.4885023,
+    "ast_hash": "a91ad1ea48997c02f9bae722486726c6",
     "semantic_hash": ""
   },
   "Documentation/areas/dunan_castle_hq_dojo_and_training.md": {
@@ -576,309 +570,291 @@
     "semantic_hash": ""
   },
   "Documentation/areas/dunan_castle_hq_farm_and_pastures.md": {
-    "mtime": 1792430753.2666934,
-    "seen": 1792917255.7181404,
-    "ast_hash": "49cc494f475114fb771f37f79849a342",
+    "mtime": 1793120386.3335655,
+    "seen": 1793121987.4885023,
+    "ast_hash": "cdf3d7312f516b57ac94c8852c6c502d",
     "semantic_hash": ""
   },
   "Documentation/areas/dunan_castle_hq_great_hall_and_entry.md": {
-    "mtime": 1792430751.618569,
-    "seen": 1792917255.7181404,
-    "ast_hash": "ee9babd849b9374940eb935c05b5f08d",
+    "mtime": 1793120386.3440669,
+    "seen": 1793121987.4885023,
+    "ast_hash": "a1e0c7181684cf8726be0506dd5428f4",
     "semantic_hash": ""
   },
   "Documentation/areas/dunan_castle_hq_grounds_and_sanctuary.md": {
-    "mtime": 1792430752.4302018,
-    "seen": 1792917255.7181404,
-    "ast_hash": "490a43b9e50f94a0c011f5f6b355f0d1",
+    "mtime": 1793120386.3470664,
+    "seen": 1793121987.4885023,
+    "ast_hash": "8459c798c705ccdef5598dc81570469d",
     "semantic_hash": ""
   },
   "Documentation/areas/dunan_castle_hq_guardian_deity_shrine.md": {
-    "mtime": 1792430753.7985208,
-    "seen": 1792917255.7181404,
-    "ast_hash": "8764f8b3c6217df151ce654e07dd97f1",
+    "mtime": 1793120386.3485675,
+    "seen": 1793121987.4885023,
+    "ast_hash": "20fc713b1d87ee8a84e121bb403e82ba",
     "semantic_hash": ""
   },
   "Documentation/areas/dunan_castle_hq_infirmary_and_clinic.md": {
-    "mtime": 1792430751.908022,
-    "seen": 1792917255.7181404,
-    "ast_hash": "e7f48a5d3550d3606ca84fe5da09c09b",
+    "mtime": 1793120386.3515651,
+    "seen": 1793121987.4885023,
+    "ast_hash": "a5df97508fde92827392fb89e5276dcd",
     "semantic_hash": ""
   },
   "Documentation/areas/dunan_castle_hq_inn_and_lodging.md": {
-    "mtime": 1792430753.694259,
-    "seen": 1792917255.7181404,
-    "ast_hash": "b2728821cb512cbb91aedf9141d97e53",
+    "mtime": 1793120386.3535657,
+    "seen": 1793121987.4885023,
+    "ast_hash": "e366745ead5b821e52d5ebf4207e70ce",
     "semantic_hash": ""
   },
   "Documentation/areas/dunan_castle_hq_living_quarters_and_corridors.md": {
-    "mtime": 1792430753.1815698,
-    "seen": 1792917255.7181404,
-    "ast_hash": "4b9fd31bbbb82f2ff988b80fce206c65",
+    "mtime": 1793120386.3705666,
+    "seen": 1793121987.4885023,
+    "ast_hash": "f6c7f6331c3134fbab377a3e259e3d98",
     "semantic_hash": ""
   },
   "Documentation/areas/dunan_castle_hq_memorial_graveyard.md": {
-    "mtime": 1792430753.415933,
-    "seen": 1792917255.7181404,
-    "ast_hash": "c6b514cfaacaba6d65732670bfda66cd",
+    "mtime": 1793120386.3725655,
+    "seen": 1793121987.4885023,
+    "ast_hash": "82cf625a3e88b336294c98ff2df07015",
     "semantic_hash": ""
   },
   "Documentation/areas/dunan_castle_hq_restaurant_and_kitchen.md": {
-    "mtime": 1792430753.3142798,
-    "seen": 1792917255.7181404,
-    "ast_hash": "b6792a673415e6b2e7920812adff8925",
+    "mtime": 1793120386.3745663,
+    "seen": 1793121987.4885023,
+    "ast_hash": "07cbe89732b7ae96fb82a2509943c995",
     "semantic_hash": ""
   },
   "Documentation/areas/dunan_castle_hq_tavern_and_dice.md": {
-    "mtime": 1792430751.8429303,
-    "seen": 1792917255.7181404,
-    "ast_hash": "bfaac3abc452f1bd5ae918d5979bbe8a",
+    "mtime": 1793120386.3775656,
+    "seen": 1793121987.4885023,
+    "ast_hash": "5e330835d467fb0a5c2c59a0dd2e09d7",
     "semantic_hash": ""
   },
   "Documentation/areas/dunan_castle_hq_teleport_and_elevator.md": {
-    "mtime": 1792430753.613667,
-    "seen": 1792917255.7181404,
-    "ast_hash": "f11b2bd7deaf1081f76c4bb40e353052",
+    "mtime": 1793120386.381566,
+    "seen": 1793121987.4885023,
+    "ast_hash": "8f05cbef95f63f7d5e7f74634d6e262f",
     "semantic_hash": ""
   },
   "Documentation/areas/dunan_castle_hq_vault_and_detective.md": {
-    "mtime": 1792430751.7277162,
-    "seen": 1792917255.7181404,
-    "ast_hash": "0dc3d3c91acc198d9ff01ad4bf9b9c0c",
+    "mtime": 1793120386.3855667,
+    "seen": 1793121987.4885023,
+    "ast_hash": "e12df4e57ceaa5a3f01b5746ba74a632",
     "semantic_hash": ""
   },
   "Documentation/areas/dunan_castle_hq_war_strategy_room.md": {
-    "mtime": 1792430752.0722382,
-    "seen": 1792917255.7181404,
-    "ast_hash": "6ba21216e1b3b1baa35be13638d2655e",
+    "mtime": 1793120386.3895664,
+    "seen": 1793121987.4885023,
+    "ast_hash": "ce96a267765f8c857c7867e81e1820cd",
     "semantic_hash": ""
   },
   "Documentation/areas/dunan_castle_hq_watchtower_and_roof.md": {
-    "mtime": 1792430753.2166357,
-    "seen": 1792917255.7181404,
-    "ast_hash": "5078bc532f7c7484285e82155126d5fb",
+    "mtime": 1793120386.3905663,
+    "seen": 1793121987.4885023,
+    "ast_hash": "a3770a2dec4229aaf52d8115f943d1fc",
     "semantic_hash": ""
   },
   "Documentation/areas/dunan_castle_hq_workshop_and_library.md": {
-    "mtime": 1792430752.1613643,
-    "seen": 1792917255.7181404,
-    "ast_hash": "7e2f9570e9ec6b96a0365a38ece9bdb1",
+    "mtime": 1793120386.3925667,
+    "seen": 1793121987.4885023,
+    "ast_hash": "94f205f3d268ec0d645be8fc0d1c85ce",
     "semantic_hash": ""
   },
   "Documentation/areas/forest_village.md": {
-    "mtime": 1792430745.7014775,
-    "seen": 1792917255.7181404,
-    "ast_hash": "93f59093cdeeec71d0906eff36709796",
+    "mtime": 1793120386.3970656,
+    "seen": 1793121987.4885023,
+    "ast_hash": "9c314d9f72728155860ade6791e86ccc",
     "semantic_hash": ""
   },
   "Documentation/areas/greenhill_city.md": {
-    "mtime": 1792430745.4157815,
-    "seen": 1792917255.7181404,
-    "ast_hash": "379e06a22bf4116bf8c2a4a0b2fc3730",
+    "mtime": 1793120386.4045663,
+    "seen": 1793121987.4885023,
+    "ast_hash": "996f5c1a61c2d45a034b6be405c925c4",
     "semantic_hash": ""
   },
   "Documentation/areas/greenhill_matilda_path_and_border.md": {
-    "mtime": 1792430746.145411,
-    "seen": 1792917255.7181404,
-    "ast_hash": "b13f42ef084b7fd16d86e11237cfcc7f",
+    "mtime": 1793120386.4080665,
+    "seen": 1793121987.4885023,
+    "ast_hash": "1016858d3ddf3e3b5f8e648029eaccad",
     "semantic_hash": ""
   },
   "Documentation/areas/gregminster_capital.md": {
-    "mtime": 1792430746.6352499,
-    "seen": 1792917255.7181404,
-    "ast_hash": "1e85bba51bffc4fbf077db7171cda1b0",
+    "mtime": 1793120386.410067,
+    "seen": 1793121987.4885023,
+    "ast_hash": "7216644c46383b71d15f325b2c255b73",
     "semantic_hash": ""
   },
   "Documentation/areas/highland_recon_camp_muse.md": {
-    "mtime": 1792430743.4593296,
-    "seen": 1792917255.7181404,
-    "ast_hash": "c9bbc80ac5393ee55c30389819039902",
+    "mtime": 1793120386.4145663,
+    "seen": 1793121987.4885023,
+    "ast_hash": "52870877a7527cc966256df7c3689a84",
     "semantic_hash": ""
   },
   "Documentation/areas/highland_youth_brigade_camp.md": {
-    "mtime": 1792430739.100552,
-    "seen": 1792917255.7181404,
-    "ast_hash": "9815c1750352ba7c58310e46918781e9",
+    "mtime": 1793120386.4175663,
+    "seen": 1793121987.4885023,
+    "ast_hash": "915bf6c87ed0f813463a63f41c41df67",
     "semantic_hash": ""
   },
   "Documentation/areas/highway_village.md": {
-    "mtime": 1792430749.815005,
-    "seen": 1792917255.7181404,
-    "ast_hash": "c8506e3afaa6c171ce923352ad302fc8",
+    "mtime": 1793120386.4210663,
+    "seen": 1793121987.4885023,
+    "ast_hash": "48deaeec1168ad7872872d49028d2498",
     "semantic_hash": ""
   },
   "Documentation/areas/kobold_village.md": {
-    "mtime": 1792430748.7926767,
-    "seen": 1792917255.7181404,
-    "ast_hash": "ae8726a47d9a89187a369842a43077ca",
+    "mtime": 1793120386.424066,
+    "seen": 1793121987.4885023,
+    "ast_hash": "582ef6f8618115ee641b227ce3552377",
     "semantic_hash": ""
   },
   "Documentation/areas/kuskus_town.md": {
-    "mtime": 1792430744.922483,
-    "seen": 1792917255.7181404,
-    "ast_hash": "08ba364b39ce85394420a905dd5f0ab4",
+    "mtime": 1793120386.4260674,
+    "seen": 1793121987.4885023,
+    "ast_hash": "5d281b90601add9c81bdb2ccb0a08e81",
     "semantic_hash": ""
   },
   "Documentation/areas/kyaro_town.md": {
-    "mtime": 1792430740.219512,
-    "seen": 1792917255.7181404,
-    "ast_hash": "cb3ce1aba3f87003296257a6f45e8de5",
+    "mtime": 1793120386.4315665,
+    "seen": 1793121987.4885023,
+    "ast_hash": "614ff49a92aeaa2298985b09cc2ec559",
     "semantic_hash": ""
   },
   "Documentation/areas/l_renouille_citadel.md": {
-    "mtime": 1792430751.2936196,
-    "seen": 1792917255.7181404,
-    "ast_hash": "24fc90a01660aec03bf0dc85b08de67a",
+    "mtime": 1793120386.4425662,
+    "seen": 1793121987.4885023,
+    "ast_hash": "cefe030cf0335b02af07f2073e3c9b0c",
     "semantic_hash": ""
   },
   "Documentation/areas/lakewest_town.md": {
-    "mtime": 1792430748.6130083,
-    "seen": 1792917255.7181404,
-    "ast_hash": "f1d30654030ad6e7252ee513fc5ce0a6",
+    "mtime": 1793120386.4470642,
+    "seen": 1793121987.4885023,
+    "ast_hash": "285eb935c708eafcaa6ca5e655146d9e",
     "semantic_hash": ""
   },
   "Documentation/areas/mercenary_fortress.md": {
-    "mtime": 1792430740.7469263,
-    "seen": 1792917255.7181404,
-    "ast_hash": "c8c22260ced92e55f52a8d69b049498d",
+    "mtime": 1793120386.4540663,
+    "seen": 1793121987.4885023,
+    "ast_hash": "cab0b22479c9b88d68b539e16cdbd1a7",
     "semantic_hash": ""
   },
   "Documentation/areas/mt_rakutei.md": {
-    "mtime": 1792430749.6642416,
-    "seen": 1792917255.7181404,
-    "ast_hash": "a78b0250ce5fea999a06d1d1bb970443",
-    "semantic_hash": ""
-  },
-  "Documentation/areas/mt_ryukan_pass.md": {
-    "mtime": 1792430746.5536008,
-    "seen": 1792917255.7181404,
-    "ast_hash": "a97218d30b23e1903c4004353df19c09",
-    "semantic_hash": ""
-  },
-  "Documentation/areas/mt_tigerwolf.md": {
-    "mtime": 1792430741.8137317,
-    "seen": 1792917255.7181404,
-    "ast_hash": "825c2acf14e6ac9172380a0ac9bc5290",
+    "mtime": 1793120386.4570687,
+    "seen": 1793121987.4885023,
+    "ast_hash": "290a86ab92fbe8bb8dbfcfdffd6f5db7",
     "semantic_hash": ""
   },
   "Documentation/areas/muse_city.md": {
-    "mtime": 1792486564.6788745,
-    "seen": 1792917255.7181404,
-    "ast_hash": "50ef7f204d42676f86b29f4737bdbd94",
+    "mtime": 1793120386.4830663,
+    "seen": 1793121987.4885023,
+    "ast_hash": "b010120699d6784f66741c76cb2926ba",
     "semantic_hash": ""
   },
   "Documentation/areas/new_leaf_academy.md": {
-    "mtime": 1792430745.9491265,
-    "seen": 1792917255.7181404,
-    "ast_hash": "1ca16f460fc15581dcbe6bf170ebc63b",
+    "mtime": 1793120386.4910662,
+    "seen": 1793121987.4885023,
+    "ast_hash": "1634b0e0a45187b6d1b283ced5ec0508",
     "semantic_hash": ""
   },
   "Documentation/areas/north_sparrow_pass.md": {
-    "mtime": 1792430739.401926,
-    "seen": 1792917255.7181404,
-    "ast_hash": "9070a30d82dc4be2ab328d1c7f104330",
+    "mtime": 1793120386.4950664,
+    "seen": 1793121987.4885023,
+    "ast_hash": "3e39e0ea5e54184afc9222c9370c29a3",
     "semantic_hash": ""
   },
   "Documentation/areas/north_window_ruins.md": {
-    "mtime": 1792430744.4663873,
-    "seen": 1792917255.7181404,
-    "ast_hash": "e1afdb03456d4624fe14df3c4e48d219",
+    "mtime": 1793120386.4975662,
+    "seen": 1793121987.4885023,
+    "ast_hash": "6bed08bcf0b407f918afc6f3efe104cb",
     "semantic_hash": ""
   },
   "Documentation/areas/radat_town.md": {
-    "mtime": 1792430744.360573,
-    "seen": 1792917255.7181404,
-    "ast_hash": "bb8c5043d05b7a975811e63d464c9b1e",
+    "mtime": 1793120386.5025663,
+    "seen": 1793121987.4885023,
+    "ast_hash": "8de181ecd6b34a7338f918fa8f184b08",
     "semantic_hash": ""
   },
   "Documentation/areas/rockaxe_citadel_and_castle.md": {
-    "mtime": 1792430749.4137046,
-    "seen": 1792917255.7181404,
-    "ast_hash": "5d5e1b8aadd5d53687a58a96f3038502",
+    "mtime": 1793120386.510067,
+    "seen": 1793121987.4885023,
+    "ast_hash": "3c1d295030991b2c494b00efecb4df59",
     "semantic_hash": ""
   },
   "Documentation/areas/ryube_village.md": {
-    "mtime": 1792430741.0595088,
-    "seen": 1792917255.7181404,
-    "ast_hash": "248510d804b3e5d8bbbc434d4cfd6d98",
+    "mtime": 1793120386.5175664,
+    "seen": 1793121987.4885023,
+    "ast_hash": "16b5402e83e661a2a7e65799ca6dec4b",
     "semantic_hash": ""
   },
   "Documentation/areas/sajah_village.md": {
-    "mtime": 1792430751.3526819,
-    "seen": 1792917255.7181404,
-    "ast_hash": "4355e92864fe85e1328ed7b57922f910",
+    "mtime": 1793120386.5195656,
+    "seen": 1793121987.4885023,
+    "ast_hash": "32c42a026cb659d55dc9474af154b867",
     "semantic_hash": ""
   },
   "Documentation/areas/sindar_ruins.md": {
-    "mtime": 1792430743.1929927,
-    "seen": 1792917255.7181404,
-    "ast_hash": "222d46d6a7b09aa2fa45ce99a38c3a73",
+    "mtime": 1793120386.5260644,
+    "seen": 1793121987.4885023,
+    "ast_hash": "f7dde157b7fb1870e2f52809da4fcb60",
     "semantic_hash": ""
   },
   "Documentation/areas/south_window_city.md": {
-    "mtime": 1792430744.1716914,
-    "seen": 1792917255.7181404,
-    "ast_hash": "6bb44e07eda3f3780c70cb39c97085cf",
-    "semantic_hash": ""
-  },
-  "Documentation/areas/swallow_pass_ryube_forest.md": {
-    "mtime": 1792430741.3555112,
-    "seen": 1792917255.7181404,
-    "ast_hash": "1404184077dc3c1c1ddc7014497ac20a",
+    "mtime": 1793120386.5375662,
+    "seen": 1793121987.4885023,
+    "ast_hash": "420759e818ffcfddf0279f4167f2712c",
     "semantic_hash": ""
   },
   "Documentation/areas/tenzan_pass.md": {
-    "mtime": 1792430739.2502208,
-    "seen": 1792917255.7181404,
-    "ast_hash": "f5918e1667e3e009189b43071c0f1d76",
+    "mtime": 1793120386.5450664,
+    "seen": 1793121987.4885023,
+    "ast_hash": "e371b938b2ab1a26e3c1af72ac3ce32c",
     "semantic_hash": ""
   },
   "Documentation/areas/tiger_cave_mt_senai.md": {
-    "mtime": 1792430747.9859548,
-    "seen": 1792917255.7181404,
-    "ast_hash": "54d19f2d981daeb116e2ef28003b768b",
+    "mtime": 1793120386.5480666,
+    "seen": 1793121987.4885023,
+    "ast_hash": "56c07a00161f4894dd9906e1a9a424bc",
     "semantic_hash": ""
   },
   "Documentation/areas/tinto_city.md": {
-    "mtime": 1792430747.0605261,
-    "seen": 1792917255.7181404,
-    "ast_hash": "b2d8bcb73f1e01dfa1556d2cacef98b2",
+    "mtime": 1793120386.5550663,
+    "seen": 1793121987.4885023,
+    "ast_hash": "d1e441b25a4ec73a9b5f74d1c51bebfc",
     "semantic_hash": ""
   },
   "Documentation/areas/tinto_mines.md": {
-    "mtime": 1792430747.5531726,
-    "seen": 1792917255.7181404,
-    "ast_hash": "e49e8bc2b127c6aa71336b8a18908e8f",
+    "mtime": 1793120386.5590663,
+    "seen": 1793121987.4885023,
+    "ast_hash": "7cede095c7eceef1732b6158ba7bd711",
     "semantic_hash": ""
   },
   "Documentation/areas/toran_castle_palace.md": {
-    "mtime": 1792430746.70417,
-    "seen": 1792917255.7186408,
-    "ast_hash": "46431e5e3d17a16275e5461a92c14fa6",
+    "mtime": 1793120386.5620663,
+    "seen": 1793121987.4885023,
+    "ast_hash": "6dd9c8d9790ad2c4326c9ff162841e4a",
     "semantic_hash": ""
   },
   "Documentation/areas/toto_village.md": {
-    "mtime": 1792430740.888965,
-    "seen": 1792917255.7186408,
-    "ast_hash": "cc354dfba3dd9e7cbac4fcccfaa89777",
+    "mtime": 1793120386.5650666,
+    "seen": 1793121987.4885023,
+    "ast_hash": "11004dd57771813eb40b9451ec64ae95",
     "semantic_hash": ""
   },
   "Documentation/areas/two_river_city.md": {
-    "mtime": 1792430748.4445443,
-    "seen": 1792917255.7186408,
-    "ast_hash": "bd354e3a784285b64f4bd5b226fd0680",
+    "mtime": 1793120386.5790663,
+    "seen": 1793121987.4885023,
+    "ast_hash": "4e676d37949ba592bba24b4078341113",
     "semantic_hash": ""
   },
   "Documentation/areas/two_river_sewers.md": {
-    "mtime": 1792430748.8863666,
-    "seen": 1792917255.7186408,
-    "ast_hash": "5fd8834b55038c5e6cf2074ef6c1a82c",
+    "mtime": 1793120386.5805655,
+    "seen": 1793121987.4885023,
+    "ast_hash": "e22d4ea0d144a34e4d8c09e2aec53742",
     "semantic_hash": ""
   },
   "Documentation/areas/white_deer_inn.md": {
-    "mtime": 1792430742.7565832,
-    "seen": 1792917255.7186408,
-    "ast_hash": "1e7067cb738ece0adfaa9f4f0080dea0",
+    "mtime": 1793120386.583567,
+    "seen": 1793121987.4885023,
+    "ast_hash": "4f7bc112d850463683ca9f9bd76a63e7",
     "semantic_hash": ""
   },
   "Documentation/caching_mechanism.md": {
@@ -954,15 +930,15 @@
     "semantic_hash": ""
   },
   "Documentation/suikoden_2_map_ids_and_areas_breakdown.md": {
-    "mtime": 1792915637.7505205,
-    "seen": 1792917255.7186408,
-    "ast_hash": "a15465e092fb42342d71023f810d0768",
+    "mtime": 1793121809.8111205,
+    "seen": 1793121987.4885023,
+    "ast_hash": "dbe4ed9db2c5e69c9f3d518fab44b2db",
     "semantic_hash": ""
   },
   "Documentation/suikoden_2_master_map_entities_and_triggers_catalog.md": {
-    "mtime": 1792430016.5104947,
-    "seen": 1792917255.7186408,
-    "ast_hash": "a84af2d83ccd35de3979460aa66faf34",
+    "mtime": 1793121923.157342,
+    "seen": 1793121987.4885023,
+    "ast_hash": "51de52ee2a933518c07052e3819cdf4f",
     "semantic_hash": ""
   },
   "Documentation/suikoden_2_room_item_restoration_whitepaper.md": {
@@ -984,9 +960,9 @@
     "semantic_hash": ""
   },
   "Documentation/treasure_chests_catalog.md": {
-    "mtime": 1792448303.3330176,
-    "seen": 1792917255.7186408,
-    "ast_hash": "59df0b6ec542d3a0fa03c4a2f7f484f4",
+    "mtime": 1793121923.1583405,
+    "seen": 1793121987.4885023,
+    "ast_hash": "b69948bf672a2c649d0e24da32067614",
     "semantic_hash": ""
   },
   "Documentation/walkthrough_npc_portraits.md": {
@@ -1110,9 +1086,45 @@
     "semantic_hash": ""
   },
   "Documentation/suikoden_2_t_box_flag_architecture.md": {
-    "mtime": 1792985078.8716612,
-    "seen": 1793023189.192802,
-    "ast_hash": "9fda59a43efc5b21c823eb137c1efe8f",
+    "mtime": 1793121923.1593406,
+    "seen": 1793121987.4885023,
+    "ast_hash": "be21a58f6013eb597c1458ec54d89fec",
+    "semantic_hash": ""
+  },
+  "tools/symbol_indexer/gamedata.json": {
+    "mtime": 1793118115.752794,
+    "seen": 1793118445.318811,
+    "ast_hash": "5c9fd4e8965ae08b179842b7569a833c",
+    "semantic_hash": ""
+  },
+  "Documentation/areas/banner_pass.md": {
+    "mtime": 1793121923.1558406,
+    "seen": 1793121987.4885023,
+    "ast_hash": "b76aaf973ef72de57a6b3c5c385d5338",
+    "semantic_hash": ""
+  },
+  "Documentation/areas/ryube_forest.md": {
+    "mtime": 1793121731.4673932,
+    "seen": 1793121987.4885023,
+    "ast_hash": "bd24b9e6d08f5041df0d443bdf9448b1",
+    "semantic_hash": ""
+  },
+  "Documentation/areas/swallow_pass.md": {
+    "mtime": 1793120386.5415664,
+    "seen": 1793121987.4885023,
+    "ast_hash": "918e2a816b53aaa2586359b91284a91b",
+    "semantic_hash": ""
+  },
+  "Documentation/areas/tigermouth_village.md": {
+    "mtime": 1793121731.4688938,
+    "seen": 1793121987.4885023,
+    "ast_hash": "68a5cb35a203dba5a94dc4c3a4b33360",
+    "semantic_hash": ""
+  },
+  "Documentation/areas_correction_audit_report.md": {
+    "mtime": 1793121923.1603408,
+    "seen": 1793121987.4885023,
+    "ast_hash": "a22137b9f27ac3ce48059824497768b3",
     "semantic_hash": ""
   }
 }

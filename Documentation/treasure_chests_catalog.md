@@ -42,7 +42,7 @@ Below is the complete geographic directory of all 22 areas containing treasure c
 
 | Region | Area Name | Primary Map Assets | Chests | Notable Treasures |
 |:---|:---|:---:|:---:|:---|
-| **vb (Act 1A: Mercenary Fort / Ryube)** | **Mt. Tigerwolf & Tsai's Hermit Hut** | `vb21` | **7** | Fire Orb, Leather Armor, Gauntlets, Antitoxin, Toe Shoes |
+| **vb (Act 1A: Mercenary Fort / Ryube)** | **Ryube Forest & Tsai's Hermit Hut** | `vb21` | **7** | Fire Orb, Leather Armor, Gauntlets, Antitoxin, Toe Shoes |
 | **vb (Act 1A: Mercenary Fort / Ryube)** | **Swallow Pass & Highland Border Gate** | `vb07`, `vb08`, `vb17` | **10** | Feather Hat, Brass Armor, Escape Talisman, Fire Wall, Toe Shoes |
 | **vc (Act 1B: Muse / Coronet)** | **Ancient Sindar Ruins Caverns** | `vc07`, `vc12`, `vc13` | **22** | Old Book Vol. 2, Spark Orb, Magic Drain Orb, Water Orb, Power Ring |
 | **vc (Act 1B: Muse / Coronet)** | **Highland Military Recon Encampment** | `vc30` | **1** | Hunter Orb |
@@ -54,7 +54,7 @@ Below is the complete geographic directory of all 22 areas containing treasure c
 | **ve (Act 2B: Greenhill / Matilda Path)** | **New Leaf Academy (Campus, Dorms & Cellar)** | `ve03`, `ve06`, `ve07` | **6** | Old Book Vol. 5, Window Set #5 |
 | **vf (Act 2C: Banner / Toran)** | **Banner Village & Fast Pier** | `vf06`, `vf07` | **8** | Winged Boots, Full Helmet, Silverlet, Stone of Speed |
 | **vg (Act 3A: Tinto / Mines / Vampires)** | **Crom Village & Outskirts Path** | `vg08`, `vg13` | **4** | Old Book Vol. 10, Celadon Urn |
-| **vg (Act 3A: Tinto / Mines / Vampires)** | **Drakemouth Mountain Settlement** | `vg04`, `vg06` | **2** | Old Book Vol. 9 |
+| **vg (Act 3A: Tinto / Mines / Vampires)** | **Tigermouth Mountain Settlement** | `vg04`, `vg06` | **2** | Old Book Vol. 9 |
 | **vg (Act 3A: Tinto / Mines / Vampires)** | **Tiger Cave & Mt. Senai Shrines** | `vg15` | **8** | Thunder God's Garb, Earth Shield, Gale Orb, Goldlet |
 | **vg (Act 3A: Tinto / Mines / Vampires)** | **Tinto Mines & Underground Caverns** | `vg07`, `vg11` | **4** | Full Plate, Mega Medicine |
 | **vg (Act 3A: Tinto / Mines / Vampires)** | **Tinto Mining City & Mayor Hall** | `vg01`, `vg02`, `vg17` | **5** | Master's Garb, Double-Beat Orb, Power Ring |
@@ -72,7 +72,7 @@ Below is the complete geographic directory of all 22 areas containing treasure c
 
 ### 📍 Region: vb (Act 1A: Mercenary Fort / Ryube)
 
-#### 🏛️ Mt. Tigerwolf & Tsai's Hermit Hut (7 Chests)
+#### 🏛️ Ryube Forest & Tsai's Hermit Hut (7 Chests)
 
 | Map ID | Submap | Event | Coords (X, Y) | Save Flag (`Byte, Bit`) | Reward Item | Category | Raw (`ID, Kind`) | Target Offset |
 |:---:|:---:|:---:|:---:|:---:|:---|:---:|:---:|:---:|
@@ -241,7 +241,7 @@ Below is the complete geographic directory of all 22 areas containing treasure c
 | `vg08` | 1 | 89 | (0, 0) | Byte 23, Bit 8 | **Mother Earth Orb** | Rune Orb | `(8, 32)` | `eventCom[10]` |
 | `vg13` | 0 | 104 | (63, 28) | Byte 23, Bit 128 | **Warrior Orb** | Rune Orb | `(70, 32)` | `eventCom[10]` |
 
-#### 🏛️ Drakemouth Mountain Settlement (2 Chests)
+#### 🏛️ Tigermouth Mountain Settlement (2 Chests)
 
 | Map ID | Submap | Event | Coords (X, Y) | Save Flag (`Byte, Bit`) | Reward Item | Category | Raw (`ID, Kind`) | Target Offset |
 |:---:|:---:|:---:|:---:|:---:|:---|:---:|:---:|:---:|

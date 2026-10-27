@@ -137,7 +137,7 @@
 |:---:|---|---|---|
 | `ev[00]` | `2 (Map Init)` | Condition Check #23 AND Condition Check #36 AND Player within Box [33..1, 2..255] | Open Dialogue Message Window; Reset Camera Tracking (255) |
 | `ev[01]` | `1 (Action / Talk)` | Target Inspected is obj[46] | Dismiss Emotion Bubble (0); Warp Room -> Submap 24 at (8,0) facing West (Left); Warp to Castle HQ (8, 0, 255) |
-| `ev[02]` | `2 (Map Init)` | Story Flag 45 (bit 128) CLEAR AND Condition Check #23 AND Inventory Holds Item #1 AND Condition Check #34 AND Temp Event Flag #16 SET AND Condition Check #33 AND Player X within Range [2..255] | Open Dialogue Message Window; Engine Action #9 |
+| `ev[02]` | `2 (Map Init)` | Story Flag 45 (bit 128) CLEAR AND Condition Check #23 AND Inventory Holds Item #1 [Medicine] AND Condition Check #34 AND Temp Event Flag #16 SET AND Condition Check #33 AND Player X within Range [2..255] | Open Dialogue Message Window; Engine Action #9 |
 | `ev[03]` | `1 (Action / Talk)` | Target Inspected is obj[47] | Dismiss Emotion Bubble (0); Warp Room -> Submap 24 at (9,0) facing Up (North); Warp to Castle HQ (9, 0, 255) |
 | `ev[04]` | `2 (Map Init)` | Condition Check #23 AND Condition Check #120 AND Player within Box [33..1, 2..255] | Open Dialogue Message Window; Screen Fade Transition (255, 254, 204) |
 | `ev[05]` | `1 (Action / Talk)` | Target Inspected is obj[10] | Dismiss Emotion Bubble (0); Warp Room -> Submap 23 at (0,3) facing East (Right); Screen Fade Transition (1, 255, 254) |
@@ -193,7 +193,7 @@
 | `ev[55]` | `1 (Action / Talk)` | Target Inspected is obj[34] AND Story Flag 1 (mask 255) SET | Close Dialogue Sub-Window (34); Warp Room -> Submap 255 at (254,204) facing 204 |
 | `ev[56]` | `1 (Action / Talk)` | Target Inspected is obj[35] AND Story Flag 1 (mask 255) SET | Close Dialogue Sub-Window (35); Warp Room -> Submap 255 at (254,204) facing 204 |
 | `ev[57]` | `2 (Map Init)` | Condition Check #23 AND Condition Check #36 AND Player within Box [33..1, 2..255] | Open Dialogue Message Window; Make obj[255] Hidden (disp = 0) |
-| `ev[58]` | `2 (Map Init)` | Story Flag 45 (bit 128) CLEAR AND Condition Check #23 AND Inventory Holds Item #1 AND Condition Check #34 AND Temp Event Flag #16 SET AND Condition Check #33 AND Player X within Range [2..255] | Open Dialogue Message Window; Teleport obj[255] to (254,204) |
+| `ev[58]` | `2 (Map Init)` | Story Flag 45 (bit 128) CLEAR AND Condition Check #23 AND Inventory Holds Item #1 [Medicine] AND Condition Check #34 AND Temp Event Flag #16 SET AND Condition Check #33 AND Player X within Range [2..255] | Open Dialogue Message Window; Teleport obj[255] to (254,204) |
 
 ---
 

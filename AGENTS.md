@@ -1,12 +1,14 @@
-# PKCore Workspace Instructions
+# PKCore & PKRecruitmentPatch Workspace Instructions
 
-## Primary Project
-- **PKCore (`d:\Appz\PKCore`) is the main project of this workspace.** All code changes, new files, builds, and fixes target PKCore unless the user explicitly says otherwise.
+## Workspace Projects & Boundaries
+- **PKCore (`d:\Appz\PKCore`)**: Primary engine and gameplay mod project (performance, UI overlays, QoL, auto-battle, fast-forward, etc.).
+- **PKRecruitmentPatch (`d:\Appz\PKRecruitmentPatch`)**: Standalone recruitment patch project (early recruitment triggers, map event bytecode patching).
+- All code changes, new files, and builds target either `PKCore` or `PKRecruitmentPatch` depending on the active user request.
 - The other workspace folders are **read-only references**:
   - `d:\Appz\Suisource\GSD1`, `GSD2`, `GSDShare` — decompiled game source, used only for grounding.
   - `d:\Appz\Suisource\Ideas` — notes/ideas, read for context only.
-  - `...\Suikoden I and II HD Remaster\BepInEx` and `...\PKCore` — game install / runtime output (logs, configs, textures). Do not write project code there.
-- Never edit decompiled source files; implement behavior changes as Harmony patches in PKCore instead.
+  - `...\Suikoden I and II HD Remaster\BepInEx` — game install / runtime output (logs, configs, textures). Do not write project code there.
+- Never edit decompiled source files; implement behavior changes as Harmony patches instead.
 
 ## Environment & Build
 - **Symlink Setup**: The build output directory is symlinked directly to the game's BepInEx plugins directory (`d:\SteamLibrary\steamapps\common\Suikoden I and II HD Remaster\BepInEx\plugins\`).
@@ -114,6 +116,20 @@
   - Upon map transition, `EVENTCON __result` holds `__result.mdat` (`MACHIDAT`), which is the deserialized object of the map asset (e.g., `vj17.json`, `va11.json`).
   - Modify `__result.mdat` directly in memory (e.g., `eventdata.mapeventdat`, `eventobj`, `eventdat.eventForm` script byte arrays, `battle_dat`, `monster_party`, etc.).
   - This acts as an in-memory **byte-patching** mechanism for map asset JSON files, eliminating the need for manual UABEA bundle extraction/repacking and making changes immune to official game updates.
+- **STRICT Byte-Length Preservation & Zero Array Truncation (Event Bytecode Rule)**:
+  - In Suikoden II's event bytecode parser, **NEVER truncate, shrink, or delete bytes from `eventForm` or `eventCom` arrays**.
+  - Chopping bytes shifts internal parser offsets, desyncs execution, and breaks cutscenes, camera transitions, dialogue trees, or actor spawning.
+  - **Always preserve 100% exact array length matching vanilla `Mobobehaviour/<map>.json`**:
+    - To bypass an event condition or story flag (e.g. `[3, 118, 8]` or `[3, 123, 1]`), **always replace the 3 bytes with NOP padding: `[0, 0, 0]`**.
+    - To neutralize an entire trigger, fill with zeroes `[0, 0, ..., 254]` preserving full length.
+    - Only change the specific byte values in-place (e.g., castle level opcode `33, 1, targetLevel`, or character slot numbers).
+  - **Leave Cutscene `eventCom` Untouched**: Never modify cutscene bytecode sequences (e.g. screen fades, actor detachments, camera paths) unless fixing a verified single opcode branch; modifying cutscene byte arrays desyncs engine timing.
+- **Castle Level 0-Index Grounding (`base_lv`)**:
+  - `GAME_DATA.base_lv` is 0-indexed:
+    - `base_lv == 0`: Castle Level 1 (Mercenary Fort / Pre-Castle) $\rightarrow$ Opcode `[33, 0, 0]` or `< 1` $\rightarrow$ `[33, 2, 1]`.
+    - `base_lv == 1`: **Castle Level 2** (North Window Castle newly established) $\rightarrow$ Opcode `[33, 1, 1]` (`base_lv >= 1`).
+    - `base_lv == 2`: Castle Level 3 (First castle expansion after Two River / Greenhill) $\rightarrow$ Opcode `[33, 1, 2]` (`base_lv >= 2`).
+    - `base_lv == 3`: Castle Level 4 (Late-game expansion) $\rightarrow$ Opcode `[33, 1, 3]` (`base_lv >= 3`).
 
 ## Feature Documentation & Updates (Changelog & README)
 - **Always Document Features**: Whenever a new feature is added, or an existing feature/patch is updated or modified:

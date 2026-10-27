@@ -100,6 +100,19 @@ def init_db(db_path: str) -> sqlite3.Connection:
     );
     """)
 
+    cur.execute("""
+    CREATE TABLE game_entities (
+        id INTEGER PRIMARY KEY,
+        game TEXT NOT NULL,
+        category TEXT NOT NULL,
+        entity_id INTEGER NOT NULL,
+        name TEXT NOT NULL,
+        attrs TEXT,
+        internal_symbol TEXT,
+        description TEXT
+    );
+    """)
+
     conn.commit()
     return conn
 
@@ -125,6 +138,12 @@ def create_indexes(conn: sqlite3.Connection):
     cur.execute("CREATE INDEX idx_maps_name ON maps(name COLLATE NOCASE);")
     cur.execute("CREATE INDEX idx_maps_game ON maps(game);")
     cur.execute("CREATE INDEX idx_maps_region ON maps(region COLLATE NOCASE);")
+
+    cur.execute("CREATE INDEX idx_entities_name ON game_entities(name COLLATE NOCASE);")
+    cur.execute("CREATE INDEX idx_entities_cat_id ON game_entities(category, entity_id);")
+    cur.execute("CREATE INDEX idx_entities_symbol ON game_entities(internal_symbol COLLATE NOCASE);")
+    cur.execute("CREATE INDEX idx_entities_id ON game_entities(entity_id);")
+    cur.execute("CREATE INDEX idx_entities_game ON game_entities(game);")
 
     print("Creating Full-Text Search (FTS5) index...")
     cur.execute("""
@@ -161,6 +180,12 @@ def create_indexes(conn: sqlite3.Connection):
     cur.execute("""
     INSERT INTO fts_symbols(name, parent, kind, detail, game, target_id, target_table)
     SELECT map_id, name, 'map', description, game, id, 'maps' FROM maps;
+    """)
+    # Game Entities
+    cur.execute("""
+    INSERT INTO fts_symbols(name, parent, kind, detail, game, target_id, target_table)
+    SELECT name, category || ' #' || entity_id, 'entity', coalesce(attrs, '') || ' ' || coalesce(internal_symbol, '') || ' ' || coalesce(description, ''), game, id, 'game_entities'
+    FROM game_entities;
     """)
 
     conn.commit()
@@ -466,6 +491,186 @@ def index_maps(conn: sqlite3.Connection):
     print(f"Indexed {len(rows)} map and area entries (GSD1 + GSD2) in {time.time() - t0:.2f}s")
     return len(rows)
 
+def index_game_entities(conn: sqlite3.Connection) -> int:
+    import json
+    t0 = time.time()
+    cur = conn.cursor()
+
+    json_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "gamedata.json")
+    js_path = r"e:\xampp\htdocs\suisaveeditor\src\gamedata.js"
+
+    # If gamedata.json doesn't exist or gamedata.js is newer, regenerate json via node
+    if os.path.isfile(js_path):
+        if not os.path.isfile(json_path) or os.path.getmtime(js_path) > os.path.getmtime(json_path):
+            try:
+                import subprocess
+                node_script = f"""
+                const fs = require('fs');
+                const content = fs.readFileSync({json.dumps(js_path)}, 'utf8');
+                const jsCode = content.replace('export default GameData;', 'module.exports = GameData;');
+                const tmpPath = {json.dumps(json_path + '.tmp.cjs')};
+                fs.writeFileSync(tmpPath, jsCode);
+                const gd = require(tmpPath);
+                fs.writeFileSync({json.dumps(json_path)}, JSON.stringify(gd, null, 2));
+                fs.unlinkSync(tmpPath);
+                """
+                subprocess.run(["node", "-e", node_script], check=True, capture_output=True)
+            except Exception as e:
+                print(f"Warning: could not auto-refresh gamedata.json from gamedata.js: {e}")
+
+    if not os.path.isfile(json_path):
+        print(f"Game data file not found: {json_path}")
+        return 0
+
+    with open(json_path, 'r', encoding='utf-8') as f:
+        gd = json.load(f)
+
+    # Read engine symbols for cross-referencing
+    char_fields = []
+    g2_name_path = r"d:\Appz\Suisource\GSD2\GSD2\g2_name_h.cs"
+    if os.path.isfile(g2_name_path):
+        with open(g2_name_path, 'r', encoding='utf-8', errors='ignore') as f:
+            char_fields = re.findall(r'NativeFieldInfoPtr_([A-Za-z0-9_]+)\s*=', f.read())
+
+    di_fields, it_fields, tr_fields = [], [], []
+    g2_data_path = r"d:\Appz\Suisource\GSD2\GSD2\g2_data_h.cs"
+    if os.path.isfile(g2_data_path):
+        with open(g2_data_path, 'r', encoding='utf-8', errors='ignore') as f:
+            data_text = f.read()
+            di_fields = re.findall(r'NativeFieldInfoPtr_(DI_[A-Za-z0-9_]+)\s*=', data_text)
+            it_fields = re.findall(r'NativeFieldInfoPtr_(IT_[A-Za-z0-9_]+)\s*=', data_text)
+            tr_fields = re.findall(r'NativeFieldInfoPtr_(TR_[A-Za-z0-9_]+)\s*=', data_text)
+
+    rows = []
+
+    # 1. Characters
+    chars = gd.get("CHARACTERS", {})
+    beasts_set = set(gd.get("BEASTS", []))
+    for cid_str, cdata in chars.items():
+        cid = int(cid_str)
+        name = cdata.get("name", f"Character {cid}") if isinstance(cdata, dict) else str(cdata)
+        attrs = cdata.get("attrs", []) if isinstance(cdata, dict) else []
+        attrs_str = ", ".join(str(a) for a in attrs)
+        sym = f"g2_name_h.{char_fields[cid-1]}" if 0 < cid <= len(char_fields) else ""
+        is_beast = " (Beast/Monster)" if cid in beasts_set or "Z" in attrs else ""
+        desc = f"Character #{cid}: {name}{is_beast}. Attributes: [{attrs_str}]."
+        if sym:
+            desc += f" Engine Symbol: {sym}."
+        rows.append(("GSD2", "character", cid, name, attrs_str, sym, desc))
+
+    # 2. Food
+    foods = gd.get("FOOD", {})
+    for fid_str, fdata in foods.items():
+        fid = int(fid_str)
+        name = fdata.get("name", f"Food {fid}") if isinstance(fdata, dict) else str(fdata)
+        attrs = fdata.get("attrs", []) if isinstance(fdata, dict) else []
+        attrs_str = f"use_cnt: {attrs[0]}" if attrs else "use_cnt: 101"
+        sym = f"g2_data_h.{di_fields[fid-1]}" if 0 < fid <= len(di_fields) else ""
+        desc = f"Food Recipe Dish #{fid}: {name}. {attrs_str}."
+        if sym:
+            desc += f" Engine Symbol: {sym}."
+        rows.append(("GSD2", "food", fid, name, attrs_str, sym, desc))
+
+    # 3. Items (consumables/key)
+    items = gd.get("ITEMS", {})
+    for iid_str, idata in items.items():
+        iid = int(iid_str)
+        name = idata.get("name", f"Item {iid}") if isinstance(idata, dict) else str(idata)
+        attrs = idata.get("attrs", []) if isinstance(idata, dict) else []
+        attrs_str = f"use_cnt: {attrs[0]}" if attrs else "use_cnt: 0"
+        desc = f"Item #{iid}: {name}. {attrs_str}."
+        rows.append(("GSD2", "item", iid, name, attrs_str, "", desc))
+
+    # 4. Runes
+    runes = gd.get("RUNES", {})
+    for rid_str, rdata in runes.items():
+        rid = int(rid_str)
+        name = rdata.get("name", f"Rune {rid}") if isinstance(rdata, dict) else str(rdata)
+        attrs = rdata.get("attrs", []) if isinstance(rdata, dict) else []
+        attrs_str = ", ".join(str(a) for a in attrs)
+        desc = f"Rune Orb #{rid}: {name}. Slots/Attrs: [{attrs_str}]."
+        rows.append(("GSD2", "rune", rid, name, attrs_str, "", desc))
+
+    # 5. Helmets
+    helmets = gd.get("HELMET", {})
+    for hid_str, hdata in helmets.items():
+        hid = int(hid_str)
+        name = hdata.get("name", f"Helmet {hid}") if isinstance(hdata, dict) else str(hdata)
+        attrs = hdata.get("attrs", []) if isinstance(hdata, dict) else []
+        attrs_str = f"use_cnt: 16, type: {', '.join(str(a) for a in attrs)}" if attrs else "use_cnt: 16"
+        desc = f"Helmet #{hid}: {name}. [{attrs_str}]."
+        rows.append(("GSD2", "helmet", hid, name, attrs_str, "", desc))
+
+    # 6. Armor
+    armors = gd.get("ARMOR", {})
+    for aid_str, adata in armors.items():
+        aid = int(aid_str)
+        name = adata.get("name", f"Armor {aid}") if isinstance(adata, dict) else str(adata)
+        attrs = adata.get("attrs", []) if isinstance(adata, dict) else []
+        attrs_str = f"use_cnt: 16, type: {', '.join(str(a) for a in attrs)}" if attrs else "use_cnt: 16"
+        desc = f"Armor #{aid}: {name}. [{attrs_str}]."
+        rows.append(("GSD2", "armor", aid, name, attrs_str, "", desc))
+
+    # 7. Shields
+    shields = gd.get("SHIELD", {})
+    for sid_str, sname in shields.items():
+        sid = int(sid_str)
+        name = str(sname)
+        attrs_str = "use_cnt: 16, type: S"
+        desc = f"Shield #{sid}: {name}. [{attrs_str}]."
+        rows.append(("GSD2", "shield", sid, name, attrs_str, "", desc))
+
+    # 8. Accessories / Gear
+    accessories = gd.get("OTHER_EQUIP_GEAR", {})
+    for oid_str, oname in accessories.items():
+        oid = int(oid_str)
+        name = str(oname)
+        attrs_str = "use_cnt: 16"
+        desc = f"Accessory/Gear #{oid}: {name}. [{attrs_str}]."
+        rows.append(("GSD2", "accessory", oid, name, attrs_str, "", desc))
+
+    # 9. Farming
+    farming = gd.get("FARMING", {})
+    for fid_str, fname in farming.items():
+        fid = int(fid_str)
+        name = str(fname)
+        attrs_str = "use_cnt: 48"
+        desc = f"Farm Seed/Animal #{fid}: {name}. [{attrs_str}]."
+        rows.append(("GSD2", "farming", fid, name, attrs_str, "", desc))
+
+    # 10. Trade
+    trade = gd.get("TRADE", {})
+    for tid_str, tname in trade.items():
+        tid = int(tid_str)
+        name = str(tname)
+        attrs_str = "use_cnt: 64"
+        sym = f"g2_data_h.{tr_fields[tid-1]}" if 0 < tid <= len(tr_fields) else ""
+        desc = f"Trade Good #{tid}: {name}. [{attrs_str}]."
+        if sym:
+            desc += f" Engine Symbol: {sym}."
+        rows.append(("GSD2", "trade", tid, name, attrs_str, sym, desc))
+
+    # 11. Base items
+    base_items = gd.get("BASE_ITEM", {})
+    for bid_str, bname in base_items.items():
+        bid = int(bid_str)
+        name = str(bname)
+        attrs_str = "use_cnt: 80"
+        sym = f"g2_data_h.{it_fields[bid-1]}" if 0 < bid <= len(it_fields) else ""
+        desc = f"Castle Item #{bid}: {name}. [{attrs_str}]."
+        if sym:
+            desc += f" Engine Symbol: {sym}."
+        rows.append(("GSD2", "base_item", bid, name, attrs_str, sym, desc))
+
+    cur.executemany("""
+    INSERT INTO game_entities (game, category, entity_id, name, attrs, internal_symbol, description)
+    VALUES (?, ?, ?, ?, ?, ?, ?)
+    """, rows)
+    conn.commit()
+    t1 = time.time()
+    print(f"Indexed {len(rows)} game entities (characters, food, runes, gear, items) in {t1 - t0:.2f}s")
+    return len(rows)
+
 def main():
     import argparse
     parser = argparse.ArgumentParser(description="Build high-speed decompiled symbols database.")
@@ -486,6 +691,9 @@ def main():
 
     print("\n--- Indexing Maps & Areas (GSD1 & GSD2) ---")
     index_maps(conn)
+
+    print("\n--- Indexing Game Entities (Characters, Items, Food, Gear) ---")
+    index_game_entities(conn)
 
     print("\n--- Creating Indexes and Full-Text Search Tables ---")
     t0 = time.time()

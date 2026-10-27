@@ -128,7 +128,7 @@ Every single distinct geographic location in Suikoden II is documented in full i
 | 2 | **Cave of the Wind Caverns** | `vd06`, `vd13` | **1,138 lines** | [areas/cave_of_the_wind.md](areas/cave_of_the_wind.md) |
 | 3 | **Coronet Town & Harbor Docks** | `vc17`, `vc18`, `vc19` | **503 lines** | [areas/coronet_town_and_port.md](areas/coronet_town_and_port.md) |
 | 4 | **Crom Village & Outskirts Path** | `vg08`, `vg13`, `vg16` | **1,103 lines** | [areas/crom_village.md](areas/crom_village.md) |
-| 5 | **Drakemouth Mountain Settlement** | `vg04`, `vg06` | **459 lines** | [areas/drakemouth_village.md](areas/drakemouth_village.md) |
+| 5 | **Tigermouth Mountain Settlement** | `vg04`, `vg06` | **459 lines** | [areas/tigermouth_village.md](areas/tigermouth_village.md) |
 | 6 | **Castle HQ: Tetsu's Castle Bathhouse** | `vk06` | **598 lines** | [areas/dunan_castle_hq_bathhouse.md](areas/dunan_castle_hq_bathhouse.md) |
 | 7 | **Castle HQ: Cartography Room** | `vk12` | **264 lines** | [areas/dunan_castle_hq_cartography_room.md](areas/dunan_castle_hq_cartography_room.md) |
 | 8 | **Castle HQ: Commander Riou's Bedroom** | `vk10` | **671 lines** | [areas/dunan_castle_hq_commanders_quarters.md](areas/dunan_castle_hq_commanders_quarters.md) |
@@ -164,8 +164,8 @@ Every single distinct geographic location in Suikoden II is documented in full i
 | 38 | **Lakewest Town & Docks** | `vh02`, `vh10` | **740 lines** | [areas/lakewest_town.md](areas/lakewest_town.md) |
 | 39 | **Viktor's Mercenary Fortress** | `vb01`, `vb02`, `vb12`, `vb13`, `vb14`, `vb15`, `vb16`, `vb19` | **1,523 lines** | [areas/mercenary_fortress.md](areas/mercenary_fortress.md) |
 | 40 | **Mt. Rakutei Dragon Cliffs & Peak** | `vi08`, `vi09`, `vi13`, `vi15` | **655 lines** | [areas/mt_rakutei.md](areas/mt_rakutei.md) |
-| 41 | **Mt. Ryukan Mountain Trail** | `vf03` | **949 lines** | [areas/mt_ryukan_pass.md](areas/mt_ryukan_pass.md) |
-| 42 | **Mt. Tigerwolf & Tsai's Hermit Hut** | `vb09`, `vb10`, `vb11`, `vb20`, `vb21` | **968 lines** | [areas/mt_tigerwolf.md](areas/mt_tigerwolf.md) |
+| 41 | **Banner Pass (Toran Mountain Trail)** | `vf03` | **949 lines** | [areas/banner_pass.md](areas/banner_pass.md) |
+| 42 | **Ryube Forest & Tsai's Hermit Hut** | `vb09`, `vb10`, `vb11`, `vb20`, `vb21` | **968 lines** | [areas/ryube_forest.md](areas/ryube_forest.md) |
 | 43 | **Muse City (Plaza, City Hall & Ruins)** | `vc01`, `vc02`, `vc03`, `vc09`, `vc10`, `vc11`, `vc15`, `vc21`, `vc22`, `vc24`, `vc25`, `vc26`, `vc27`, `vc28`, `vc29`, `vc31` | **3,944 lines** | [areas/muse_city.md](areas/muse_city.md) |
 | 44 | **New Leaf Academy (Campus, Dorms & Cellar)** | `ve03`, `ve06`, `ve07` | **1,387 lines** | [areas/new_leaf_academy.md](areas/new_leaf_academy.md) |
 | 45 | **North Sparrow Mountain Pass & Checkpoint** | `va04`, `va05`, `va06`, `va07` | **614 lines** | [areas/north_sparrow_pass.md](areas/north_sparrow_pass.md) |
@@ -176,7 +176,7 @@ Every single distinct geographic location in Suikoden II is documented in full i
 | 50 | **Sajah Frontier Village** | `vj17` | **316 lines** | [areas/sajah_village.md](areas/sajah_village.md) |
 | 51 | **Ancient Sindar Ruins Caverns** | `vc06`, `vc07`, `vc08`, `vc12`, `vc13` | **2,012 lines** | [areas/sindar_ruins.md](areas/sindar_ruins.md) |
 | 52 | **South Window Capital City** | `vd01`, `vd03`, `vd08`, `vd09`, `vd10`, `vd11`, `vd12`, `vd14`, `vd17`, `vd18`, `vd19` | **2,358 lines** | [areas/south_window_city.md](areas/south_window_city.md) |
-| 53 | **Swallow Pass & Highland Border Gate** | `vb07`, `vb08`, `vb17` | **840 lines** | [areas/swallow_pass_ryube_forest.md](areas/swallow_pass_ryube_forest.md) |
+| 53 | **Swallow Pass & Highland Border Gate** | `vb07`, `vb08`, `vb17` | **840 lines** | [areas/swallow_pass.md](areas/swallow_pass.md) |
 | 54 | **Tenzan Pass Mountain Cliff** | `va03`, `va24` | **740 lines** | [areas/tenzan_pass.md](areas/tenzan_pass.md) |
 | 55 | **Tiger Cave & Mt. Senai Shrines** | `vg09`, `vg15` | **483 lines** | [areas/tiger_cave_mt_senai.md](areas/tiger_cave_mt_senai.md) |
 | 56 | **Tinto Mining City & Mayor Hall** | `vg01`, `vg02`, `vg03`, `vg17` | **1,368 lines** | [areas/tinto_city.md](areas/tinto_city.md) |

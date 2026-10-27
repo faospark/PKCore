@@ -49,7 +49,7 @@
 | `obj[01]` | Prop / Scenery | **Prop ID 53293** | `53293` | `(53, 18)` | `0x0` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 180 |
 | `obj[02]` | NPC / Actor | **Tony** | `70` | `(46, 56)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[03]` | NPC / Actor | **Youth Brigade Recruit** | `3` | `(80, 24)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
-| `obj[04]` | NPC / Actor | **Luca Blight** | `83` | `(34, 41)` | `4x2` | West (Left) | Dormant / Hidden (0) | Special (3) | 3 | 128 | 0 |
+| `obj[04]` | NPC / Actor | **Bonaparte** | `83` | `(34, 41)` | `4x2` | West (Left) | Dormant / Hidden (0) | Special (3) | 3 | 128 | 0 |
 | `obj[05]` | NPC / Actor | **Actor ID 67** | `67` | `(66, 36)` | `17x5` | West (Left) | Dormant / Hidden (0) | Special (3) | 6 | 128 | 0 |
 | `obj[06]` | NPC / Actor | **Tuta** | `71` | `(68, 77)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[07]` | NPC / Actor | **Adlai** | `56` | `(66, 56)` | `8x2` | West (Left) | Dormant / Hidden (0) | Special (3) | 2 | 128 | 0 |
@@ -105,7 +105,7 @@
 - **`obj[01]` (Prop: Object 53293)**: Environmental world dressing prop placed at tile `(53, 18)`. Solid collision is set to `0`.
 - **`obj[02]` (Tony)**: Positioned at tile `(46, 56)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[03]` (Youth Brigade Recruit)**: Positioned at tile `(80, 24)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[04]` (Luca Blight)**: Positioned at tile `(34, 41)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[04]` (Bonaparte)**: Positioned at tile `(34, 41)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[05]` (Object 67)**: Positioned at tile `(66, 36)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[06]` (Tuta)**: Positioned at tile `(68, 77)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[07]` (Adlai)**: Positioned at tile `(66, 56)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.

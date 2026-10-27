@@ -95,7 +95,7 @@ Across all 47 map assets in Suikoden II, **22 of the 32 bytes** are actively use
 | **Byte 14** | **0 / 8** | *None* | **COMPLETELY UNUSED** | **8 Free Modder Bits** (`1..128`). |
 | **Byte 15** | **0 / 8** | *None* | **COMPLETELY UNUSED** | **8 Free Modder Bits** (`1..128`). |
 | **Byte 16** | 6 / 8 | `4, 8, 16, 32, 64, 128` | **South Window & Forest Village** (`vd03`, `ve02`) | Bits `1, 2` are **FREE**. |
-| **Byte 17** | 8 / 8 | `1, 2, 4, 8, 16, 32, 64, 128` | **Mt. Tigerwolf, Ryube Forest, Two River Sewers** (`vb07`, `vb08`, `vb17`, `vb21`, `vh04`) | `vb08`, `vb17`, and `vb21` are story variants of Mt. Tigerwolf. |
+| **Byte 17** | 8 / 8 | `1, 2, 4, 8, 16, 32, 64, 128` | **Ryube Forest, Swallow Pass, Two River Sewers** (`vb07`, `vb08`, `vb17`, `vb21`, `vh04`) | `vb08`, `vb17`, and `vb21` are story variants of Mt. Tigerwolf. |
 | **Byte 18** | 8 / 8 | `1, 2, 4, 8, 16, 32, 64, 128` | **Two River Sewers, Tinto Mines, Tiger Cave** (`vh04`, `vg11`, `vg15`) | Fully occupied. |
 | **Byte 19** | 8 / 8 | `1, 2, 4, 8, 16, 32, 64, 128` | **Tiger Cave, Tinto, Greenhill Trail** (`ve03`, `ve15`, `vg02`, `vg15`) | Fully occupied. |
 | **Byte 20** | 7 / 8 | `1, 2, 4, 8, 16, 32, 64` | **Greenhill & Drakemouth** (`ve04`, `ve08`, `ve14`, `vg04`) | Bit `128` is **FREE**. (`ve08`/`ve14` are story variants). |
@@ -113,7 +113,7 @@ Across all 47 map assets in Suikoden II, **22 of the 32 bytes** are actively use
 
 Several dungeons and towns have multiple map asset files representing different story phases or seasonal states. Chests in these paired maps **intentionally share the same `(ByteIndex, BitMask)`** so a chest looted in one story state stays looted in later story states:
 - **Sindar Ruins (`vc12` & `vc13`)**: Share all 10 chest flags across `Byte 0` and `Byte 1`.
-- **Mt. Tigerwolf (`vb08`, `vb17` & `vb21`)**: Story state variants of Mt. Tigerwolf that share the same submap layouts, coordinates (`(23, 16)`, `(105, 68)`, `(90, 86)`, `(61, 13)`), and chest flags in `Byte 17`.
+- **Ryube Forest & Swallow Pass (`vb08`, `vb17` & `vb21`)**: Story state variants that share the same submap layouts, coordinates (`(23, 16)`, `(105, 68)`, `(90, 86)`, `(61, 13)`), and chest flags in `Byte 17`.
 - **Greenhill (`ve08` & `ve14`)**: Share flags in `Byte 20` (`Bits 1, 2, 4`).
 - **Tinto City (`vg01` & `vg17`)**: Share `Byte 23, Bit 64` (Earth Emblem).
 - **Greenhill-Matilda Trail (`ve03` & `ve15`)**: Share `Byte 19, Bit 128`.

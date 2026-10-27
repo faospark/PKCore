@@ -129,7 +129,7 @@ def query_type_members(conn: sqlite3.Connection, type_name: str, kind_filter: Op
 
 def query_symbols(conn: sqlite3.Connection, query: str, game_filter: Optional[str] = None, kind_filter: Optional[str] = None, limit: int = 50) -> Dict[str, List[Dict[str, Any]]]:
     cur = conn.cursor()
-    results = {"types": [], "members": [], "native": [], "maps": []}
+    results = {"types": [], "members": [], "native": [], "maps": [], "entities": []}
     
     # 1. Exact / Type.Member matching
     if '.' in query:
@@ -278,10 +278,47 @@ def query_symbols(conn: sqlite3.Connection, query: str, game_filter: Optional[st
                 "description": r["description"]
             })
 
+    # Search Game Entities (Characters, Items, Food, Gear, Runes)
+    if not kind_filter or kind_filter in ('entity', 'entities', 'item', 'food', 'char', 'character', 'rune'):
+        ent_sql = """
+        SELECT game, category, entity_id, name, attrs, internal_symbol, description
+        FROM game_entities
+        WHERE name LIKE ? 
+           OR internal_symbol LIKE ?
+        """
+        ent_params = [f"%{query}%", f"%{query}%"]
+        
+        # If query is a pure number, also match exact entity_id
+        if query.isdigit():
+            ent_sql += " OR entity_id = ?"
+            ent_params.append(int(query))
+            
+        if game_filter:
+            ent_sql += " AND game = ?"
+            ent_params.append(game_filter)
+            
+        ent_sql += " ORDER BY CASE WHEN name = ? COLLATE NOCASE THEN 0 WHEN entity_id = ? THEN 1 WHEN name LIKE ? THEN 2 ELSE 3 END LIMIT ?"
+        ent_params.append(query)
+        ent_params.append(int(query) if query.isdigit() else -1)
+        ent_params.append(f"{query}%")
+        ent_params.append(limit)
+
+        cur.execute(ent_sql, ent_params)
+        for r in cur.fetchall():
+            results["entities"].append({
+                "game": r["game"],
+                "category": r["category"],
+                "entity_id": r["entity_id"],
+                "name": r["name"],
+                "attrs": r["attrs"],
+                "internal_symbol": r["internal_symbol"],
+                "description": r["description"]
+            })
+
     return results
 
 def print_table(results: Dict[str, List[Dict[str, Any]]], query: str, elapsed_ms: float, brief: bool = False):
-    total = len(results["types"]) + len(results["members"]) + len(results["native"]) + len(results["maps"])
+    total = len(results["types"]) + len(results["members"]) + len(results["native"]) + len(results["maps"]) + len(results.get("entities", []))
     print(f"\n[Search: '{query}'] Found {total} result(s) in {elapsed_ms:.1f}ms\n" + "=" * 80)
     
     if results["types"]:
@@ -324,6 +361,20 @@ def print_table(results: Dict[str, List[Dict[str, Any]]], query: str, elapsed_ms
                 print(f"  Doc: {mp['doc_path']}")
                 print(f"  Details: {mp['description']}")
 
+    if results.get("entities"):
+        print(f"\n--- GAME ENTITIES ({len(results['entities'])}) ---")
+        for e in results["entities"]:
+            attrs_str = f" [{e['attrs']}]" if e['attrs'] else ""
+            sym_str = f" [Symbol: {e['internal_symbol']}]" if e['internal_symbol'] else ""
+            cat_upper = e['category'].upper()
+            if brief:
+                print(f"[{e['game']}] {cat_upper} #{e['entity_id']:3}: {e['name']}{attrs_str}{sym_str}")
+            else:
+                print(f"[{e['game']}] {cat_upper} #{e['entity_id']}: {e['name']}{attrs_str}")
+                if e['internal_symbol']:
+                    print(f"  Engine Symbol: {e['internal_symbol']}")
+                print(f"  Details: {e['description']}")
+
 def main():
     parser = argparse.ArgumentParser(description="High-Speed Decompiled Symbol Search")
     parser.add_argument("query", help="Symbol name, Type.Member, or hex address (e.g., EventInit, MACHICON.mstep, 0x1818bb190, Banner, vc18)")
@@ -339,6 +390,7 @@ def main():
     parser.add_argument("--props", action="store_true", help="Search properties only")
     parser.add_argument("--native", action="store_true", help="Search native IL2CPP symbols only")
     parser.add_argument("--maps", action="store_true", help="Search maps and world areas only")
+    parser.add_argument("--entities", action="store_true", help="Search game entities (characters, food, items, runes, gear) only")
     parser.add_argument("--brief", action="store_true", help="One-line brief output")
     parser.add_argument("--json", action="store_true", help="Output results in JSON format")
     
@@ -369,6 +421,8 @@ def main():
         kind_filter = "native"
     elif args.maps:
         kind_filter = "map"
+    elif args.entities:
+        kind_filter = "entity"
 
     t0 = time.time()
     

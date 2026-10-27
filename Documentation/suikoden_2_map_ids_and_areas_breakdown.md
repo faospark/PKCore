@@ -43,7 +43,7 @@ flowchart LR
 ```
 
 - `010_ARA` -> **`va`**: **Prologue** (Highland Youth Brigade -> Tenzan Pass -> North Sparrow Pass -> Kyaro Town).
-- `020_ARB` -> **`vb`**: **Act 1 (Early)** (Mercenary Fort chores -> Toto Village -> Ryube Village -> Mt. Tigerwolf).
+- `020_ARB` -> **`vb`**: **Act 1 (Early)** (Mercenary Fort chores -> Toto Village -> Ryube Village -> Ryube Forest / Tsai's Hut).
 - `030_ARC` -> **`vc`**: **Act 1 (Mid)** (Muse City -> White Deer Inn -> Sindar Ruins -> Coronet Port).
 - `040_ARD` -> **`vd`**: **Act 2 (South)** (South Window City -> Radat Town -> North Window Ruins -> Cave of the Wind).
 - `050_ARE` -> **`ve`**: **Act 2 (West)** (Greenhill Academy -> Forest Village -> Greenhill-Matilda Border & Forest Path).
@@ -125,7 +125,7 @@ $100100 + [Region Code (01-11)] + [Map Number (01-37)] + [Local Message Offset (
 | Prefix | CD-ROM Archive | Major Territory | Primary Towns / Dungeons |
 | :---: | :---: | :--- | :--- |
 | **`va`** | `010_ARA` | **Highland Borderlands & Kyaro** | Highland Youth Brigade Camp, Tenzan Pass, North Sparrow Pass, Kyaro Town |
-| **`vb`** | `020_ARB` | **East State Borderlands** | Mercenary Fortress, Toto Village, Ryube Village, Mt. Tigerwolf, Ryube Forest Path |
+| **`vb`** | `020_ARB` | **East State Borderlands** | Mercenary Fortress, Toto Village, Ryube Village, Ryube Forest & Tsai's Hermit Hut, Swallow Pass |
 | **`vc`** | `030_ARC` | **Muse City-State & Lake Dunan** | Muse City, White Deer Inn, Sindar Ruins, Coronet Town & Port |
 | **`vd`** | `040_ARD` | **South Window City-State** | South Window City, Radat Town, Kuskus Town, North Window Ghost Town, Cave of the Wind |
 | **`ve`** | `050_ARE` | **Greenhill City-State** | Greenhill City, New Leaf Academy, Forest Village, Greenhill-Matilda Border & Forest Path |
@@ -172,12 +172,12 @@ $100100 + [Region Code (01-11)] + [Map Number (01-37)] + [Local Message Offset (
 | `vb06` | **Ryube Village - Outskirts & Woods** | Forest edge, inn, item shop, Millie searching for Bonaparte. |
 | `vb07` | **Ryube Forest Path** | Forest trail; Bonaparte runaway pig chase, **Shiro & Kinnison recruitment**. |
 | `vb08` | **Highland Border Gate** | Checkpoint blocked by Highland soldiers prior to the outbreak of war. |
-| `vb09` | **Mt. Tigerwolf - Mountain Trail** | Rocky slopes, monster encounters, path to the hermit's grove. |
-| `vb10` | **Mt. Tigerwolf - Tsai's Hermit Hut** | **Tsai recruitment**; Fire Spear inventor's cottage. |
+| `vb09` | **Ryube Forest - Woodland Trail** | Dense forest paths, monster encounters, path to Tsai's hermit hut. |
+| `vb10` | **Ryube Forest - Tsai's Hermit Hut** | **Tsai recruitment**; Fire Spear inventor's cottage. |
 | `vb12` | **Mercenary Fortress - Under Siege** | Highland night surprise attack; defense of the main gates. |
 | `vb14` | **Mercenary Fortress - Burning Interior** | Escape through burning hallways, Flik and Viktor holding the rear. |
 | `vb19` | **Mercenary Fortress - Escape Tunnel** | Secret back escape trail into the wilderness. |
-| `vb21` | **Mt. Tigerwolf Ridge** | Path of training / summit overlook. |
+| `vb21` | **Ryube Forest - Suspension Bridge & Ravine** | Forest ravine bridge, cliff path, and treasure chests. |
 
 ---
 
