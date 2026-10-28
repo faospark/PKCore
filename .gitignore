@@ -48,3 +48,6 @@ imgui/
 tools/symbol_indexer/symbols.db
 __pycache__/
 *.pyc
+
+# Graphify knowledge graph & cache
+graphify-out/
