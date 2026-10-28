@@ -52,7 +52,21 @@ tools\sym.bat --gsd2 <query>
 tools\sym.bat --share <query>
 ```
 
-### 6. JSON Output Mode
+### 6. Map & Area Lookup
+```cmd
+tools\sym.bat <map_id|area_name>
+```
+*Example:* `tools\sym.bat vb09`, `tools\sym.bat ryube`, `tools\sym.bat tigermouth`, `tools\sym.bat drakemouth`
+Instantly returns map asset JSON, C# handler (`MACHICON.EventInit`), and link to the exact area documentation.
+
+### 7. Game Entity Lookup (Characters, Runes, Gear, Food Recipes, Items)
+```cmd
+tools\sym.bat <EntityName|ID|Symbol>
+```
+*Example:* `tools\sym.bat Bonaparte`, `tools\sym.bat "Fire Cake"`, `tools\sym.bat 84`, `tools\sym.bat DI_CAKE6`
+Returns exact internal ID, category, symbol constant (`g2_name_h` / `g2_data_h`), and source grounding.
+
+### 8. JSON Output Mode
 ```cmd
 tools\sym.bat <query> --json
 ```

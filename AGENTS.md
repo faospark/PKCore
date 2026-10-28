@@ -39,7 +39,7 @@
 
 ## Canonical Map & Entity Grounding Reference
 - **Raw Dumped Map Assets**: `D:\Modding\suikodum\Mobobehaviour` contains the dumped JSON for EVERY location in the game (e.g., `vd17.json`, `vd17_map_00.json`, `vg13.json`, etc.). Always refer here for raw map JSONs.
-- **Dedicated Area Catalogs**: `PKCore\Documentation\areas\` contains 62 dedicated geographic area breakdown documents cataloging all 4,901 NPCs, props, coordinates, `otyp`, `fpno`, and trigger bytecodes (e.g. `Documentation\areas\south_window_city.md`, `crom_village.md`, etc.). Always consult these first for exact object slots, coordinates, and sprite IDs!
+- **Dedicated Area Catalogs**: `PKCore\Documentation\areas\` contains 63 dedicated geographic area breakdown documents cataloging all 4,901 NPCs, props, coordinates, `otyp`, `fpno`, and trigger bytecodes (e.g. `Documentation\areas\south_window_city.md`, `crom_village.md`, etc.). Always consult these first for exact object slots, coordinates, and sprite IDs!
 
 ## Synergy with REA (Reverse Engineer Anything)
 - **The Symbol Indexer and REA must be used hand-in-hand**:

@@ -456,9 +456,9 @@
     "semantic_hash": ""
   },
   "tools/symbol_indexer/map_data.py": {
-    "mtime": 1793121923.1568406,
-    "seen": 1793121987.4885023,
-    "ast_hash": "1304a4cf8809e1eadefeb95617f83a05",
+    "mtime": 1793122791.702885,
+    "seen": 1793122951.9433787,
+    "ast_hash": "3942d9c02527fd5c66740130862e863b",
     "semantic_hash": ""
   },
   "tools/symbol_indexer/sym.py": {
@@ -474,9 +474,9 @@
     "semantic_hash": ""
   },
   ".agents/skills/symbol-indexer/SKILL.md": {
-    "mtime": 1792888921.2247493,
-    "seen": 1792917255.7181404,
-    "ast_hash": "d83ff8130b3d18582610d69a10d75c27",
+    "mtime": 1793122881.8929996,
+    "seen": 1793122951.9433787,
+    "ast_hash": "a505b24ea9a75cb3da898205a72e70ca",
     "semantic_hash": ""
   },
   ".github/copilot-instructions.md": {
@@ -486,9 +486,9 @@
     "semantic_hash": ""
   },
   "AGENTS.md": {
-    "mtime": 1793059503.462407,
-    "seen": 1793062629.1651437,
-    "ast_hash": "03166f59c6ee109473dab12baffae40c",
+    "mtime": 1793122829.299709,
+    "seen": 1793122951.9433787,
+    "ast_hash": "dd50ab66f11aafd02dce09bf0088aa5c",
     "semantic_hash": ""
   },
   "CHANGELOG.md": {
@@ -840,9 +840,9 @@
     "semantic_hash": ""
   },
   "Documentation/areas/two_river_city.md": {
-    "mtime": 1793120386.5790663,
-    "seen": 1793121987.4885023,
-    "ast_hash": "4e676d37949ba592bba24b4078341113",
+    "mtime": 1793122767.2381008,
+    "seen": 1793122951.9433787,
+    "ast_hash": "6ba58ec6b4ab385596af848920698ab6",
     "semantic_hash": ""
   },
   "Documentation/areas/two_river_sewers.md": {
@@ -875,22 +875,10 @@
     "ast_hash": "d8dffe2ae4dd871bc6d9241942c1e6ff",
     "semantic_hash": ""
   },
-  "Documentation/feature_realignment.md": {
-    "mtime": 1792915637.6726198,
-    "seen": 1792917255.7186408,
-    "ast_hash": "0ce0a10ec85364fc3975a301a3bdbd7e",
-    "semantic_hash": ""
-  },
   "Documentation/mobobehaviour_catalog.md": {
     "mtime": 1792426830.932948,
     "seen": 1792917255.7186408,
     "ast_hash": "ac82628426a584f0392da5ca07c0d975",
-    "semantic_hash": ""
-  },
-  "Documentation/place_holder_text.md": {
-    "mtime": 1772160773.652711,
-    "seen": 1792917255.7186408,
-    "ast_hash": "702971fad021eab10d106d051c2ed13e",
     "semantic_hash": ""
   },
   "Documentation/sajah_village_rare_shop_vj17.md": {
@@ -936,9 +924,9 @@
     "semantic_hash": ""
   },
   "Documentation/suikoden_2_master_map_entities_and_triggers_catalog.md": {
-    "mtime": 1793121923.157342,
-    "seen": 1793121987.4885023,
-    "ast_hash": "51de52ee2a933518c07052e3819cdf4f",
+    "mtime": 1793122812.9578037,
+    "seen": 1793122951.9433787,
+    "ast_hash": "c0bf9d14aa064caca90ecc56d55e6830",
     "semantic_hash": ""
   },
   "Documentation/suikoden_2_room_item_restoration_whitepaper.md": {
@@ -948,9 +936,9 @@
     "semantic_hash": ""
   },
   "Documentation/symbol_indexer_guide.md": {
-    "mtime": 1792417404.717426,
-    "seen": 1792917255.7186408,
-    "ast_hash": "88b2617e47eaabe2f0a4c07cf26024c9",
+    "mtime": 1793122881.8910015,
+    "seen": 1793122951.9433787,
+    "ast_hash": "e7ec01389d865e36009d163303e3fe3f",
     "semantic_hash": ""
   },
   "Documentation/tenzan_pass_chimera_va11.md": {
@@ -1125,6 +1113,30 @@
     "mtime": 1793121923.1603408,
     "seen": 1793121987.4885023,
     "ast_hash": "a22137b9f27ac3ce48059824497768b3",
+    "semantic_hash": ""
+  },
+  ".agents/rules/area_documentation.md": {
+    "mtime": 1793122829.2977097,
+    "seen": 1793122951.9433787,
+    "ast_hash": "03b23f38f9a67f15b62647b1a2e08e7f",
+    "semantic_hash": ""
+  },
+  "Documentation/archive/feature_realignment.md": {
+    "mtime": 1792915637.6726198,
+    "seen": 1793122951.9433787,
+    "ast_hash": "0ce0a10ec85364fc3975a301a3bdbd7e",
+    "semantic_hash": ""
+  },
+  "Documentation/areas/drakemouth_village.md": {
+    "mtime": 1793122767.2390954,
+    "seen": 1793122951.9433787,
+    "ast_hash": "a612de372142faad30302ca8f8998306",
+    "semantic_hash": ""
+  },
+  "Documentation/dialog_text_placeholders.md": {
+    "mtime": 1772160773.652711,
+    "seen": 1793122951.9433787,
+    "ast_hash": "702971fad021eab10d106d051c2ed13e",
     "semantic_hash": ""
   }
 }

@@ -21,6 +21,8 @@ Built on a memory-mapped SQLite database (`symbols.db`) with Full-Text Search (F
 - **6,147 Types** (classes, structs, interfaces, enums)
 - **259,139 Members** (methods, properties, fields)
 - **189,523 Native Symbols** mapped with virtual memory addresses
+- **361 Map Assets & Areas** across Suikoden I & II linked to documentation
+- **802 Verified Game Entities** (Characters, Items, Runes, Gear, Food Recipes) mapped to native symbols
 
 ---
 

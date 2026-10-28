@@ -1,28 +1,28 @@
 # Graph Report - PKCore  (2026-10-28)
 
 ## Corpus Check
-- 186 files · ~6,119,749 words
+- 188 files · ~6,121,147 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 1 file(s) not represented in the graph (top: (none) 1)
 
 ## Summary
-- 5769 nodes · 7073 edges · 541 communities (446 shown, 95 thin omitted)
+- 5779 nodes · 7082 edges · 553 communities (454 shown, 99 thin omitted)
 - Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 150 edges (avg confidence: 0.93)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `ef83c5ac`
+- Built from commit: `214d5b1a`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
 ## Community Hubs (Navigation)
 - PKCore.Patches
 - HarmonyPatch
-- .GetCurrentGame
+- SaveSlotPartyPortraitPatch
 - ModConfiguration
 - Custom Textures Guide
 - Custom Textures Guide
-- .LoadCustomSprite
+- AnimatedSpriteMonitor
 - PortraitSystemPatch
 - 🏛️ Comprehensive Area-by-Area Chest Directory
 - CustomTexturePatch
@@ -63,9 +63,8 @@
 - WarAbilityPatch
 - Location Map: `vk05`
 - Location Map: `vk04`
-- suikoden_2_master_map_entities_and_triggers_catalog.md
 - NPC Portrait System - Full Documentation
-- .ApplyPatches
+- .GetCurrentGame
 - Suikoden II Geographic Area Catalog: Highway Village Frontier Settlement
 - 4. Exhaustive Area & Submap Breakdown
 - tagHYOUKA
@@ -86,7 +85,7 @@
 - War Battle Modding Guide
 - Suikoden II HD Remaster Engine Architecture & Reverse-Engineering Technical Reference
 - Suikoden II Geographic Area Catalog: Coronet Town & Harbor Docks
-- Texture2D
+- AssetLoader
 - 3. Exhaustive Area & Map Asset Breakdown
 - Suikoden I: Quality of Life & Recruitment Enhancement Proposals
 - High-Speed Decompiled Symbol Indexer Guide
@@ -144,8 +143,8 @@
 - Submap Layer `vb09_00` (Index 0)
 - Location Map: `vb21`
 - PKCore - Caching & Performance Guide
-- 3. Proposed Split (Suggestion)
-- Submap Layer `vj01_00` (Index 0)
+- EnableDebugMenu2
+- Suikoden II Geographic Area Catalog: L'Renouille Imperial Capital Citadel
 - PKCore - Caching & Performance Guide
 - Sound Modding Guide
 - DDSLoader
@@ -162,15 +161,15 @@
 - Submap Layer `vk19_00` (Index 0)
 - Suikoden II Map Identifiers & Geographic Areas Reference
 - PKCore Configuration Guide
-- Examples of Usage
+- HarmonyPostfix
 - Suikoden II Master Map Entities, Triggers & World Objects Catalog
 - Suikoden II: `t_box_flag` (`byte[32]`) Architecture & Patching Guide
-- Character-Specific Configuration
+- 3. Proposed Split (Suggestion)
 - PKCore - Project Kyaro Core
 - 4. Master Game State & Event Flag Engine (`GAME_WORK`)
 - PKCore Configuration Guide
 - GameObject
-- Submap Layer `vd06_07` (Index 7)
+- Location Map: `vd06`
 - Location Map: `vk34`
 - Submap Layer `vk21_00` (Index 0)
 - Location Map: `vk32`
@@ -197,11 +196,11 @@
 - Submap Layer `vc06_00` (Index 0)
 - Submap Layer `vd10_00` (Index 0)
 - Submap Layer `vd01_00` (Index 0)
-- Location Map: `vh06`
-- Submap Layer `vh05_00` (Index 0)
+- Suikoden II Geographic Area Catalog: Two River City (Human, Wingly & Kobold)
 - Submap Layer `vh08_00` (Index 0)
-- Submap Layer `vh12_00` (Index 0)
-- Troubleshooting
+- Examples of Usage
+- TextureMetadata
+- Technical Details
 - MACHICON_OnMapInitPatch
 - Examples of Usage
 - Suikoden II Geographic Area Catalog: Banner Village & Fast Pier
@@ -212,27 +211,27 @@
 - Submap Layer `vj14_00` (Index 0)
 - Submap Layer `vk23_00` (Index 0)
 - Location Map: `vk29`
-- Submap Layer `vj07_00` (Index 0)
+- CustomTexturePersist
 - Suikoden II Geographic Area Catalog: Greenhill Principality (City & Outskirts)
 - Suikoden II Geographic Area Catalog: Greenhill-Matilda Forest Trail & Checkpoint
 - Submap Layer `vf04_00` (Index 0)
 - Suikoden II Geographic Area Catalog: Viktor's Mercenary Fortress
 - Suikoden II Geographic Area Catalog: Mt. Rakutei Dragon Cliffs & Peak
-- Subsystem 7: Map, Environment & Custom Objects
+- Advanced Features
 - Suikoden II Geographic Area Catalog: Muse City (Plaza, City Hall & Ruins)
 - Suikoden II Geographic Area Catalog: Rockaxe Castle Citadel & Ramparts
 - Suikoden II Geographic Area Catalog: Ancient Sindar Ruins Caverns
 - Suikoden II Geographic Area Catalog: South Window Capital City
-- Suikoden II Geographic Area Catalog: Two River City (Human, Wingly & Kobold)
+- Folder Structure
 - CovertMissionPortraitMonitor
 - 11. PKCore HarmonyX Interception & Modding Suite
 - 6. Scene, Map & Town NPC Engine (`MACHICON`, `EVENTCON`, `EVENT_HUMAN`, `EPERSONDAT`)
-- Example Configurations
+- Advanced Features
 - Submap Layer `vj06_00` (Index 0)
 - 29. Complete 108 Stars of Destiny Master Recruitment Encyclopedia
 - 3. Exhaustive Combat Engine Breakdown
 - Submap Layer `vk33_00` (Index 0)
-- DisableCustomPostEffectPatch
+- .ApplyPatches
 - 5. Strategic War Battles (`w_unit`, `w_battle`, `Butai`, `Defc_set`)
 - 8. Town Facilities, Mini-Games & Castle Life
 - Submap Layer `vk26_00` (Index 0)
@@ -255,13 +254,13 @@
 - Submap Layer `va21_00` (Index 0)
 - Submap Layer `vj16_00` (Index 0)
 - WarAbilityConfig
-- Suikoden II Geographic Area Catalog: L'Renouille Imperial Capital Citadel
+- Submap Layer `vj13_00` (Index 0)
 - Submap Layer `vb20_00` (Index 0)
 - EncounterNonePatch
 - Submap Layer `vj15_00` (Index 0)
 - 💎 Modder's Master Item ID Reference Tables
-- 3. Exhaustive Patch Enumeration & Feature Breakdown
-- Available Abilities
+- Folder Structure
+- Grounded Area & Map Documentation Reference Guide
 - Submap Layer `vj09_00` (Index 0)
 - Submap Layer `vb13_00` (Index 0)
 - Submap Layer `vb02_00` (Index 0)
@@ -284,11 +283,11 @@
 - Submap Layer `vd03_00` (Index 0)
 - Submap Layer `vd18_00` (Index 0)
 - Submap Layer `vd14_00` (Index 0)
-- Submap Layer `vh11_00` (Index 0)
+- Submap Layer `vj11_00` (Index 0)
 - Submap Layer `vf03_08` (Index 8)
 - 24. Castle Life & Facilities: Fishing, Farm, Baths & Cooking
 - 30. The "Two Millies" Mystery & Spawning Pets in HQ Castle
-- [2026.10.27]
+- .Postfix
 - Submap Layer `vf07_04` (Index 4)
 - Submap Layer `vf06_02` (Index 2)
 - Submap Layer `vf07_03` (Index 3)
@@ -411,7 +410,7 @@
 - Nexus Mods Description Format (BBCode Template)
 - Location Map: `vc12`
 - ThemePreset
-- Submap Layer `vd06_06` (Index 6)
+- Submap Layer `vj04_00` (Index 0)
 - Submap Layer `vc12_09` (Index 9)
 - Submap Layer `vc12_08` (Index 8)
 - Submap Layer `vc13_08` (Index 8)
@@ -425,7 +424,11 @@
 - Submap Layer `vb07_03` (Index 3)
 - Submap Layer `vb08_04` (Index 4)
 - Suikoden II Geographic Area Catalog: Swallow Pass & Highland Border Gate
-- Submap Layer `vh06_01` (Index 1)
+- Custom Textures in 00-Mods
+- Custom Sounds in 00-Mods
+- Submap Layer `vd13_00` (Index 0)
+- Submap Layer `vd13_03` (Index 3)
+- Submap Layer `vd13_05` (Index 5)
 - Location Map: `vh04`
 - Submap Layer `vh04_08` (Index 8)
 - Submap Layer `vh04_11` (Index 11)
@@ -447,6 +450,7 @@
 - 21. Advanced Summon & Particle Retexturing Architecture
 - 23. Character Base Stats, Growth Curves & The Table of 108 Stars
 - [⚔️ PKCore Wiki](Home)
+- Submap Layer `vd13_01` (Index 1)
 - PKCore
 - tagCHECK
 - 13. Dialogue, Localization & Character Naming Architecture
@@ -548,7 +552,14 @@
 - Submap Layer `vc12_04` (Index 4)
 - 5. Ready-to-Use C# Patch Templates for PKCore
 - 📍 Region: vh (Act 3B: Two River / Kobold)
+- Supported File Formats
 - 📍 Region: vi (Act 4A: Matilda / Rockaxe)
+- Examples
+- How It Works
+- Troubleshooting
+- How to Use Custom Textures
+- Supported File Formats
+- Character Name Mapping
 
 ## God Nodes (most connected - your core abstractions)
 1. `Suikoden Remaster - MonoBehaviour Asset Analysis & Catalog` - 101 edges
@@ -563,6 +574,8 @@
 10. `PortraitSystemPatch` - 31 edges
 
 ## Surprising Connections (you probably didn't know these)
+- `[2026.09.15]` --references--> `AssetLoader`  [INFERRED]
+  CHANGELOG.md → Patches/AssetLoader.cs
 - `Core Components` --references--> `AssetLoader`  [INFERRED]
   Documentation/walkthrough_npc_portraits.md → Patches/AssetLoader.cs
 - `56. `AssetLoader.cs`` --references--> `AssetLoader`  [INFERRED]
@@ -571,13 +584,11 @@
   wiki/walkthrough_npc_portraits.md → Patches/AssetLoader.cs
 - `60. `GameObjectPatch.cs`` --references--> `CustomTexturePatch`  [INFERRED]
   Plugin architecture.md → Patches/BathTexturePatch.cs
-- `3.3 PK Classic UI (Interface / PSP-PSX feel)` --references--> `DisablePortraitDialogMask`  [INFERRED]
-  Documentation/feature_realignment.md → Patches/DisablePortraitDialogMask.cs
 
 ## Import Cycles
 - None detected.
 
-## Communities (541 total, 95 thin omitted)
+## Communities (553 total, 99 thin omitted)
 
 ### Community 1 - "PKCore.Patches"
 Cohesion: 0.06
@@ -585,28 +596,28 @@ Nodes (4): PKCore, PKCore.IL2CPP, PKCore.Patches, PKCore.
 Patches
 
 ### Community 2 - "HarmonyPatch"
-Cohesion: 0.06
-Nodes (10): [2026.10.20], [2026.10.21], ResolutionPatch, S1QuickRunePatch, CurrentField, CurrentVillage, IsInBattle, IsQuickRuneMasterOpen (+2 more)
+Cohesion: 0.07
+Nodes (8): [2026.10.20], [2026.10.21], DisableUITipsPatch, S1QuickRunePatch, CurrentField, CurrentVillage, IsInBattle, IsQuickRuneMasterOpen
 
-### Community 3 - ".GetCurrentGame"
-Cohesion: 0.20
-Nodes (4): [2026.10.25], DisableUITipsPatch, GameDetection, 59. `GameDetection.cs`
+### Community 3 - "SaveSlotPartyPortraitPatch"
+Cohesion: 0.11
+Nodes (7): SaveSlotPartyPortraitPatch, SaveSlotPortraitMonitor, Instance, 34. `SaveDataProcessor.cs`, 35. `SaveSlotPartyPortraitPatch.cs`, 36. `SaveWindowPatch.cs`, Subsystem 4: Save & Data Systems
 
 ### Community 4 - "ModConfiguration"
 Cohesion: 0.04
 Nodes (47): ModConfiguration, BetterLauncherBGM, ClassicSaveWindow, ColoredIntroAndFlashbacks, DetailedLogs, DisablePortraitDialogMask, DisableSavePointGlow, DisableSpritePostProcessing (+39 more)
 
 ### Community 5 - "Custom Textures Guide"
-Cohesion: 0.04
-Nodes (48): Advanced Features, Base Directory, Bath Scene Textures, Blurry or Stretched Textures, Cache Management, Caching System, Configuration Settings, Creating Your Custom Texture (+40 more)
+Cohesion: 0.11
+Nodes (18): Blurry or Stretched Textures, Cache Management, Configuration Settings, Creating Your Custom Texture, Credits, Custom Textures Guide, FAQ, Finding Texture Names (+10 more)
 
 ### Community 6 - "Custom Textures Guide"
-Cohesion: 0.04
-Nodes (48): Advanced Features, Base Directory, Bath Scene Textures, Blurry or Stretched Textures, Cache Management, Caching System, Configuration Settings, Creating Your Custom Texture (+40 more)
+Cohesion: 0.11
+Nodes (18): Cache Management, Configuration Settings, Credits, Custom Textures Guide, Example 1: Replace a Character Portrait, Example 2: Add Custom Controller Prompts, Example 3: Replace a Background (Performance), Examples (+10 more)
 
-### Community 7 - ".LoadCustomSprite"
-Cohesion: 0.08
-Nodes (8): AnimatedSpriteMonitor, AnimatedTexturePatch, SuikozuPatch, SuikozuTextureEnforcer, SavePointSpriteMonitor, 14. `SavePointMonitor.cs`, 1. `AnimatedTexturePatch.cs`, 50. `S2WorldMiniMap.cs`
+### Community 7 - "AnimatedSpriteMonitor"
+Cohesion: 0.31
+Nodes (3): AnimatedSpriteMonitor, AnimatedTexturePatch, 1. `AnimatedTexturePatch.cs`
 
 ### Community 8 - "PortraitSystemPatch"
 Cohesion: 0.12
@@ -617,12 +628,12 @@ Cohesion: 0.14
 Nodes (14): 🏛️ Ancient Sindar Ruins Caverns (22 Chests), 🏛️ Banner Village & Fast Pier (8 Chests), 🏛️ Cave of the Wind Caverns (12 Chests), 🏛️ Comprehensive Area-by-Area Chest Directory, 🏛️ Highland Military Recon Encampment (1 Chests), 🏛️ L'Renouille Imperial Capital Citadel (13 Chests), 📍 Region: vb (Act 1A: Mercenary Fort / Ryube), 📍 Region: vc (Act 1B: Muse / Coronet) (+6 more)
 
 ### Community 10 - "CustomTexturePatch"
-Cohesion: 0.08
-Nodes (16): [2.0.0] - 2025-12-23, CustomTexturePatch, ManifestEntry, TextureManifest, Resources_Load_Sprite_Patch, TextureOptions, 11. `MapSpriteHDPatch.cs`, 15. `SavePointPatch.cs` (+8 more)
+Cohesion: 0.05
+Nodes (18): [2.0.0] - 2025-12-23, CustomTexturePatch, ManifestEntry, TextureManifest, SavePointSpriteMonitor, Resources_Load_Sprite_Patch, TextureOptions, 11. `MapSpriteHDPatch.cs` (+10 more)
 
 ### Community 11 - "HarmonyPostfix"
-Cohesion: 0.07
-Nodes (22): [1.0.0] - 2025-12-01, [1.5.0 - 1.5.1] - 2025-12-16, [1.6.0] - 2025-12-20, [2026.01.1] - 2026-02-05, [2026.02.0] - 2026-02-09, [2026.02.2] - 2026-02-17, [2026.03.01] - 2026-03-22, [2026.10.05] (+14 more)
+Cohesion: 0.11
+Nodes (19): [1.0.0] - 2025-12-01, [1.5.0 - 1.5.1] - 2025-12-16, [1.6.0] - 2025-12-20, [2026.01.1] - 2026-02-05, [2026.02.0] - 2026-02-09, [2026.02.2] - 2026-02-17, [2026.03.01] - 2026-03-22, [2026.09.15] (+11 more)
 
 ### Community 12 - "Location Map: `vh03`"
 Cohesion: 0.04
@@ -657,7 +668,7 @@ Cohesion: 0.06
 Nodes (35): Complete Bytecode Script Catalog (0 Scripts), Complete Bytecode Script Catalog (0 Scripts), Complete Bytecode Script Catalog (0 Scripts), Complete Bytecode Script Catalog (11 Scripts), Complete Bytecode Script Catalog (13 Scripts), Complete Bytecode Script Catalog (13 Scripts), Complete Bytecode Script Catalog (263 Scripts), Complete Bytecode Script Catalog (5 Scripts) (+27 more)
 
 ### Community 20 - "ImGuiOverlayUI"
-Cohesion: 0.12
+Cohesion: 0.14
 Nodes (6): ImGuiOverlayUI, CameraZoom, IsInjectorAvailable, IsOpen, ShowBathhouseWindow, ShowLocationHUD
 
 ### Community 21 - "Suikoden Remaster - MonoBehaviour Asset Analysis & Catalog"
@@ -685,8 +696,8 @@ Cohesion: 0.06
 Nodes (32): Complete Bytecode Script Catalog (10 Scripts), Complete Bytecode Script Catalog (13 Scripts), Complete Bytecode Script Catalog (14 Scripts), Complete Bytecode Script Catalog (20 Scripts), Complete Bytecode Script Catalog (25 Scripts), Complete Bytecode Script Catalog (41 Scripts), Complete Bytecode Script Catalog (47 Scripts), Complete Physical Entity Inventory (0 Objects) (+24 more)
 
 ### Community 27 - ".LoadCustomTexture"
-Cohesion: 0.11
-Nodes (11): MapTexturePatch, PSPGalleryEnhanced, PSPLauncherPatch, S2CookOffPortraitMonitor, Logger, SaveWindowPatch, 12. `MapTexturePatch.cs`, 52. `PSPGalleryEnhanced.cs` (+3 more)
+Cohesion: 0.14
+Nodes (9): PSPGalleryEnhanced, PSPLauncherPatch, S2CookOffPortraitMonitor, Logger, SaveWindowPatch, 52. `PSPGalleryEnhanced.cs`, 53. `PSPLaucherPatch.cs`, 54. `SoundRedirectPatch.cs` (+1 more)
 
 ### Community 28 - "Suikoden II Geographic Area Catalog: Tinto Mining City & Mayor Hall"
 Cohesion: 0.06
@@ -697,8 +708,8 @@ Cohesion: 0.07
 Nodes (29): Complete Bytecode Script Catalog (0 Scripts), Complete Bytecode Script Catalog (50 Scripts), Complete Bytecode Script Catalog (6 Scripts), Complete Bytecode Script Catalog (78 Scripts), Complete Bytecode Script Catalog (8 Scripts), Complete Bytecode Script Catalog (99 Scripts), Complete Physical Entity Inventory (0 Objects), Complete Physical Entity Inventory (30 Objects) (+21 more)
 
 ### Community 30 - "DisableSpritePostProcessingPatch"
-Cohesion: 0.13
-Nodes (7): [2026.01.0] - 2026-01-31, DisableSpritePostProcessingPatch, SMAAPatch, SpriteFilteringPatch, 13. `SMAAPatch.cs`, 17. `SpriteFilteringPatch.cs`, 9. `DisableSpritePostProcessing.cs`
+Cohesion: 0.20
+Nodes (5): [2026.01.0] - 2026-01-31, DisableSpritePostProcessingPatch, SMAAPatch, 13. `SMAAPatch.cs`, 9. `DisableSpritePostProcessing.cs`
 
 ### Community 31 - "WAR_CHARA_TYPE"
 Cohesion: 0.11
@@ -768,9 +779,9 @@ Nodes (23): Complete Bytecode Script Catalog (0 Scripts), Complete Bytecode Scri
 Cohesion: 0.09
 Nodes (22): Architecture, Character Name Mapping, Complete Resolution Process, Configuration: `PKCore/Config/PortraitMappings.json`, Configuration: `PKCore/Config/PortraitVariants.json`, Core Components, Diagnostics & Troubleshooting, Dialog Text Overrides (+14 more)
 
-### Community 50 - ".ApplyPatches"
-Cohesion: 0.07
-Nodes (18): GRSpriteRendererPatch, MouseCursorPatch, IsEnabled, SoundRedirectPatch, TextDatabasePatch, LastMessageTextId, LastTextId, UnitySpriteRendererPatch (+10 more)
+### Community 50 - ".GetCurrentGame"
+Cohesion: 0.08
+Nodes (19): [2026.10.25], 3.1 PKCore (Framework, required dependency), GameDetection, MouseCursorPatch, IsEnabled, ResolutionPatch, TextDatabasePatch, LastMessageTextId (+11 more)
 
 ### Community 51 - "Suikoden II Geographic Area Catalog: Highway Village Frontier Settlement"
 Cohesion: 0.09
@@ -785,16 +796,16 @@ Cohesion: 0.09
 Nodes (22): tagHYOUKA, HYOUKA_ATTACK, HYOUKA_END, HYOUKA_HANGEKI, HYOUKA_HEAL_MOVE, HYOUKA_HEAL_OCCUPATION, HYOUKA_MOVE_MIN, HYOUKA_MOVE_TO_POINT (+14 more)
 
 ### Community 54 - "NPC Portrait System - Full Documentation"
-Cohesion: 0.09
-Nodes (22): Architecture, Character Name Mapping, Complete Resolution Process, Configuration: `PKCore/Config/PortraitMappings.json`, Configuration: `PKCore/Config/PortraitVariants.json`, Core Components, Diagnostics & Troubleshooting, Dialog Text Overrides (+14 more)
+Cohesion: 0.11
+Nodes (18): Architecture, Complete Resolution Process, Configuration: `PKCore/Config/PortraitVariants.json`, Core Components, Diagnostics & Troubleshooting, Dialog Text Overrides, Directory Structure & Search Priority, Example Layouts (+10 more)
 
 ### Community 55 - "Plugin"
 Cohesion: 0.25
 Nodes (4): Plugin, Instance, IsMainThread, MainThreadId
 
 ### Community 56 - "00-Mods Folder Guide"
-Cohesion: 0.10
-Nodes (21): 00-Mods Folder Guide, Combining Textures and Sounds, Custom Sounds in 00-Mods, Custom Textures in 00-Mods, Example: Sound Mod, Example: Texture Mod, File Naming, Folder Structure (+13 more)
+Cohesion: 0.12
+Nodes (17): 00-Mods Folder Guide, Combining Textures and Sounds, Custom Textures in 00-Mods, Example: Texture Mod, File Naming, Game-Specific Textures, Installing a Sound Mod, Installing a Texture Mod (+9 more)
 
 ### Community 57 - "Location Map: `vk35`"
 Cohesion: 0.10
@@ -841,8 +852,8 @@ Cohesion: 0.10
 Nodes (19): Complete Bytecode Script Catalog (33 Scripts), Complete Bytecode Script Catalog (6 Scripts), Complete Bytecode Script Catalog (81 Scripts), Complete Bytecode Script Catalog (8 Scripts), Complete Physical Entity Inventory (15 Objects), Complete Physical Entity Inventory (34 Objects), Complete Physical Entity Inventory (3 Objects), Complete Physical Entity Inventory (4 Objects) (+11 more)
 
 ### Community 68 - "War Battle Modding Guide"
-Cohesion: 0.11
-Nodes (19): 1. Enable War Battle Modding, 2. Configuration File Location, 3. Basic JSON Structure, Ability Combinations, Ability Usage System, Advanced Tips, Character ID Reference, Credits (+11 more)
+Cohesion: 0.04
+Nodes (46): 1. Enable War Battle Modding, 2. Configuration File Location, 3. Basic JSON Structure, Abilities Not Working, Abilities Only, Ability Combinations, Ability Slot Limits, Ability Usage (+38 more)
 
 ### Community 69 - "Suikoden II HD Remaster Engine Architecture & Reverse-Engineering Technical Reference"
 Cohesion: 0.11
@@ -852,9 +863,9 @@ Nodes (18): 15. Window Frames, Skins & Palette Customization, 1. Master Architec
 Cohesion: 0.11
 Nodes (17): Complete Bytecode Script Catalog (121 Scripts), Complete Bytecode Script Catalog (22 Scripts), Complete Bytecode Script Catalog (47 Scripts), Complete Physical Entity Inventory (13 Objects), Complete Physical Entity Inventory (37 Objects), Complete Physical Entity Inventory (43 Objects), Entity Narrative Roles, Placements & Mechanics, Entity Narrative Roles, Placements & Mechanics (+9 more)
 
-### Community 71 - "Texture2D"
-Cohesion: 0.08
-Nodes (6): [2026.09.15], AssetLoader Service, AssetLoader, CustomTexturePersist, 5. `CustomTexturePersist.cs`, AssetLoader Service
+### Community 71 - "AssetLoader"
+Cohesion: 0.22
+Nodes (3): AssetLoader Service, AssetLoader, AssetLoader Service
 
 ### Community 72 - "3. Exhaustive Area & Map Asset Breakdown"
 Cohesion: 0.11
@@ -929,8 +940,8 @@ Cohesion: 0.25
 Nodes (7): Complete Bytecode Script Catalog (534 Scripts), Complete Physical Entity Inventory (38 Objects), Entity Narrative Roles, Placements & Mechanics, 📖 Human-Readable Field & Engine Legend, Location Map: `vk10`, Submap Layer `vk10_00` (Index 0), Suikoden II Geographic Area Catalog: Castle HQ: Commander Riou's Bedroom
 
 ### Community 90 - "Location Map: `vd13`"
-Cohesion: 0.07
-Nodes (29): Complete Bytecode Script Catalog (12 Scripts), Complete Bytecode Script Catalog (24 Scripts), Complete Bytecode Script Catalog (2 Scripts), Complete Bytecode Script Catalog (2 Scripts), Complete Bytecode Script Catalog (2 Scripts), Complete Bytecode Script Catalog (42 Scripts), Complete Bytecode Script Catalog (4 Scripts), Complete Physical Entity Inventory (0 Objects) (+21 more)
+Cohesion: 0.12
+Nodes (15): Complete Bytecode Script Catalog (12 Scripts), Complete Bytecode Script Catalog (2 Scripts), Complete Bytecode Script Catalog (4 Scripts), Complete Physical Entity Inventory (0 Objects), Complete Physical Entity Inventory (0 Objects), Complete Physical Entity Inventory (4 Objects), Entity Narrative Roles, Placements & Mechanics, Entity Narrative Roles, Placements & Mechanics (+7 more)
 
 ### Community 91 - "Location Map: `vk09`"
 Cohesion: 0.12
@@ -952,13 +963,9 @@ Nodes (15): ⚔️ Combat Range Mechanics, ⚙️ Configuration, 📝 Configurat
 Cohesion: 0.15
 Nodes (13): Complete Bytecode Script Catalog (22 Scripts), Complete Bytecode Script Catalog (4 Scripts), Complete Bytecode Script Catalog (6 Scripts), Complete Physical Entity Inventory (0 Objects), Complete Physical Entity Inventory (2 Objects), Complete Physical Entity Inventory (2 Objects), Entity Narrative Roles, Placements & Mechanics, Entity Narrative Roles, Placements & Mechanics (+5 more)
 
-### Community 96 - "TextureMemoryCachePatch"
-Cohesion: 0.11
-Nodes (11): TextureMemoryCachePatch, TextureMetadata, Filename, FilenameHash, IsPersistent, LoadTimestamp, MemorySize, SceneName (+3 more)
-
 ### Community 97 - "00-Mods Folder Guide"
-Cohesion: 0.10
-Nodes (21): 00-Mods Folder Guide, Combining Textures and Sounds, Custom Sounds in 00-Mods, Custom Textures in 00-Mods, Example: Sound Mod, Example: Texture Mod, File Naming, Folder Structure (+13 more)
+Cohesion: 0.12
+Nodes (16): 00-Mods Folder Guide, Combining Textures and Sounds, Custom Sounds in 00-Mods, Example: Sound Mod, Folder Structure, Installing a Sound Mod, Installing a Texture Mod, Location (+8 more)
 
 ### Community 98 - "Core Subsystem Architecture & In-Depth Technical Breakdown"
 Cohesion: 0.13
@@ -967,10 +974,6 @@ Nodes (15): 1. Map Configurations & Event Bytecode (`va*` to `vj*`, `wa*` to `wj
 ### Community 99 - "Master Collated System Distribution Table (Global 4,733 Assets)"
 Cohesion: 0.13
 Nodes (15): 1. Suikoden II System Distribution (4,613 Files), 1. Tactical War Battles (`war_*` — 53 Files), 2. One-on-One Duel Subsystem (`pan_teo*` — 5 Files), 2. Suikoden I System Distribution (69 Files), 3. Core Engine, Shaders & Credits (`g1_*`, `gs1*` — 11 Files), 3. Top-Level Launcher Hub System Distribution (8 Files), 4. Shared Engine & Framework System Distribution (43 Files), Collated System Distribution Lists (Exact Requested Format) (+7 more)
-
-### Community 100 - "SaveDataProcessor"
-Cohesion: 0.13
-Nodes (7): SaveDataProcessor, SaveSlotPortraitMonitor, Instance, 34. `SaveDataProcessor.cs`, 35. `SaveSlotPartyPortraitPatch.cs`, 36. `SaveWindowPatch.cs`, Subsystem 4: Save & Data Systems
 
 ### Community 101 - "Suikoden II Character Battle Ranges Reference & Modding Guide"
 Cohesion: 0.13
@@ -1084,13 +1087,9 @@ Nodes (9): Complete Bytecode Script Catalog (6 Scripts), Complete Bytecode Scrip
 Cohesion: 0.15
 Nodes (13): 1. Texture Manifest Caching, 2. Load Order & Priority System, 3. High-Performance DDS Loading, 4. Intelligent Scene-Based Memory Caching, 5. In-Memory Save Slot Portrait Caching, 6. Performance Recommendations, 7. Directory Layout Reference, Config Options (+5 more)
 
-### Community 129 - "3. Proposed Split (Suggestion)"
-Cohesion: 0.12
-Nodes (15): 1. Current Settings Inventory, 2. Features Added on 2026-10-18, 3.1 PKCore (Framework, required dependency), 3.2 Project Kyaro Sprites (Visual), 3.3 PK Classic UI (Interface / PSP-PSX feel), 3.4 PK Battle Patch (`PKBattlePatch`, completed on 2026-10-25), 3.5 PK S2 Restorations (Cut / bugged content), 3.6 PK S1 Castle Anywhere (S1 QoL) (+7 more)
-
-### Community 130 - "Submap Layer `vj01_00` (Index 0)"
-Cohesion: 0.40
-Nodes (5): Complete Bytecode Script Catalog (128 Scripts), Complete Physical Entity Inventory (22 Objects), Entity Narrative Roles, Placements & Mechanics, Location Map: `vj01`, Submap Layer `vj01_00` (Index 0)
+### Community 130 - "Suikoden II Geographic Area Catalog: L'Renouille Imperial Capital Citadel"
+Cohesion: 0.15
+Nodes (12): Complete Bytecode Script Catalog (128 Scripts), Complete Bytecode Script Catalog (17 Scripts), Complete Physical Entity Inventory (22 Objects), Complete Physical Entity Inventory (5 Objects), Entity Narrative Roles, Placements & Mechanics, Entity Narrative Roles, Placements & Mechanics, 📖 Human-Readable Field & Engine Legend, Location Map: `vj01` (+4 more)
 
 ### Community 131 - "PKCore - Caching & Performance Guide"
 Cohesion: 0.15
@@ -1129,8 +1128,8 @@ Cohesion: 0.17
 Nodes (12): 4. Exhaustive Area & Submap Breakdown, `va` — Highland Borderlands & Kyaro Town, `vb` — East State Borderlands (Mercenary Fort / Ryube / Toto), `vc` — Muse City-State & Coronet Port, `vd` — South Window City-State & Radat, `ve` — Greenhill City-State & Forest Path, `vf` — Banner Village & Toran Republic, `vg` — Tinto Republic & Mining Mountains (+4 more)
 
 ### Community 141 - "When to Use"
-Cohesion: 0.18
-Nodes (10): 1. Symbol / Method Lookup, 2. Type-Scoped Member Lookup, 3. Native Address Resolution, 4. Dump Class Members, 5. Game Scoping, 6. JSON Output Mode, Hand-in-Hand Workflow with REA (Reverse Engineer Anything), High-Speed Symbol Indexer & Query Guide (+2 more)
+Cohesion: 0.15
+Nodes (12): 1. Symbol / Method Lookup, 2. Type-Scoped Member Lookup, 3. Native Address Resolution, 4. Dump Class Members, 5. Game Scoping, 6. Map & Area Lookup, 7. Game Entity Lookup (Characters, Runes, Gear, Food Recipes, Items), 8. JSON Output Mode (+4 more)
 
 ### Community 142 - "Submap Layer `vj10_00` (Index 0)"
 Cohesion: 0.40
@@ -1148,9 +1147,9 @@ Nodes (10): 1. Map Architecture & Naming Pattern Anatomy, 2. Text Message & Dial
 Cohesion: 0.20
 Nodes (10): [01 Project Kyaro Sprites], [02 User Interface], [03 General], [04 Game : Suikoden 1], [05 Game : Suikoden 2], [Performance], PKCore Configuration Guide, [Utility] (+2 more)
 
-### Community 148 - "Examples of Usage"
-Cohesion: 0.20
-Nodes (9): Basic Name Replacement, Character and Location Name Placeholders, Examples of Usage, Native Text Formatting, Suikoden 2 Dialog Text Placeholders Guide, Support Placeholders, With Choice Lines, With Line Breaks (+1 more)
+### Community 148 - "HarmonyPostfix"
+Cohesion: 0.09
+Nodes (7): DialogBoxScalePatch, LanguageSelectionPatch, ActiveLanguageCode, ActiveLanguageName, LastSelectedLanguageIndex, MapTexturePatch, 12. `MapTexturePatch.cs`
 
 ### Community 149 - "Suikoden II Master Map Entities, Triggers & World Objects Catalog"
 Cohesion: 0.20
@@ -1160,9 +1159,9 @@ Nodes (10): 1. Engine Memory Architecture: `MACHIDAT` -> `MAPEVDAT` -> `EVENT_OB
 Cohesion: 0.18
 Nodes (11): 1. Engine Memory & Save Data Architecture, 2. Native Event Engine & Bytecode Mechanics, 3. Complete 32-Byte Allocation Map (`t_box_flag[0..31]`), 4. Shared Flags Across Map State Variants, A. Precondition Check Opcodes in `eventForm` (`EVENTCON.EventFormTbl`), B. Execution Opcodes in `eventCom` (`EVENTCON` Command Table), Bitmask Addressing Formula, C# / IL2CPP Type Definitions (+3 more)
 
-### Community 151 - "Character-Specific Configuration"
-Cohesion: 0.22
-Nodes (9): Abilities Only, Assist / Composition Bonus Stats, Character-Specific Configuration, Full Syntax, Global Abilities (Advanced), JSON Configuration, Minimal Entry, Root Structure (+1 more)
+### Community 151 - "3. Proposed Split (Suggestion)"
+Cohesion: 0.15
+Nodes (12): 1. Current Settings Inventory, 2. Features Added on 2026-10-18, 3.2 Project Kyaro Sprites (Visual), 3.3 PK Classic UI (Interface / PSP-PSX feel), 3.4 PK Battle Patch (`PKBattlePatch`, completed on 2026-10-25), 3.5 PK S2 Restorations (Cut / bugged content), 3.6 PK S1 Castle Anywhere (S1 QoL), 3.7 PK DevTools (Modder-only, not for players) (+4 more)
 
 ### Community 152 - "PKCore - Project Kyaro Core"
 Cohesion: 0.20
@@ -1177,12 +1176,12 @@ Cohesion: 0.20
 Nodes (10): [01 Project Kyaro Sprites], [02 User Interface], [03 General], [04 Game : Suikoden 1], [05 Game : Suikoden 2], [Performance], PKCore Configuration Guide, [Utility] (+2 more)
 
 ### Community 155 - "GameObject"
-Cohesion: 0.09
-Nodes (11): DialogBoxScalePatch, MenuScalePatch, S1DisableObjectsPatch, S1WorldMapScaleUIPatch, SaveSlotPartyPortraitPatch, 29. `DialogBoxScalePatch.cs`, 30. `DisableUITipsPatch.cs`, 31. `GlobalControllerPromptPatch.cs` (+3 more)
+Cohesion: 0.07
+Nodes (20): MenuScalePatch, S1DisableObjectsPatch, S1WorldMapScaleUIPatch, SuikozuPatch, SuikozuTextureEnforcer, WorldMapEffectsPatch, 29. `DialogBoxScalePatch.cs`, 30. `DisableUITipsPatch.cs` (+12 more)
 
-### Community 156 - "Submap Layer `vd06_07` (Index 7)"
-Cohesion: 0.50
-Nodes (4): Complete Bytecode Script Catalog (2 Scripts), Complete Physical Entity Inventory (0 Objects), Entity Narrative Roles, Placements & Mechanics, Submap Layer `vd06_07` (Index 7)
+### Community 156 - "Location Map: `vd06`"
+Cohesion: 0.22
+Nodes (9): Complete Bytecode Script Catalog (2 Scripts), Complete Bytecode Script Catalog (5 Scripts), Complete Physical Entity Inventory (0 Objects), Complete Physical Entity Inventory (3 Objects), Entity Narrative Roles, Placements & Mechanics, Entity Narrative Roles, Placements & Mechanics, Location Map: `vd06`, Submap Layer `vd06_06` (Index 6) (+1 more)
 
 ### Community 157 - "Location Map: `vk34`"
 Cohesion: 0.22
@@ -1288,29 +1287,29 @@ Nodes (9): Complete Bytecode Script Catalog (13 Scripts), Complete Bytecode Scri
 Cohesion: 0.22
 Nodes (9): Complete Bytecode Script Catalog (54 Scripts), Complete Bytecode Script Catalog (92 Scripts), Complete Physical Entity Inventory (28 Objects), Complete Physical Entity Inventory (64 Objects), Entity Narrative Roles, Placements & Mechanics, Entity Narrative Roles, Placements & Mechanics, Location Map: `vd01`, Submap Layer `vd01_00` (Index 0) (+1 more)
 
-### Community 183 - "Location Map: `vh06`"
-Cohesion: 0.22
-Nodes (9): Complete Bytecode Script Catalog (113 Scripts), Complete Bytecode Script Catalog (9 Scripts), Complete Physical Entity Inventory (19 Objects), Complete Physical Entity Inventory (51 Objects), Entity Narrative Roles, Placements & Mechanics, Entity Narrative Roles, Placements & Mechanics, Location Map: `vh06`, Submap Layer `vh06_00` (Index 0) (+1 more)
+### Community 183 - "Suikoden II Geographic Area Catalog: Two River City (Human, Wingly & Kobold)"
+Cohesion: 0.05
+Nodes (43): Complete Bytecode Script Catalog (113 Scripts), Complete Bytecode Script Catalog (133 Scripts), Complete Bytecode Script Catalog (148 Scripts), Complete Bytecode Script Catalog (152 Scripts), Complete Bytecode Script Catalog (166 Scripts), Complete Bytecode Script Catalog (191 Scripts), Complete Bytecode Script Catalog (29 Scripts), Complete Bytecode Script Catalog (60 Scripts) (+35 more)
 
-### Community 184 - "Submap Layer `vh05_00` (Index 0)"
-Cohesion: 0.22
-Nodes (9): Complete Bytecode Script Catalog (148 Scripts), Complete Bytecode Script Catalog (191 Scripts), Complete Physical Entity Inventory (25 Objects), Complete Physical Entity Inventory (53 Objects), Entity Narrative Roles, Placements & Mechanics, Entity Narrative Roles, Placements & Mechanics, Location Map: `vh05`, Submap Layer `vh05_00` (Index 0) (+1 more)
+### Community 184 - "Submap Layer `vh08_00` (Index 0)"
+Cohesion: 0.17
+Nodes (11): Complete Bytecode Script Catalog (14 Scripts), Complete Bytecode Script Catalog (16 Scripts), Complete Physical Entity Inventory (53 Objects), Complete Physical Entity Inventory (66 Objects), Entity Narrative Roles, Placements & Mechanics, Entity Narrative Roles, Placements & Mechanics, 📖 Human-Readable Field & Engine Legend, Location Map: `vh08` (+3 more)
 
-### Community 185 - "Submap Layer `vh08_00` (Index 0)"
-Cohesion: 0.22
-Nodes (9): Complete Bytecode Script Catalog (14 Scripts), Complete Bytecode Script Catalog (16 Scripts), Complete Physical Entity Inventory (53 Objects), Complete Physical Entity Inventory (66 Objects), Entity Narrative Roles, Placements & Mechanics, Entity Narrative Roles, Placements & Mechanics, Location Map: `vh08`, Submap Layer `vh08_00` (Index 0) (+1 more)
+### Community 185 - "Examples of Usage"
+Cohesion: 0.20
+Nodes (9): Basic Name Replacement, Character and Location Name Placeholders, Examples of Usage, Native Text Formatting, Suikoden 2 Dialog Text Placeholders Guide, Support Placeholders, With Choice Lines, With Line Breaks (+1 more)
 
-### Community 186 - "Submap Layer `vh12_00` (Index 0)"
-Cohesion: 0.22
-Nodes (9): Complete Bytecode Script Catalog (29 Scripts), Complete Bytecode Script Catalog (60 Scripts), Complete Physical Entity Inventory (42 Objects), Complete Physical Entity Inventory (75 Objects), Entity Narrative Roles, Placements & Mechanics, Entity Narrative Roles, Placements & Mechanics, Location Map: `vh12`, Submap Layer `vh12_00` (Index 0) (+1 more)
+### Community 186 - "TextureMetadata"
+Cohesion: 0.20
+Nodes (10): TextureMetadata, Filename, FilenameHash, IsPersistent, LoadTimestamp, MemorySize, SceneName, TextureRef (+2 more)
 
-### Community 187 - "Troubleshooting"
-Cohesion: 0.29
-Nodes (7): Abilities Not Working, Blocklisted Abilities Ignored, Changes Not Applied, Game Crashes, Invalid JSON Syntax, Troubleshooting, Wrong Character ID
+### Community 187 - "Technical Details"
+Cohesion: 0.21
+Nodes (8): Caching System, Harmony Patches, Memory Architecture, Technical Details, Caching System, Harmony Patches, Memory Architecture, Technical Details
 
 ### Community 188 - "MACHICON_OnMapInitPatch"
-Cohesion: 0.32
-Nodes (4): MACHICON_OnMapInitPatch, CurrentSubmapIndex, PlayerX, PlayerY
+Cohesion: 0.18
+Nodes (7): [2026.10.27], MACHICON_OnMapInitPatch, CurrentSubmapIndex, PlayerX, PlayerY, MachiLoader_Load_Patch, 45. `CustomObjectInsertion.cs`
 
 ### Community 189 - "Examples of Usage"
 Cohesion: 0.22
@@ -1348,10 +1347,6 @@ Nodes (7): Complete Bytecode Script Catalog (122 Scripts), Complete Physical Ent
 Cohesion: 0.25
 Nodes (7): Complete Bytecode Script Catalog (4 Scripts), Complete Physical Entity Inventory (0 Objects), Entity Narrative Roles, Placements & Mechanics, 📖 Human-Readable Field & Engine Legend, Location Map: `vk29`, Submap Layer `vk29_02` (Index 2), Suikoden II Geographic Area Catalog: Castle HQ: Viki Teleport & Mechanical Elevator
 
-### Community 198 - "Submap Layer `vj07_00` (Index 0)"
-Cohesion: 0.40
-Nodes (5): Complete Bytecode Script Catalog (17 Scripts), Complete Physical Entity Inventory (5 Objects), Entity Narrative Roles, Placements & Mechanics, Location Map: `vj07`, Submap Layer `vj07_00` (Index 0)
-
 ### Community 199 - "Suikoden II Geographic Area Catalog: Greenhill Principality (City & Outskirts)"
 Cohesion: 0.25
 Nodes (7): Complete Bytecode Script Catalog (14 Scripts), Complete Physical Entity Inventory (39 Objects), Entity Narrative Roles, Placements & Mechanics, 📖 Human-Readable Field & Engine Legend, Location Map: `ve09`, Submap Layer `ve09_00` (Index 0), Suikoden II Geographic Area Catalog: Greenhill Principality (City & Outskirts)
@@ -1372,9 +1367,9 @@ Nodes (7): Complete Bytecode Script Catalog (3 Scripts), Complete Physical Entit
 Cohesion: 0.25
 Nodes (7): Complete Bytecode Script Catalog (2 Scripts), Complete Physical Entity Inventory (1 Objects), Entity Narrative Roles, Placements & Mechanics, 📖 Human-Readable Field & Engine Legend, Location Map: `vi09`, Submap Layer `vi09_00` (Index 0), Suikoden II Geographic Area Catalog: Mt. Rakutei Dragon Cliffs & Peak
 
-### Community 204 - "Subsystem 7: Map, Environment & Custom Objects"
+### Community 204 - "Advanced Features"
 Cohesion: 0.29
-Nodes (7): 44. `CustomObjectConfig.cs`, 46. `DiscoveredObject.cs`, 47. `ObjectConfigLoader.cs`, 48. `ObjectDiscovery.cs`, 49. `S1DisableObjects.cs`, 51. `WorldMapEffectsPatch.cs`, Subsystem 7: Map, Environment & Custom Objects
+Nodes (7): Advanced Features, Bath Scene Textures, Game-Specific Isolation, Persistent Textures, Special Texture Categories, Texture Variants, Window UI Textures
 
 ### Community 205 - "Suikoden II Geographic Area Catalog: Muse City (Plaza, City Hall & Ruins)"
 Cohesion: 0.25
@@ -1392,13 +1387,13 @@ Nodes (7): Complete Bytecode Script Catalog (8 Scripts), Complete Physical Entit
 Cohesion: 0.25
 Nodes (7): Complete Bytecode Script Catalog (351 Scripts), Complete Physical Entity Inventory (104 Objects), Entity Narrative Roles, Placements & Mechanics, 📖 Human-Readable Field & Engine Legend, Location Map: `vd17`, Submap Layer `vd17_00` (Index 0), Suikoden II Geographic Area Catalog: South Window Capital City
 
-### Community 209 - "Suikoden II Geographic Area Catalog: Two River City (Human, Wingly & Kobold)"
-Cohesion: 0.25
-Nodes (7): Complete Bytecode Script Catalog (152 Scripts), Complete Physical Entity Inventory (67 Objects), Entity Narrative Roles, Placements & Mechanics, 📖 Human-Readable Field & Engine Legend, Location Map: `vh01`, Submap Layer `vh01_00` (Index 0), Suikoden II Geographic Area Catalog: Two River City (Human, Wingly & Kobold)
+### Community 209 - "Folder Structure"
+Cohesion: 0.29
+Nodes (7): Base Directory, Example Complete Structure, Folder Structure, **Layer 1: Base Folder (Lowest Priority)**, **Layer 2: Game-Specific Folders (Medium Priority)**, **Layer 3: 00-Mods Folder (HIGHEST Priority)**, Priority System (Layer Override)
 
 ### Community 210 - "CovertMissionPortraitMonitor"
-Cohesion: 0.10
-Nodes (13): CovertMissionPortraitMonitor, IsCovertMissionActive, Logger, WarRoomBGPatch, Logger, 23. `CovertMissionPortraitMonitor.cs`, 26. `PortraitVariants.cs`, 27. `S2CookOffPortraitMonitor.cs` (+5 more)
+Cohesion: 0.06
+Nodes (27): CovertMissionPortraitMonitor, IsCovertMissionActive, Logger, WarRoomBGPatch, Logger, 1. High-Level Architecture Overview, 23. `CovertMissionPortraitMonitor.cs`, 26. `PortraitVariants.cs` (+19 more)
 
 ### Community 211 - "11. PKCore HarmonyX Interception & Modding Suite"
 Cohesion: 0.25
@@ -1408,9 +1403,9 @@ Nodes (8): 11. PKCore HarmonyX Interception & Modding Suite, 1. War Battle Forma
 Cohesion: 0.25
 Nodes (8): 1. Static Metadata (`EPERSONDAT.cs`):, 2. Live Runtime NPC State (`EVENT_HUMAN.cs`):, 6. Scene, Map & Town NPC Engine (`MACHICON`, `EVENTCON`, `EVENT_HUMAN`, `EPERSONDAT`), A. Town Life Cycle (`MACHICON.cs`), B. NPC Definition & Entity Layout (`EPERSONDAT` & `EVENT_HUMAN`), C. NPC Movement AI Subroutines, D. Collision Engine ("Atari" / 当たり判定), E. Modding Town NPCs
 
-### Community 213 - "Example Configurations"
-Cohesion: 0.33
-Nodes (6): Example 1: Buff Riou, Example 2: Magic Team, Example 3: Cavalry Squad, Example 4: Support & Healing, Example 5: Mixed Strategy, Example Configurations
+### Community 213 - "Advanced Features"
+Cohesion: 0.29
+Nodes (7): Advanced Features, Bath Scene Textures, Game-Specific Isolation, Persistent Textures, Special Texture Categories, Texture Variants, Window UI Textures
 
 ### Community 214 - "Submap Layer `vj06_00` (Index 0)"
 Cohesion: 0.40
@@ -1427,6 +1422,10 @@ Nodes (7): 3. Exhaustive Combat Engine Breakdown, A. Combatants & Field Layout i
 ### Community 217 - "Submap Layer `vk33_00` (Index 0)"
 Cohesion: 0.25
 Nodes (7): Complete Bytecode Script Catalog (57 Scripts), Complete Physical Entity Inventory (40 Objects), Entity Narrative Roles, Placements & Mechanics, 📖 Human-Readable Field & Engine Legend, Location Map: `vk33`, Submap Layer `vk33_00` (Index 0), Suikoden II Geographic Area Catalog: Castle HQ: Jude's Guardian Deity Shrine
+
+### Community 218 - ".ApplyPatches"
+Cohesion: 0.09
+Nodes (9): DisableCustomPostEffectPatch, GRSpriteRendererPatch, SoundRedirectPatch, SpriteFilteringPatch, UnitySpriteRendererPatch, 10. `GRSpriteRendererPatch.cs`, 17. `SpriteFilteringPatch.cs`, 22. `UnitySpriteRendererPatch.cs` (+1 more)
 
 ### Community 219 - "5. Strategic War Battles (`w_unit`, `w_battle`, `Butai`, `Defc_set`)"
 Cohesion: 0.33
@@ -1513,12 +1512,12 @@ Cohesion: 0.40
 Nodes (5): Complete Bytecode Script Catalog (5 Scripts), Complete Physical Entity Inventory (2 Objects), Entity Narrative Roles, Placements & Mechanics, Location Map: `vj16`, Submap Layer `vj16_00` (Index 0)
 
 ### Community 241 - "WarAbilityConfig"
-Cohesion: 0.33
-Nodes (4): WarAbilityConfig, CharacterAbilities, GlobalAbilities, WarAbilityConfigLoader
+Cohesion: 0.31
+Nodes (5): WarAbilityConfig, CharacterAbilities, GlobalAbilities, WarAbilityConfigLoader, 42. `WarAbilityConfigLoader.cs`
 
-### Community 242 - "Suikoden II Geographic Area Catalog: L'Renouille Imperial Capital Citadel"
-Cohesion: 0.11
-Nodes (17): Complete Bytecode Script Catalog (12 Scripts), Complete Bytecode Script Catalog (23 Scripts), Complete Bytecode Script Catalog (33 Scripts), Complete Physical Entity Inventory (17 Objects), Complete Physical Entity Inventory (19 Objects), Complete Physical Entity Inventory (37 Objects), Entity Narrative Roles, Placements & Mechanics, Entity Narrative Roles, Placements & Mechanics (+9 more)
+### Community 242 - "Submap Layer `vj13_00` (Index 0)"
+Cohesion: 0.40
+Nodes (5): Complete Bytecode Script Catalog (12 Scripts), Complete Physical Entity Inventory (19 Objects), Entity Narrative Roles, Placements & Mechanics, Location Map: `vj13`, Submap Layer `vj13_00` (Index 0)
 
 ### Community 243 - "Submap Layer `vb20_00` (Index 0)"
 Cohesion: 0.40
@@ -1536,13 +1535,13 @@ Nodes (5): Complete Bytecode Script Catalog (6 Scripts), Complete Physical Entit
 Cohesion: 0.40
 Nodes (5): 1. Consumables & Scrolls (`Kind = 0 / 0x00`), 2. Equipment, Armor & Accessories (`Kind = 16 / 0x10`), 3. Runes & Rune Orbs (`Kind = 32 / 0x20`), 4. Rare Valuables, Books & Sets (`Kind = 80 / 0x50`), 💎 Modder's Master Item ID Reference Tables
 
-### Community 247 - "3. Exhaustive Patch Enumeration & Feature Breakdown"
-Cohesion: 0.12
-Nodes (15): 1. High-Level Architecture Overview, 2. Architectural Subsystems, 37. `BattlePartyHPPatch.cs`, 38. `BattleEnemyLevelPatch.cs`, 39. `BattlePositionPatch.cs`, 39. `CharacterRangePatch.cs`, 3. Exhaustive Patch Enumeration & Feature Breakdown, 40. `CommandRuneUnlimitedPatch.cs` (+7 more)
+### Community 247 - "Folder Structure"
+Cohesion: 0.29
+Nodes (7): Base Directory, Example Complete Structure, Folder Structure, **Layer 1: Base Folder (Lowest Priority)**, **Layer 2: Game-Specific Folders (Medium Priority)**, **Layer 3: 00-Mods Folder (HIGHEST Priority)**, Priority System (Layer Override)
 
-### Community 248 - "Available Abilities"
+### Community 248 - "Grounded Area & Map Documentation Reference Guide"
 Cohesion: 0.40
-Nodes (5): Ability Slot Limits, Ability Usage, Available Abilities, Complete Ability List, Unused Abilities
+Nodes (4): 1. Primary Documentation Architecture, 2. Mandatory Disambiguations & Misnomers (DO NOT CONFUSE), 3. High-Speed Sub-Millisecond Search Tooling (`tools\sym.bat`), Grounded Area & Map Documentation Reference Guide
 
 ### Community 249 - "Submap Layer `vj09_00` (Index 0)"
 Cohesion: 0.40
@@ -1632,9 +1631,9 @@ Nodes (5): Complete Bytecode Script Catalog (4 Scripts), Complete Physical Entit
 Cohesion: 0.40
 Nodes (5): Complete Bytecode Script Catalog (9 Scripts), Complete Physical Entity Inventory (16 Objects), Entity Narrative Roles, Placements & Mechanics, Location Map: `vd14`, Submap Layer `vd14_00` (Index 0)
 
-### Community 271 - "Submap Layer `vh11_00` (Index 0)"
+### Community 271 - "Submap Layer `vj11_00` (Index 0)"
 Cohesion: 0.40
-Nodes (5): Complete Bytecode Script Catalog (166 Scripts), Complete Physical Entity Inventory (40 Objects), Entity Narrative Roles, Placements & Mechanics, Location Map: `vh11`, Submap Layer `vh11_00` (Index 0)
+Nodes (5): Complete Bytecode Script Catalog (23 Scripts), Complete Physical Entity Inventory (17 Objects), Entity Narrative Roles, Placements & Mechanics, Location Map: `vj11`, Submap Layer `vj11_00` (Index 0)
 
 ### Community 272 - "Submap Layer `vf03_08` (Index 8)"
 Cohesion: 0.50
@@ -1647,10 +1646,6 @@ Nodes (5): 24. Castle Life & Facilities: Fishing, Farm, Baths & Cooking, A. Yam 
 ### Community 274 - "30. The "Two Millies" Mystery & Spawning Pets in HQ Castle"
 Cohesion: 0.40
 Nodes (5): 30. The "Two Millies" Mystery & Spawning Pets in HQ Castle, A. Why Are There Two Millies in the Code?, B. Can Bonaparte Be Inside HQ Castle?, C. Can Bright the Dragon Be in Humphrey and Futch's Room?, D. Performance Considerations & Architecture Note
-
-### Community 275 - "[2026.10.27]"
-Cohesion: 0.25
-Nodes (4): [2026.10.27], BindCamera_Sync_Patch, MachiLoader_Load_Patch, 45. `CustomObjectInsertion.cs`
 
 ### Community 276 - "Submap Layer `vf07_04` (Index 4)"
 Cohesion: 0.50
@@ -1693,7 +1688,7 @@ Cohesion: 0.50
 Nodes (4): Complete Bytecode Script Catalog (16 Scripts), Complete Physical Entity Inventory (3 Objects), Entity Narrative Roles, Placements & Mechanics, Submap Layer `vd06_18` (Index 18)
 
 ### Community 286 - "WAR_DATA"
-Cohesion: 0.20
+Cohesion: 0.25
 Nodes (6): WAR_DATA, leader_no, sub_no, sub_to_leader, AssetAddressTracker, 55. `AssetAddressTracker.cs`
 
 ### Community 287 - "Submap Layer `vd06_09` (Index 9)"
@@ -1745,8 +1740,8 @@ Cohesion: 0.50
 Nodes (4): Complete Bytecode Script Catalog (43 Scripts), Complete Physical Entity Inventory (22 Objects), Entity Narrative Roles, Placements & Mechanics, Submap Layer `vd06_11` (Index 11)
 
 ### Community 299 - "Submap Layer `vd06_05` (Index 5)"
-Cohesion: 0.40
-Nodes (5): Complete Bytecode Script Catalog (5 Scripts), Complete Physical Entity Inventory (2 Objects), Entity Narrative Roles, Placements & Mechanics, Location Map: `vd06`, Submap Layer `vd06_05` (Index 5)
+Cohesion: 0.50
+Nodes (4): Complete Bytecode Script Catalog (5 Scripts), Complete Physical Entity Inventory (2 Objects), Entity Narrative Roles, Placements & Mechanics, Submap Layer `vd06_05` (Index 5)
 
 ### Community 300 - "Submap Layer `vd06_08` (Index 8)"
 Cohesion: 0.50
@@ -2136,9 +2131,9 @@ Nodes (17): Complete Bytecode Script Catalog (15 Scripts), Complete Bytecode Scr
 Cohesion: 0.40
 Nodes (5): ThemePreset, ClassicBlue, DarkMagenta, Matrix, ObsidianBlack
 
-### Community 398 - "Submap Layer `vd06_06` (Index 6)"
-Cohesion: 0.50
-Nodes (4): Complete Bytecode Script Catalog (5 Scripts), Complete Physical Entity Inventory (3 Objects), Entity Narrative Roles, Placements & Mechanics, Submap Layer `vd06_06` (Index 6)
+### Community 398 - "Submap Layer `vj04_00` (Index 0)"
+Cohesion: 0.40
+Nodes (5): Complete Bytecode Script Catalog (33 Scripts), Complete Physical Entity Inventory (37 Objects), Entity Narrative Roles, Placements & Mechanics, Location Map: `vj04`, Submap Layer `vj04_00` (Index 0)
 
 ### Community 399 - "Submap Layer `vc12_09` (Index 9)"
 Cohesion: 0.50
@@ -2188,9 +2183,25 @@ Nodes (4): Complete Bytecode Script Catalog (9 Scripts), Complete Physical Entit
 Cohesion: 0.50
 Nodes (4): Complete Bytecode Script Catalog (9 Scripts), Complete Physical Entity Inventory (1 Objects), Entity Narrative Roles, Placements & Mechanics, Submap Layer `vb08_04` (Index 4)
 
-### Community 416 - "Submap Layer `vh06_01` (Index 1)"
+### Community 412 - "Custom Textures in 00-Mods"
+Cohesion: 0.40
+Nodes (5): Custom Textures in 00-Mods, Example: Texture Mod, File Naming, Game-Specific Textures, Supported Formats
+
+### Community 413 - "Custom Sounds in 00-Mods"
 Cohesion: 0.50
-Nodes (4): Complete Bytecode Script Catalog (133 Scripts), Complete Physical Entity Inventory (50 Objects), Entity Narrative Roles, Placements & Mechanics, Submap Layer `vh06_01` (Index 1)
+Nodes (4): Custom Sounds in 00-Mods, Example: Sound Mod, Folder Structure, Supported Formats
+
+### Community 414 - "Submap Layer `vd13_00` (Index 0)"
+Cohesion: 0.50
+Nodes (4): Complete Bytecode Script Catalog (24 Scripts), Complete Physical Entity Inventory (13 Objects), Entity Narrative Roles, Placements & Mechanics, Submap Layer `vd13_00` (Index 0)
+
+### Community 415 - "Submap Layer `vd13_03` (Index 3)"
+Cohesion: 0.50
+Nodes (4): Complete Bytecode Script Catalog (2 Scripts), Complete Physical Entity Inventory (0 Objects), Entity Narrative Roles, Placements & Mechanics, Submap Layer `vd13_03` (Index 3)
+
+### Community 416 - "Submap Layer `vd13_05` (Index 5)"
+Cohesion: 0.50
+Nodes (4): Complete Bytecode Script Catalog (2 Scripts), Complete Physical Entity Inventory (0 Objects), Entity Narrative Roles, Placements & Mechanics, Submap Layer `vd13_05` (Index 5)
 
 ### Community 417 - "Location Map: `vh04`"
 Cohesion: 0.50
@@ -2276,6 +2287,10 @@ Nodes (4): 23. Character Base Stats, Growth Curves & The Table of 108 Stars, A. 
 Cohesion: 0.50
 Nodes (4): 🔗 Links, 🎨 Modding Guides, [⚔️ PKCore Wiki](Home), ⚡ Technical
 
+### Community 438 - "Submap Layer `vd13_01` (Index 1)"
+Cohesion: 0.50
+Nodes (4): Complete Bytecode Script Catalog (42 Scripts), Complete Physical Entity Inventory (28 Objects), Entity Narrative Roles, Placements & Mechanics, Submap Layer `vd13_01` (Index 1)
+
 ### Community 439 - "PKCore"
 Cohesion: 0.67
 Nodes (3): net6.0, PKCore, Microsoft.NET.Sdk
@@ -2360,29 +2375,57 @@ Nodes (4): 5. Ready-to-Use C# Patch Templates for PKCore, Pattern A: Remapping C
 Cohesion: 0.50
 Nodes (4): 🏛️ Lakewest Town & Docks (13 Chests), 📍 Region: vh (Act 3B: Two River / Kobold), 🏛️ Two River City (Human, Wingly & Kobold) (1 Chests), 🏛️ Two River Subterranean Sewers (5 Chests)
 
+### Community 545 - "Supported File Formats"
+Cohesion: 0.50
+Nodes (4): DDS Texture Compression Guide, DDS vs PNG: Performance Considerations, Image Formats, Supported File Formats
+
 ### Community 546 - "📍 Region: vi (Act 4A: Matilda / Rockaxe)"
 Cohesion: 0.67
 Nodes (3): 🏛️ Mt. Rakutei Dragon Cliffs & Peak (15 Chests), 📍 Region: vi (Act 4A: Matilda / Rockaxe), 🏛️ Rockaxe Castle Citadel & Ramparts (6 Chests)
 
+### Community 547 - "Examples"
+Cohesion: 0.50
+Nodes (4): Example 1: Replace a Character Portrait, Example 2: Add Custom Controller Prompts, Example 3: Replace a Background (Performance), Examples
+
+### Community 548 - "How It Works"
+Cohesion: 0.50
+Nodes (4): How It Works, Initialization Process, Memory Management, Texture Matching
+
+### Community 549 - "Troubleshooting"
+Cohesion: 0.50
+Nodes (4): Blurry or Stretched Textures, Performance Issues, Texture Not Loading, Troubleshooting
+
+### Community 550 - "How to Use Custom Textures"
+Cohesion: 0.50
+Nodes (4): Creating Your Custom Texture, Finding Texture Names, How to Use Custom Textures, Installing Your Texture
+
+### Community 551 - "Supported File Formats"
+Cohesion: 0.50
+Nodes (4): DDS Texture Compression Guide, DDS vs PNG: Performance Considerations, Image Formats, Supported File Formats
+
+### Community 552 - "Character Name Mapping"
+Cohesion: 0.50
+Nodes (4): Character Name Mapping, Configuration: `PKCore/Config/PortraitMappings.json`, How It Works, Purpose
+
 ## Knowledge Gaps
 - **229 isolated node(s):** `force_type`, `nouryoku`, `kaisu`, `kaisu_max`, `face_no` (+224 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 3726 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
-- **95 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 3733 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **99 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `Changelog` connect `HarmonyPostfix` to `HarmonyPatch`, `.GetCurrentGame`, `Texture2D`, `CustomTexturePatch`, `suikoden_2_master_map_entities_and_triggers_catalog.md`, `[2026.10.27]`, `DisableSpritePostProcessingPatch`?**
-  _High betweenness centrality (0.277) - this node is a cross-community bridge._
+- **Why does `Changelog` connect `HarmonyPostfix` to `HarmonyPatch`, `CustomTexturePatch`, `suikoden_2_master_map_entities_and_triggers_catalog.md`, `.GetCurrentGame`, `MACHICON_OnMapInitPatch`, `DisableSpritePostProcessingPatch`?**
+  _High betweenness centrality (0.270) - this node is a cross-community bridge._
 - **Are the 9 inferred relationships involving `CustomTexturePatch` (e.g. with `11. `MapSpriteHDPatch.cs`` and `15. `SavePointPatch.cs``) actually correct?**
   _`CustomTexturePatch` has 9 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `force_type`, `nouryoku`, `kaisu` to the rest of the system?**
   _229 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `GSD2.dll.c` be split into smaller, more focused modules?**
   _Cohesion score 0.0030211480362537764 - nodes in this community are weakly interconnected._
-- **Why does `AssetLoader` connect `Texture2D` to `PKCore.Patches`, `CustomTexturePatch`, `PortraitVariants`, `NPC Portrait System - Full Documentation`, `CovertMissionPortraitMonitor`, `.ApplyPatches`, `NPC Portrait System - Full Documentation`, `Plugin`?**
-  _High betweenness centrality (0.073) - this node is a cross-community bridge._
+- **Why does `AssetLoader` connect `AssetLoader` to `PKCore.Patches`, `CustomTexturePatch`, `HarmonyPostfix`, `PortraitVariants`, `NPC Portrait System - Full Documentation`, `CovertMissionPortraitMonitor`, `.GetCurrentGame`, `NPC Portrait System - Full Documentation`, `Plugin`?**
+  _High betweenness centrality (0.079) - this node is a cross-community bridge._
 - **Should `PKCore.Patches` be split into smaller, more focused modules?**
   _Cohesion score 0.05659397715472482 - nodes in this community are weakly interconnected._
-- **Why does `Suikoden II Geographic Area Catalog: L'Renouille Imperial Capital Citadel` connect `Suikoden II Geographic Area Catalog: L'Renouille Imperial Capital Citadel` to `Submap Layer `vj01_00` (Index 0)`, `Submap Layer `vj19_00` (Index 0)`, `Submap Layer `vj12_00` (Index 0)`, `Submap Layer `vj10_00` (Index 0)`, `Submap Layer `vj08_00` (Index 0)`, `Location Map: `vj24``, `Location Map: `vj18``, `Location Map: `vj20``, `Location Map: `vj21``, `Location Map: `vj22``, `Location Map: `vj23``, `Submap Layer `vj14_00` (Index 0)`, `Submap Layer `vj07_00` (Index 0)`, `Submap Layer `vj06_00` (Index 0)`, `Submap Layer `vj16_00` (Index 0)`, `Location Map: `vj03``, `Location Map: `vj05``, `Location Map: `vj02``, `Submap Layer `vj15_00` (Index 0)`, `Submap Layer `vj09_00` (Index 0)`?**
-  _High betweenness centrality (0.070) - this node is a cross-community bridge._
+- **Why does `[2026.09.15]` connect `HarmonyPostfix` to `AssetLoader`?**
+  _High betweenness centrality (0.065) - this node is a cross-community bridge._

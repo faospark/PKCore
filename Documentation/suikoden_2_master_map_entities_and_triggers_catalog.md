@@ -183,9 +183,10 @@ Every single distinct geographic location in Suikoden II is documented in full i
 | 57 | **Tinto Mines & Underground Caverns** | `vg05`, `vg07`, `vg10`, `vg11`, `vg12`, `vg14` | **891 lines** | [areas/tinto_mines.md](areas/tinto_mines.md) |
 | 58 | **Toran Castle Presidential Palace** | `vf05` | **370 lines** | [areas/toran_castle_palace.md](areas/toran_castle_palace.md) |
 | 59 | **Toto Village (Peaceful & Burned Ruins)** | `vb03`, `vb04` | **514 lines** | [areas/toto_village.md](areas/toto_village.md) |
-| 60 | **Two River City (Human, Wingly & Kobold)** | `vh01`, `vh05`, `vh06`, `vh08`, `vh11`, `vh12` | **2,454 lines** | [areas/two_river_city.md](areas/two_river_city.md) |
-| 61 | **Two River Subterranean Sewers** | `vh04` | **416 lines** | [areas/two_river_sewers.md](areas/two_river_sewers.md) |
-| 62 | **White Deer Country Inn** | `vc04`, `vc05` | **441 lines** | [areas/white_deer_inn.md](areas/white_deer_inn.md) |
+| 60 | **Two River City (Human, Wingly & Kobold)** | `vh01`, `vh05`, `vh06`, `vh11`, `vh12` | **2,132 lines** | [areas/two_river_city.md](areas/two_river_city.md) |
+| 61 | **Drakemouth Village & Border Road** | `vh08` | **350 lines** | [areas/drakemouth_village.md](areas/drakemouth_village.md) |
+| 62 | **Two River Subterranean Sewers** | `vh04` | **416 lines** | [areas/two_river_sewers.md](areas/two_river_sewers.md) |
+| 63 | **White Deer Country Inn** | `vc04`, `vc05` | **441 lines** | [areas/white_deer_inn.md](areas/white_deer_inn.md) |
 
 ---
 
