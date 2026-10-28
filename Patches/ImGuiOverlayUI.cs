@@ -101,7 +101,7 @@ public static class ImGuiOverlayUI
             {
                 if (!_originalOrthoSizes.TryGetValue(id, out float orig) || orig <= 0f)
                 {
-                    orig = Math.Abs(_cameraZoom - 1.0f) > 0.001f ? cam.orthographicSize / _cameraZoom : cam.orthographicSize;
+                    orig = cam.orthographicSize;
                     if (orig > 0f) _originalOrthoSizes[id] = orig;
                 }
                 if (orig > 0f)
@@ -113,7 +113,7 @@ public static class ImGuiOverlayUI
             {
                 if (!_originalFovs.TryGetValue(id, out float orig) || orig <= 0f)
                 {
-                    orig = Math.Abs(_cameraZoom - 1.0f) > 0.001f ? cam.fieldOfView / _cameraZoom : cam.fieldOfView;
+                    orig = cam.fieldOfView;
                     if (orig > 0f) _originalFovs[id] = orig;
                 }
                 if (orig > 0f)

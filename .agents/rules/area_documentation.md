@@ -62,3 +62,14 @@ All maps, areas, and game entities are indexed into `tools\symbol_indexer\symbol
   tools\sym.bat DI_CAKE6
   ```
   Returns entity name, category, internal symbol (`g2_name_h` / `g2_data_h`), and exact native item/chara ID.
+
+---
+
+## 4. Castle Level 0-Index Grounding (`base_lv`)
+
+`GAME_DATA.base_lv` is 0-indexed in engine memory and event bytecode:
+- **`base_lv == 0`**: Castle Level 1 (Mercenary Fort / Pre-Castle) $\rightarrow$ Opcode `[33, 0, 0]` or `< 1` $\rightarrow$ `[33, 2, 1]`.
+- **`base_lv == 1`**: Castle Level 2 (North Window Castle newly established) $\rightarrow$ Opcode `[33, 1, 1]` (`base_lv >= 1`).
+- **`base_lv == 2`**: Castle Level 3 (First castle expansion after Two River / Greenhill) $\rightarrow$ Opcode `[33, 1, 2]` (`base_lv >= 2`).
+- **`base_lv == 3`**: Castle Level 4 (Late-game expansion) $\rightarrow$ Opcode `[33, 1, 3]` (`base_lv >= 3`).
+
