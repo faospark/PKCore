@@ -1,0 +1,379 @@
+[
+  {
+    "map": "vk01.json",
+    "submap": 0,
+    "slot": 7,
+    "coords": [
+      55,
+      124
+    ],
+    "ano": 0,
+    "disp": 0,
+    "ozok": 3,
+    "spd": 3,
+    "wt": 128,
+    "scripts": []
+  },
+  {
+    "map": "vk01.json",
+    "submap": 0,
+    "slot": 19,
+    "coords": [
+      0,
+      0
+    ],
+    "ano": 0,
+    "disp": 0,
+    "ozok": 2,
+    "spd": 4,
+    "wt": 255,
+    "scripts": []
+  },
+  {
+    "map": "vk01.json",
+    "submap": 1,
+    "slot": 7,
+    "coords": [
+      55,
+      124
+    ],
+    "ano": 0,
+    "disp": 0,
+    "ozok": 3,
+    "spd": 3,
+    "wt": 128,
+    "scripts": []
+  },
+  {
+    "map": "vk01.json",
+    "submap": 1,
+    "slot": 12,
+    "coords": [
+      0,
+      0
+    ],
+    "ano": 0,
+    "disp": 0,
+    "ozok": 2,
+    "spd": 4,
+    "wt": 255,
+    "scripts": []
+  },
+  {
+    "map": "vk01.json",
+    "submap": 2,
+    "slot": 5,
+    "coords": [
+      55,
+      124
+    ],
+    "ano": 0,
+    "disp": 0,
+    "ozok": 3,
+    "spd": 3,
+    "wt": 128,
+    "scripts": []
+  },
+  {
+    "map": "vk01.json",
+    "submap": 2,
+    "slot": 14,
+    "coords": [
+      0,
+      0
+    ],
+    "ano": 0,
+    "disp": 0,
+    "ozok": 2,
+    "spd": 4,
+    "wt": 255,
+    "scripts": []
+  },
+  {
+    "map": "vk02.json",
+    "submap": 9,
+    "slot": 14,
+    "coords": [
+      43,
+      45
+    ],
+    "ano": 1,
+    "disp": 0,
+    "ozok": 2,
+    "spd": 4,
+    "wt": 255,
+    "scripts": []
+  },
+  {
+    "map": "vk02.json",
+    "submap": 10,
+    "slot": 12,
+    "coords": [
+      43,
+      45
+    ],
+    "ano": 1,
+    "disp": 0,
+    "ozok": 2,
+    "spd": 4,
+    "wt": 255,
+    "scripts": []
+  },
+  {
+    "map": "vk07.json",
+    "submap": 3,
+    "slot": 14,
+    "coords": [
+      67,
+      47
+    ],
+    "ano": 1,
+    "disp": 0,
+    "ozok": 2,
+    "spd": 4,
+    "wt": 255,
+    "scripts": []
+  },
+  {
+    "map": "vk09.json",
+    "submap": 1,
+    "slot": 3,
+    "coords": [
+      47,
+      26
+    ],
+    "ano": 2,
+    "disp": 0,
+    "ozok": 2,
+    "spd": 4,
+    "wt": 255,
+    "scripts": []
+  },
+  {
+    "map": "vk10.json",
+    "submap": 0,
+    "slot": 22,
+    "coords": [
+      0,
+      0
+    ],
+    "ano": 0,
+    "disp": 0,
+    "ozok": 2,
+    "spd": 4,
+    "wt": 255,
+    "scripts": []
+  },
+  {
+    "map": "vk12.json",
+    "submap": 1,
+    "slot": 2,
+    "coords": [
+      67,
+      28
+    ],
+    "ano": 2,
+    "disp": 0,
+    "ozok": 2,
+    "spd": 4,
+    "wt": 255,
+    "scripts": []
+  },
+  {
+    "map": "vk18.json",
+    "submap": 0,
+    "slot": 2,
+    "coords": [
+      25,
+      38
+    ],
+    "ano": 3,
+    "disp": 0,
+    "ozok": 2,
+    "spd": 4,
+    "wt": 255,
+    "scripts": []
+  },
+  {
+    "map": "vk24.json",
+    "submap": 0,
+    "slot": 14,
+    "coords": [
+      0,
+      0
+    ],
+    "ano": 0,
+    "disp": 0,
+    "ozok": 2,
+    "spd": 4,
+    "wt": 255,
+    "scripts": []
+  },
+  {
+    "map": "vk26.json",
+    "submap": 0,
+    "slot": 24,
+    "coords": [
+      22,
+      32
+    ],
+    "ano": 1,
+    "disp": 1,
+    "ozok": 2,
+    "spd": 4,
+    "wt": 255,
+    "scripts": []
+  },
+  {
+    "map": "vk28.json",
+    "submap": 0,
+    "slot": 9,
+    "coords": [
+      77,
+      125
+    ],
+    "ano": 1,
+    "disp": 1,
+    "ozok": 0,
+    "spd": 4,
+    "wt": 255,
+    "scripts": [
+      {
+        "script_idx": 0,
+        "etyp": 2,
+        "manipulates": true,
+        "interacts": false,
+        "form": [
+          0,
+          255,
+          254
+        ],
+        "com": [
+          46,
+          2,
+          0,
+          83,
+          128,
+          1,
+          0,
+          89,
+          9,
+          2,
+          0,
+          47,
+          255,
+          254,
+          204,
+          204,
+          204,
+          204
+        ]
+      }
+    ]
+  },
+  {
+    "map": "vk29.json",
+    "submap": 0,
+    "slot": 20,
+    "coords": [
+      0,
+      0
+    ],
+    "ano": 0,
+    "disp": 0,
+    "ozok": 2,
+    "spd": 4,
+    "wt": 255,
+    "scripts": []
+  },
+  {
+    "map": "vk33.json",
+    "submap": 0,
+    "slot": 21,
+    "coords": [
+      0,
+      0
+    ],
+    "ano": 0,
+    "disp": 0,
+    "ozok": 2,
+    "spd": 4,
+    "wt": 255,
+    "scripts": []
+  },
+  {
+    "map": "vk34.json",
+    "submap": 0,
+    "slot": 7,
+    "coords": [
+      55,
+      124
+    ],
+    "ano": 0,
+    "disp": 0,
+    "ozok": 3,
+    "spd": 3,
+    "wt": 128,
+    "scripts": []
+  },
+  {
+    "map": "vk34.json",
+    "submap": 0,
+    "slot": 12,
+    "coords": [
+      0,
+      0
+    ],
+    "ano": 0,
+    "disp": 0,
+    "ozok": 2,
+    "spd": 4,
+    "wt": 255,
+    "scripts": []
+  },
+  {
+    "map": "vk34.json",
+    "submap": 1,
+    "slot": 7,
+    "coords": [
+      55,
+      124
+    ],
+    "ano": 0,
+    "disp": 0,
+    "ozok": 3,
+    "spd": 3,
+    "wt": 128,
+    "scripts": []
+  },
+  {
+    "map": "vk34.json",
+    "submap": 1,
+    "slot": 12,
+    "coords": [
+      0,
+      0
+    ],
+    "ano": 0,
+    "disp": 0,
+    "ozok": 2,
+    "spd": 4,
+    "wt": 255,
+    "scripts": []
+  },
+  {
+    "map": "vk34.json",
+    "submap": 2,
+    "slot": 5,
+    "coords": [
+      55,
+      124
+    ],
+    "ano": 0,
+    "disp": 0,
+    "ozok": 3,
+    "spd": 3,
+    "wt": 128,
+    "scripts": []
+  }
+]

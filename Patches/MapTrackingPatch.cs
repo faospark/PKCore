@@ -93,12 +93,115 @@ public static class MACHICON_OnMapInitPatch
 
 /// <summary>
 /// Intercepts MACHICON.EventInit to capture the deserialized MACHIDAT (mdat) object.
+/// Optionally activates dormant castle entities before EventInit constructs the scene.
 /// </summary>
 [HarmonyPatch(typeof(MACHICON), "EventInit")]
 public static class MachiLoader_Load_Patch
 {
     public static MACHIDAT LastLoadedMachiDat;
     public static EVENTCON LastLoadedEventcon;
+
+    [HarmonyPrefix]
+    public static void Prefix(MACHICON __instance)
+    {
+        if (__instance == null) return;
+        try
+        {
+            string mapName = __instance.GetMapName();
+            if (string.IsNullOrEmpty(mapName) || !mapName.StartsWith("vk"))
+                return;
+
+            ApplyDormantCastleRestorations(__instance, mapName);
+        }
+        catch (Exception ex)
+        {
+            Plugin.Log.LogError($"[MapTrackingPatch] Error during EventInit prefix: {ex}");
+        }
+    }
+
+    /// <summary>
+    /// Safely restores verified dormant castle features in memory without altering JSON files on disk.
+    /// Preserves strict byte lengths by using NOP padding [0, 0, 0].
+    /// </summary>
+    private static void ApplyDormantCastleRestorations(MACHICON machicon, string mapName)
+    {
+        if (Plugin.Config?.RestoreDormantCastleFeatures?.Value != true)
+            return;
+
+        var mdat = machicon?.mdat;
+        var ed = mdat?.eventdata;
+        if (ed?.mapeventdat == null)
+            return;
+
+        // 1. vk13 Submap 4: The Secret Pasture Shortcut Door
+        // ev[12] (Step-on zone) and ev[13] (Action door)
+        if (mapName.StartsWith("vk13") && ed.mapeventdat.Count > 4)
+        {
+            var sub4 = ed.mapeventdat[4];
+            if (sub4?.eventdat != null)
+            {
+                // ev[12]: [33, 0, 4, 1, 28, 46, 2, 133, 146, 255, 254]
+                if (sub4.eventdat.Count > 12 && sub4.eventdat[12]?.eventForm != null)
+                {
+                    var form12 = sub4.eventdat[12].eventForm;
+                    if (form12.Length >= 3 && form12[0] == 33 && form12[1] == 0 && form12[2] == 4)
+                    {
+                        form12[0] = 0; // NOP
+                        form12[1] = 0; // NOP
+                        form12[2] = 0; // NOP
+                        Plugin.Log.LogInfo("[DormantCastle] Restored vk13 Sub 4 ev[12] Pasture Step-On shortcut zone.");
+                    }
+                }
+
+                // ev[13]: [33, 0, 4, 1, 23, 24, 2, 135, 148, 9, 2, 255, 254]
+                if (sub4.eventdat.Count > 13 && sub4.eventdat[13]?.eventForm != null)
+                {
+                    var form13 = sub4.eventdat[13].eventForm;
+                    if (form13.Length >= 3 && form13[0] == 33 && form13[1] == 0 && form13[2] == 4)
+                    {
+                        form13[0] = 0; // NOP
+                        form13[1] = 0; // NOP
+                        form13[2] = 0; // NOP
+                        Plugin.Log.LogInfo("[DormantCastle] Restored vk13 Sub 4 ev[13] Pasture Action shortcut door.");
+                    }
+                }
+            }
+        }
+
+        // 2. vk19 Submap 0: Karen & Stage Dancers Cut Choreography
+        // ev[62..65]: [5, 9, 26, 0, 48, <seq>, 1, 1, 255, 254]
+        if (mapName.StartsWith("vk19") && ed.mapeventdat.Count > 0)
+        {
+            var sub0 = ed.mapeventdat[0];
+            if (sub0?.eventdat != null)
+            {
+                int choreoCount = 0;
+                for (int evIdx = 62; evIdx <= 65; evIdx++)
+                {
+                    if (sub0.eventdat.Count > evIdx && sub0.eventdat[evIdx]?.eventForm != null)
+                    {
+                        var form = sub0.eventdat[evIdx].eventForm;
+                        // Search for the broken [9, 26, 0] token (Opcode 9 = flag check, flag 26, mask 0x00)
+                        for (int i = 0; i <= form.Length - 3; i++)
+                        {
+                            if (form[i] == 9 && form[i + 1] == 26 && form[i + 2] == 0)
+                            {
+                                form[i] = 0;     // NOP
+                                form[i + 1] = 0; // NOP
+                                form[i + 2] = 0; // NOP
+                                choreoCount++;
+                                break;
+                            }
+                        }
+                    }
+                }
+                if (choreoCount > 0)
+                {
+                    Plugin.Log.LogInfo($"[DormantCastle] Restored {choreoCount} cut dance choreography routines (ev[62..65]) on vk19 stage.");
+                }
+            }
+        }
+    }
 
     [HarmonyPostfix]
     public static void Postfix(MACHICON __instance, EVENTCON __result)

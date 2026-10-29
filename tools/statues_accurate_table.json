@@ -1,0 +1,8796 @@
+[
+  {
+    "index": 0,
+    "hex": "0x00",
+    "binary": "00000000",
+    "head": "Dragon",
+    "body": "Dragon",
+    "legs": "Dragon",
+    "tail": "Dragon",
+    "combo": "Dragon Head / Dragon Body / Dragon Legs / Dragon Tail",
+    "rewards": [
+      {
+        "type": "item",
+        "kind_id": 0,
+        "item_id": 28,
+        "quantity": 1,
+        "name": "Dragon Censer",
+        "category": "Item",
+        "text": "Dragon Censer [Item #28]"
+      }
+    ],
+    "reward_texts": [
+      "Dragon Censer [Item #28]"
+    ],
+    "matrix": [
+      [
+        0,
+        0,
+        28
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 1,
+    "hex": "0x01",
+    "binary": "00000001",
+    "head": "Unicorn",
+    "body": "Dragon",
+    "legs": "Dragon",
+    "tail": "Dragon",
+    "combo": "Unicorn Head / Dragon Body / Dragon Legs / Dragon Tail",
+    "rewards": [
+      {
+        "type": "rune",
+        "kind_id": 2,
+        "item_id": 1,
+        "quantity": 1,
+        "name": "Fire Orb",
+        "category": "Rune",
+        "text": "Fire Orb [Rune #1]"
+      }
+    ],
+    "reward_texts": [
+      "Fire Orb [Rune #1]"
+    ],
+    "matrix": [
+      [
+        0,
+        32,
+        1
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 2,
+    "hex": "0x02",
+    "binary": "00000010",
+    "head": "Rabbit",
+    "body": "Dragon",
+    "legs": "Dragon",
+    "tail": "Dragon",
+    "combo": "Rabbit Head / Dragon Body / Dragon Legs / Dragon Tail",
+    "rewards": [],
+    "reward_texts": [],
+    "matrix": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 3,
+    "hex": "0x03",
+    "binary": "00000011",
+    "head": "Turtle",
+    "body": "Dragon",
+    "legs": "Dragon",
+    "tail": "Dragon",
+    "combo": "Turtle Head / Dragon Body / Dragon Legs / Dragon Tail",
+    "rewards": [
+      {
+        "type": "item",
+        "kind_id": 0,
+        "item_id": 1,
+        "quantity": 6,
+        "name": "Medicine",
+        "category": "Item",
+        "text": "6x Medicine [Item #1]"
+      }
+    ],
+    "reward_texts": [
+      "6x Medicine [Item #1]"
+    ],
+    "matrix": [
+      [
+        0,
+        6,
+        1
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 4,
+    "hex": "0x04",
+    "binary": "00000100",
+    "head": "Dragon",
+    "body": "Unicorn",
+    "legs": "Dragon",
+    "tail": "Dragon",
+    "combo": "Dragon Head / Unicorn Body / Dragon Legs / Dragon Tail",
+    "rewards": [
+      {
+        "type": "equipment",
+        "kind_id": 1,
+        "item_id": 11,
+        "quantity": 1,
+        "name": "Flame Helmet",
+        "category": "Equipment",
+        "text": "Flame Helmet [Equipment #11]"
+      }
+    ],
+    "reward_texts": [
+      "Flame Helmet [Equipment #11]"
+    ],
+    "matrix": [
+      [
+        0,
+        16,
+        11
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 5,
+    "hex": "0x05",
+    "binary": "00000101",
+    "head": "Unicorn",
+    "body": "Unicorn",
+    "legs": "Dragon",
+    "tail": "Dragon",
+    "combo": "Unicorn Head / Unicorn Body / Dragon Legs / Dragon Tail",
+    "rewards": [
+      {
+        "type": "rune",
+        "kind_id": 2,
+        "item_id": 87,
+        "quantity": 1,
+        "name": "Fury Orb",
+        "category": "Rune",
+        "text": "Fury Orb [Rune #87]"
+      }
+    ],
+    "reward_texts": [
+      "Fury Orb [Rune #87]"
+    ],
+    "matrix": [
+      [
+        0,
+        32,
+        87
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 6,
+    "hex": "0x06",
+    "binary": "00000110",
+    "head": "Rabbit",
+    "body": "Unicorn",
+    "legs": "Dragon",
+    "tail": "Dragon",
+    "combo": "Rabbit Head / Unicorn Body / Dragon Legs / Dragon Tail",
+    "rewards": [
+      {
+        "type": "potch",
+        "amount": 9000,
+        "text": "9,000 Potch"
+      }
+    ],
+    "reward_texts": [
+      "9,000 Potch"
+    ],
+    "matrix": [
+      [
+        2,
+        9,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 7,
+    "hex": "0x07",
+    "binary": "00000111",
+    "head": "Turtle",
+    "body": "Unicorn",
+    "legs": "Dragon",
+    "tail": "Dragon",
+    "combo": "Turtle Head / Unicorn Body / Dragon Legs / Dragon Tail",
+    "rewards": [
+      {
+        "type": "item",
+        "kind_id": 0,
+        "item_id": 26,
+        "quantity": 1,
+        "name": "Stone of Speed",
+        "category": "Item",
+        "text": "Stone of Speed [Item #26]"
+      }
+    ],
+    "reward_texts": [
+      "Stone of Speed [Item #26]"
+    ],
+    "matrix": [
+      [
+        0,
+        0,
+        26
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 8,
+    "hex": "0x08",
+    "binary": "00001000",
+    "head": "Dragon",
+    "body": "Rabbit",
+    "legs": "Dragon",
+    "tail": "Dragon",
+    "combo": "Dragon Head / Rabbit Body / Dragon Legs / Dragon Tail",
+    "rewards": [
+      {
+        "type": "equipment",
+        "kind_id": 1,
+        "item_id": 7,
+        "quantity": 1,
+        "name": "Headgear",
+        "category": "Equipment",
+        "text": "Headgear [Equipment #7]"
+      }
+    ],
+    "reward_texts": [
+      "Headgear [Equipment #7]"
+    ],
+    "matrix": [
+      [
+        0,
+        16,
+        7
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 9,
+    "hex": "0x09",
+    "binary": "00001001",
+    "head": "Unicorn",
+    "body": "Rabbit",
+    "legs": "Dragon",
+    "tail": "Dragon",
+    "combo": "Unicorn Head / Rabbit Body / Dragon Legs / Dragon Tail",
+    "rewards": [
+      {
+        "type": "rune",
+        "kind_id": 2,
+        "item_id": 77,
+        "quantity": 1,
+        "name": "Balance Orb",
+        "category": "Rune",
+        "text": "Balance Orb [Rune #77]"
+      }
+    ],
+    "reward_texts": [
+      "Balance Orb [Rune #77]"
+    ],
+    "matrix": [
+      [
+        0,
+        32,
+        77
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 10,
+    "hex": "0x0A",
+    "binary": "00001010",
+    "head": "Rabbit",
+    "body": "Rabbit",
+    "legs": "Dragon",
+    "tail": "Dragon",
+    "combo": "Rabbit Head / Rabbit Body / Dragon Legs / Dragon Tail",
+    "rewards": [
+      {
+        "type": "potch",
+        "amount": 30000,
+        "text": "30,000 Potch"
+      }
+    ],
+    "reward_texts": [
+      "30,000 Potch"
+    ],
+    "matrix": [
+      [
+        2,
+        30,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 11,
+    "hex": "0x0B",
+    "binary": "00001011",
+    "head": "Turtle",
+    "body": "Rabbit",
+    "legs": "Dragon",
+    "tail": "Dragon",
+    "combo": "Turtle Head / Rabbit Body / Dragon Legs / Dragon Tail",
+    "rewards": [
+      {
+        "type": "item",
+        "kind_id": 0,
+        "item_id": 21,
+        "quantity": 1,
+        "name": "Stone of Power",
+        "category": "Item",
+        "text": "Stone of Power [Item #21]"
+      }
+    ],
+    "reward_texts": [
+      "Stone of Power [Item #21]"
+    ],
+    "matrix": [
+      [
+        0,
+        0,
+        21
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 12,
+    "hex": "0x0C",
+    "binary": "00001100",
+    "head": "Dragon",
+    "body": "Turtle",
+    "legs": "Dragon",
+    "tail": "Dragon",
+    "combo": "Dragon Head / Turtle Body / Dragon Legs / Dragon Tail",
+    "rewards": [
+      {
+        "type": "equipment",
+        "kind_id": 1,
+        "item_id": 2,
+        "quantity": 1,
+        "name": "Leather Hat",
+        "category": "Equipment",
+        "text": "Leather Hat [Equipment #2]"
+      }
+    ],
+    "reward_texts": [
+      "Leather Hat [Equipment #2]"
+    ],
+    "matrix": [
+      [
+        0,
+        16,
+        2
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 13,
+    "hex": "0x0D",
+    "binary": "00001101",
+    "head": "Unicorn",
+    "body": "Turtle",
+    "legs": "Dragon",
+    "tail": "Dragon",
+    "combo": "Unicorn Head / Turtle Body / Dragon Legs / Dragon Tail",
+    "rewards": [
+      {
+        "type": "rune",
+        "kind_id": 2,
+        "item_id": 82,
+        "quantity": 1,
+        "name": "Double-Edged Orb",
+        "category": "Rune",
+        "text": "Double-Edged Orb [Rune #82]"
+      }
+    ],
+    "reward_texts": [
+      "Double-Edged Orb [Rune #82]"
+    ],
+    "matrix": [
+      [
+        0,
+        32,
+        82
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 14,
+    "hex": "0x0E",
+    "binary": "00001110",
+    "head": "Rabbit",
+    "body": "Turtle",
+    "legs": "Dragon",
+    "tail": "Dragon",
+    "combo": "Rabbit Head / Turtle Body / Dragon Legs / Dragon Tail",
+    "rewards": [
+      {
+        "type": "potch",
+        "amount": 8000,
+        "text": "8,000 Potch"
+      }
+    ],
+    "reward_texts": [
+      "8,000 Potch"
+    ],
+    "matrix": [
+      [
+        2,
+        8,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 15,
+    "hex": "0x0F",
+    "binary": "00001111",
+    "head": "Turtle",
+    "body": "Turtle",
+    "legs": "Dragon",
+    "tail": "Dragon",
+    "combo": "Turtle Head / Turtle Body / Dragon Legs / Dragon Tail",
+    "rewards": [
+      {
+        "type": "item",
+        "kind_id": 0,
+        "item_id": 10,
+        "quantity": 9,
+        "name": "Protect Mist",
+        "category": "Item",
+        "text": "9x Protect Mist [Item #10]"
+      }
+    ],
+    "reward_texts": [
+      "9x Protect Mist [Item #10]"
+    ],
+    "matrix": [
+      [
+        0,
+        9,
+        10
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 16,
+    "hex": "0x10",
+    "binary": "00010000",
+    "head": "Dragon",
+    "body": "Dragon",
+    "legs": "Unicorn",
+    "tail": "Dragon",
+    "combo": "Dragon Head / Dragon Body / Unicorn Legs / Dragon Tail",
+    "rewards": [
+      {
+        "type": "equipment",
+        "kind_id": 1,
+        "item_id": 1,
+        "quantity": 1,
+        "name": "Bandanna",
+        "category": "Equipment",
+        "text": "Bandanna [Equipment #1]"
+      }
+    ],
+    "reward_texts": [
+      "Bandanna [Equipment #1]"
+    ],
+    "matrix": [
+      [
+        0,
+        16,
+        1
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 17,
+    "hex": "0x11",
+    "binary": "00010001",
+    "head": "Unicorn",
+    "body": "Dragon",
+    "legs": "Unicorn",
+    "tail": "Dragon",
+    "combo": "Unicorn Head / Dragon Body / Unicorn Legs / Dragon Tail",
+    "rewards": [
+      {
+        "type": "rune",
+        "kind_id": 2,
+        "item_id": 2,
+        "quantity": 1,
+        "name": "Rage Orb",
+        "category": "Rune",
+        "text": "Rage Orb [Rune #2]"
+      }
+    ],
+    "reward_texts": [
+      "Rage Orb [Rune #2]"
+    ],
+    "matrix": [
+      [
+        0,
+        32,
+        2
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 18,
+    "hex": "0x12",
+    "binary": "00010010",
+    "head": "Rabbit",
+    "body": "Dragon",
+    "legs": "Unicorn",
+    "tail": "Dragon",
+    "combo": "Rabbit Head / Dragon Body / Unicorn Legs / Dragon Tail",
+    "rewards": [
+      {
+        "type": "potch",
+        "amount": 15000,
+        "text": "15,000 Potch"
+      }
+    ],
+    "reward_texts": [
+      "15,000 Potch"
+    ],
+    "matrix": [
+      [
+        2,
+        15,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 19,
+    "hex": "0x13",
+    "binary": "00010011",
+    "head": "Turtle",
+    "body": "Dragon",
+    "legs": "Unicorn",
+    "tail": "Dragon",
+    "combo": "Turtle Head / Dragon Body / Unicorn Legs / Dragon Tail",
+    "rewards": [
+      {
+        "type": "item",
+        "kind_id": 0,
+        "item_id": 6,
+        "quantity": 9,
+        "name": "Flaming Arrows",
+        "category": "Item",
+        "text": "9x Flaming Arrows [Item #6]"
+      }
+    ],
+    "reward_texts": [
+      "9x Flaming Arrows [Item #6]"
+    ],
+    "matrix": [
+      [
+        0,
+        9,
+        6
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 20,
+    "hex": "0x14",
+    "binary": "00010100",
+    "head": "Dragon",
+    "body": "Unicorn",
+    "legs": "Unicorn",
+    "tail": "Dragon",
+    "combo": "Dragon Head / Unicorn Body / Unicorn Legs / Dragon Tail",
+    "rewards": [
+      {
+        "type": "equipment",
+        "kind_id": 1,
+        "item_id": 8,
+        "quantity": 1,
+        "name": "Silver Hat",
+        "category": "Equipment",
+        "text": "Silver Hat [Equipment #8]"
+      }
+    ],
+    "reward_texts": [
+      "Silver Hat [Equipment #8]"
+    ],
+    "matrix": [
+      [
+        0,
+        16,
+        8
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 21,
+    "hex": "0x15",
+    "binary": "00010101",
+    "head": "Unicorn",
+    "body": "Unicorn",
+    "legs": "Unicorn",
+    "tail": "Dragon",
+    "combo": "Unicorn Head / Unicorn Body / Unicorn Legs / Dragon Tail",
+    "rewards": [
+      {
+        "type": "rune",
+        "kind_id": 2,
+        "item_id": 79,
+        "quantity": 1,
+        "name": "Skunk Orb",
+        "category": "Rune",
+        "text": "Skunk Orb [Rune #79]"
+      }
+    ],
+    "reward_texts": [
+      "Skunk Orb [Rune #79]"
+    ],
+    "matrix": [
+      [
+        0,
+        32,
+        79
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 22,
+    "hex": "0x16",
+    "binary": "00010110",
+    "head": "Rabbit",
+    "body": "Unicorn",
+    "legs": "Unicorn",
+    "tail": "Dragon",
+    "combo": "Rabbit Head / Unicorn Body / Unicorn Legs / Dragon Tail",
+    "rewards": [
+      {
+        "type": "potch",
+        "amount": 22000,
+        "text": "22,000 Potch"
+      }
+    ],
+    "reward_texts": [
+      "22,000 Potch"
+    ],
+    "matrix": [
+      [
+        2,
+        22,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 23,
+    "hex": "0x17",
+    "binary": "00010111",
+    "head": "Turtle",
+    "body": "Unicorn",
+    "legs": "Unicorn",
+    "tail": "Dragon",
+    "combo": "Turtle Head / Unicorn Body / Unicorn Legs / Dragon Tail",
+    "rewards": [
+      {
+        "type": "item",
+        "kind_id": 0,
+        "item_id": 15,
+        "quantity": 9,
+        "name": "Clay Guardian",
+        "category": "Item",
+        "text": "9x Clay Guardian [Item #15]"
+      }
+    ],
+    "reward_texts": [
+      "9x Clay Guardian [Item #15]"
+    ],
+    "matrix": [
+      [
+        0,
+        9,
+        15
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 24,
+    "hex": "0x18",
+    "binary": "00011000",
+    "head": "Dragon",
+    "body": "Rabbit",
+    "legs": "Unicorn",
+    "tail": "Dragon",
+    "combo": "Dragon Head / Rabbit Body / Unicorn Legs / Dragon Tail",
+    "rewards": [
+      {
+        "type": "equipment",
+        "kind_id": 1,
+        "item_id": 5,
+        "quantity": 1,
+        "name": "Circlet",
+        "category": "Equipment",
+        "text": "Circlet [Equipment #5]"
+      }
+    ],
+    "reward_texts": [
+      "Circlet [Equipment #5]"
+    ],
+    "matrix": [
+      [
+        0,
+        16,
+        5
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 25,
+    "hex": "0x19",
+    "binary": "00011001",
+    "head": "Unicorn",
+    "body": "Rabbit",
+    "legs": "Unicorn",
+    "tail": "Dragon",
+    "combo": "Unicorn Head / Rabbit Body / Unicorn Legs / Dragon Tail",
+    "rewards": [
+      {
+        "type": "rune",
+        "kind_id": 2,
+        "item_id": 80,
+        "quantity": 1,
+        "name": "Firefly Orb",
+        "category": "Rune",
+        "text": "Firefly Orb [Rune #80]"
+      }
+    ],
+    "reward_texts": [
+      "Firefly Orb [Rune #80]"
+    ],
+    "matrix": [
+      [
+        0,
+        32,
+        80
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 26,
+    "hex": "0x1A",
+    "binary": "00011010",
+    "head": "Rabbit",
+    "body": "Rabbit",
+    "legs": "Unicorn",
+    "tail": "Dragon",
+    "combo": "Rabbit Head / Rabbit Body / Unicorn Legs / Dragon Tail",
+    "rewards": [
+      {
+        "type": "potch",
+        "amount": 32000,
+        "text": "32,000 Potch"
+      }
+    ],
+    "reward_texts": [
+      "32,000 Potch"
+    ],
+    "matrix": [
+      [
+        2,
+        32,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 27,
+    "hex": "0x1B",
+    "binary": "00011011",
+    "head": "Turtle",
+    "body": "Rabbit",
+    "legs": "Unicorn",
+    "tail": "Dragon",
+    "combo": "Turtle Head / Rabbit Body / Unicorn Legs / Dragon Tail",
+    "rewards": [
+      {
+        "type": "item",
+        "kind_id": 0,
+        "item_id": 19,
+        "quantity": 9,
+        "name": "Thunder Runner",
+        "category": "Item",
+        "text": "9x Thunder Runner [Item #19]"
+      }
+    ],
+    "reward_texts": [
+      "9x Thunder Runner [Item #19]"
+    ],
+    "matrix": [
+      [
+        0,
+        9,
+        19
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 28,
+    "hex": "0x1C",
+    "binary": "00011100",
+    "head": "Dragon",
+    "body": "Turtle",
+    "legs": "Unicorn",
+    "tail": "Dragon",
+    "combo": "Dragon Head / Turtle Body / Unicorn Legs / Dragon Tail",
+    "rewards": [
+      {
+        "type": "equipment",
+        "kind_id": 1,
+        "item_id": 8,
+        "quantity": 1,
+        "name": "Silver Hat",
+        "category": "Equipment",
+        "text": "Silver Hat [Equipment #8]"
+      }
+    ],
+    "reward_texts": [
+      "Silver Hat [Equipment #8]"
+    ],
+    "matrix": [
+      [
+        0,
+        16,
+        8
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 29,
+    "hex": "0x1D",
+    "binary": "00011101",
+    "head": "Unicorn",
+    "body": "Turtle",
+    "legs": "Unicorn",
+    "tail": "Dragon",
+    "combo": "Unicorn Head / Turtle Body / Unicorn Legs / Dragon Tail",
+    "rewards": [
+      {
+        "type": "rune",
+        "kind_id": 2,
+        "item_id": 78,
+        "quantity": 1,
+        "name": "Fire Sealing Orb",
+        "category": "Rune",
+        "text": "Fire Sealing Orb [Rune #78]"
+      }
+    ],
+    "reward_texts": [
+      "Fire Sealing Orb [Rune #78]"
+    ],
+    "matrix": [
+      [
+        0,
+        32,
+        78
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 30,
+    "hex": "0x1E",
+    "binary": "00011110",
+    "head": "Rabbit",
+    "body": "Turtle",
+    "legs": "Unicorn",
+    "tail": "Dragon",
+    "combo": "Rabbit Head / Turtle Body / Unicorn Legs / Dragon Tail",
+    "rewards": [
+      {
+        "type": "potch",
+        "amount": 17000,
+        "text": "17,000 Potch"
+      }
+    ],
+    "reward_texts": [
+      "17,000 Potch"
+    ],
+    "matrix": [
+      [
+        2,
+        17,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 31,
+    "hex": "0x1F",
+    "binary": "00011111",
+    "head": "Turtle",
+    "body": "Turtle",
+    "legs": "Unicorn",
+    "tail": "Dragon",
+    "combo": "Turtle Head / Turtle Body / Unicorn Legs / Dragon Tail",
+    "rewards": [
+      {
+        "type": "dish",
+        "kind_id": 6,
+        "item_id": 9,
+        "quantity": 9,
+        "name": "Raw Tomato",
+        "category": "Dish",
+        "text": "9x Raw Tomato [Dish #9]"
+      }
+    ],
+    "reward_texts": [
+      "9x Raw Tomato [Dish #9]"
+    ],
+    "matrix": [
+      [
+        0,
+        105,
+        9
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 32,
+    "hex": "0x20",
+    "binary": "00100000",
+    "head": "Dragon",
+    "body": "Dragon",
+    "legs": "Rabbit",
+    "tail": "Dragon",
+    "combo": "Dragon Head / Dragon Body / Rabbit Legs / Dragon Tail",
+    "rewards": [
+      {
+        "type": "equipment",
+        "kind_id": 1,
+        "item_id": 9,
+        "quantity": 1,
+        "name": "Full Helmet",
+        "category": "Equipment",
+        "text": "Full Helmet [Equipment #9]"
+      }
+    ],
+    "reward_texts": [
+      "Full Helmet [Equipment #9]"
+    ],
+    "matrix": [
+      [
+        0,
+        16,
+        9
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 33,
+    "hex": "0x21",
+    "binary": "00100001",
+    "head": "Unicorn",
+    "body": "Dragon",
+    "legs": "Rabbit",
+    "tail": "Dragon",
+    "combo": "Unicorn Head / Dragon Body / Rabbit Legs / Dragon Tail",
+    "rewards": [],
+    "reward_texts": [],
+    "matrix": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 34,
+    "hex": "0x22",
+    "binary": "00100010",
+    "head": "Rabbit",
+    "body": "Dragon",
+    "legs": "Rabbit",
+    "tail": "Dragon",
+    "combo": "Rabbit Head / Dragon Body / Rabbit Legs / Dragon Tail",
+    "rewards": [],
+    "reward_texts": [],
+    "matrix": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 35,
+    "hex": "0x23",
+    "binary": "00100011",
+    "head": "Turtle",
+    "body": "Dragon",
+    "legs": "Rabbit",
+    "tail": "Dragon",
+    "combo": "Turtle Head / Dragon Body / Rabbit Legs / Dragon Tail",
+    "rewards": [
+      {
+        "type": "item",
+        "kind_id": 0,
+        "item_id": 9,
+        "quantity": 9,
+        "name": "Kindness Drops",
+        "category": "Item",
+        "text": "9x Kindness Drops [Item #9]"
+      }
+    ],
+    "reward_texts": [
+      "9x Kindness Drops [Item #9]"
+    ],
+    "matrix": [
+      [
+        0,
+        9,
+        9
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 36,
+    "hex": "0x24",
+    "binary": "00100100",
+    "head": "Dragon",
+    "body": "Unicorn",
+    "legs": "Rabbit",
+    "tail": "Dragon",
+    "combo": "Dragon Head / Unicorn Body / Rabbit Legs / Dragon Tail",
+    "rewards": [
+      {
+        "type": "equipment",
+        "kind_id": 1,
+        "item_id": 10,
+        "quantity": 1,
+        "name": "Wind Hat",
+        "category": "Equipment",
+        "text": "Wind Hat [Equipment #10]"
+      }
+    ],
+    "reward_texts": [
+      "Wind Hat [Equipment #10]"
+    ],
+    "matrix": [
+      [
+        0,
+        16,
+        10
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 37,
+    "hex": "0x25",
+    "binary": "00100101",
+    "head": "Unicorn",
+    "body": "Unicorn",
+    "legs": "Rabbit",
+    "tail": "Dragon",
+    "combo": "Unicorn Head / Unicorn Body / Rabbit Legs / Dragon Tail",
+    "rewards": [
+      {
+        "type": "rune",
+        "kind_id": 2,
+        "item_id": 65,
+        "quantity": 1,
+        "name": "Double-Jab Orb",
+        "category": "Rune",
+        "text": "Double-Jab Orb [Rune #65]"
+      }
+    ],
+    "reward_texts": [
+      "Double-Jab Orb [Rune #65]"
+    ],
+    "matrix": [
+      [
+        0,
+        32,
+        65
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 38,
+    "hex": "0x26",
+    "binary": "00100110",
+    "head": "Rabbit",
+    "body": "Unicorn",
+    "legs": "Rabbit",
+    "tail": "Dragon",
+    "combo": "Rabbit Head / Unicorn Body / Rabbit Legs / Dragon Tail",
+    "rewards": [
+      {
+        "type": "potch",
+        "amount": 36000,
+        "text": "36,000 Potch"
+      }
+    ],
+    "reward_texts": [
+      "36,000 Potch"
+    ],
+    "matrix": [
+      [
+        2,
+        36,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 39,
+    "hex": "0x27",
+    "binary": "00100111",
+    "head": "Turtle",
+    "body": "Unicorn",
+    "legs": "Rabbit",
+    "tail": "Dragon",
+    "combo": "Turtle Head / Unicorn Body / Rabbit Legs / Dragon Tail",
+    "rewards": [
+      {
+        "type": "dish",
+        "kind_id": 6,
+        "item_id": 216,
+        "quantity": 9,
+        "name": "Tom Yum Stew",
+        "category": "Dish",
+        "text": "9x Tom Yum Stew [Dish #216]"
+      }
+    ],
+    "reward_texts": [
+      "9x Tom Yum Stew [Dish #216]"
+    ],
+    "matrix": [
+      [
+        0,
+        105,
+        216
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 40,
+    "hex": "0x28",
+    "binary": "00101000",
+    "head": "Dragon",
+    "body": "Rabbit",
+    "legs": "Rabbit",
+    "tail": "Dragon",
+    "combo": "Dragon Head / Rabbit Body / Rabbit Legs / Dragon Tail",
+    "rewards": [
+      {
+        "type": "equipment",
+        "kind_id": 1,
+        "item_id": 6,
+        "quantity": 1,
+        "name": "Half Helmet",
+        "category": "Equipment",
+        "text": "Half Helmet [Equipment #6]"
+      }
+    ],
+    "reward_texts": [
+      "Half Helmet [Equipment #6]"
+    ],
+    "matrix": [
+      [
+        0,
+        16,
+        6
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 41,
+    "hex": "0x29",
+    "binary": "00101001",
+    "head": "Unicorn",
+    "body": "Rabbit",
+    "legs": "Rabbit",
+    "tail": "Dragon",
+    "combo": "Unicorn Head / Rabbit Body / Rabbit Legs / Dragon Tail",
+    "rewards": [
+      {
+        "type": "rune",
+        "kind_id": 2,
+        "item_id": 66,
+        "quantity": 1,
+        "name": "Killer Orb",
+        "category": "Rune",
+        "text": "Killer Orb [Rune #66]"
+      }
+    ],
+    "reward_texts": [
+      "Killer Orb [Rune #66]"
+    ],
+    "matrix": [
+      [
+        0,
+        32,
+        66
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 42,
+    "hex": "0x2A",
+    "binary": "00101010",
+    "head": "Rabbit",
+    "body": "Rabbit",
+    "legs": "Rabbit",
+    "tail": "Dragon",
+    "combo": "Rabbit Head / Rabbit Body / Rabbit Legs / Dragon Tail",
+    "rewards": [
+      {
+        "type": "trade",
+        "kind_id": 4,
+        "item_id": 41,
+        "quantity": 1,
+        "name": "Gold Bar",
+        "category": "Trade",
+        "text": "Gold Bar [Trade #41]"
+      }
+    ],
+    "reward_texts": [
+      "Gold Bar [Trade #41]"
+    ],
+    "matrix": [
+      [
+        0,
+        64,
+        41
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 43,
+    "hex": "0x2B",
+    "binary": "00101011",
+    "head": "Turtle",
+    "body": "Rabbit",
+    "legs": "Rabbit",
+    "tail": "Dragon",
+    "combo": "Turtle Head / Rabbit Body / Rabbit Legs / Dragon Tail",
+    "rewards": [
+      {
+        "type": "dish",
+        "kind_id": 6,
+        "item_id": 219,
+        "quantity": 6,
+        "name": "Beefsteak",
+        "category": "Dish",
+        "text": "6x Beefsteak [Dish #219]"
+      }
+    ],
+    "reward_texts": [
+      "6x Beefsteak [Dish #219]"
+    ],
+    "matrix": [
+      [
+        0,
+        102,
+        219
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 44,
+    "hex": "0x2C",
+    "binary": "00101100",
+    "head": "Dragon",
+    "body": "Turtle",
+    "legs": "Rabbit",
+    "tail": "Dragon",
+    "combo": "Dragon Head / Turtle Body / Rabbit Legs / Dragon Tail",
+    "rewards": [
+      {
+        "type": "equipment",
+        "kind_id": 1,
+        "item_id": 3,
+        "quantity": 1,
+        "name": "Wind Feather Ornament",
+        "category": "Equipment",
+        "text": "Wind Feather Ornament [Equipment #3]"
+      }
+    ],
+    "reward_texts": [
+      "Wind Feather Ornament [Equipment #3]"
+    ],
+    "matrix": [
+      [
+        0,
+        16,
+        3
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 45,
+    "hex": "0x2D",
+    "binary": "00101101",
+    "head": "Unicorn",
+    "body": "Turtle",
+    "legs": "Rabbit",
+    "tail": "Dragon",
+    "combo": "Unicorn Head / Turtle Body / Rabbit Legs / Dragon Tail",
+    "rewards": [
+      {
+        "type": "rune",
+        "kind_id": 2,
+        "item_id": 73,
+        "quantity": 1,
+        "name": "Wall Orb",
+        "category": "Rune",
+        "text": "Wall Orb [Rune #73]"
+      }
+    ],
+    "reward_texts": [
+      "Wall Orb [Rune #73]"
+    ],
+    "matrix": [
+      [
+        0,
+        32,
+        73
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 46,
+    "hex": "0x2E",
+    "binary": "00101110",
+    "head": "Rabbit",
+    "body": "Turtle",
+    "legs": "Rabbit",
+    "tail": "Dragon",
+    "combo": "Rabbit Head / Turtle Body / Rabbit Legs / Dragon Tail",
+    "rewards": [
+      {
+        "type": "potch",
+        "amount": 35000,
+        "text": "35,000 Potch"
+      }
+    ],
+    "reward_texts": [
+      "35,000 Potch"
+    ],
+    "matrix": [
+      [
+        2,
+        35,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 47,
+    "hex": "0x2F",
+    "binary": "00101111",
+    "head": "Turtle",
+    "body": "Turtle",
+    "legs": "Rabbit",
+    "tail": "Dragon",
+    "combo": "Turtle Head / Turtle Body / Rabbit Legs / Dragon Tail",
+    "rewards": [
+      {
+        "type": "item",
+        "kind_id": 0,
+        "item_id": 27,
+        "quantity": 1,
+        "name": "Stone of Luck",
+        "category": "Item",
+        "text": "Stone of Luck [Item #27]"
+      }
+    ],
+    "reward_texts": [
+      "Stone of Luck [Item #27]"
+    ],
+    "matrix": [
+      [
+        0,
+        0,
+        27
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 48,
+    "hex": "0x30",
+    "binary": "00110000",
+    "head": "Dragon",
+    "body": "Dragon",
+    "legs": "Turtle",
+    "tail": "Dragon",
+    "combo": "Dragon Head / Dragon Body / Turtle Legs / Dragon Tail",
+    "rewards": [
+      {
+        "type": "equipment",
+        "kind_id": 1,
+        "item_id": 5,
+        "quantity": 1,
+        "name": "Circlet",
+        "category": "Equipment",
+        "text": "Circlet [Equipment #5]"
+      }
+    ],
+    "reward_texts": [
+      "Circlet [Equipment #5]"
+    ],
+    "matrix": [
+      [
+        0,
+        16,
+        5
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 49,
+    "hex": "0x31",
+    "binary": "00110001",
+    "head": "Unicorn",
+    "body": "Dragon",
+    "legs": "Turtle",
+    "tail": "Dragon",
+    "combo": "Unicorn Head / Dragon Body / Turtle Legs / Dragon Tail",
+    "rewards": [
+      {
+        "type": "rune",
+        "kind_id": 2,
+        "item_id": 67,
+        "quantity": 1,
+        "name": "Counter Orb",
+        "category": "Rune",
+        "text": "Counter Orb [Rune #67]"
+      }
+    ],
+    "reward_texts": [
+      "Counter Orb [Rune #67]"
+    ],
+    "matrix": [
+      [
+        0,
+        32,
+        67
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 50,
+    "hex": "0x32",
+    "binary": "00110010",
+    "head": "Rabbit",
+    "body": "Dragon",
+    "legs": "Turtle",
+    "tail": "Dragon",
+    "combo": "Rabbit Head / Dragon Body / Turtle Legs / Dragon Tail",
+    "rewards": [
+      {
+        "type": "potch",
+        "amount": 17000,
+        "text": "17,000 Potch"
+      }
+    ],
+    "reward_texts": [
+      "17,000 Potch"
+    ],
+    "matrix": [
+      [
+        2,
+        17,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 51,
+    "hex": "0x33",
+    "binary": "00110011",
+    "head": "Turtle",
+    "body": "Dragon",
+    "legs": "Turtle",
+    "tail": "Dragon",
+    "combo": "Turtle Head / Dragon Body / Turtle Legs / Dragon Tail",
+    "rewards": [],
+    "reward_texts": [],
+    "matrix": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 52,
+    "hex": "0x34",
+    "binary": "00110100",
+    "head": "Dragon",
+    "body": "Unicorn",
+    "legs": "Turtle",
+    "tail": "Dragon",
+    "combo": "Dragon Head / Unicorn Body / Turtle Legs / Dragon Tail",
+    "rewards": [
+      {
+        "type": "equipment",
+        "kind_id": 1,
+        "item_id": 4,
+        "quantity": 1,
+        "name": "Pointed Hat",
+        "category": "Equipment",
+        "text": "Pointed Hat [Equipment #4]"
+      }
+    ],
+    "reward_texts": [
+      "Pointed Hat [Equipment #4]"
+    ],
+    "matrix": [
+      [
+        0,
+        16,
+        4
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 53,
+    "hex": "0x35",
+    "binary": "00110101",
+    "head": "Unicorn",
+    "body": "Unicorn",
+    "legs": "Turtle",
+    "tail": "Dragon",
+    "combo": "Unicorn Head / Unicorn Body / Turtle Legs / Dragon Tail",
+    "rewards": [
+      {
+        "type": "rune",
+        "kind_id": 2,
+        "item_id": 68,
+        "quantity": 1,
+        "name": "Spark Orb",
+        "category": "Rune",
+        "text": "Spark Orb [Rune #68]"
+      }
+    ],
+    "reward_texts": [
+      "Spark Orb [Rune #68]"
+    ],
+    "matrix": [
+      [
+        0,
+        32,
+        68
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 54,
+    "hex": "0x36",
+    "binary": "00110110",
+    "head": "Rabbit",
+    "body": "Unicorn",
+    "legs": "Turtle",
+    "tail": "Dragon",
+    "combo": "Rabbit Head / Unicorn Body / Turtle Legs / Dragon Tail",
+    "rewards": [
+      {
+        "type": "potch",
+        "amount": 22000,
+        "text": "22,000 Potch"
+      }
+    ],
+    "reward_texts": [
+      "22,000 Potch"
+    ],
+    "matrix": [
+      [
+        2,
+        22,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 55,
+    "hex": "0x37",
+    "binary": "00110111",
+    "head": "Turtle",
+    "body": "Unicorn",
+    "legs": "Turtle",
+    "tail": "Dragon",
+    "combo": "Turtle Head / Unicorn Body / Turtle Legs / Dragon Tail",
+    "rewards": [
+      {
+        "type": "item",
+        "kind_id": 0,
+        "item_id": 1,
+        "quantity": 9,
+        "name": "Medicine",
+        "category": "Item",
+        "text": "9x Medicine [Item #1]"
+      }
+    ],
+    "reward_texts": [
+      "9x Medicine [Item #1]"
+    ],
+    "matrix": [
+      [
+        0,
+        9,
+        1
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 56,
+    "hex": "0x38",
+    "binary": "00111000",
+    "head": "Dragon",
+    "body": "Rabbit",
+    "legs": "Turtle",
+    "tail": "Dragon",
+    "combo": "Dragon Head / Rabbit Body / Turtle Legs / Dragon Tail",
+    "rewards": [
+      {
+        "type": "equipment",
+        "kind_id": 1,
+        "item_id": 6,
+        "quantity": 1,
+        "name": "Half Helmet",
+        "category": "Equipment",
+        "text": "Half Helmet [Equipment #6]"
+      }
+    ],
+    "reward_texts": [
+      "Half Helmet [Equipment #6]"
+    ],
+    "matrix": [
+      [
+        0,
+        16,
+        6
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 57,
+    "hex": "0x39",
+    "binary": "00111001",
+    "head": "Unicorn",
+    "body": "Rabbit",
+    "legs": "Turtle",
+    "tail": "Dragon",
+    "combo": "Unicorn Head / Rabbit Body / Turtle Legs / Dragon Tail",
+    "rewards": [
+      {
+        "type": "rune",
+        "kind_id": 2,
+        "item_id": 69,
+        "quantity": 1,
+        "name": "Gale Orb",
+        "category": "Rune",
+        "text": "Gale Orb [Rune #69]"
+      }
+    ],
+    "reward_texts": [
+      "Gale Orb [Rune #69]"
+    ],
+    "matrix": [
+      [
+        0,
+        32,
+        69
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 58,
+    "hex": "0x3A",
+    "binary": "00111010",
+    "head": "Rabbit",
+    "body": "Rabbit",
+    "legs": "Turtle",
+    "tail": "Dragon",
+    "combo": "Rabbit Head / Rabbit Body / Turtle Legs / Dragon Tail",
+    "rewards": [
+      {
+        "type": "potch",
+        "amount": 39000,
+        "text": "39,000 Potch"
+      }
+    ],
+    "reward_texts": [
+      "39,000 Potch"
+    ],
+    "matrix": [
+      [
+        2,
+        39,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 59,
+    "hex": "0x3B",
+    "binary": "00111011",
+    "head": "Turtle",
+    "body": "Rabbit",
+    "legs": "Turtle",
+    "tail": "Dragon",
+    "combo": "Turtle Head / Rabbit Body / Turtle Legs / Dragon Tail",
+    "rewards": [
+      {
+        "type": "item",
+        "kind_id": 0,
+        "item_id": 20,
+        "quantity": 6,
+        "name": "Bolt of Wrath",
+        "category": "Item",
+        "text": "6x Bolt of Wrath [Item #20]"
+      }
+    ],
+    "reward_texts": [
+      "6x Bolt of Wrath [Item #20]"
+    ],
+    "matrix": [
+      [
+        0,
+        6,
+        20
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 60,
+    "hex": "0x3C",
+    "binary": "00111100",
+    "head": "Dragon",
+    "body": "Turtle",
+    "legs": "Turtle",
+    "tail": "Dragon",
+    "combo": "Dragon Head / Turtle Body / Turtle Legs / Dragon Tail",
+    "rewards": [
+      {
+        "type": "equipment",
+        "kind_id": 1,
+        "item_id": 9,
+        "quantity": 1,
+        "name": "Full Helmet",
+        "category": "Equipment",
+        "text": "Full Helmet [Equipment #9]"
+      }
+    ],
+    "reward_texts": [
+      "Full Helmet [Equipment #9]"
+    ],
+    "matrix": [
+      [
+        0,
+        16,
+        9
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 61,
+    "hex": "0x3D",
+    "binary": "00111101",
+    "head": "Unicorn",
+    "body": "Turtle",
+    "legs": "Turtle",
+    "tail": "Dragon",
+    "combo": "Unicorn Head / Turtle Body / Turtle Legs / Dragon Tail",
+    "rewards": [
+      {
+        "type": "rune",
+        "kind_id": 2,
+        "item_id": 19,
+        "quantity": 1,
+        "name": "Titan Orb",
+        "category": "Rune",
+        "text": "Titan Orb [Rune #19]"
+      }
+    ],
+    "reward_texts": [
+      "Titan Orb [Rune #19]"
+    ],
+    "matrix": [
+      [
+        0,
+        32,
+        19
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 62,
+    "hex": "0x3E",
+    "binary": "00111110",
+    "head": "Rabbit",
+    "body": "Turtle",
+    "legs": "Turtle",
+    "tail": "Dragon",
+    "combo": "Rabbit Head / Turtle Body / Turtle Legs / Dragon Tail",
+    "rewards": [
+      {
+        "type": "potch",
+        "amount": 12000,
+        "text": "12,000 Potch"
+      }
+    ],
+    "reward_texts": [
+      "12,000 Potch"
+    ],
+    "matrix": [
+      [
+        2,
+        12,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 63,
+    "hex": "0x3F",
+    "binary": "00111111",
+    "head": "Turtle",
+    "body": "Turtle",
+    "legs": "Turtle",
+    "tail": "Dragon",
+    "combo": "Turtle Head / Turtle Body / Turtle Legs / Dragon Tail",
+    "rewards": [
+      {
+        "type": "item",
+        "kind_id": 0,
+        "item_id": 16,
+        "quantity": 6,
+        "name": "Revenge Earth",
+        "category": "Item",
+        "text": "6x Revenge Earth [Item #16]"
+      }
+    ],
+    "reward_texts": [
+      "6x Revenge Earth [Item #16]"
+    ],
+    "matrix": [
+      [
+        0,
+        6,
+        16
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 64,
+    "hex": "0x40",
+    "binary": "01000000",
+    "head": "Dragon",
+    "body": "Dragon",
+    "legs": "Dragon",
+    "tail": "Unicorn",
+    "combo": "Dragon Head / Dragon Body / Dragon Legs / Unicorn Tail",
+    "rewards": [
+      {
+        "type": "equipment",
+        "kind_id": 1,
+        "item_id": 64,
+        "quantity": 1,
+        "name": "Wing Ornament",
+        "category": "Equipment",
+        "text": "Wing Ornament [Equipment #64]"
+      }
+    ],
+    "reward_texts": [
+      "Wing Ornament [Equipment #64]"
+    ],
+    "matrix": [
+      [
+        0,
+        16,
+        64
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 65,
+    "hex": "0x41",
+    "binary": "01000001",
+    "head": "Unicorn",
+    "body": "Dragon",
+    "legs": "Dragon",
+    "tail": "Unicorn",
+    "combo": "Unicorn Head / Dragon Body / Dragon Legs / Unicorn Tail",
+    "rewards": [
+      {
+        "type": "rune",
+        "kind_id": 2,
+        "item_id": 72,
+        "quantity": 1,
+        "name": "Knight Orb",
+        "category": "Rune",
+        "text": "Knight Orb [Rune #72]"
+      }
+    ],
+    "reward_texts": [
+      "Knight Orb [Rune #72]"
+    ],
+    "matrix": [
+      [
+        0,
+        32,
+        72
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 66,
+    "hex": "0x42",
+    "binary": "01000010",
+    "head": "Rabbit",
+    "body": "Dragon",
+    "legs": "Dragon",
+    "tail": "Unicorn",
+    "combo": "Rabbit Head / Dragon Body / Dragon Legs / Unicorn Tail",
+    "rewards": [
+      {
+        "type": "potch",
+        "amount": 8000,
+        "text": "8,000 Potch"
+      }
+    ],
+    "reward_texts": [
+      "8,000 Potch"
+    ],
+    "matrix": [
+      [
+        2,
+        8,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 67,
+    "hex": "0x43",
+    "binary": "01000011",
+    "head": "Turtle",
+    "body": "Dragon",
+    "legs": "Dragon",
+    "tail": "Unicorn",
+    "combo": "Turtle Head / Dragon Body / Dragon Legs / Unicorn Tail",
+    "rewards": [
+      {
+        "type": "dish",
+        "kind_id": 6,
+        "item_id": 240,
+        "quantity": 6,
+        "name": "Flaming Sea Special",
+        "category": "Dish",
+        "text": "6x Flaming Sea Special [Dish #240]"
+      }
+    ],
+    "reward_texts": [
+      "6x Flaming Sea Special [Dish #240]"
+    ],
+    "matrix": [
+      [
+        0,
+        102,
+        240
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 68,
+    "hex": "0x44",
+    "binary": "01000100",
+    "head": "Dragon",
+    "body": "Unicorn",
+    "legs": "Dragon",
+    "tail": "Unicorn",
+    "combo": "Dragon Head / Unicorn Body / Dragon Legs / Unicorn Tail",
+    "rewards": [
+      {
+        "type": "equipment",
+        "kind_id": 1,
+        "item_id": 12,
+        "quantity": 1,
+        "name": "Horned Helmet",
+        "category": "Equipment",
+        "text": "Horned Helmet [Equipment #12]"
+      }
+    ],
+    "reward_texts": [
+      "Horned Helmet [Equipment #12]"
+    ],
+    "matrix": [
+      [
+        0,
+        16,
+        12
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 69,
+    "hex": "0x45",
+    "binary": "01000101",
+    "head": "Unicorn",
+    "body": "Unicorn",
+    "legs": "Dragon",
+    "tail": "Unicorn",
+    "combo": "Unicorn Head / Unicorn Body / Dragon Legs / Unicorn Tail",
+    "rewards": [
+      {
+        "type": "rune",
+        "kind_id": 2,
+        "item_id": 20,
+        "quantity": 1,
+        "name": "Viper Orb",
+        "category": "Rune",
+        "text": "Viper Orb [Rune #20]"
+      }
+    ],
+    "reward_texts": [
+      "Viper Orb [Rune #20]"
+    ],
+    "matrix": [
+      [
+        0,
+        32,
+        20
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 70,
+    "hex": "0x46",
+    "binary": "01000110",
+    "head": "Rabbit",
+    "body": "Unicorn",
+    "legs": "Dragon",
+    "tail": "Unicorn",
+    "combo": "Rabbit Head / Unicorn Body / Dragon Legs / Unicorn Tail",
+    "rewards": [
+      {
+        "type": "potch",
+        "amount": 16000,
+        "text": "16,000 Potch"
+      }
+    ],
+    "reward_texts": [
+      "16,000 Potch"
+    ],
+    "matrix": [
+      [
+        2,
+        16,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 71,
+    "hex": "0x47",
+    "binary": "01000111",
+    "head": "Turtle",
+    "body": "Unicorn",
+    "legs": "Dragon",
+    "tail": "Unicorn",
+    "combo": "Turtle Head / Unicorn Body / Dragon Legs / Unicorn Tail",
+    "rewards": [
+      {
+        "type": "dish",
+        "kind_id": 6,
+        "item_id": 198,
+        "quantity": 8,
+        "name": "Tekka-don",
+        "category": "Dish",
+        "text": "8x Tekka-don [Dish #198]"
+      }
+    ],
+    "reward_texts": [
+      "8x Tekka-don [Dish #198]"
+    ],
+    "matrix": [
+      [
+        0,
+        104,
+        198
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 72,
+    "hex": "0x48",
+    "binary": "01001000",
+    "head": "Dragon",
+    "body": "Rabbit",
+    "legs": "Dragon",
+    "tail": "Unicorn",
+    "combo": "Dragon Head / Rabbit Body / Dragon Legs / Unicorn Tail",
+    "rewards": [
+      {
+        "type": "equipment",
+        "kind_id": 1,
+        "item_id": 59,
+        "quantity": 1,
+        "name": "Crimson Cape",
+        "category": "Equipment",
+        "text": "Crimson Cape [Equipment #59]"
+      }
+    ],
+    "reward_texts": [
+      "Crimson Cape [Equipment #59]"
+    ],
+    "matrix": [
+      [
+        0,
+        16,
+        59
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 73,
+    "hex": "0x49",
+    "binary": "01001001",
+    "head": "Unicorn",
+    "body": "Rabbit",
+    "legs": "Dragon",
+    "tail": "Unicorn",
+    "combo": "Unicorn Head / Rabbit Body / Dragon Legs / Unicorn Tail",
+    "rewards": [
+      {
+        "type": "rune",
+        "kind_id": 2,
+        "item_id": 21,
+        "quantity": 1,
+        "name": "Great Hawk Orb",
+        "category": "Rune",
+        "text": "Great Hawk Orb [Rune #21]"
+      }
+    ],
+    "reward_texts": [
+      "Great Hawk Orb [Rune #21]"
+    ],
+    "matrix": [
+      [
+        0,
+        32,
+        21
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 74,
+    "hex": "0x4A",
+    "binary": "01001010",
+    "head": "Rabbit",
+    "body": "Rabbit",
+    "legs": "Dragon",
+    "tail": "Unicorn",
+    "combo": "Rabbit Head / Rabbit Body / Dragon Legs / Unicorn Tail",
+    "rewards": [],
+    "reward_texts": [],
+    "matrix": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 75,
+    "hex": "0x4B",
+    "binary": "01001011",
+    "head": "Turtle",
+    "body": "Rabbit",
+    "legs": "Dragon",
+    "tail": "Unicorn",
+    "combo": "Turtle Head / Rabbit Body / Dragon Legs / Unicorn Tail",
+    "rewards": [
+      {
+        "type": "item",
+        "kind_id": 0,
+        "item_id": 31,
+        "quantity": 1,
+        "name": "Chick (Bath Set)",
+        "category": "Item",
+        "text": "Chick (Bath Set) [Item #31]"
+      }
+    ],
+    "reward_texts": [
+      "Chick (Bath Set) [Item #31]"
+    ],
+    "matrix": [
+      [
+        0,
+        0,
+        31
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 76,
+    "hex": "0x4C",
+    "binary": "01001100",
+    "head": "Dragon",
+    "body": "Turtle",
+    "legs": "Dragon",
+    "tail": "Unicorn",
+    "combo": "Dragon Head / Turtle Body / Dragon Legs / Unicorn Tail",
+    "rewards": [
+      {
+        "type": "equipment",
+        "kind_id": 1,
+        "item_id": 50,
+        "quantity": 1,
+        "name": "Gloves",
+        "category": "Equipment",
+        "text": "Gloves [Equipment #50]"
+      }
+    ],
+    "reward_texts": [
+      "Gloves [Equipment #50]"
+    ],
+    "matrix": [
+      [
+        0,
+        16,
+        50
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 77,
+    "hex": "0x4D",
+    "binary": "01001101",
+    "head": "Unicorn",
+    "body": "Turtle",
+    "legs": "Dragon",
+    "tail": "Unicorn",
+    "combo": "Unicorn Head / Turtle Body / Dragon Legs / Unicorn Tail",
+    "rewards": [
+      {
+        "type": "rune",
+        "kind_id": 2,
+        "item_id": 22,
+        "quantity": 1,
+        "name": "Lion Orb",
+        "category": "Rune",
+        "text": "Lion Orb [Rune #22]"
+      }
+    ],
+    "reward_texts": [
+      "Lion Orb [Rune #22]"
+    ],
+    "matrix": [
+      [
+        0,
+        32,
+        22
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 78,
+    "hex": "0x4E",
+    "binary": "01001110",
+    "head": "Rabbit",
+    "body": "Turtle",
+    "legs": "Dragon",
+    "tail": "Unicorn",
+    "combo": "Rabbit Head / Turtle Body / Dragon Legs / Unicorn Tail",
+    "rewards": [
+      {
+        "type": "potch",
+        "amount": 17000,
+        "text": "17,000 Potch"
+      }
+    ],
+    "reward_texts": [
+      "17,000 Potch"
+    ],
+    "matrix": [
+      [
+        2,
+        17,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 79,
+    "hex": "0x4F",
+    "binary": "01001111",
+    "head": "Turtle",
+    "body": "Turtle",
+    "legs": "Dragon",
+    "tail": "Unicorn",
+    "combo": "Turtle Head / Turtle Body / Dragon Legs / Unicorn Tail",
+    "rewards": [
+      {
+        "type": "item",
+        "kind_id": 0,
+        "item_id": 33,
+        "quantity": 1,
+        "name": "Toy Boat",
+        "category": "Item",
+        "text": "Toy Boat [Item #33]"
+      }
+    ],
+    "reward_texts": [
+      "Toy Boat [Item #33]"
+    ],
+    "matrix": [
+      [
+        0,
+        0,
+        33
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 80,
+    "hex": "0x50",
+    "binary": "01010000",
+    "head": "Dragon",
+    "body": "Dragon",
+    "legs": "Unicorn",
+    "tail": "Unicorn",
+    "combo": "Dragon Head / Dragon Body / Unicorn Legs / Unicorn Tail",
+    "rewards": [
+      {
+        "type": "equipment",
+        "kind_id": 1,
+        "item_id": 54,
+        "quantity": 1,
+        "name": "Goldlet",
+        "category": "Equipment",
+        "text": "Goldlet [Equipment #54]"
+      }
+    ],
+    "reward_texts": [
+      "Goldlet [Equipment #54]"
+    ],
+    "matrix": [
+      [
+        0,
+        16,
+        54
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 81,
+    "hex": "0x51",
+    "binary": "01010001",
+    "head": "Unicorn",
+    "body": "Dragon",
+    "legs": "Unicorn",
+    "tail": "Unicorn",
+    "combo": "Unicorn Head / Dragon Body / Unicorn Legs / Unicorn Tail",
+    "rewards": [
+      {
+        "type": "rune",
+        "kind_id": 2,
+        "item_id": 3,
+        "quantity": 1,
+        "name": "Water Orb",
+        "category": "Rune",
+        "text": "Water Orb [Rune #3]"
+      }
+    ],
+    "reward_texts": [
+      "Water Orb [Rune #3]"
+    ],
+    "matrix": [
+      [
+        0,
+        32,
+        3
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 82,
+    "hex": "0x52",
+    "binary": "01010010",
+    "head": "Rabbit",
+    "body": "Dragon",
+    "legs": "Unicorn",
+    "tail": "Unicorn",
+    "combo": "Rabbit Head / Dragon Body / Unicorn Legs / Unicorn Tail",
+    "rewards": [
+      {
+        "type": "potch",
+        "amount": 19000,
+        "text": "19,000 Potch"
+      }
+    ],
+    "reward_texts": [
+      "19,000 Potch"
+    ],
+    "matrix": [
+      [
+        2,
+        19,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 83,
+    "hex": "0x53",
+    "binary": "01010011",
+    "head": "Turtle",
+    "body": "Dragon",
+    "legs": "Unicorn",
+    "tail": "Unicorn",
+    "combo": "Turtle Head / Dragon Body / Unicorn Legs / Unicorn Tail",
+    "rewards": [
+      {
+        "type": "item",
+        "kind_id": 0,
+        "item_id": 25,
+        "quantity": 1,
+        "name": "Stone of Dexterity",
+        "category": "Item",
+        "text": "Stone of Dexterity [Item #25]"
+      }
+    ],
+    "reward_texts": [
+      "Stone of Dexterity [Item #25]"
+    ],
+    "matrix": [
+      [
+        0,
+        0,
+        25
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 84,
+    "hex": "0x54",
+    "binary": "01010100",
+    "head": "Dragon",
+    "body": "Unicorn",
+    "legs": "Unicorn",
+    "tail": "Unicorn",
+    "combo": "Dragon Head / Unicorn Body / Unicorn Legs / Unicorn Tail",
+    "rewards": [
+      {
+        "type": "equipment",
+        "kind_id": 1,
+        "item_id": 75,
+        "quantity": 1,
+        "name": "Rose Brooch",
+        "category": "Equipment",
+        "text": "Rose Brooch [Equipment #75]"
+      }
+    ],
+    "reward_texts": [
+      "Rose Brooch [Equipment #75]"
+    ],
+    "matrix": [
+      [
+        0,
+        16,
+        75
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 85,
+    "hex": "0x55",
+    "binary": "01010101",
+    "head": "Unicorn",
+    "body": "Unicorn",
+    "legs": "Unicorn",
+    "tail": "Unicorn",
+    "combo": "Unicorn Head / Unicorn Body / Unicorn Legs / Unicorn Tail",
+    "rewards": [
+      {
+        "type": "rune",
+        "kind_id": 2,
+        "item_id": 17,
+        "quantity": 1,
+        "name": "Blue Gate Orb",
+        "category": "Rune",
+        "text": "Blue Gate Orb [Rune #17]"
+      }
+    ],
+    "reward_texts": [
+      "Blue Gate Orb [Rune #17]"
+    ],
+    "matrix": [
+      [
+        0,
+        32,
+        17
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 86,
+    "hex": "0x56",
+    "binary": "01010110",
+    "head": "Rabbit",
+    "body": "Unicorn",
+    "legs": "Unicorn",
+    "tail": "Unicorn",
+    "combo": "Rabbit Head / Unicorn Body / Unicorn Legs / Unicorn Tail",
+    "rewards": [
+      {
+        "type": "potch",
+        "amount": 22000,
+        "text": "22,000 Potch"
+      }
+    ],
+    "reward_texts": [
+      "22,000 Potch"
+    ],
+    "matrix": [
+      [
+        2,
+        22,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 87,
+    "hex": "0x57",
+    "binary": "01010111",
+    "head": "Turtle",
+    "body": "Unicorn",
+    "legs": "Unicorn",
+    "tail": "Unicorn",
+    "combo": "Turtle Head / Unicorn Body / Unicorn Legs / Unicorn Tail",
+    "rewards": [
+      {
+        "type": "item",
+        "kind_id": 0,
+        "item_id": 3,
+        "quantity": 4,
+        "name": "Antitoxin",
+        "category": "Item",
+        "text": "4x Antitoxin [Item #3]"
+      }
+    ],
+    "reward_texts": [
+      "4x Antitoxin [Item #3]"
+    ],
+    "matrix": [
+      [
+        0,
+        4,
+        3
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 88,
+    "hex": "0x58",
+    "binary": "01011000",
+    "head": "Dragon",
+    "body": "Rabbit",
+    "legs": "Unicorn",
+    "tail": "Unicorn",
+    "combo": "Dragon Head / Rabbit Body / Unicorn Legs / Unicorn Tail",
+    "rewards": [
+      {
+        "type": "equipment",
+        "kind_id": 1,
+        "item_id": 78,
+        "quantity": 1,
+        "name": "Wind Amulet",
+        "category": "Equipment",
+        "text": "Wind Amulet [Equipment #78]"
+      }
+    ],
+    "reward_texts": [
+      "Wind Amulet [Equipment #78]"
+    ],
+    "matrix": [
+      [
+        0,
+        16,
+        78
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 89,
+    "hex": "0x59",
+    "binary": "01011001",
+    "head": "Unicorn",
+    "body": "Rabbit",
+    "legs": "Unicorn",
+    "tail": "Unicorn",
+    "combo": "Unicorn Head / Rabbit Body / Unicorn Legs / Unicorn Tail",
+    "rewards": [
+      {
+        "type": "rune",
+        "kind_id": 2,
+        "item_id": 94,
+        "quantity": 1,
+        "name": "Hunter Orb",
+        "category": "Rune",
+        "text": "Hunter Orb [Rune #94]"
+      }
+    ],
+    "reward_texts": [
+      "Hunter Orb [Rune #94]"
+    ],
+    "matrix": [
+      [
+        0,
+        32,
+        94
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 90,
+    "hex": "0x5A",
+    "binary": "01011010",
+    "head": "Rabbit",
+    "body": "Rabbit",
+    "legs": "Unicorn",
+    "tail": "Unicorn",
+    "combo": "Rabbit Head / Rabbit Body / Unicorn Legs / Unicorn Tail",
+    "rewards": [
+      {
+        "type": "potch",
+        "amount": 72000,
+        "text": "72,000 Potch"
+      }
+    ],
+    "reward_texts": [
+      "72,000 Potch"
+    ],
+    "matrix": [
+      [
+        2,
+        72,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 91,
+    "hex": "0x5B",
+    "binary": "01011011",
+    "head": "Turtle",
+    "body": "Rabbit",
+    "legs": "Unicorn",
+    "tail": "Unicorn",
+    "combo": "Turtle Head / Rabbit Body / Unicorn Legs / Unicorn Tail",
+    "rewards": [
+      {
+        "type": "item",
+        "kind_id": 0,
+        "item_id": 2,
+        "quantity": 9,
+        "name": "Mega Medicine",
+        "category": "Item",
+        "text": "9x Mega Medicine [Item #2]"
+      }
+    ],
+    "reward_texts": [
+      "9x Mega Medicine [Item #2]"
+    ],
+    "matrix": [
+      [
+        0,
+        9,
+        2
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 92,
+    "hex": "0x5C",
+    "binary": "01011100",
+    "head": "Dragon",
+    "body": "Turtle",
+    "legs": "Unicorn",
+    "tail": "Unicorn",
+    "combo": "Dragon Head / Turtle Body / Unicorn Legs / Unicorn Tail",
+    "rewards": [
+      {
+        "type": "equipment",
+        "kind_id": 1,
+        "item_id": 82,
+        "quantity": 1,
+        "name": "Power Ring",
+        "category": "Equipment",
+        "text": "Power Ring [Equipment #82]"
+      }
+    ],
+    "reward_texts": [
+      "Power Ring [Equipment #82]"
+    ],
+    "matrix": [
+      [
+        0,
+        16,
+        82
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 93,
+    "hex": "0x5D",
+    "binary": "01011101",
+    "head": "Unicorn",
+    "body": "Turtle",
+    "legs": "Unicorn",
+    "tail": "Unicorn",
+    "combo": "Unicorn Head / Turtle Body / Unicorn Legs / Unicorn Tail",
+    "rewards": [
+      {
+        "type": "rune",
+        "kind_id": 2,
+        "item_id": 23,
+        "quantity": 1,
+        "name": "Kite Orb",
+        "category": "Rune",
+        "text": "Kite Orb [Rune #23]"
+      }
+    ],
+    "reward_texts": [
+      "Kite Orb [Rune #23]"
+    ],
+    "matrix": [
+      [
+        0,
+        32,
+        23
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 94,
+    "hex": "0x5E",
+    "binary": "01011110",
+    "head": "Rabbit",
+    "body": "Turtle",
+    "legs": "Unicorn",
+    "tail": "Unicorn",
+    "combo": "Rabbit Head / Turtle Body / Unicorn Legs / Unicorn Tail",
+    "rewards": [
+      {
+        "type": "potch",
+        "amount": 16000,
+        "text": "16,000 Potch"
+      }
+    ],
+    "reward_texts": [
+      "16,000 Potch"
+    ],
+    "matrix": [
+      [
+        2,
+        16,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 95,
+    "hex": "0x5F",
+    "binary": "01011111",
+    "head": "Turtle",
+    "body": "Turtle",
+    "legs": "Unicorn",
+    "tail": "Unicorn",
+    "combo": "Turtle Head / Turtle Body / Unicorn Legs / Unicorn Tail",
+    "rewards": [
+      {
+        "type": "item",
+        "kind_id": 0,
+        "item_id": 11,
+        "quantity": 6,
+        "name": "Kindness Rain",
+        "category": "Item",
+        "text": "6x Kindness Rain [Item #11]"
+      }
+    ],
+    "reward_texts": [
+      "6x Kindness Rain [Item #11]"
+    ],
+    "matrix": [
+      [
+        0,
+        6,
+        11
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 96,
+    "hex": "0x60",
+    "binary": "01100000",
+    "head": "Dragon",
+    "body": "Dragon",
+    "legs": "Rabbit",
+    "tail": "Unicorn",
+    "combo": "Dragon Head / Dragon Body / Rabbit Legs / Unicorn Tail",
+    "rewards": [
+      {
+        "type": "equipment",
+        "kind_id": 1,
+        "item_id": 79,
+        "quantity": 1,
+        "name": "Guard Ring",
+        "category": "Equipment",
+        "text": "Guard Ring [Equipment #79]"
+      }
+    ],
+    "reward_texts": [
+      "Guard Ring [Equipment #79]"
+    ],
+    "matrix": [
+      [
+        0,
+        16,
+        79
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 97,
+    "hex": "0x61",
+    "binary": "01100001",
+    "head": "Unicorn",
+    "body": "Dragon",
+    "legs": "Rabbit",
+    "tail": "Unicorn",
+    "combo": "Unicorn Head / Dragon Body / Rabbit Legs / Unicorn Tail",
+    "rewards": [
+      {
+        "type": "rune",
+        "kind_id": 2,
+        "item_id": 24,
+        "quantity": 1,
+        "name": "Unicorn Orb",
+        "category": "Rune",
+        "text": "Unicorn Orb [Rune #24]"
+      }
+    ],
+    "reward_texts": [
+      "Unicorn Orb [Rune #24]"
+    ],
+    "matrix": [
+      [
+        0,
+        32,
+        24
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 98,
+    "hex": "0x62",
+    "binary": "01100010",
+    "head": "Rabbit",
+    "body": "Dragon",
+    "legs": "Rabbit",
+    "tail": "Unicorn",
+    "combo": "Rabbit Head / Dragon Body / Rabbit Legs / Unicorn Tail",
+    "rewards": [
+      {
+        "type": "potch",
+        "amount": 39000,
+        "text": "39,000 Potch"
+      }
+    ],
+    "reward_texts": [
+      "39,000 Potch"
+    ],
+    "matrix": [
+      [
+        2,
+        39,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 99,
+    "hex": "0x63",
+    "binary": "01100011",
+    "head": "Turtle",
+    "body": "Dragon",
+    "legs": "Rabbit",
+    "tail": "Unicorn",
+    "combo": "Turtle Head / Dragon Body / Rabbit Legs / Unicorn Tail",
+    "rewards": [
+      {
+        "type": "item",
+        "kind_id": 0,
+        "item_id": 16,
+        "quantity": 9,
+        "name": "Revenge Earth",
+        "category": "Item",
+        "text": "9x Revenge Earth [Item #16]"
+      }
+    ],
+    "reward_texts": [
+      "9x Revenge Earth [Item #16]"
+    ],
+    "matrix": [
+      [
+        0,
+        9,
+        16
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 100,
+    "hex": "0x64",
+    "binary": "01100100",
+    "head": "Dragon",
+    "body": "Unicorn",
+    "legs": "Rabbit",
+    "tail": "Unicorn",
+    "combo": "Dragon Head / Unicorn Body / Rabbit Legs / Unicorn Tail",
+    "rewards": [
+      {
+        "type": "equipment",
+        "kind_id": 1,
+        "item_id": 68,
+        "quantity": 1,
+        "name": "Belt of Strength",
+        "category": "Equipment",
+        "text": "Belt of Strength [Equipment #68]"
+      }
+    ],
+    "reward_texts": [
+      "Belt of Strength [Equipment #68]"
+    ],
+    "matrix": [
+      [
+        0,
+        16,
+        68
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 101,
+    "hex": "0x65",
+    "binary": "01100101",
+    "head": "Unicorn",
+    "body": "Unicorn",
+    "legs": "Rabbit",
+    "tail": "Unicorn",
+    "combo": "Unicorn Head / Unicorn Body / Rabbit Legs / Unicorn Tail",
+    "rewards": [
+      {
+        "type": "rune",
+        "kind_id": 2,
+        "item_id": 10,
+        "quantity": 1,
+        "name": "Thunder Orb",
+        "category": "Rune",
+        "text": "Thunder Orb [Rune #10]"
+      }
+    ],
+    "reward_texts": [
+      "Thunder Orb [Rune #10]"
+    ],
+    "matrix": [
+      [
+        0,
+        32,
+        10
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 102,
+    "hex": "0x66",
+    "binary": "01100110",
+    "head": "Rabbit",
+    "body": "Unicorn",
+    "legs": "Rabbit",
+    "tail": "Unicorn",
+    "combo": "Rabbit Head / Unicorn Body / Rabbit Legs / Unicorn Tail",
+    "rewards": [
+      {
+        "type": "rune",
+        "kind_id": 2,
+        "item_id": 4,
+        "quantity": 1,
+        "name": "Flowing Orb",
+        "category": "Rune",
+        "text": "Flowing Orb [Rune #4]"
+      }
+    ],
+    "reward_texts": [
+      "Flowing Orb [Rune #4]"
+    ],
+    "matrix": [
+      [
+        0,
+        32,
+        4
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 103,
+    "hex": "0x67",
+    "binary": "01100111",
+    "head": "Turtle",
+    "body": "Unicorn",
+    "legs": "Rabbit",
+    "tail": "Unicorn",
+    "combo": "Turtle Head / Unicorn Body / Rabbit Legs / Unicorn Tail",
+    "rewards": [
+      {
+        "type": "dish",
+        "kind_id": 6,
+        "item_id": 233,
+        "quantity": 7,
+        "name": "Mellow Stew",
+        "category": "Dish",
+        "text": "7x Mellow Stew [Dish #233]"
+      }
+    ],
+    "reward_texts": [
+      "7x Mellow Stew [Dish #233]"
+    ],
+    "matrix": [
+      [
+        0,
+        103,
+        233
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 104,
+    "hex": "0x68",
+    "binary": "01101000",
+    "head": "Dragon",
+    "body": "Rabbit",
+    "legs": "Rabbit",
+    "tail": "Unicorn",
+    "combo": "Dragon Head / Rabbit Body / Rabbit Legs / Unicorn Tail",
+    "rewards": [
+      {
+        "type": "equipment",
+        "kind_id": 1,
+        "item_id": 71,
+        "quantity": 1,
+        "name": "Blue Ribbon",
+        "category": "Equipment",
+        "text": "Blue Ribbon [Equipment #71]"
+      }
+    ],
+    "reward_texts": [
+      "Blue Ribbon [Equipment #71]"
+    ],
+    "matrix": [
+      [
+        0,
+        16,
+        71
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 105,
+    "hex": "0x69",
+    "binary": "01101001",
+    "head": "Unicorn",
+    "body": "Rabbit",
+    "legs": "Rabbit",
+    "tail": "Unicorn",
+    "combo": "Unicorn Head / Rabbit Body / Rabbit Legs / Unicorn Tail",
+    "rewards": [
+      {
+        "type": "rune",
+        "kind_id": 2,
+        "item_id": 25,
+        "quantity": 1,
+        "name": "Gozu Orb",
+        "category": "Rune",
+        "text": "Gozu Orb [Rune #25]"
+      }
+    ],
+    "reward_texts": [
+      "Gozu Orb [Rune #25]"
+    ],
+    "matrix": [
+      [
+        0,
+        32,
+        25
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 106,
+    "hex": "0x6A",
+    "binary": "01101010",
+    "head": "Rabbit",
+    "body": "Rabbit",
+    "legs": "Rabbit",
+    "tail": "Unicorn",
+    "combo": "Rabbit Head / Rabbit Body / Rabbit Legs / Unicorn Tail",
+    "rewards": [],
+    "reward_texts": [],
+    "matrix": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 107,
+    "hex": "0x6B",
+    "binary": "01101011",
+    "head": "Turtle",
+    "body": "Rabbit",
+    "legs": "Rabbit",
+    "tail": "Unicorn",
+    "combo": "Turtle Head / Rabbit Body / Rabbit Legs / Unicorn Tail",
+    "rewards": [
+      {
+        "type": "item",
+        "kind_id": 0,
+        "item_id": 3,
+        "quantity": 9,
+        "name": "Antitoxin",
+        "category": "Item",
+        "text": "9x Antitoxin [Item #3]"
+      }
+    ],
+    "reward_texts": [
+      "9x Antitoxin [Item #3]"
+    ],
+    "matrix": [
+      [
+        0,
+        9,
+        3
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 108,
+    "hex": "0x6C",
+    "binary": "01101100",
+    "head": "Dragon",
+    "body": "Turtle",
+    "legs": "Rabbit",
+    "tail": "Unicorn",
+    "combo": "Dragon Head / Turtle Body / Rabbit Legs / Unicorn Tail",
+    "rewards": [
+      {
+        "type": "equipment",
+        "kind_id": 1,
+        "item_id": 58,
+        "quantity": 1,
+        "name": "Cape of Darkness",
+        "category": "Equipment",
+        "text": "Cape of Darkness [Equipment #58]"
+      }
+    ],
+    "reward_texts": [
+      "Cape of Darkness [Equipment #58]"
+    ],
+    "matrix": [
+      [
+        0,
+        16,
+        58
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 109,
+    "hex": "0x6D",
+    "binary": "01101101",
+    "head": "Unicorn",
+    "body": "Turtle",
+    "legs": "Rabbit",
+    "tail": "Unicorn",
+    "combo": "Unicorn Head / Turtle Body / Rabbit Legs / Unicorn Tail",
+    "rewards": [
+      {
+        "type": "rune",
+        "kind_id": 2,
+        "item_id": 26,
+        "quantity": 1,
+        "name": "Pixie Orb",
+        "category": "Rune",
+        "text": "Pixie Orb [Rune #26]"
+      }
+    ],
+    "reward_texts": [
+      "Pixie Orb [Rune #26]"
+    ],
+    "matrix": [
+      [
+        0,
+        32,
+        26
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 110,
+    "hex": "0x6E",
+    "binary": "01101110",
+    "head": "Rabbit",
+    "body": "Turtle",
+    "legs": "Rabbit",
+    "tail": "Unicorn",
+    "combo": "Rabbit Head / Turtle Body / Rabbit Legs / Unicorn Tail",
+    "rewards": [
+      {
+        "type": "potch",
+        "amount": 67000,
+        "text": "67,000 Potch"
+      }
+    ],
+    "reward_texts": [
+      "67,000 Potch"
+    ],
+    "matrix": [
+      [
+        2,
+        67,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 111,
+    "hex": "0x6F",
+    "binary": "01101111",
+    "head": "Turtle",
+    "body": "Turtle",
+    "legs": "Rabbit",
+    "tail": "Unicorn",
+    "combo": "Turtle Head / Turtle Body / Rabbit Legs / Unicorn Tail",
+    "rewards": [
+      {
+        "type": "item",
+        "kind_id": 0,
+        "item_id": 5,
+        "quantity": 9,
+        "name": "Needle",
+        "category": "Item",
+        "text": "9x Needle [Item #5]"
+      }
+    ],
+    "reward_texts": [
+      "9x Needle [Item #5]"
+    ],
+    "matrix": [
+      [
+        0,
+        9,
+        5
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 112,
+    "hex": "0x70",
+    "binary": "01110000",
+    "head": "Dragon",
+    "body": "Dragon",
+    "legs": "Turtle",
+    "tail": "Unicorn",
+    "combo": "Dragon Head / Dragon Body / Turtle Legs / Unicorn Tail",
+    "rewards": [
+      {
+        "type": "equipment",
+        "kind_id": 1,
+        "item_id": 45,
+        "quantity": 1,
+        "name": "Wooden Shoes",
+        "category": "Equipment",
+        "text": "Wooden Shoes [Equipment #45]"
+      }
+    ],
+    "reward_texts": [
+      "Wooden Shoes [Equipment #45]"
+    ],
+    "matrix": [
+      [
+        0,
+        16,
+        45
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 113,
+    "hex": "0x71",
+    "binary": "01110001",
+    "head": "Unicorn",
+    "body": "Dragon",
+    "legs": "Turtle",
+    "tail": "Unicorn",
+    "combo": "Unicorn Head / Dragon Body / Turtle Legs / Unicorn Tail",
+    "rewards": [
+      {
+        "type": "rune",
+        "kind_id": 2,
+        "item_id": 27,
+        "quantity": 1,
+        "name": "Banshee Orb",
+        "category": "Rune",
+        "text": "Banshee Orb [Rune #27]"
+      }
+    ],
+    "reward_texts": [
+      "Banshee Orb [Rune #27]"
+    ],
+    "matrix": [
+      [
+        0,
+        32,
+        27
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 114,
+    "hex": "0x72",
+    "binary": "01110010",
+    "head": "Rabbit",
+    "body": "Dragon",
+    "legs": "Turtle",
+    "tail": "Unicorn",
+    "combo": "Rabbit Head / Dragon Body / Turtle Legs / Unicorn Tail",
+    "rewards": [
+      {
+        "type": "trade",
+        "kind_id": 4,
+        "item_id": 40,
+        "quantity": 1,
+        "name": "Ancient Text",
+        "category": "Trade",
+        "text": "Ancient Text [Trade #40]"
+      }
+    ],
+    "reward_texts": [
+      "Ancient Text [Trade #40]"
+    ],
+    "matrix": [
+      [
+        0,
+        64,
+        40
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 115,
+    "hex": "0x73",
+    "binary": "01110011",
+    "head": "Turtle",
+    "body": "Dragon",
+    "legs": "Turtle",
+    "tail": "Unicorn",
+    "combo": "Turtle Head / Dragon Body / Turtle Legs / Unicorn Tail",
+    "rewards": [
+      {
+        "type": "item",
+        "kind_id": 0,
+        "item_id": 4,
+        "quantity": 9,
+        "name": "Throat Drops",
+        "category": "Item",
+        "text": "9x Throat Drops [Item #4]"
+      }
+    ],
+    "reward_texts": [
+      "9x Throat Drops [Item #4]"
+    ],
+    "matrix": [
+      [
+        0,
+        9,
+        4
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 116,
+    "hex": "0x74",
+    "binary": "01110100",
+    "head": "Dragon",
+    "body": "Unicorn",
+    "legs": "Turtle",
+    "tail": "Unicorn",
+    "combo": "Dragon Head / Unicorn Body / Turtle Legs / Unicorn Tail",
+    "rewards": [
+      {
+        "type": "equipment",
+        "kind_id": 1,
+        "item_id": 72,
+        "quantity": 1,
+        "name": "Star Earrings",
+        "category": "Equipment",
+        "text": "Star Earrings [Equipment #72]"
+      }
+    ],
+    "reward_texts": [
+      "Star Earrings [Equipment #72]"
+    ],
+    "matrix": [
+      [
+        0,
+        16,
+        72
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 117,
+    "hex": "0x75",
+    "binary": "01110101",
+    "head": "Unicorn",
+    "body": "Unicorn",
+    "legs": "Turtle",
+    "tail": "Unicorn",
+    "combo": "Unicorn Head / Unicorn Body / Turtle Legs / Unicorn Tail",
+    "rewards": [
+      {
+        "type": "rune",
+        "kind_id": 2,
+        "item_id": 28,
+        "quantity": 1,
+        "name": "Sylph Orb",
+        "category": "Rune",
+        "text": "Sylph Orb [Rune #28]"
+      }
+    ],
+    "reward_texts": [
+      "Sylph Orb [Rune #28]"
+    ],
+    "matrix": [
+      [
+        0,
+        32,
+        28
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 118,
+    "hex": "0x76",
+    "binary": "01110110",
+    "head": "Rabbit",
+    "body": "Unicorn",
+    "legs": "Turtle",
+    "tail": "Unicorn",
+    "combo": "Rabbit Head / Unicorn Body / Turtle Legs / Unicorn Tail",
+    "rewards": [
+      {
+        "type": "potch",
+        "amount": 9000,
+        "text": "9,000 Potch"
+      }
+    ],
+    "reward_texts": [
+      "9,000 Potch"
+    ],
+    "matrix": [
+      [
+        2,
+        9,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 119,
+    "hex": "0x77",
+    "binary": "01110111",
+    "head": "Turtle",
+    "body": "Unicorn",
+    "legs": "Turtle",
+    "tail": "Unicorn",
+    "combo": "Turtle Head / Unicorn Body / Turtle Legs / Unicorn Tail",
+    "rewards": [],
+    "reward_texts": [],
+    "matrix": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 120,
+    "hex": "0x78",
+    "binary": "01111000",
+    "head": "Dragon",
+    "body": "Rabbit",
+    "legs": "Turtle",
+    "tail": "Unicorn",
+    "combo": "Dragon Head / Rabbit Body / Turtle Legs / Unicorn Tail",
+    "rewards": [
+      {
+        "type": "equipment",
+        "kind_id": 1,
+        "item_id": 49,
+        "quantity": 1,
+        "name": "Iron Boots",
+        "category": "Equipment",
+        "text": "Iron Boots [Equipment #49]"
+      }
+    ],
+    "reward_texts": [
+      "Iron Boots [Equipment #49]"
+    ],
+    "matrix": [
+      [
+        0,
+        16,
+        49
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 121,
+    "hex": "0x79",
+    "binary": "01111001",
+    "head": "Unicorn",
+    "body": "Rabbit",
+    "legs": "Turtle",
+    "tail": "Unicorn",
+    "combo": "Unicorn Head / Rabbit Body / Turtle Legs / Unicorn Tail",
+    "rewards": [
+      {
+        "type": "rune",
+        "kind_id": 2,
+        "item_id": 29,
+        "quantity": 1,
+        "name": "Chimera Orb",
+        "category": "Rune",
+        "text": "Chimera Orb [Rune #29]"
+      }
+    ],
+    "reward_texts": [
+      "Chimera Orb [Rune #29]"
+    ],
+    "matrix": [
+      [
+        0,
+        32,
+        29
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 122,
+    "hex": "0x7A",
+    "binary": "01111010",
+    "head": "Rabbit",
+    "body": "Rabbit",
+    "legs": "Turtle",
+    "tail": "Unicorn",
+    "combo": "Rabbit Head / Rabbit Body / Turtle Legs / Unicorn Tail",
+    "rewards": [
+      {
+        "type": "potch",
+        "amount": 35000,
+        "text": "35,000 Potch"
+      }
+    ],
+    "reward_texts": [
+      "35,000 Potch"
+    ],
+    "matrix": [
+      [
+        2,
+        35,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 123,
+    "hex": "0x7B",
+    "binary": "01111011",
+    "head": "Turtle",
+    "body": "Rabbit",
+    "legs": "Turtle",
+    "tail": "Unicorn",
+    "combo": "Turtle Head / Rabbit Body / Turtle Legs / Unicorn Tail",
+    "rewards": [
+      {
+        "type": "dish",
+        "kind_id": 6,
+        "item_id": 189,
+        "quantity": 9,
+        "name": "Rising Sun Bento",
+        "category": "Dish",
+        "text": "9x Rising Sun Bento [Dish #189]"
+      }
+    ],
+    "reward_texts": [
+      "9x Rising Sun Bento [Dish #189]"
+    ],
+    "matrix": [
+      [
+        0,
+        105,
+        189
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 124,
+    "hex": "0x7C",
+    "binary": "01111100",
+    "head": "Dragon",
+    "body": "Turtle",
+    "legs": "Turtle",
+    "tail": "Unicorn",
+    "combo": "Dragon Head / Turtle Body / Turtle Legs / Unicorn Tail",
+    "rewards": [
+      {
+        "type": "equipment",
+        "kind_id": 1,
+        "item_id": 70,
+        "quantity": 1,
+        "name": "Gold Emblem",
+        "category": "Equipment",
+        "text": "Gold Emblem [Equipment #70]"
+      }
+    ],
+    "reward_texts": [
+      "Gold Emblem [Equipment #70]"
+    ],
+    "matrix": [
+      [
+        0,
+        16,
+        70
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 125,
+    "hex": "0x7D",
+    "binary": "01111101",
+    "head": "Unicorn",
+    "body": "Turtle",
+    "legs": "Turtle",
+    "tail": "Unicorn",
+    "combo": "Unicorn Head / Turtle Body / Turtle Legs / Unicorn Tail",
+    "rewards": [
+      {
+        "type": "rune",
+        "kind_id": 2,
+        "item_id": 74,
+        "quantity": 1,
+        "name": "Haziness Orb",
+        "category": "Rune",
+        "text": "Haziness Orb [Rune #74]"
+      }
+    ],
+    "reward_texts": [
+      "Haziness Orb [Rune #74]"
+    ],
+    "matrix": [
+      [
+        0,
+        32,
+        74
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 126,
+    "hex": "0x7E",
+    "binary": "01111110",
+    "head": "Rabbit",
+    "body": "Turtle",
+    "legs": "Turtle",
+    "tail": "Unicorn",
+    "combo": "Rabbit Head / Turtle Body / Turtle Legs / Unicorn Tail",
+    "rewards": [
+      {
+        "type": "potch",
+        "amount": 11000,
+        "text": "11,000 Potch"
+      }
+    ],
+    "reward_texts": [
+      "11,000 Potch"
+    ],
+    "matrix": [
+      [
+        2,
+        11,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 127,
+    "hex": "0x7F",
+    "binary": "01111111",
+    "head": "Turtle",
+    "body": "Turtle",
+    "legs": "Turtle",
+    "tail": "Unicorn",
+    "combo": "Turtle Head / Turtle Body / Turtle Legs / Unicorn Tail",
+    "rewards": [
+      {
+        "type": "rune",
+        "kind_id": 2,
+        "item_id": 62,
+        "quantity": 1,
+        "name": "Fortune Orb",
+        "category": "Rune",
+        "text": "Fortune Orb [Rune #62]"
+      }
+    ],
+    "reward_texts": [
+      "Fortune Orb [Rune #62]"
+    ],
+    "matrix": [
+      [
+        0,
+        32,
+        62
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 128,
+    "hex": "0x80",
+    "binary": "10000000",
+    "head": "Dragon",
+    "body": "Dragon",
+    "legs": "Dragon",
+    "tail": "Rabbit",
+    "combo": "Dragon Head / Dragon Body / Dragon Legs / Rabbit Tail",
+    "rewards": [
+      {
+        "type": "equipment",
+        "kind_id": 1,
+        "item_id": 34,
+        "quantity": 1,
+        "name": "Silver Armor",
+        "category": "Equipment",
+        "text": "Silver Armor [Equipment #34]"
+      }
+    ],
+    "reward_texts": [
+      "Silver Armor [Equipment #34]"
+    ],
+    "matrix": [
+      [
+        0,
+        16,
+        34
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 129,
+    "hex": "0x81",
+    "binary": "10000001",
+    "head": "Unicorn",
+    "body": "Dragon",
+    "legs": "Dragon",
+    "tail": "Rabbit",
+    "combo": "Unicorn Head / Dragon Body / Dragon Legs / Rabbit Tail",
+    "rewards": [
+      {
+        "type": "rune",
+        "kind_id": 2,
+        "item_id": 92,
+        "quantity": 1,
+        "name": "Fire Lizard Orb",
+        "category": "Rune",
+        "text": "Fire Lizard Orb [Rune #92]"
+      }
+    ],
+    "reward_texts": [
+      "Fire Lizard Orb [Rune #92]"
+    ],
+    "matrix": [
+      [
+        0,
+        32,
+        92
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 130,
+    "hex": "0x82",
+    "binary": "10000010",
+    "head": "Rabbit",
+    "body": "Dragon",
+    "legs": "Dragon",
+    "tail": "Rabbit",
+    "combo": "Rabbit Head / Dragon Body / Dragon Legs / Rabbit Tail",
+    "rewards": [],
+    "reward_texts": [],
+    "matrix": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 131,
+    "hex": "0x83",
+    "binary": "10000011",
+    "head": "Turtle",
+    "body": "Dragon",
+    "legs": "Dragon",
+    "tail": "Rabbit",
+    "combo": "Turtle Head / Dragon Body / Dragon Legs / Rabbit Tail",
+    "rewards": [
+      {
+        "type": "item",
+        "kind_id": 0,
+        "item_id": 32,
+        "quantity": 1,
+        "name": "Drinking Set",
+        "category": "Item",
+        "text": "Drinking Set [Item #32]"
+      }
+    ],
+    "reward_texts": [
+      "Drinking Set [Item #32]"
+    ],
+    "matrix": [
+      [
+        0,
+        0,
+        32
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 132,
+    "hex": "0x84",
+    "binary": "10000100",
+    "head": "Dragon",
+    "body": "Unicorn",
+    "legs": "Dragon",
+    "tail": "Rabbit",
+    "combo": "Dragon Head / Unicorn Body / Dragon Legs / Rabbit Tail",
+    "rewards": [
+      {
+        "type": "equipment",
+        "kind_id": 1,
+        "item_id": 30,
+        "quantity": 1,
+        "name": "Master Garb",
+        "category": "Equipment",
+        "text": "Master Garb [Equipment #30]"
+      }
+    ],
+    "reward_texts": [
+      "Master Garb [Equipment #30]"
+    ],
+    "matrix": [
+      [
+        0,
+        16,
+        30
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 133,
+    "hex": "0x85",
+    "binary": "10000101",
+    "head": "Unicorn",
+    "body": "Unicorn",
+    "legs": "Dragon",
+    "tail": "Rabbit",
+    "combo": "Unicorn Head / Unicorn Body / Dragon Legs / Rabbit Tail",
+    "rewards": [
+      {
+        "type": "rune",
+        "kind_id": 2,
+        "item_id": 95,
+        "quantity": 1,
+        "name": "Technique Orb",
+        "category": "Rune",
+        "text": "Technique Orb [Rune #95]"
+      }
+    ],
+    "reward_texts": [
+      "Technique Orb [Rune #95]"
+    ],
+    "matrix": [
+      [
+        0,
+        32,
+        95
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 134,
+    "hex": "0x86",
+    "binary": "10000110",
+    "head": "Rabbit",
+    "body": "Unicorn",
+    "legs": "Dragon",
+    "tail": "Rabbit",
+    "combo": "Rabbit Head / Unicorn Body / Dragon Legs / Rabbit Tail",
+    "rewards": [
+      {
+        "type": "potch",
+        "amount": 32000,
+        "text": "32,000 Potch"
+      }
+    ],
+    "reward_texts": [
+      "32,000 Potch"
+    ],
+    "matrix": [
+      [
+        2,
+        32,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 135,
+    "hex": "0x87",
+    "binary": "10000111",
+    "head": "Turtle",
+    "body": "Unicorn",
+    "legs": "Dragon",
+    "tail": "Rabbit",
+    "combo": "Turtle Head / Unicorn Body / Dragon Legs / Rabbit Tail",
+    "rewards": [],
+    "reward_texts": [],
+    "matrix": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 136,
+    "hex": "0x88",
+    "binary": "10001000",
+    "head": "Dragon",
+    "body": "Rabbit",
+    "legs": "Dragon",
+    "tail": "Rabbit",
+    "combo": "Dragon Head / Rabbit Body / Dragon Legs / Rabbit Tail",
+    "rewards": [
+      {
+        "type": "equipment",
+        "kind_id": 1,
+        "item_id": 37,
+        "quantity": 1,
+        "name": "Windspun Armor",
+        "category": "Equipment",
+        "text": "Windspun Armor [Equipment #37]"
+      }
+    ],
+    "reward_texts": [
+      "Windspun Armor [Equipment #37]"
+    ],
+    "matrix": [
+      [
+        0,
+        16,
+        37
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 137,
+    "hex": "0x89",
+    "binary": "10001001",
+    "head": "Unicorn",
+    "body": "Rabbit",
+    "legs": "Dragon",
+    "tail": "Rabbit",
+    "combo": "Unicorn Head / Rabbit Body / Dragon Legs / Rabbit Tail",
+    "rewards": [
+      {
+        "type": "rune",
+        "kind_id": 2,
+        "item_id": 96,
+        "quantity": 1,
+        "name": "Silence Orb",
+        "category": "Rune",
+        "text": "Silence Orb [Rune #96]"
+      }
+    ],
+    "reward_texts": [
+      "Silence Orb [Rune #96]"
+    ],
+    "matrix": [
+      [
+        0,
+        32,
+        96
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 138,
+    "hex": "0x8A",
+    "binary": "10001010",
+    "head": "Rabbit",
+    "body": "Rabbit",
+    "legs": "Dragon",
+    "tail": "Rabbit",
+    "combo": "Rabbit Head / Rabbit Body / Dragon Legs / Rabbit Tail",
+    "rewards": [
+      {
+        "type": "potch",
+        "amount": 88000,
+        "text": "88,000 Potch"
+      }
+    ],
+    "reward_texts": [
+      "88,000 Potch"
+    ],
+    "matrix": [
+      [
+        2,
+        88,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 139,
+    "hex": "0x8B",
+    "binary": "10001011",
+    "head": "Turtle",
+    "body": "Rabbit",
+    "legs": "Dragon",
+    "tail": "Rabbit",
+    "combo": "Turtle Head / Rabbit Body / Dragon Legs / Rabbit Tail",
+    "rewards": [],
+    "reward_texts": [],
+    "matrix": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 140,
+    "hex": "0x8C",
+    "binary": "10001100",
+    "head": "Dragon",
+    "body": "Turtle",
+    "legs": "Dragon",
+    "tail": "Rabbit",
+    "combo": "Dragon Head / Turtle Body / Dragon Legs / Rabbit Tail",
+    "rewards": [
+      {
+        "type": "equipment",
+        "kind_id": 1,
+        "item_id": 25,
+        "quantity": 1,
+        "name": "Scale Mail",
+        "category": "Equipment",
+        "text": "Scale Mail [Equipment #25]"
+      }
+    ],
+    "reward_texts": [
+      "Scale Mail [Equipment #25]"
+    ],
+    "matrix": [
+      [
+        0,
+        16,
+        25
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 141,
+    "hex": "0x8D",
+    "binary": "10001101",
+    "head": "Unicorn",
+    "body": "Turtle",
+    "legs": "Dragon",
+    "tail": "Rabbit",
+    "combo": "Unicorn Head / Turtle Body / Dragon Legs / Rabbit Tail",
+    "rewards": [
+      {
+        "type": "rune",
+        "kind_id": 2,
+        "item_id": 97,
+        "quantity": 1,
+        "name": "Poison Orb",
+        "category": "Rune",
+        "text": "Poison Orb [Rune #97]"
+      }
+    ],
+    "reward_texts": [
+      "Poison Orb [Rune #97]"
+    ],
+    "matrix": [
+      [
+        0,
+        32,
+        97
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 142,
+    "hex": "0x8E",
+    "binary": "10001110",
+    "head": "Rabbit",
+    "body": "Turtle",
+    "legs": "Dragon",
+    "tail": "Rabbit",
+    "combo": "Rabbit Head / Turtle Body / Dragon Legs / Rabbit Tail",
+    "rewards": [
+      {
+        "type": "potch",
+        "amount": 63000,
+        "text": "63,000 Potch"
+      }
+    ],
+    "reward_texts": [
+      "63,000 Potch"
+    ],
+    "matrix": [
+      [
+        2,
+        63,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 143,
+    "hex": "0x8F",
+    "binary": "10001111",
+    "head": "Turtle",
+    "body": "Turtle",
+    "legs": "Dragon",
+    "tail": "Rabbit",
+    "combo": "Turtle Head / Turtle Body / Dragon Legs / Rabbit Tail",
+    "rewards": [],
+    "reward_texts": [],
+    "matrix": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 144,
+    "hex": "0x90",
+    "binary": "10010000",
+    "head": "Dragon",
+    "body": "Dragon",
+    "legs": "Unicorn",
+    "tail": "Rabbit",
+    "combo": "Dragon Head / Dragon Body / Unicorn Legs / Rabbit Tail",
+    "rewards": [
+      {
+        "type": "equipment",
+        "kind_id": 1,
+        "item_id": 24,
+        "quantity": 1,
+        "name": "Thunder God Garb",
+        "category": "Equipment",
+        "text": "Thunder God Garb [Equipment #24]"
+      }
+    ],
+    "reward_texts": [
+      "Thunder God Garb [Equipment #24]"
+    ],
+    "matrix": [
+      [
+        0,
+        16,
+        24
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 145,
+    "hex": "0x91",
+    "binary": "10010001",
+    "head": "Unicorn",
+    "body": "Dragon",
+    "legs": "Unicorn",
+    "tail": "Rabbit",
+    "combo": "Unicorn Head / Dragon Body / Unicorn Legs / Rabbit Tail",
+    "rewards": [
+      {
+        "type": "rune",
+        "kind_id": 2,
+        "item_id": 98,
+        "quantity": 1,
+        "name": "Knockdown Orb",
+        "category": "Rune",
+        "text": "Knockdown Orb [Rune #98]"
+      }
+    ],
+    "reward_texts": [
+      "Knockdown Orb [Rune #98]"
+    ],
+    "matrix": [
+      [
+        0,
+        32,
+        98
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 146,
+    "hex": "0x92",
+    "binary": "10010010",
+    "head": "Rabbit",
+    "body": "Dragon",
+    "legs": "Unicorn",
+    "tail": "Rabbit",
+    "combo": "Rabbit Head / Dragon Body / Unicorn Legs / Rabbit Tail",
+    "rewards": [
+      {
+        "type": "potch",
+        "amount": 34000,
+        "text": "34,000 Potch"
+      }
+    ],
+    "reward_texts": [
+      "34,000 Potch"
+    ],
+    "matrix": [
+      [
+        2,
+        34,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 147,
+    "hex": "0x93",
+    "binary": "10010011",
+    "head": "Turtle",
+    "body": "Dragon",
+    "legs": "Unicorn",
+    "tail": "Rabbit",
+    "combo": "Turtle Head / Dragon Body / Unicorn Legs / Rabbit Tail",
+    "rewards": [],
+    "reward_texts": [],
+    "matrix": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 148,
+    "hex": "0x94",
+    "binary": "10010100",
+    "head": "Dragon",
+    "body": "Unicorn",
+    "legs": "Unicorn",
+    "tail": "Rabbit",
+    "combo": "Dragon Head / Unicorn Body / Unicorn Legs / Rabbit Tail",
+    "rewards": [
+      {
+        "type": "equipment",
+        "kind_id": 1,
+        "item_id": 35,
+        "quantity": 1,
+        "name": "Knight Armor",
+        "category": "Equipment",
+        "text": "Knight Armor [Equipment #35]"
+      }
+    ],
+    "reward_texts": [
+      "Knight Armor [Equipment #35]"
+    ],
+    "matrix": [
+      [
+        0,
+        16,
+        35
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 149,
+    "hex": "0x95",
+    "binary": "10010101",
+    "head": "Unicorn",
+    "body": "Unicorn",
+    "legs": "Unicorn",
+    "tail": "Rabbit",
+    "combo": "Unicorn Head / Unicorn Body / Unicorn Legs / Rabbit Tail",
+    "rewards": [
+      {
+        "type": "rune",
+        "kind_id": 2,
+        "item_id": 83,
+        "quantity": 1,
+        "name": "Wizard Orb",
+        "category": "Rune",
+        "text": "Wizard Orb [Rune #83]"
+      }
+    ],
+    "reward_texts": [
+      "Wizard Orb [Rune #83]"
+    ],
+    "matrix": [
+      [
+        0,
+        32,
+        83
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 150,
+    "hex": "0x96",
+    "binary": "10010110",
+    "head": "Rabbit",
+    "body": "Unicorn",
+    "legs": "Unicorn",
+    "tail": "Rabbit",
+    "combo": "Rabbit Head / Unicorn Body / Unicorn Legs / Rabbit Tail",
+    "rewards": [
+      {
+        "type": "potch",
+        "amount": 31000,
+        "text": "31,000 Potch"
+      }
+    ],
+    "reward_texts": [
+      "31,000 Potch"
+    ],
+    "matrix": [
+      [
+        2,
+        31,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 151,
+    "hex": "0x97",
+    "binary": "10010111",
+    "head": "Turtle",
+    "body": "Unicorn",
+    "legs": "Unicorn",
+    "tail": "Rabbit",
+    "combo": "Turtle Head / Unicorn Body / Unicorn Legs / Rabbit Tail",
+    "rewards": [
+      {
+        "type": "item",
+        "kind_id": 0,
+        "item_id": 32,
+        "quantity": 1,
+        "name": "Drinking Set",
+        "category": "Item",
+        "text": "Drinking Set [Item #32]"
+      },
+      {
+        "type": "item",
+        "kind_id": 0,
+        "item_id": 33,
+        "quantity": 1,
+        "name": "Toy Boat",
+        "category": "Item",
+        "text": "Toy Boat [Item #33]"
+      }
+    ],
+    "reward_texts": [
+      "Drinking Set [Item #32]",
+      "Toy Boat [Item #33]"
+    ],
+    "matrix": [
+      [
+        0,
+        0,
+        32
+      ],
+      [
+        0,
+        0,
+        33
+      ]
+    ]
+  },
+  {
+    "index": 152,
+    "hex": "0x98",
+    "binary": "10011000",
+    "head": "Dragon",
+    "body": "Rabbit",
+    "legs": "Unicorn",
+    "tail": "Rabbit",
+    "combo": "Dragon Head / Rabbit Body / Unicorn Legs / Rabbit Tail",
+    "rewards": [
+      {
+        "type": "equipment",
+        "kind_id": 1,
+        "item_id": 21,
+        "quantity": 1,
+        "name": "Ninja Suit",
+        "category": "Equipment",
+        "text": "Ninja Suit [Equipment #21]"
+      }
+    ],
+    "reward_texts": [
+      "Ninja Suit [Equipment #21]"
+    ],
+    "matrix": [
+      [
+        0,
+        16,
+        21
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 153,
+    "hex": "0x99",
+    "binary": "10011001",
+    "head": "Unicorn",
+    "body": "Rabbit",
+    "legs": "Unicorn",
+    "tail": "Rabbit",
+    "combo": "Unicorn Head / Rabbit Body / Unicorn Legs / Rabbit Tail",
+    "rewards": [
+      {
+        "type": "rune",
+        "kind_id": 2,
+        "item_id": 8,
+        "quantity": 1,
+        "name": "Mother Earth Orb",
+        "category": "Rune",
+        "text": "Mother Earth Orb [Rune #8]"
+      }
+    ],
+    "reward_texts": [
+      "Mother Earth Orb [Rune #8]"
+    ],
+    "matrix": [
+      [
+        0,
+        32,
+        8
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 154,
+    "hex": "0x9A",
+    "binary": "10011010",
+    "head": "Rabbit",
+    "body": "Rabbit",
+    "legs": "Unicorn",
+    "tail": "Rabbit",
+    "combo": "Rabbit Head / Rabbit Body / Unicorn Legs / Rabbit Tail",
+    "rewards": [
+      {
+        "type": "potch",
+        "amount": 65000,
+        "text": "65,000 Potch"
+      }
+    ],
+    "reward_texts": [
+      "65,000 Potch"
+    ],
+    "matrix": [
+      [
+        2,
+        65,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 155,
+    "hex": "0x9B",
+    "binary": "10011011",
+    "head": "Turtle",
+    "body": "Rabbit",
+    "legs": "Unicorn",
+    "tail": "Rabbit",
+    "combo": "Turtle Head / Rabbit Body / Unicorn Legs / Rabbit Tail",
+    "rewards": [
+      {
+        "type": "item",
+        "kind_id": 0,
+        "item_id": 23,
+        "quantity": 1,
+        "name": "Stone of Defense",
+        "category": "Item",
+        "text": "Stone of Defense [Item #23]"
+      }
+    ],
+    "reward_texts": [
+      "Stone of Defense [Item #23]"
+    ],
+    "matrix": [
+      [
+        0,
+        0,
+        23
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 156,
+    "hex": "0x9C",
+    "binary": "10011100",
+    "head": "Dragon",
+    "body": "Turtle",
+    "legs": "Unicorn",
+    "tail": "Rabbit",
+    "combo": "Dragon Head / Turtle Body / Unicorn Legs / Rabbit Tail",
+    "rewards": [
+      {
+        "type": "equipment",
+        "kind_id": 1,
+        "item_id": 33,
+        "quantity": 1,
+        "name": "Dream Robe",
+        "category": "Equipment",
+        "text": "Dream Robe [Equipment #33]"
+      }
+    ],
+    "reward_texts": [
+      "Dream Robe [Equipment #33]"
+    ],
+    "matrix": [
+      [
+        0,
+        16,
+        33
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 157,
+    "hex": "0x9D",
+    "binary": "10011101",
+    "head": "Unicorn",
+    "body": "Turtle",
+    "legs": "Unicorn",
+    "tail": "Rabbit",
+    "combo": "Unicorn Head / Turtle Body / Unicorn Legs / Rabbit Tail",
+    "rewards": [
+      {
+        "type": "rune",
+        "kind_id": 2,
+        "item_id": 99,
+        "quantity": 1,
+        "name": "Sleep Orb",
+        "category": "Rune",
+        "text": "Sleep Orb [Rune #99]"
+      }
+    ],
+    "reward_texts": [
+      "Sleep Orb [Rune #99]"
+    ],
+    "matrix": [
+      [
+        0,
+        32,
+        99
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 158,
+    "hex": "0x9E",
+    "binary": "10011110",
+    "head": "Rabbit",
+    "body": "Turtle",
+    "legs": "Unicorn",
+    "tail": "Rabbit",
+    "combo": "Rabbit Head / Turtle Body / Unicorn Legs / Rabbit Tail",
+    "rewards": [
+      {
+        "type": "potch",
+        "amount": 72000,
+        "text": "72,000 Potch"
+      }
+    ],
+    "reward_texts": [
+      "72,000 Potch"
+    ],
+    "matrix": [
+      [
+        2,
+        72,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 159,
+    "hex": "0x9F",
+    "binary": "10011111",
+    "head": "Turtle",
+    "body": "Turtle",
+    "legs": "Unicorn",
+    "tail": "Rabbit",
+    "combo": "Turtle Head / Turtle Body / Unicorn Legs / Rabbit Tail",
+    "rewards": [],
+    "reward_texts": [],
+    "matrix": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 160,
+    "hex": "0xA0",
+    "binary": "10100000",
+    "head": "Dragon",
+    "body": "Dragon",
+    "legs": "Rabbit",
+    "tail": "Rabbit",
+    "combo": "Dragon Head / Dragon Body / Rabbit Legs / Rabbit Tail",
+    "rewards": [
+      {
+        "type": "equipment",
+        "kind_id": 1,
+        "item_id": 27,
+        "quantity": 1,
+        "name": "Master Robe",
+        "category": "Equipment",
+        "text": "Master Robe [Equipment #27]"
+      }
+    ],
+    "reward_texts": [
+      "Master Robe [Equipment #27]"
+    ],
+    "matrix": [
+      [
+        0,
+        16,
+        27
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 161,
+    "hex": "0xA1",
+    "binary": "10100001",
+    "head": "Unicorn",
+    "body": "Dragon",
+    "legs": "Rabbit",
+    "tail": "Rabbit",
+    "combo": "Unicorn Head / Dragon Body / Rabbit Legs / Rabbit Tail",
+    "rewards": [
+      {
+        "type": "rune",
+        "kind_id": 2,
+        "item_id": 100,
+        "quantity": 1,
+        "name": "Friendship Orb",
+        "category": "Rune",
+        "text": "Friendship Orb [Rune #100]"
+      }
+    ],
+    "reward_texts": [
+      "Friendship Orb [Rune #100]"
+    ],
+    "matrix": [
+      [
+        0,
+        32,
+        100
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 162,
+    "hex": "0xA2",
+    "binary": "10100010",
+    "head": "Rabbit",
+    "body": "Dragon",
+    "legs": "Rabbit",
+    "tail": "Rabbit",
+    "combo": "Rabbit Head / Dragon Body / Rabbit Legs / Rabbit Tail",
+    "rewards": [
+      {
+        "type": "rune",
+        "kind_id": 2,
+        "item_id": 63,
+        "quantity": 1,
+        "name": "Prosperity Orb",
+        "category": "Rune",
+        "text": "Prosperity Orb [Rune #63]"
+      }
+    ],
+    "reward_texts": [
+      "Prosperity Orb [Rune #63]"
+    ],
+    "matrix": [
+      [
+        0,
+        32,
+        63
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 163,
+    "hex": "0xA3",
+    "binary": "10100011",
+    "head": "Turtle",
+    "body": "Dragon",
+    "legs": "Rabbit",
+    "tail": "Rabbit",
+    "combo": "Turtle Head / Dragon Body / Rabbit Legs / Rabbit Tail",
+    "rewards": [
+      {
+        "type": "item",
+        "kind_id": 0,
+        "item_id": 4,
+        "quantity": 4,
+        "name": "Throat Drops",
+        "category": "Item",
+        "text": "4x Throat Drops [Item #4]"
+      }
+    ],
+    "reward_texts": [
+      "4x Throat Drops [Item #4]"
+    ],
+    "matrix": [
+      [
+        0,
+        4,
+        4
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 164,
+    "hex": "0xA4",
+    "binary": "10100100",
+    "head": "Dragon",
+    "body": "Unicorn",
+    "legs": "Rabbit",
+    "tail": "Rabbit",
+    "combo": "Dragon Head / Unicorn Body / Rabbit Legs / Rabbit Tail",
+    "rewards": [
+      {
+        "type": "equipment",
+        "kind_id": 1,
+        "item_id": 23,
+        "quantity": 1,
+        "name": "Magic Robe",
+        "category": "Equipment",
+        "text": "Magic Robe [Equipment #23]"
+      }
+    ],
+    "reward_texts": [
+      "Magic Robe [Equipment #23]"
+    ],
+    "matrix": [
+      [
+        0,
+        16,
+        23
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 165,
+    "hex": "0xA5",
+    "binary": "10100101",
+    "head": "Unicorn",
+    "body": "Unicorn",
+    "legs": "Rabbit",
+    "tail": "Rabbit",
+    "combo": "Unicorn Head / Unicorn Body / Rabbit Legs / Rabbit Tail",
+    "rewards": [
+      {
+        "type": "rune",
+        "kind_id": 2,
+        "item_id": 93,
+        "quantity": 1,
+        "name": "Magic Drain Orb",
+        "category": "Rune",
+        "text": "Magic Drain Orb [Rune #93]"
+      }
+    ],
+    "reward_texts": [
+      "Magic Drain Orb [Rune #93]"
+    ],
+    "matrix": [
+      [
+        0,
+        32,
+        93
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 166,
+    "hex": "0xA6",
+    "binary": "10100110",
+    "head": "Rabbit",
+    "body": "Unicorn",
+    "legs": "Rabbit",
+    "tail": "Rabbit",
+    "combo": "Rabbit Head / Unicorn Body / Rabbit Legs / Rabbit Tail",
+    "rewards": [
+      {
+        "type": "potch",
+        "amount": 120000,
+        "text": "120,000 Potch"
+      }
+    ],
+    "reward_texts": [
+      "120,000 Potch"
+    ],
+    "matrix": [
+      [
+        2,
+        120,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 167,
+    "hex": "0xA7",
+    "binary": "10100111",
+    "head": "Turtle",
+    "body": "Unicorn",
+    "legs": "Rabbit",
+    "tail": "Rabbit",
+    "combo": "Turtle Head / Unicorn Body / Rabbit Legs / Rabbit Tail",
+    "rewards": [
+      {
+        "type": "item",
+        "kind_id": 0,
+        "item_id": 12,
+        "quantity": 9,
+        "name": "Wind of Sleep",
+        "category": "Item",
+        "text": "9x Wind of Sleep [Item #12]"
+      }
+    ],
+    "reward_texts": [
+      "9x Wind of Sleep [Item #12]"
+    ],
+    "matrix": [
+      [
+        0,
+        9,
+        12
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 168,
+    "hex": "0xA8",
+    "binary": "10101000",
+    "head": "Dragon",
+    "body": "Rabbit",
+    "legs": "Rabbit",
+    "tail": "Rabbit",
+    "combo": "Dragon Head / Rabbit Body / Rabbit Legs / Rabbit Tail",
+    "rewards": [
+      {
+        "type": "equipment",
+        "kind_id": 1,
+        "item_id": 32,
+        "quantity": 1,
+        "name": "Earth Armor",
+        "category": "Equipment",
+        "text": "Earth Armor [Equipment #32]"
+      }
+    ],
+    "reward_texts": [
+      "Earth Armor [Equipment #32]"
+    ],
+    "matrix": [
+      [
+        0,
+        16,
+        32
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 169,
+    "hex": "0xA9",
+    "binary": "10101001",
+    "head": "Unicorn",
+    "body": "Rabbit",
+    "legs": "Rabbit",
+    "tail": "Rabbit",
+    "combo": "Unicorn Head / Rabbit Body / Rabbit Legs / Rabbit Tail",
+    "rewards": [
+      {
+        "type": "rune",
+        "kind_id": 2,
+        "item_id": 7,
+        "quantity": 1,
+        "name": "Earth Orb",
+        "category": "Rune",
+        "text": "Earth Orb [Rune #7]"
+      }
+    ],
+    "reward_texts": [
+      "Earth Orb [Rune #7]"
+    ],
+    "matrix": [
+      [
+        0,
+        32,
+        7
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 170,
+    "hex": "0xAA",
+    "binary": "10101010",
+    "head": "Rabbit",
+    "body": "Rabbit",
+    "legs": "Rabbit",
+    "tail": "Rabbit",
+    "combo": "Rabbit Head / Rabbit Body / Rabbit Legs / Rabbit Tail",
+    "rewards": [
+      {
+        "type": "potch",
+        "amount": 110000,
+        "text": "110,000 Potch"
+      }
+    ],
+    "reward_texts": [
+      "110,000 Potch"
+    ],
+    "matrix": [
+      [
+        2,
+        110,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 171,
+    "hex": "0xAB",
+    "binary": "10101011",
+    "head": "Turtle",
+    "body": "Rabbit",
+    "legs": "Rabbit",
+    "tail": "Rabbit",
+    "combo": "Turtle Head / Rabbit Body / Rabbit Legs / Rabbit Tail",
+    "rewards": [
+      {
+        "type": "item",
+        "kind_id": 0,
+        "item_id": 17,
+        "quantity": 9,
+        "name": "Canopy Defense",
+        "category": "Item",
+        "text": "9x Canopy Defense [Item #17]"
+      }
+    ],
+    "reward_texts": [
+      "9x Canopy Defense [Item #17]"
+    ],
+    "matrix": [
+      [
+        0,
+        9,
+        17
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 172,
+    "hex": "0xAC",
+    "binary": "10101100",
+    "head": "Dragon",
+    "body": "Turtle",
+    "legs": "Rabbit",
+    "tail": "Rabbit",
+    "combo": "Dragon Head / Turtle Body / Rabbit Legs / Rabbit Tail",
+    "rewards": [
+      {
+        "type": "equipment",
+        "kind_id": 1,
+        "item_id": 22,
+        "quantity": 1,
+        "name": "Half Plate",
+        "category": "Equipment",
+        "text": "Half Plate [Equipment #22]"
+      }
+    ],
+    "reward_texts": [
+      "Half Plate [Equipment #22]"
+    ],
+    "matrix": [
+      [
+        0,
+        16,
+        22
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 173,
+    "hex": "0xAD",
+    "binary": "10101101",
+    "head": "Unicorn",
+    "body": "Turtle",
+    "legs": "Rabbit",
+    "tail": "Rabbit",
+    "combo": "Unicorn Head / Turtle Body / Rabbit Legs / Rabbit Tail",
+    "rewards": [
+      {
+        "type": "rune",
+        "kind_id": 2,
+        "item_id": 102,
+        "quantity": 1,
+        "name": "Kindness Orb",
+        "category": "Rune",
+        "text": "Kindness Orb [Rune #102]"
+      }
+    ],
+    "reward_texts": [
+      "Kindness Orb [Rune #102]"
+    ],
+    "matrix": [
+      [
+        0,
+        32,
+        102
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 174,
+    "hex": "0xAE",
+    "binary": "10101110",
+    "head": "Rabbit",
+    "body": "Turtle",
+    "legs": "Rabbit",
+    "tail": "Rabbit",
+    "combo": "Rabbit Head / Turtle Body / Rabbit Legs / Rabbit Tail",
+    "rewards": [
+      {
+        "type": "potch",
+        "amount": 98000,
+        "text": "98,000 Potch"
+      }
+    ],
+    "reward_texts": [
+      "98,000 Potch"
+    ],
+    "matrix": [
+      [
+        2,
+        98,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 175,
+    "hex": "0xAF",
+    "binary": "10101111",
+    "head": "Turtle",
+    "body": "Turtle",
+    "legs": "Rabbit",
+    "tail": "Rabbit",
+    "combo": "Turtle Head / Turtle Body / Rabbit Legs / Rabbit Tail",
+    "rewards": [
+      {
+        "type": "dish",
+        "kind_id": 6,
+        "item_id": 168,
+        "quantity": 6,
+        "name": "Red Curry",
+        "category": "Dish",
+        "text": "6x Red Curry [Dish #168]"
+      }
+    ],
+    "reward_texts": [
+      "6x Red Curry [Dish #168]"
+    ],
+    "matrix": [
+      [
+        0,
+        102,
+        168
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 176,
+    "hex": "0xB0",
+    "binary": "10110000",
+    "head": "Dragon",
+    "body": "Dragon",
+    "legs": "Turtle",
+    "tail": "Rabbit",
+    "combo": "Dragon Head / Dragon Body / Turtle Legs / Rabbit Tail",
+    "rewards": [
+      {
+        "type": "equipment",
+        "kind_id": 1,
+        "item_id": 31,
+        "quantity": 1,
+        "name": "Robe of Mist",
+        "category": "Equipment",
+        "text": "Robe of Mist [Equipment #31]"
+      }
+    ],
+    "reward_texts": [
+      "Robe of Mist [Equipment #31]"
+    ],
+    "matrix": [
+      [
+        0,
+        16,
+        31
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 177,
+    "hex": "0xB1",
+    "binary": "10110001",
+    "head": "Unicorn",
+    "body": "Dragon",
+    "legs": "Turtle",
+    "tail": "Rabbit",
+    "combo": "Unicorn Head / Dragon Body / Turtle Legs / Rabbit Tail",
+    "rewards": [
+      {
+        "type": "rune",
+        "kind_id": 2,
+        "item_id": 30,
+        "quantity": 1,
+        "name": "Nymph Orb",
+        "category": "Rune",
+        "text": "Nymph Orb [Rune #30]"
+      }
+    ],
+    "reward_texts": [
+      "Nymph Orb [Rune #30]"
+    ],
+    "matrix": [
+      [
+        0,
+        32,
+        30
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 178,
+    "hex": "0xB2",
+    "binary": "10110010",
+    "head": "Rabbit",
+    "body": "Dragon",
+    "legs": "Turtle",
+    "tail": "Rabbit",
+    "combo": "Rabbit Head / Dragon Body / Turtle Legs / Rabbit Tail",
+    "rewards": [
+      {
+        "type": "potch",
+        "amount": 55000,
+        "text": "55,000 Potch"
+      }
+    ],
+    "reward_texts": [
+      "55,000 Potch"
+    ],
+    "matrix": [
+      [
+        2,
+        55,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 179,
+    "hex": "0xB3",
+    "binary": "10110011",
+    "head": "Turtle",
+    "body": "Dragon",
+    "legs": "Turtle",
+    "tail": "Rabbit",
+    "combo": "Turtle Head / Dragon Body / Turtle Legs / Rabbit Tail",
+    "rewards": [
+      {
+        "type": "dish",
+        "kind_id": 6,
+        "item_id": 157,
+        "quantity": 9,
+        "name": "Tonkatsu",
+        "category": "Dish",
+        "text": "9x Tonkatsu [Dish #157]"
+      }
+    ],
+    "reward_texts": [
+      "9x Tonkatsu [Dish #157]"
+    ],
+    "matrix": [
+      [
+        0,
+        105,
+        157
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 180,
+    "hex": "0xB4",
+    "binary": "10110100",
+    "head": "Dragon",
+    "body": "Unicorn",
+    "legs": "Turtle",
+    "tail": "Rabbit",
+    "combo": "Dragon Head / Unicorn Body / Turtle Legs / Rabbit Tail",
+    "rewards": [
+      {
+        "type": "equipment",
+        "kind_id": 1,
+        "item_id": 28,
+        "quantity": 1,
+        "name": "Full Plate",
+        "category": "Equipment",
+        "text": "Full Plate [Equipment #28]"
+      }
+    ],
+    "reward_texts": [
+      "Full Plate [Equipment #28]"
+    ],
+    "matrix": [
+      [
+        0,
+        16,
+        28
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 181,
+    "hex": "0xB5",
+    "binary": "10110101",
+    "head": "Unicorn",
+    "body": "Unicorn",
+    "legs": "Turtle",
+    "tail": "Rabbit",
+    "combo": "Unicorn Head / Unicorn Body / Turtle Legs / Rabbit Tail",
+    "rewards": [
+      {
+        "type": "rune",
+        "kind_id": 2,
+        "item_id": 103,
+        "quantity": 1,
+        "name": "Rune #103",
+        "category": "Rune",
+        "text": "Rune #103 [Rune #103]"
+      }
+    ],
+    "reward_texts": [
+      "Rune #103 [Rune #103]"
+    ],
+    "matrix": [
+      [
+        0,
+        32,
+        103
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 182,
+    "hex": "0xB6",
+    "binary": "10110110",
+    "head": "Rabbit",
+    "body": "Unicorn",
+    "legs": "Turtle",
+    "tail": "Rabbit",
+    "combo": "Rabbit Head / Unicorn Body / Turtle Legs / Rabbit Tail",
+    "rewards": [
+      {
+        "type": "potch",
+        "amount": 28000,
+        "text": "28,000 Potch"
+      }
+    ],
+    "reward_texts": [
+      "28,000 Potch"
+    ],
+    "matrix": [
+      [
+        2,
+        28,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 183,
+    "hex": "0xB7",
+    "binary": "10110111",
+    "head": "Turtle",
+    "body": "Unicorn",
+    "legs": "Turtle",
+    "tail": "Rabbit",
+    "combo": "Turtle Head / Unicorn Body / Turtle Legs / Rabbit Tail",
+    "rewards": [
+      {
+        "type": "dish",
+        "kind_id": 6,
+        "item_id": 146,
+        "quantity": 9,
+        "name": "Pancakes",
+        "category": "Dish",
+        "text": "9x Pancakes [Dish #146]"
+      }
+    ],
+    "reward_texts": [
+      "9x Pancakes [Dish #146]"
+    ],
+    "matrix": [
+      [
+        0,
+        105,
+        146
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 184,
+    "hex": "0xB8",
+    "binary": "10111000",
+    "head": "Dragon",
+    "body": "Rabbit",
+    "legs": "Turtle",
+    "tail": "Rabbit",
+    "combo": "Dragon Head / Rabbit Body / Turtle Legs / Rabbit Tail",
+    "rewards": [
+      {
+        "type": "equipment",
+        "kind_id": 1,
+        "item_id": 29,
+        "quantity": 1,
+        "name": "Taikyoku Wear",
+        "category": "Equipment",
+        "text": "Taikyoku Wear [Equipment #29]"
+      }
+    ],
+    "reward_texts": [
+      "Taikyoku Wear [Equipment #29]"
+    ],
+    "matrix": [
+      [
+        0,
+        16,
+        29
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 185,
+    "hex": "0xB9",
+    "binary": "10111001",
+    "head": "Unicorn",
+    "body": "Rabbit",
+    "legs": "Turtle",
+    "tail": "Rabbit",
+    "combo": "Unicorn Head / Rabbit Body / Turtle Legs / Rabbit Tail",
+    "rewards": [
+      {
+        "type": "rune",
+        "kind_id": 2,
+        "item_id": 31,
+        "quantity": 1,
+        "name": "Dryad Orb",
+        "category": "Rune",
+        "text": "Dryad Orb [Rune #31]"
+      }
+    ],
+    "reward_texts": [
+      "Dryad Orb [Rune #31]"
+    ],
+    "matrix": [
+      [
+        0,
+        32,
+        31
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 186,
+    "hex": "0xBA",
+    "binary": "10111010",
+    "head": "Rabbit",
+    "body": "Rabbit",
+    "legs": "Turtle",
+    "tail": "Rabbit",
+    "combo": "Rabbit Head / Rabbit Body / Turtle Legs / Rabbit Tail",
+    "rewards": [
+      {
+        "type": "potch",
+        "amount": 78000,
+        "text": "78,000 Potch"
+      }
+    ],
+    "reward_texts": [
+      "78,000 Potch"
+    ],
+    "matrix": [
+      [
+        2,
+        78,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 187,
+    "hex": "0xBB",
+    "binary": "10111011",
+    "head": "Turtle",
+    "body": "Rabbit",
+    "legs": "Turtle",
+    "tail": "Rabbit",
+    "combo": "Turtle Head / Rabbit Body / Turtle Legs / Rabbit Tail",
+    "rewards": [
+      {
+        "type": "rune",
+        "kind_id": 2,
+        "item_id": 6,
+        "quantity": 1,
+        "name": "Cyclone Orb",
+        "category": "Rune",
+        "text": "Cyclone Orb [Rune #6]"
+      }
+    ],
+    "reward_texts": [
+      "Cyclone Orb [Rune #6]"
+    ],
+    "matrix": [
+      [
+        0,
+        32,
+        6
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 188,
+    "hex": "0xBC",
+    "binary": "10111100",
+    "head": "Dragon",
+    "body": "Turtle",
+    "legs": "Turtle",
+    "tail": "Rabbit",
+    "combo": "Dragon Head / Turtle Body / Turtle Legs / Rabbit Tail",
+    "rewards": [
+      {
+        "type": "equipment",
+        "kind_id": 1,
+        "item_id": 36,
+        "quantity": 1,
+        "name": "Blood Armor",
+        "category": "Equipment",
+        "text": "Blood Armor [Equipment #36]"
+      }
+    ],
+    "reward_texts": [
+      "Blood Armor [Equipment #36]"
+    ],
+    "matrix": [
+      [
+        0,
+        16,
+        36
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 189,
+    "hex": "0xBD",
+    "binary": "10111101",
+    "head": "Unicorn",
+    "body": "Turtle",
+    "legs": "Turtle",
+    "tail": "Rabbit",
+    "combo": "Unicorn Head / Turtle Body / Turtle Legs / Rabbit Tail",
+    "rewards": [
+      {
+        "type": "rune",
+        "kind_id": 2,
+        "item_id": 3,
+        "quantity": 1,
+        "name": "Water Orb",
+        "category": "Rune",
+        "text": "Water Orb [Rune #3]"
+      }
+    ],
+    "reward_texts": [
+      "Water Orb [Rune #3]"
+    ],
+    "matrix": [
+      [
+        0,
+        32,
+        3
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 190,
+    "hex": "0xBE",
+    "binary": "10111110",
+    "head": "Rabbit",
+    "body": "Turtle",
+    "legs": "Turtle",
+    "tail": "Rabbit",
+    "combo": "Rabbit Head / Turtle Body / Turtle Legs / Rabbit Tail",
+    "rewards": [
+      {
+        "type": "potch",
+        "amount": 83000,
+        "text": "83,000 Potch"
+      }
+    ],
+    "reward_texts": [
+      "83,000 Potch"
+    ],
+    "matrix": [
+      [
+        2,
+        83,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 191,
+    "hex": "0xBF",
+    "binary": "10111111",
+    "head": "Turtle",
+    "body": "Turtle",
+    "legs": "Turtle",
+    "tail": "Rabbit",
+    "combo": "Turtle Head / Turtle Body / Turtle Legs / Rabbit Tail",
+    "rewards": [
+      {
+        "type": "trade",
+        "kind_id": 4,
+        "item_id": 34,
+        "quantity": 1,
+        "name": "Wine",
+        "category": "Trade",
+        "text": "Wine [Trade #34]"
+      }
+    ],
+    "reward_texts": [
+      "Wine [Trade #34]"
+    ],
+    "matrix": [
+      [
+        0,
+        64,
+        34
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 192,
+    "hex": "0xC0",
+    "binary": "11000000",
+    "head": "Dragon",
+    "body": "Dragon",
+    "legs": "Dragon",
+    "tail": "Turtle",
+    "combo": "Dragon Head / Dragon Body / Dragon Legs / Turtle Tail",
+    "rewards": [
+      {
+        "type": "equipment",
+        "kind_id": 1,
+        "item_id": 84,
+        "quantity": 1,
+        "name": "Lucky Ring",
+        "category": "Equipment",
+        "text": "Lucky Ring [Equipment #84]"
+      }
+    ],
+    "reward_texts": [
+      "Lucky Ring [Equipment #84]"
+    ],
+    "matrix": [
+      [
+        0,
+        16,
+        84
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 193,
+    "hex": "0xC1",
+    "binary": "11000001",
+    "head": "Unicorn",
+    "body": "Dragon",
+    "legs": "Dragon",
+    "tail": "Turtle",
+    "combo": "Unicorn Head / Dragon Body / Dragon Legs / Turtle Tail",
+    "rewards": [
+      {
+        "type": "rune",
+        "kind_id": 2,
+        "item_id": 75,
+        "quantity": 1,
+        "name": "Drain Orb",
+        "category": "Rune",
+        "text": "Drain Orb [Rune #75]"
+      }
+    ],
+    "reward_texts": [
+      "Drain Orb [Rune #75]"
+    ],
+    "matrix": [
+      [
+        0,
+        32,
+        75
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 194,
+    "hex": "0xC2",
+    "binary": "11000010",
+    "head": "Rabbit",
+    "body": "Dragon",
+    "legs": "Dragon",
+    "tail": "Turtle",
+    "combo": "Rabbit Head / Dragon Body / Dragon Legs / Turtle Tail",
+    "rewards": [
+      {
+        "type": "potch",
+        "amount": 57000,
+        "text": "57,000 Potch"
+      }
+    ],
+    "reward_texts": [
+      "57,000 Potch"
+    ],
+    "matrix": [
+      [
+        2,
+        57,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 195,
+    "hex": "0xC3",
+    "binary": "11000011",
+    "head": "Turtle",
+    "body": "Dragon",
+    "legs": "Dragon",
+    "tail": "Turtle",
+    "combo": "Turtle Head / Dragon Body / Dragon Legs / Turtle Tail",
+    "rewards": [],
+    "reward_texts": [],
+    "matrix": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 196,
+    "hex": "0xC4",
+    "binary": "11000100",
+    "head": "Dragon",
+    "body": "Unicorn",
+    "legs": "Dragon",
+    "tail": "Turtle",
+    "combo": "Dragon Head / Unicorn Body / Dragon Legs / Turtle Tail",
+    "rewards": [
+      {
+        "type": "equipment",
+        "kind_id": 1,
+        "item_id": 69,
+        "quantity": 1,
+        "name": "Fire Emblem",
+        "category": "Equipment",
+        "text": "Fire Emblem [Equipment #69]"
+      }
+    ],
+    "reward_texts": [
+      "Fire Emblem [Equipment #69]"
+    ],
+    "matrix": [
+      [
+        0,
+        16,
+        69
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 197,
+    "hex": "0xC5",
+    "binary": "11000101",
+    "head": "Unicorn",
+    "body": "Unicorn",
+    "legs": "Dragon",
+    "tail": "Turtle",
+    "combo": "Unicorn Head / Unicorn Body / Dragon Legs / Turtle Tail",
+    "rewards": [
+      {
+        "type": "rune",
+        "kind_id": 2,
+        "item_id": 76,
+        "quantity": 1,
+        "name": "Barrier Orb",
+        "category": "Rune",
+        "text": "Barrier Orb [Rune #76]"
+      }
+    ],
+    "reward_texts": [
+      "Barrier Orb [Rune #76]"
+    ],
+    "matrix": [
+      [
+        0,
+        32,
+        76
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 198,
+    "hex": "0xC6",
+    "binary": "11000110",
+    "head": "Rabbit",
+    "body": "Unicorn",
+    "legs": "Dragon",
+    "tail": "Turtle",
+    "combo": "Rabbit Head / Unicorn Body / Dragon Legs / Turtle Tail",
+    "rewards": [
+      {
+        "type": "potch",
+        "amount": 22000,
+        "text": "22,000 Potch"
+      }
+    ],
+    "reward_texts": [
+      "22,000 Potch"
+    ],
+    "matrix": [
+      [
+        2,
+        22,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 199,
+    "hex": "0xC7",
+    "binary": "11000111",
+    "head": "Turtle",
+    "body": "Unicorn",
+    "legs": "Dragon",
+    "tail": "Turtle",
+    "combo": "Turtle Head / Unicorn Body / Dragon Legs / Turtle Tail",
+    "rewards": [],
+    "reward_texts": [],
+    "matrix": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 200,
+    "hex": "0xC8",
+    "binary": "11001000",
+    "head": "Dragon",
+    "body": "Rabbit",
+    "legs": "Dragon",
+    "tail": "Turtle",
+    "combo": "Dragon Head / Rabbit Body / Dragon Legs / Turtle Tail",
+    "rewards": [
+      {
+        "type": "equipment",
+        "kind_id": 1,
+        "item_id": 40,
+        "quantity": 1,
+        "name": "Kite Shield",
+        "category": "Equipment",
+        "text": "Kite Shield [Equipment #40]"
+      }
+    ],
+    "reward_texts": [
+      "Kite Shield [Equipment #40]"
+    ],
+    "matrix": [
+      [
+        0,
+        16,
+        40
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 201,
+    "hex": "0xC9",
+    "binary": "11001001",
+    "head": "Unicorn",
+    "body": "Rabbit",
+    "legs": "Dragon",
+    "tail": "Turtle",
+    "combo": "Unicorn Head / Rabbit Body / Dragon Legs / Turtle Tail",
+    "rewards": [
+      {
+        "type": "rune",
+        "kind_id": 2,
+        "item_id": 77,
+        "quantity": 1,
+        "name": "Balance Orb",
+        "category": "Rune",
+        "text": "Balance Orb [Rune #77]"
+      }
+    ],
+    "reward_texts": [
+      "Balance Orb [Rune #77]"
+    ],
+    "matrix": [
+      [
+        0,
+        32,
+        77
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 202,
+    "hex": "0xCA",
+    "binary": "11001010",
+    "head": "Rabbit",
+    "body": "Rabbit",
+    "legs": "Dragon",
+    "tail": "Turtle",
+    "combo": "Rabbit Head / Rabbit Body / Dragon Legs / Turtle Tail",
+    "rewards": [
+      {
+        "type": "potch",
+        "amount": 56000,
+        "text": "56,000 Potch"
+      }
+    ],
+    "reward_texts": [
+      "56,000 Potch"
+    ],
+    "matrix": [
+      [
+        2,
+        56,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 203,
+    "hex": "0xCB",
+    "binary": "11001011",
+    "head": "Turtle",
+    "body": "Rabbit",
+    "legs": "Dragon",
+    "tail": "Turtle",
+    "combo": "Turtle Head / Rabbit Body / Dragon Legs / Turtle Tail",
+    "rewards": [
+      {
+        "type": "item",
+        "kind_id": 0,
+        "item_id": 5,
+        "quantity": 4,
+        "name": "Needle",
+        "category": "Item",
+        "text": "4x Needle [Item #5]"
+      }
+    ],
+    "reward_texts": [
+      "4x Needle [Item #5]"
+    ],
+    "matrix": [
+      [
+        0,
+        4,
+        5
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 204,
+    "hex": "0xCC",
+    "binary": "11001100",
+    "head": "Dragon",
+    "body": "Turtle",
+    "legs": "Dragon",
+    "tail": "Turtle",
+    "combo": "Dragon Head / Turtle Body / Dragon Legs / Turtle Tail",
+    "rewards": [
+      {
+        "type": "equipment",
+        "kind_id": 1,
+        "item_id": 84,
+        "quantity": 1,
+        "name": "Lucky Ring",
+        "category": "Equipment",
+        "text": "Lucky Ring [Equipment #84]"
+      }
+    ],
+    "reward_texts": [
+      "Lucky Ring [Equipment #84]"
+    ],
+    "matrix": [
+      [
+        0,
+        16,
+        84
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 205,
+    "hex": "0xCD",
+    "binary": "11001101",
+    "head": "Unicorn",
+    "body": "Turtle",
+    "legs": "Dragon",
+    "tail": "Turtle",
+    "combo": "Unicorn Head / Turtle Body / Dragon Legs / Turtle Tail",
+    "rewards": [
+      {
+        "type": "rune",
+        "kind_id": 2,
+        "item_id": 78,
+        "quantity": 1,
+        "name": "Fire Sealing Orb",
+        "category": "Rune",
+        "text": "Fire Sealing Orb [Rune #78]"
+      }
+    ],
+    "reward_texts": [
+      "Fire Sealing Orb [Rune #78]"
+    ],
+    "matrix": [
+      [
+        0,
+        32,
+        78
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 206,
+    "hex": "0xCE",
+    "binary": "11001110",
+    "head": "Rabbit",
+    "body": "Turtle",
+    "legs": "Dragon",
+    "tail": "Turtle",
+    "combo": "Rabbit Head / Turtle Body / Dragon Legs / Turtle Tail",
+    "rewards": [
+      {
+        "type": "potch",
+        "amount": 14000,
+        "text": "14,000 Potch"
+      }
+    ],
+    "reward_texts": [
+      "14,000 Potch"
+    ],
+    "matrix": [
+      [
+        2,
+        14,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 207,
+    "hex": "0xCF",
+    "binary": "11001111",
+    "head": "Turtle",
+    "body": "Turtle",
+    "legs": "Dragon",
+    "tail": "Turtle",
+    "combo": "Turtle Head / Turtle Body / Dragon Legs / Turtle Tail",
+    "rewards": [
+      {
+        "type": "item",
+        "kind_id": 0,
+        "item_id": 8,
+        "quantity": 9,
+        "name": "Fire Wall",
+        "category": "Item",
+        "text": "9x Fire Wall [Item #8]"
+      }
+    ],
+    "reward_texts": [
+      "9x Fire Wall [Item #8]"
+    ],
+    "matrix": [
+      [
+        0,
+        9,
+        8
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 208,
+    "hex": "0xD0",
+    "binary": "11010000",
+    "head": "Dragon",
+    "body": "Dragon",
+    "legs": "Unicorn",
+    "tail": "Turtle",
+    "combo": "Dragon Head / Dragon Body / Unicorn Legs / Turtle Tail",
+    "rewards": [
+      {
+        "type": "equipment",
+        "kind_id": 1,
+        "item_id": 73,
+        "quantity": 1,
+        "name": "Sun Badge",
+        "category": "Equipment",
+        "text": "Sun Badge [Equipment #73]"
+      }
+    ],
+    "reward_texts": [
+      "Sun Badge [Equipment #73]"
+    ],
+    "matrix": [
+      [
+        0,
+        16,
+        73
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 209,
+    "hex": "0xD1",
+    "binary": "11010001",
+    "head": "Unicorn",
+    "body": "Dragon",
+    "legs": "Unicorn",
+    "tail": "Turtle",
+    "combo": "Unicorn Head / Dragon Body / Unicorn Legs / Turtle Tail",
+    "rewards": [
+      {
+        "type": "rune",
+        "kind_id": 2,
+        "item_id": 16,
+        "quantity": 1,
+        "name": "Darkness Orb",
+        "category": "Rune",
+        "text": "Darkness Orb [Rune #16]"
+      }
+    ],
+    "reward_texts": [
+      "Darkness Orb [Rune #16]"
+    ],
+    "matrix": [
+      [
+        0,
+        32,
+        16
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 210,
+    "hex": "0xD2",
+    "binary": "11010010",
+    "head": "Rabbit",
+    "body": "Dragon",
+    "legs": "Unicorn",
+    "tail": "Turtle",
+    "combo": "Rabbit Head / Dragon Body / Unicorn Legs / Turtle Tail",
+    "rewards": [],
+    "reward_texts": [],
+    "matrix": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 211,
+    "hex": "0xD3",
+    "binary": "11010011",
+    "head": "Turtle",
+    "body": "Dragon",
+    "legs": "Unicorn",
+    "tail": "Turtle",
+    "combo": "Turtle Head / Dragon Body / Unicorn Legs / Turtle Tail",
+    "rewards": [
+      {
+        "type": "item",
+        "kind_id": 0,
+        "item_id": 18,
+        "quantity": 9,
+        "name": "Angry Blow",
+        "category": "Item",
+        "text": "9x Angry Blow [Item #18]"
+      }
+    ],
+    "reward_texts": [
+      "9x Angry Blow [Item #18]"
+    ],
+    "matrix": [
+      [
+        0,
+        9,
+        18
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 212,
+    "hex": "0xD4",
+    "binary": "11010100",
+    "head": "Dragon",
+    "body": "Unicorn",
+    "legs": "Unicorn",
+    "tail": "Turtle",
+    "combo": "Dragon Head / Unicorn Body / Unicorn Legs / Turtle Tail",
+    "rewards": [
+      {
+        "type": "equipment",
+        "kind_id": 1,
+        "item_id": 42,
+        "quantity": 1,
+        "name": "Silver Shield",
+        "category": "Equipment",
+        "text": "Silver Shield [Equipment #42]"
+      }
+    ],
+    "reward_texts": [
+      "Silver Shield [Equipment #42]"
+    ],
+    "matrix": [
+      [
+        0,
+        16,
+        42
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 213,
+    "hex": "0xD5",
+    "binary": "11010101",
+    "head": "Unicorn",
+    "body": "Unicorn",
+    "legs": "Unicorn",
+    "tail": "Turtle",
+    "combo": "Unicorn Head / Unicorn Body / Unicorn Legs / Turtle Tail",
+    "rewards": [
+      {
+        "type": "rune",
+        "kind_id": 2,
+        "item_id": 81,
+        "quantity": 1,
+        "name": "Medicine Orb",
+        "category": "Rune",
+        "text": "Medicine Orb [Rune #81]"
+      }
+    ],
+    "reward_texts": [
+      "Medicine Orb [Rune #81]"
+    ],
+    "matrix": [
+      [
+        0,
+        32,
+        81
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 214,
+    "hex": "0xD6",
+    "binary": "11010110",
+    "head": "Rabbit",
+    "body": "Unicorn",
+    "legs": "Unicorn",
+    "tail": "Turtle",
+    "combo": "Rabbit Head / Unicorn Body / Unicorn Legs / Turtle Tail",
+    "rewards": [
+      {
+        "type": "potch",
+        "amount": 14000,
+        "text": "14,000 Potch"
+      }
+    ],
+    "reward_texts": [
+      "14,000 Potch"
+    ],
+    "matrix": [
+      [
+        2,
+        14,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 215,
+    "hex": "0xD7",
+    "binary": "11010111",
+    "head": "Turtle",
+    "body": "Unicorn",
+    "legs": "Unicorn",
+    "tail": "Turtle",
+    "combo": "Turtle Head / Unicorn Body / Unicorn Legs / Turtle Tail",
+    "rewards": [
+      {
+        "type": "dish",
+        "kind_id": 6,
+        "item_id": 166,
+        "quantity": 6,
+        "name": "Japanese Curry",
+        "category": "Dish",
+        "text": "6x Japanese Curry [Dish #166]"
+      }
+    ],
+    "reward_texts": [
+      "6x Japanese Curry [Dish #166]"
+    ],
+    "matrix": [
+      [
+        0,
+        102,
+        166
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 216,
+    "hex": "0xD8",
+    "binary": "11011000",
+    "head": "Dragon",
+    "body": "Rabbit",
+    "legs": "Unicorn",
+    "tail": "Turtle",
+    "combo": "Dragon Head / Rabbit Body / Unicorn Legs / Turtle Tail",
+    "rewards": [
+      {
+        "type": "equipment",
+        "kind_id": 1,
+        "item_id": 74,
+        "quantity": 1,
+        "name": "Fish Badge",
+        "category": "Equipment",
+        "text": "Fish Badge [Equipment #74]"
+      }
+    ],
+    "reward_texts": [
+      "Fish Badge [Equipment #74]"
+    ],
+    "matrix": [
+      [
+        0,
+        16,
+        74
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 217,
+    "hex": "0xD9",
+    "binary": "11011001",
+    "head": "Unicorn",
+    "body": "Rabbit",
+    "legs": "Unicorn",
+    "tail": "Turtle",
+    "combo": "Unicorn Head / Rabbit Body / Unicorn Legs / Turtle Tail",
+    "rewards": [
+      {
+        "type": "rune",
+        "kind_id": 2,
+        "item_id": 12,
+        "quantity": 1,
+        "name": "Resurrection Orb",
+        "category": "Rune",
+        "text": "Resurrection Orb [Rune #12]"
+      }
+    ],
+    "reward_texts": [
+      "Resurrection Orb [Rune #12]"
+    ],
+    "matrix": [
+      [
+        0,
+        32,
+        12
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 218,
+    "hex": "0xDA",
+    "binary": "11011010",
+    "head": "Rabbit",
+    "body": "Rabbit",
+    "legs": "Unicorn",
+    "tail": "Turtle",
+    "combo": "Rabbit Head / Rabbit Body / Unicorn Legs / Turtle Tail",
+    "rewards": [
+      {
+        "type": "potch",
+        "amount": 34000,
+        "text": "34,000 Potch"
+      }
+    ],
+    "reward_texts": [
+      "34,000 Potch"
+    ],
+    "matrix": [
+      [
+        2,
+        34,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 219,
+    "hex": "0xDB",
+    "binary": "11011011",
+    "head": "Turtle",
+    "body": "Rabbit",
+    "legs": "Unicorn",
+    "tail": "Turtle",
+    "combo": "Turtle Head / Rabbit Body / Unicorn Legs / Turtle Tail",
+    "rewards": [
+      {
+        "type": "dish",
+        "kind_id": 6,
+        "item_id": 170,
+        "quantity": 8,
+        "name": "Sukiyaki",
+        "category": "Dish",
+        "text": "8x Sukiyaki [Dish #170]"
+      }
+    ],
+    "reward_texts": [
+      "8x Sukiyaki [Dish #170]"
+    ],
+    "matrix": [
+      [
+        0,
+        104,
+        170
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 220,
+    "hex": "0xDC",
+    "binary": "11011100",
+    "head": "Dragon",
+    "body": "Turtle",
+    "legs": "Unicorn",
+    "tail": "Turtle",
+    "combo": "Dragon Head / Turtle Body / Unicorn Legs / Turtle Tail",
+    "rewards": [
+      {
+        "type": "equipment",
+        "kind_id": 1,
+        "item_id": 80,
+        "quantity": 1,
+        "name": "Magic Ring",
+        "category": "Equipment",
+        "text": "Magic Ring [Equipment #80]"
+      }
+    ],
+    "reward_texts": [
+      "Magic Ring [Equipment #80]"
+    ],
+    "matrix": [
+      [
+        0,
+        16,
+        80
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 221,
+    "hex": "0xDD",
+    "binary": "11011101",
+    "head": "Unicorn",
+    "body": "Turtle",
+    "legs": "Unicorn",
+    "tail": "Turtle",
+    "combo": "Unicorn Head / Turtle Body / Unicorn Legs / Turtle Tail",
+    "rewards": [
+      {
+        "type": "rune",
+        "kind_id": 2,
+        "item_id": 71,
+        "quantity": 1,
+        "name": "Phero Orb",
+        "category": "Rune",
+        "text": "Phero Orb [Rune #71]"
+      }
+    ],
+    "reward_texts": [
+      "Phero Orb [Rune #71]"
+    ],
+    "matrix": [
+      [
+        0,
+        32,
+        71
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 222,
+    "hex": "0xDE",
+    "binary": "11011110",
+    "head": "Rabbit",
+    "body": "Turtle",
+    "legs": "Unicorn",
+    "tail": "Turtle",
+    "combo": "Rabbit Head / Turtle Body / Unicorn Legs / Turtle Tail",
+    "rewards": [],
+    "reward_texts": [],
+    "matrix": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 223,
+    "hex": "0xDF",
+    "binary": "11011111",
+    "head": "Turtle",
+    "body": "Turtle",
+    "legs": "Unicorn",
+    "tail": "Turtle",
+    "combo": "Turtle Head / Turtle Body / Unicorn Legs / Turtle Tail",
+    "rewards": [
+      {
+        "type": "dish",
+        "kind_id": 6,
+        "item_id": 226,
+        "quantity": 8,
+        "name": "Ship Combo",
+        "category": "Dish",
+        "text": "8x Ship Combo [Dish #226]"
+      }
+    ],
+    "reward_texts": [
+      "8x Ship Combo [Dish #226]"
+    ],
+    "matrix": [
+      [
+        0,
+        104,
+        226
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 224,
+    "hex": "0xE0",
+    "binary": "11100000",
+    "head": "Dragon",
+    "body": "Dragon",
+    "legs": "Rabbit",
+    "tail": "Turtle",
+    "combo": "Dragon Head / Dragon Body / Rabbit Legs / Turtle Tail",
+    "rewards": [
+      {
+        "type": "equipment",
+        "kind_id": 1,
+        "item_id": 41,
+        "quantity": 1,
+        "name": "Main-Gauche",
+        "category": "Equipment",
+        "text": "Main-Gauche [Equipment #41]"
+      }
+    ],
+    "reward_texts": [
+      "Main-Gauche [Equipment #41]"
+    ],
+    "matrix": [
+      [
+        0,
+        16,
+        41
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 225,
+    "hex": "0xE1",
+    "binary": "11100001",
+    "head": "Unicorn",
+    "body": "Dragon",
+    "legs": "Rabbit",
+    "tail": "Turtle",
+    "combo": "Unicorn Head / Dragon Body / Rabbit Legs / Turtle Tail",
+    "rewards": [
+      {
+        "type": "rune",
+        "kind_id": 2,
+        "item_id": 7,
+        "quantity": 1,
+        "name": "Earth Orb",
+        "category": "Rune",
+        "text": "Earth Orb [Rune #7]"
+      }
+    ],
+    "reward_texts": [
+      "Earth Orb [Rune #7]"
+    ],
+    "matrix": [
+      [
+        0,
+        32,
+        7
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 226,
+    "hex": "0xE2",
+    "binary": "11100010",
+    "head": "Rabbit",
+    "body": "Dragon",
+    "legs": "Rabbit",
+    "tail": "Turtle",
+    "combo": "Rabbit Head / Dragon Body / Rabbit Legs / Turtle Tail",
+    "rewards": [
+      {
+        "type": "potch",
+        "amount": 58000,
+        "text": "58,000 Potch"
+      }
+    ],
+    "reward_texts": [
+      "58,000 Potch"
+    ],
+    "matrix": [
+      [
+        2,
+        58,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 227,
+    "hex": "0xE3",
+    "binary": "11100011",
+    "head": "Turtle",
+    "body": "Dragon",
+    "legs": "Rabbit",
+    "tail": "Turtle",
+    "combo": "Turtle Head / Dragon Body / Rabbit Legs / Turtle Tail",
+    "rewards": [
+      {
+        "type": "item",
+        "kind_id": 0,
+        "item_id": 2,
+        "quantity": 3,
+        "name": "Mega Medicine",
+        "category": "Item",
+        "text": "3x Mega Medicine [Item #2]"
+      }
+    ],
+    "reward_texts": [
+      "3x Mega Medicine [Item #2]"
+    ],
+    "matrix": [
+      [
+        0,
+        3,
+        2
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 228,
+    "hex": "0xE4",
+    "binary": "11100100",
+    "head": "Dragon",
+    "body": "Unicorn",
+    "legs": "Rabbit",
+    "tail": "Turtle",
+    "combo": "Dragon Head / Unicorn Body / Rabbit Legs / Turtle Tail",
+    "rewards": [
+      {
+        "type": "equipment",
+        "kind_id": 1,
+        "item_id": 48,
+        "quantity": 1,
+        "name": "Winged Boots",
+        "category": "Equipment",
+        "text": "Winged Boots [Equipment #48]"
+      }
+    ],
+    "reward_texts": [
+      "Winged Boots [Equipment #48]"
+    ],
+    "matrix": [
+      [
+        0,
+        16,
+        48
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 229,
+    "hex": "0xE5",
+    "binary": "11100101",
+    "head": "Unicorn",
+    "body": "Unicorn",
+    "legs": "Rabbit",
+    "tail": "Turtle",
+    "combo": "Unicorn Head / Unicorn Body / Rabbit Legs / Turtle Tail",
+    "rewards": [
+      {
+        "type": "rune",
+        "kind_id": 2,
+        "item_id": 1,
+        "quantity": 1,
+        "name": "Fire Orb",
+        "category": "Rune",
+        "text": "Fire Orb [Rune #1]"
+      }
+    ],
+    "reward_texts": [
+      "Fire Orb [Rune #1]"
+    ],
+    "matrix": [
+      [
+        0,
+        32,
+        1
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 230,
+    "hex": "0xE6",
+    "binary": "11100110",
+    "head": "Rabbit",
+    "body": "Unicorn",
+    "legs": "Rabbit",
+    "tail": "Turtle",
+    "combo": "Rabbit Head / Unicorn Body / Rabbit Legs / Turtle Tail",
+    "rewards": [
+      {
+        "type": "potch",
+        "amount": 63000,
+        "text": "63,000 Potch"
+      }
+    ],
+    "reward_texts": [
+      "63,000 Potch"
+    ],
+    "matrix": [
+      [
+        2,
+        63,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 231,
+    "hex": "0xE7",
+    "binary": "11100111",
+    "head": "Turtle",
+    "body": "Unicorn",
+    "legs": "Rabbit",
+    "tail": "Turtle",
+    "combo": "Turtle Head / Unicorn Body / Rabbit Legs / Turtle Tail",
+    "rewards": [
+      {
+        "type": "item",
+        "kind_id": 0,
+        "item_id": 24,
+        "quantity": 1,
+        "name": "Stone of Magic-Defense",
+        "category": "Item",
+        "text": "Stone of Magic-Defense [Item #24]"
+      }
+    ],
+    "reward_texts": [
+      "Stone of Magic-Defense [Item #24]"
+    ],
+    "matrix": [
+      [
+        0,
+        0,
+        24
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 232,
+    "hex": "0xE8",
+    "binary": "11101000",
+    "head": "Dragon",
+    "body": "Rabbit",
+    "legs": "Rabbit",
+    "tail": "Turtle",
+    "combo": "Dragon Head / Rabbit Body / Rabbit Legs / Turtle Tail",
+    "rewards": [
+      {
+        "type": "equipment",
+        "kind_id": 1,
+        "item_id": 44,
+        "quantity": 1,
+        "name": "Earth Shield",
+        "category": "Equipment",
+        "text": "Earth Shield [Equipment #44]"
+      }
+    ],
+    "reward_texts": [
+      "Earth Shield [Equipment #44]"
+    ],
+    "matrix": [
+      [
+        0,
+        16,
+        44
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 233,
+    "hex": "0xE9",
+    "binary": "11101001",
+    "head": "Unicorn",
+    "body": "Rabbit",
+    "legs": "Rabbit",
+    "tail": "Turtle",
+    "combo": "Unicorn Head / Rabbit Body / Rabbit Legs / Turtle Tail",
+    "rewards": [
+      {
+        "type": "rune",
+        "kind_id": 2,
+        "item_id": 3,
+        "quantity": 1,
+        "name": "Water Orb",
+        "category": "Rune",
+        "text": "Water Orb [Rune #3]"
+      }
+    ],
+    "reward_texts": [
+      "Water Orb [Rune #3]"
+    ],
+    "matrix": [
+      [
+        0,
+        32,
+        3
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 234,
+    "hex": "0xEA",
+    "binary": "11101010",
+    "head": "Rabbit",
+    "body": "Rabbit",
+    "legs": "Rabbit",
+    "tail": "Turtle",
+    "combo": "Rabbit Head / Rabbit Body / Rabbit Legs / Turtle Tail",
+    "rewards": [],
+    "reward_texts": [],
+    "matrix": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 235,
+    "hex": "0xEB",
+    "binary": "11101011",
+    "head": "Turtle",
+    "body": "Rabbit",
+    "legs": "Rabbit",
+    "tail": "Turtle",
+    "combo": "Turtle Head / Rabbit Body / Rabbit Legs / Turtle Tail",
+    "rewards": [
+      {
+        "type": "item",
+        "kind_id": 0,
+        "item_id": 13,
+        "quantity": 9,
+        "name": "Healing Wind",
+        "category": "Item",
+        "text": "9x Healing Wind [Item #13]"
+      }
+    ],
+    "reward_texts": [
+      "9x Healing Wind [Item #13]"
+    ],
+    "matrix": [
+      [
+        0,
+        9,
+        13
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 236,
+    "hex": "0xEC",
+    "binary": "11101100",
+    "head": "Dragon",
+    "body": "Turtle",
+    "legs": "Rabbit",
+    "tail": "Turtle",
+    "combo": "Dragon Head / Turtle Body / Rabbit Legs / Turtle Tail",
+    "rewards": [
+      {
+        "type": "equipment",
+        "kind_id": 1,
+        "item_id": 81,
+        "quantity": 1,
+        "name": "Speed Ring",
+        "category": "Equipment",
+        "text": "Speed Ring [Equipment #81]"
+      }
+    ],
+    "reward_texts": [
+      "Speed Ring [Equipment #81]"
+    ],
+    "matrix": [
+      [
+        0,
+        16,
+        81
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 237,
+    "hex": "0xED",
+    "binary": "11101101",
+    "head": "Unicorn",
+    "body": "Turtle",
+    "legs": "Rabbit",
+    "tail": "Turtle",
+    "combo": "Unicorn Head / Turtle Body / Rabbit Legs / Turtle Tail",
+    "rewards": [
+      {
+        "type": "rune",
+        "kind_id": 2,
+        "item_id": 5,
+        "quantity": 1,
+        "name": "Wind Orb",
+        "category": "Rune",
+        "text": "Wind Orb [Rune #5]"
+      }
+    ],
+    "reward_texts": [
+      "Wind Orb [Rune #5]"
+    ],
+    "matrix": [
+      [
+        0,
+        32,
+        5
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 238,
+    "hex": "0xEE",
+    "binary": "11101110",
+    "head": "Rabbit",
+    "body": "Turtle",
+    "legs": "Rabbit",
+    "tail": "Turtle",
+    "combo": "Rabbit Head / Turtle Body / Rabbit Legs / Turtle Tail",
+    "rewards": [],
+    "reward_texts": [],
+    "matrix": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 239,
+    "hex": "0xEF",
+    "binary": "11101111",
+    "head": "Turtle",
+    "body": "Turtle",
+    "legs": "Rabbit",
+    "tail": "Turtle",
+    "combo": "Turtle Head / Turtle Body / Rabbit Legs / Turtle Tail",
+    "rewards": [
+      {
+        "type": "item",
+        "kind_id": 0,
+        "item_id": 34,
+        "quantity": 1,
+        "name": "Escape Talisman",
+        "category": "Item",
+        "text": "Escape Talisman [Item #34]"
+      }
+    ],
+    "reward_texts": [
+      "Escape Talisman [Item #34]"
+    ],
+    "matrix": [
+      [
+        0,
+        1,
+        34
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 240,
+    "hex": "0xF0",
+    "binary": "11110000",
+    "head": "Dragon",
+    "body": "Dragon",
+    "legs": "Turtle",
+    "tail": "Turtle",
+    "combo": "Dragon Head / Dragon Body / Turtle Legs / Turtle Tail",
+    "rewards": [
+      {
+        "type": "equipment",
+        "kind_id": 1,
+        "item_id": 46,
+        "quantity": 1,
+        "name": "Boots",
+        "category": "Equipment",
+        "text": "Boots [Equipment #46]"
+      }
+    ],
+    "reward_texts": [
+      "Boots [Equipment #46]"
+    ],
+    "matrix": [
+      [
+        0,
+        16,
+        46
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 241,
+    "hex": "0xF1",
+    "binary": "11110001",
+    "head": "Unicorn",
+    "body": "Dragon",
+    "legs": "Turtle",
+    "tail": "Turtle",
+    "combo": "Unicorn Head / Dragon Body / Turtle Legs / Turtle Tail",
+    "rewards": [
+      {
+        "type": "rune",
+        "kind_id": 2,
+        "item_id": 9,
+        "quantity": 1,
+        "name": "Lightning Orb",
+        "category": "Rune",
+        "text": "Lightning Orb [Rune #9]"
+      }
+    ],
+    "reward_texts": [
+      "Lightning Orb [Rune #9]"
+    ],
+    "matrix": [
+      [
+        0,
+        32,
+        9
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 242,
+    "hex": "0xF2",
+    "binary": "11110010",
+    "head": "Rabbit",
+    "body": "Dragon",
+    "legs": "Turtle",
+    "tail": "Turtle",
+    "combo": "Rabbit Head / Dragon Body / Turtle Legs / Turtle Tail",
+    "rewards": [
+      {
+        "type": "potch",
+        "amount": 22000,
+        "text": "22,000 Potch"
+      }
+    ],
+    "reward_texts": [
+      "22,000 Potch"
+    ],
+    "matrix": [
+      [
+        2,
+        22,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 243,
+    "hex": "0xF3",
+    "binary": "11110011",
+    "head": "Turtle",
+    "body": "Dragon",
+    "legs": "Turtle",
+    "tail": "Turtle",
+    "combo": "Turtle Head / Dragon Body / Turtle Legs / Turtle Tail",
+    "rewards": [
+      {
+        "type": "dish",
+        "kind_id": 6,
+        "item_id": 176,
+        "quantity": 8,
+        "name": "Chinese Noodles",
+        "category": "Dish",
+        "text": "8x Chinese Noodles [Dish #176]"
+      }
+    ],
+    "reward_texts": [
+      "8x Chinese Noodles [Dish #176]"
+    ],
+    "matrix": [
+      [
+        0,
+        104,
+        176
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 244,
+    "hex": "0xF4",
+    "binary": "11110100",
+    "head": "Dragon",
+    "body": "Unicorn",
+    "legs": "Turtle",
+    "tail": "Turtle",
+    "combo": "Dragon Head / Unicorn Body / Turtle Legs / Turtle Tail",
+    "rewards": [
+      {
+        "type": "equipment",
+        "kind_id": 1,
+        "item_id": 39,
+        "quantity": 1,
+        "name": "Iron Shield",
+        "category": "Equipment",
+        "text": "Iron Shield [Equipment #39]"
+      }
+    ],
+    "reward_texts": [
+      "Iron Shield [Equipment #39]"
+    ],
+    "matrix": [
+      [
+        0,
+        16,
+        39
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 245,
+    "hex": "0xF5",
+    "binary": "11110101",
+    "head": "Unicorn",
+    "body": "Unicorn",
+    "legs": "Turtle",
+    "tail": "Turtle",
+    "combo": "Unicorn Head / Unicorn Body / Turtle Legs / Turtle Tail",
+    "rewards": [
+      {
+        "type": "rune",
+        "kind_id": 2,
+        "item_id": 84,
+        "quantity": 1,
+        "name": "Warrior Orb",
+        "category": "Rune",
+        "text": "Warrior Orb [Rune #84]"
+      }
+    ],
+    "reward_texts": [
+      "Warrior Orb [Rune #84]"
+    ],
+    "matrix": [
+      [
+        0,
+        32,
+        84
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 246,
+    "hex": "0xF6",
+    "binary": "11110110",
+    "head": "Rabbit",
+    "body": "Unicorn",
+    "legs": "Turtle",
+    "tail": "Turtle",
+    "combo": "Rabbit Head / Unicorn Body / Turtle Legs / Turtle Tail",
+    "rewards": [
+      {
+        "type": "potch",
+        "amount": 13000,
+        "text": "13,000 Potch"
+      }
+    ],
+    "reward_texts": [
+      "13,000 Potch"
+    ],
+    "matrix": [
+      [
+        2,
+        13,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 247,
+    "hex": "0xF7",
+    "binary": "11110111",
+    "head": "Turtle",
+    "body": "Unicorn",
+    "legs": "Turtle",
+    "tail": "Turtle",
+    "combo": "Turtle Head / Unicorn Body / Turtle Legs / Turtle Tail",
+    "rewards": [
+      {
+        "type": "item",
+        "kind_id": 0,
+        "item_id": 7,
+        "quantity": 6,
+        "name": "Dancing Flames",
+        "category": "Item",
+        "text": "6x Dancing Flames [Item #7]"
+      }
+    ],
+    "reward_texts": [
+      "6x Dancing Flames [Item #7]"
+    ],
+    "matrix": [
+      [
+        0,
+        6,
+        7
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 248,
+    "hex": "0xF8",
+    "binary": "11111000",
+    "head": "Dragon",
+    "body": "Rabbit",
+    "legs": "Turtle",
+    "tail": "Turtle",
+    "combo": "Dragon Head / Rabbit Body / Turtle Legs / Turtle Tail",
+    "rewards": [
+      {
+        "type": "equipment",
+        "kind_id": 1,
+        "item_id": 38,
+        "quantity": 1,
+        "name": "Wooden Shield",
+        "category": "Equipment",
+        "text": "Wooden Shield [Equipment #38]"
+      }
+    ],
+    "reward_texts": [
+      "Wooden Shield [Equipment #38]"
+    ],
+    "matrix": [
+      [
+        0,
+        16,
+        38
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 249,
+    "hex": "0xF9",
+    "binary": "11111001",
+    "head": "Unicorn",
+    "body": "Rabbit",
+    "legs": "Turtle",
+    "tail": "Turtle",
+    "combo": "Unicorn Head / Rabbit Body / Turtle Legs / Turtle Tail",
+    "rewards": [
+      {
+        "type": "rune",
+        "kind_id": 2,
+        "item_id": 7,
+        "quantity": 1,
+        "name": "Earth Orb",
+        "category": "Rune",
+        "text": "Earth Orb [Rune #7]"
+      }
+    ],
+    "reward_texts": [
+      "Earth Orb [Rune #7]"
+    ],
+    "matrix": [
+      [
+        0,
+        32,
+        7
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 250,
+    "hex": "0xFA",
+    "binary": "11111010",
+    "head": "Rabbit",
+    "body": "Rabbit",
+    "legs": "Turtle",
+    "tail": "Turtle",
+    "combo": "Rabbit Head / Rabbit Body / Turtle Legs / Turtle Tail",
+    "rewards": [
+      {
+        "type": "potch",
+        "amount": 74000,
+        "text": "74,000 Potch"
+      }
+    ],
+    "reward_texts": [
+      "74,000 Potch"
+    ],
+    "matrix": [
+      [
+        2,
+        74,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 251,
+    "hex": "0xFB",
+    "binary": "11111011",
+    "head": "Turtle",
+    "body": "Rabbit",
+    "legs": "Turtle",
+    "tail": "Turtle",
+    "combo": "Turtle Head / Rabbit Body / Turtle Legs / Turtle Tail",
+    "rewards": [
+      {
+        "type": "item",
+        "kind_id": 0,
+        "item_id": 14,
+        "quantity": 6,
+        "name": "The Shredding",
+        "category": "Item",
+        "text": "6x The Shredding [Item #14]"
+      }
+    ],
+    "reward_texts": [
+      "6x The Shredding [Item #14]"
+    ],
+    "matrix": [
+      [
+        0,
+        6,
+        14
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 252,
+    "hex": "0xFC",
+    "binary": "11111100",
+    "head": "Dragon",
+    "body": "Turtle",
+    "legs": "Turtle",
+    "tail": "Turtle",
+    "combo": "Dragon Head / Turtle Body / Turtle Legs / Turtle Tail",
+    "rewards": [
+      {
+        "type": "equipment",
+        "kind_id": 1,
+        "item_id": 43,
+        "quantity": 1,
+        "name": "Chaos Shield",
+        "category": "Equipment",
+        "text": "Chaos Shield [Equipment #43]"
+      }
+    ],
+    "reward_texts": [
+      "Chaos Shield [Equipment #43]"
+    ],
+    "matrix": [
+      [
+        0,
+        16,
+        43
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 253,
+    "hex": "0xFD",
+    "binary": "11111101",
+    "head": "Unicorn",
+    "body": "Turtle",
+    "legs": "Turtle",
+    "tail": "Turtle",
+    "combo": "Unicorn Head / Turtle Body / Turtle Legs / Turtle Tail",
+    "rewards": [
+      {
+        "type": "rune",
+        "kind_id": 2,
+        "item_id": 5,
+        "quantity": 1,
+        "name": "Wind Orb",
+        "category": "Rune",
+        "text": "Wind Orb [Rune #5]"
+      }
+    ],
+    "reward_texts": [
+      "Wind Orb [Rune #5]"
+    ],
+    "matrix": [
+      [
+        0,
+        32,
+        5
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 254,
+    "hex": "0xFE",
+    "binary": "11111110",
+    "head": "Rabbit",
+    "body": "Turtle",
+    "legs": "Turtle",
+    "tail": "Turtle",
+    "combo": "Rabbit Head / Turtle Body / Turtle Legs / Turtle Tail",
+    "rewards": [
+      {
+        "type": "potch",
+        "amount": 66000,
+        "text": "66,000 Potch"
+      }
+    ],
+    "reward_texts": [
+      "66,000 Potch"
+    ],
+    "matrix": [
+      [
+        2,
+        66,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  {
+    "index": 255,
+    "hex": "0xFF",
+    "binary": "11111111",
+    "head": "Turtle",
+    "body": "Turtle",
+    "legs": "Turtle",
+    "tail": "Turtle",
+    "combo": "Turtle Head / Turtle Body / Turtle Legs / Turtle Tail",
+    "rewards": [
+      {
+        "type": "item",
+        "kind_id": 0,
+        "item_id": 22,
+        "quantity": 1,
+        "name": "Stone of Magic",
+        "category": "Item",
+        "text": "Stone of Magic [Item #22]"
+      }
+    ],
+    "reward_texts": [
+      "Stone of Magic [Item #22]"
+    ],
+    "matrix": [
+      [
+        0,
+        0,
+        22
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ]
+  }
+]

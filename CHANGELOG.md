@@ -4,6 +4,54 @@ All notable changes to PKCore (formerly PKextended) are documented in this file.
 
 ---
 
+## [2026.10.29]
+
+- **Repeatable Guardian Deity Statue Rewards (`GuardianDeityRepeatRewardsPatch.cs`, `ModConfiguration.cs`, `Plugin.cs`)**:
+  - **Resolution of Retail One-Time Reward Lock**:
+    - Discovered that retail Suikoden II permanently locks Guardian Deity statue blessings after the player's first statue evaluation (`syugoitm` / `vk33`). When receiving the reward, the engine sets `parts_no[3] = 1` and marks **Story Flag 148 bit 32 (0x20)** as claimed.
+    - When the player subsequently alters or rebuilds the statue at Jude's workshop (`h_shugo` / `vk20`), vanilla code writes the new packed combination to `parts_no[2]` and sets inspection bit 16 (0x10), but **fails to clear lock bit 32**, rendering all subsequent statue blessings permanently unobtainable.
+  - **Mechanism**:
+    - Implemented `GuardianDeityRepeatRewardsPatch.cs` with Harmony prefix and postfix hooks targeting `GSD2::EventOverlayClass.h_shugo` (`Entry` and `Destroy`), `syugoSet.Entry`, and `syugoitm.s_OverlayAddItem2Main`.
+    - Hooked workshop statue customization confirmation (`h_shugo.Destroy` where `shugo_work.step == 0x5b` or `parts_no[2]` altered): resets `parts_no[3] = 0`, executes `OldSrcBase.game_work.eventFlgOFF(148, 0x20)` to clear the claimed lock, and executes `eventFlgON(148, 0x10)` to arm the shrine inspection event.
+    - Hooked `syugoSet.Entry` on roof shrine entry (`vk33`): automatically validates that any new or save-edited statue combination arms the shrine inspection trigger (`ev[06]`/`ev[16]`) so the player receives Jude's commentary and blessing.
+    - Hooked `syugoitm.s_OverlayAddItem2Main`: records the successfully delivered combination ID to avoid duplicate rewards without changing parts.
+  - **Configuration (`EnableRepeatStatueRewards`)**:
+    - Added `EnableRepeatStatueRewards` (Boolean, default `true`) under `[05 Game : Suikoden 2]` in `ModConfiguration.cs`.
+
+- **Reversion of Blanket Dormant Castle NPC Activation (`MapTrackingPatch.cs`, `ModConfiguration.cs`, `ImGuiOverlayUI.cs`)**:
+  - **Resolution of Room Load Engine Crash**:
+    - Discovered that blanket setting `disp = 1` across all dormant castle actors crashes the Remaster engine upon loading rooms such as `vk07_01` (Great Hall / War Strategy Room, Submap 3).
+    - **Forensic Root Causes**:
+      1. **Coordinate Stacking / Mutually Exclusive Story Branches**: Vanilla map files contain mutually exclusive story actors mapped to the exact same coordinates (e.g., Slot 1 Shu `fpno=89` and Slot 11 Apple `fpno=85` both at `(60, 52)`; Slot 4 Nanami and Slot 5 Klaus both at `(48, 45)`; Slot 6 Kiba and Slot 7 Boris both at `(58, 46)`).
+      2. **Origin Stacking**: Over 100 dormant actors across the castle are parked at `(0, 0)` with solid collision (`ozok = 2`).
+      3. **HD Engine Object Mapping**: `MapBGManagerHD` requires matching `MapEventObjectHD` scene instances in the Unity scene hierarchy. Rooms designed for 2 active objects hit null dereferences when 50+ objects are forcefully activated without scene GameObject backings.
+    - **Resolution**:
+      - Completely removed the blanket `disp = 1` activation loop from `MachiLoader_Load_Patch.Prefix` in `MapTrackingPatch.cs`.
+      - Removed the experimental `SpawnDormantCastleNPCs` config entry and disabled it in `faospark.pkcore.cfg`.
+      - Removed experimental dormant NPC UI controls from `ImGuiOverlayUI.cs`.
+      - Preserved the verified, isolated section restorations under `RestoreDormantCastleFeatures` (Yuzu pasture direct door shortcut and Karen cut dance routines).
+
+- **Restoration of Dormant Castle Features (`MapTrackingPatch.cs`, `ModConfiguration.cs`)**:
+  - **Secret Pasture Shortcut Door (`vk13` Submap 4 -> `vk03` Submap 0)**:
+    - Restored the cut Tier 5 fast-travel doorway in Riou's residential quarters hallway (`X=23..24, Y=135..148`) by hooking `MACHICON.EventInit` in `MapTrackingPatch.cs`.
+    - Patched `eventForm` in `eventdat[12]` (Step-on zone) and `eventdat[13]` (Action door), replacing the unreachable `[33, 0, 4]` condition with NOP padding `[0, 0, 0]`, strictly preserving bytecode array length.
+    - Allows players to transition directly from the residential chambers out to Yuzu's animal farm (`vk03` at `(50, 23)` via `ECMapChenge`), eliminating castle elevator rides and stair climbing.
+  - **Karen & Stage Performers Cut Dance Choreography (`vk19` Submap 0)**:
+    - Fixed a vanilla developer bug where `eventdat[62..65]` evaluated `[9, 26, 0]` (bitwise AND against bitmask 0x00, permanently evaluating to false).
+    - Replaced the faulty condition with NOP padding `[0, 0, 0]`, allowing dance performance sequences 5, 6, 7, and 8 to execute across the stage floor with full movement choreography (`ECOPosMove`).
+  - **Configuration (`RestoreDormantCastleFeatures`)**:
+    - Added `RestoreDormantCastleFeatures` (Boolean, default `true`) under `[zz - Experimental]` in `ModConfiguration.cs`.
+
+---
+
+## [2026.10.28]
+
+- **Experimental Load-Time Dormant Castle NPC Activation (Superseded & Reverted on 2026.10.29)**:
+  - Explored load-time pre-activation of dormant castle NPCs in `MachiLoader_Load_Patch` to determine if engine sprite buffers could be generated before room render.
+  - Testing confirmed blanket activation across castle submaps causes crashes in complex rooms (e.g. `vk07_01`) due to mutually exclusive story actor overlaps and missing `MapBGManagerHD` prefab instances; reverted in 2026.10.29 in favor of isolated feature restorations (`RestoreDormantCastleFeatures`).
+
+---
+
 ## [2026.10.27]
 
 - **Fixed & Enhanced Camera Zoom / FOV Controls (`ImGuiOverlayUI.cs`, `Plugin.cs`, `MapTrackingPatch.cs`)**:

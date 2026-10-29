@@ -1,0 +1,81 @@
+[dunan_castle_hq_bathhouse.md] Boss Battle calls: {'255', '4'}
+[dunan_castle_hq_bathhouse.md] Tactical War Battle calls: {'255', '1'}
+[dunan_castle_hq_bathhouse.md] Potch events: 3 instances (samples: {'Award Potch Loot (+511 Potch', 'Award Potch Loot (+65,534 Potch'})
+[dunan_castle_hq_bathhouse.md] Shop calls: {'Open Shop Menu #254 (Type: 255)', 'Open Shop Menu #255 (Type: 1)'}
+[dunan_castle_hq_cartography_room.md] Boss Battle calls: {'255'}
+[dunan_castle_hq_cartography_room.md] Potch events: 1 instances (samples: {'Award Potch Loot (+65,534 Potch'})
+[dunan_castle_hq_cartography_room.md] Shop calls: {'Open Shop Menu #254 (Type: 255)'}
+[dunan_castle_hq_commanders_quarters.md] Boss Battle calls: {'14', '255', '9', '1', '101', '28', '84', '0', '24', '8', '2', '37', '3'}
+[dunan_castle_hq_commanders_quarters.md] Tactical War Battle calls: {'9', '1', '84', '15', '128', '5', '255', '23', '21', '4', '2', '8', '3', '32', '73', '30', '47', '16', '7', '0', '24', '64'}
+[dunan_castle_hq_commanders_quarters.md] Potch events: 22 instances (samples: {'Award Potch Loot (+6,145 Potch', 'Award Potch Loot (+7,686 Potch', 'Award Potch Loot (+1,280 Potch'})
+[dunan_castle_hq_commanders_quarters.md] Shop calls: {'Open Shop Menu #5 (Type: 9)', 'Open Shop Menu #1 (Type: 36)', 'Open Shop Menu #5 (Type: 14)', 'Open Shop Menu #1 (Type: 3)', 'Open Shop Menu #5 (Type: 8)', 'Open Shop Menu #4 (Type: 9)', 'Open Shop Menu #5 (Type: 23)', 'Open Shop Menu #1 (Type: 24)', 'Open Shop Menu #4 (Type: 8)', 'Open Shop Menu #20 (Type: 73)', 'Open Shop Menu #5 (Type: 10)', 'Open Shop Menu #5 (Type: 16)', 'Open Shop Menu #6 (Type: 38)', 'Open Shop Menu #4 (Type: 20)', 'Open Shop Menu #4 (Type: 17)', 'Open Shop Menu #5 (Type: 38)', 'Open Shop Menu #6 (Type: 24)'}
+[dunan_castle_hq_commanders_quarters.md] Castle Tier checks: {'Castle HQ Tier >= Level 128', 'Castle HQ Tier >= Level 16', 'Castle HQ Tier >= Level 255'}
+[dunan_castle_hq_concert_stage.md] Boss Battle calls: {'255', '47'}
+[dunan_castle_hq_concert_stage.md] Tactical War Battle calls: {'255', '1', '47', '64'}
+[dunan_castle_hq_concert_stage.md] Potch events: 4 instances (samples: {'Award Potch Loot (+511 Potch', 'Award Potch Loot (+65,534 Potch'})
+[dunan_castle_hq_concert_stage.md] Shop calls: {'Open Shop Menu #255 (Type: 47)', 'Open Shop Menu #7 (Type: 0)', 'Open Shop Menu #9 (Type: 29)'}
+[dunan_castle_hq_docks_and_fishing.md] Boss Battle calls: {'1', '84', '43', '4', '2', '5', '3'}
+[dunan_castle_hq_docks_and_fishing.md] Tactical War Battle calls: {'16', '32', '1', '4'}
+[dunan_castle_hq_docks_and_fishing.md] Shop calls: {'Open Shop Menu #7 (Type: 35)', 'Open Shop Menu #4 (Type: 0)', 'Open Shop Menu #5 (Type: 0)', 'Open Shop Menu #6 (Type: 35)'}
+[dunan_castle_hq_docks_and_fishing.md] Castle Tier checks: {'Castle HQ Tier >= Level 255'}
+[dunan_castle_hq_dojo_and_training.md] Boss Battle calls: {'255'}
+[dunan_castle_hq_dojo_and_training.md] Tactical War Battle calls: {'255', '1'}
+[dunan_castle_hq_dojo_and_training.md] Potch events: 1 instances (samples: {'Award Potch Loot (+45 Potch'})
+[dunan_castle_hq_dojo_and_training.md] Shop calls: {'Open Shop Menu #47 (Type: 0)'}
+[dunan_castle_hq_farm_and_pastures.md] Boss Battle calls: {'2', '0'}
+[dunan_castle_hq_farm_and_pastures.md] Potch events: 1 instances (samples: {'Award Potch Loot (+65,534 Potch'})
+[dunan_castle_hq_farm_and_pastures.md] Shop calls: {'Open Shop Menu #254 (Type: 255)'}
+[dunan_castle_hq_great_hall_and_entry.md] Boss Battle calls: {'10', '101', '100', '34', '0', '40', '4', '2', '93'}
+[dunan_castle_hq_great_hall_and_entry.md] Tactical War Battle calls: {'64', '30', '16', '1', '32', '0', '4', '8', '2', '128', '47'}
+[dunan_castle_hq_great_hall_and_entry.md] Potch events: 117 instances (samples: {'Award Potch Loot (+12,287 Potch', 'Award Potch Loot (+42 Potch', 'Award Potch Loot (+65,534 Potch'})
+[dunan_castle_hq_great_hall_and_entry.md] Shop calls: {'Open Shop Menu #12 (Type: 0)', 'Open Shop Menu #5 (Type: 1)', 'Open Shop Menu #6 (Type: 26)', 'Open Shop Menu #5 (Type: 28)', 'Open Shop Menu #6 (Type: 22)', 'Open Shop Menu #5 (Type: 23)', 'Open Shop Menu #6 (Type: 21)', 'Open Shop Menu #6 (Type: 25)', 'Open Shop Menu #5 (Type: 2)', 'Open Shop Menu #44 (Type: 0)', 'Open Shop Menu #254 (Type: 255)', 'Open Shop Menu #13 (Type: 0)'}
+[dunan_castle_hq_great_hall_and_entry.md] Castle Tier checks: {'Castle HQ Tier >= Level 1'}
+[dunan_castle_hq_grounds_and_sanctuary.md] Boss Battle calls: {'255'}
+[dunan_castle_hq_grounds_and_sanctuary.md] Tactical War Battle calls: {'255'}
+[dunan_castle_hq_grounds_and_sanctuary.md] Potch events: 4 instances (samples: {'Award Potch Loot (+1,280 Potch'})
+[dunan_castle_hq_guardian_deity_shrine.md] Boss Battle calls: {'6', '0', '40', '24', '2'}
+[dunan_castle_hq_guardian_deity_shrine.md] Tactical War Battle calls: {'47', '16', '1', '8', '24', '4', '2', '128', '32'}
+[dunan_castle_hq_guardian_deity_shrine.md] Potch events: 2 instances (samples: {'Award Potch Loot (+768 Potch', 'Award Potch Loot (+1,345 Potch'})
+[dunan_castle_hq_guardian_deity_shrine.md] Shop calls: {'Open Shop Menu #20 (Type: 73)', 'Open Shop Menu #3 (Type: 50)', 'Open Shop Menu #44 (Type: 2)'}
+[dunan_castle_hq_infirmary_and_clinic.md] Boss Battle calls: {'10', '84', '0', '4', '2'}
+[dunan_castle_hq_infirmary_and_clinic.md] Tactical War Battle calls: {'16', '84', '0', '4', '2', '128', '5'}
+[dunan_castle_hq_infirmary_and_clinic.md] Potch events: 10 instances (samples: {'Award Potch Loot (+554 Potch', 'Award Potch Loot (+1,286 Potch'})
+[dunan_castle_hq_infirmary_and_clinic.md] Shop calls: {'Open Shop Menu #5 (Type: 9)', 'Open Shop Menu #0 (Type: 0)', 'Open Shop Menu #2 (Type: 1)', 'Open Shop Menu #0 (Type: 2)', 'Open Shop Menu #21 (Type: 1)', 'Open Shop Menu #10 (Type: 5)', 'Open Shop Menu #3 (Type: 4)', 'Open Shop Menu #57 (Type: 66)', 'Open Shop Menu #5 (Type: 37)', 'Open Shop Menu #5 (Type: 35)'}
+[dunan_castle_hq_inn_and_lodging.md] Boss Battle calls: {'255', '3'}
+[dunan_castle_hq_inn_and_lodging.md] Tactical War Battle calls: {'16', '1', '8', '2', '128', '32'}
+[dunan_castle_hq_inn_and_lodging.md] Potch events: 6 instances (samples: {'Award Potch Loot (+1,549 Potch', 'Award Potch Loot (+1,280 Potch'})
+[dunan_castle_hq_inn_and_lodging.md] Shop calls: {'Open Shop Menu #6 (Type: 14)', 'Open Shop Menu #1 (Type: 24)', 'Open Shop Menu #5 (Type: 8)'}
+[dunan_castle_hq_inn_and_lodging.md] Castle Tier checks: {'Castle HQ Tier >= Level 1'}
+[dunan_castle_hq_living_quarters_and_corridors.md] Boss Battle calls: {'99', '83', '1', '84', '76', '5', '255', '23', '58', '86', '4', '2', '123', '3', '89', '73', '10', '0', '105', '19'}
+[dunan_castle_hq_living_quarters_and_corridors.md] Tactical War Battle calls: {'13', '1', '78', '84', '131', '5', '128', '69', '255', '58', '72', '4', '2', '28', '20', '8', '3', '32', '89', '73', '10', '16', '24', '54', '64'}
+[dunan_castle_hq_living_quarters_and_corridors.md] Potch events: 58 instances (samples: {'Award Potch Loot (+12,288 Potch', 'Award Potch Loot (+1,285 Potch', 'Award Potch Loot (+1,280 Potch'})
+[dunan_castle_hq_living_quarters_and_corridors.md] Shop calls: {'Open Shop Menu #8 (Type: 37)', 'Open Shop Menu #2 (Type: 12)', 'Open Shop Menu #6 (Type: 41)', 'Open Shop Menu #4 (Type: 17)', 'Open Shop Menu #4 (Type: 38)', 'Open Shop Menu #4 (Type: 14)', 'Open Shop Menu #5 (Type: 11)', 'Open Shop Menu #6 (Type: 17)', 'Open Shop Menu #5 (Type: 13)', 'Open Shop Menu #6 (Type: 42)', 'Open Shop Menu #6 (Type: 14)', 'Open Shop Menu #6 (Type: 22)', 'Open Shop Menu #5 (Type: 0)', 'Open Shop Menu #6 (Type: 38)', 'Open Shop Menu #45 (Type: 0)', 'Open Shop Menu #20 (Type: 73)', 'Open Shop Menu #4 (Type: 43)', 'Open Shop Menu #1 (Type: 6)', 'Open Shop Menu #5 (Type: 35)', 'Open Shop Menu #5 (Type: 25)', 'Open Shop Menu #170 (Type: 84)', 'Open Shop Menu #5 (Type: 12)', 'Open Shop Menu #55 (Type: 0)', 'Open Shop Menu #5 (Type: 16)', 'Open Shop Menu #43 (Type: 89)', 'Open Shop Menu #5 (Type: 10)', 'Open Shop Menu #3 (Type: 85)', 'Open Shop Menu #5 (Type: 18)', 'Open Shop Menu #43 (Type: 43)', 'Open Shop Menu #5 (Type: 20)', 'Open Shop Menu #5 (Type: 8)', 'Open Shop Menu #60 (Type: 73)', 'Open Shop Menu #6 (Type: 28)', 'Open Shop Menu #4 (Type: 11)', 'Open Shop Menu #3 (Type: 0)', 'Open Shop Menu #4 (Type: 0)', 'Open Shop Menu #5 (Type: 19)', 'Open Shop Menu #1 (Type: 2)', 'Open Shop Menu #3 (Type: 49)', 'Open Shop Menu #5 (Type: 27)', 'Open Shop Menu #4 (Type: 4)', 'Open Shop Menu #89 (Type: 5)', 'Open Shop Menu #44 (Type: 0)', 'Open Shop Menu #254 (Type: 255)'}
+[dunan_castle_hq_living_quarters_and_corridors.md] Castle Tier checks: {'Castle HQ Tier >= Level 128', 'Castle HQ Tier >= Level 9', 'Castle HQ Tier >= Level 255'}
+[dunan_castle_hq_memorial_graveyard.md] Castle Tier checks: {'Castle HQ Tier >= Level 4'}
+[dunan_castle_hq_restaurant_and_kitchen.md] Shop calls: {'Open Shop Menu #3 (Type: 18)'}
+[dunan_castle_hq_restaurant_and_kitchen.md] Castle Tier checks: {'Castle HQ Tier >= Level 4'}
+[dunan_castle_hq_tavern_and_dice.md] Boss Battle calls: {'2', '0', '255', '89'}
+[dunan_castle_hq_tavern_and_dice.md] Tactical War Battle calls: {'1'}
+[dunan_castle_hq_tavern_and_dice.md] Potch events: 2 instances (samples: {'Award Potch Loot (+65,534 Potch'})
+[dunan_castle_hq_tavern_and_dice.md] Shop calls: {'Open Shop Menu #254 (Type: 255)'}
+[dunan_castle_hq_tavern_and_dice.md] Castle Tier checks: {'Castle HQ Tier >= Level 128'}
+[dunan_castle_hq_teleport_and_elevator.md] Boss Battle calls: {'45', '47'}
+[dunan_castle_hq_teleport_and_elevator.md] Tactical War Battle calls: {'9', '47', '1', '4', '2', '22'}
+[dunan_castle_hq_teleport_and_elevator.md] Potch events: 10 instances (samples: {'Award Potch Loot (+65,534 Potch', 'Award Potch Loot (+1,280 Potch'})
+[dunan_castle_hq_teleport_and_elevator.md] Shop calls: {'Open Shop Menu #5 (Type: 9)', 'Open Shop Menu #5 (Type: 31)'}
+[dunan_castle_hq_teleport_and_elevator.md] Castle Tier checks: {'Castle HQ Tier >= Level 9', 'Castle HQ Tier >= Level 21'}
+[dunan_castle_hq_vault_and_detective.md] Boss Battle calls: {'255', '3', '8'}
+[dunan_castle_hq_vault_and_detective.md] Tactical War Battle calls: {'255', '1', '20'}
+[dunan_castle_hq_vault_and_detective.md] Potch events: 15 instances (samples: {'Award Potch Loot (+1,280 Potch'})
+[dunan_castle_hq_vault_and_detective.md] Shop calls: {'Open Shop Menu #254 (Type: 255)'}
+[dunan_castle_hq_war_strategy_room.md] Boss Battle calls: {'69', '6', '47', '13', '1', '45', '0', '4', '2', '89'}
+[dunan_castle_hq_war_strategy_room.md] Tactical War Battle calls: {'9', '99', '1', '52', '8', '0', '105', '4', '2', '89'}
+[dunan_castle_hq_war_strategy_room.md] Potch events: 6 instances (samples: {'Award Potch Loot (+513 Potch', 'Award Potch Loot (+1,369 Potch', 'Award Potch Loot (+22,825 Potch'})
+[dunan_castle_hq_war_strategy_room.md] Shop calls: {'Open Shop Menu #11 (Type: 2)', 'Open Shop Menu #5 (Type: 32)', 'Open Shop Menu #43 (Type: 89)', 'Open Shop Menu #10 (Type: 2)', 'Open Shop Menu #89 (Type: 5)', 'Open Shop Menu #9 (Type: 2)', 'Open Shop Menu #0 (Type: 72)', 'Open Shop Menu #6 (Type: 35)', 'Open Shop Menu #2 (Type: 11)'}
+[dunan_castle_hq_war_strategy_room.md] Castle Tier checks: {'Castle HQ Tier >= Level 128'}
+[dunan_castle_hq_watchtower_and_roof.md] Tactical War Battle calls: {'2', '1', '4'}
+[dunan_castle_hq_workshop_and_library.md] Boss Battle calls: {'2', '255', '89'}
+[dunan_castle_hq_workshop_and_library.md] Tactical War Battle calls: {'1', '128', '4'}
+[dunan_castle_hq_workshop_and_library.md] Potch events: 9 instances (samples: {'Award Potch Loot (+521 Potch', 'Award Potch Loot (+22,825 Potch', 'Award Potch Loot (+1,280 Potch'})
+[dunan_castle_hq_workshop_and_library.md] Shop calls: {'Open Shop Menu #255 (Type: 47)', 'Open Shop Menu #6 (Type: 14)', 'Open Shop Menu #5 (Type: 8)', 'Open Shop Menu #1 (Type: 24)', 'Open Shop Menu #84 (Type: 130)'}
+[dunan_castle_hq_workshop_and_library.md] Castle Tier checks: {'Castle HQ Tier >= Level 1'}

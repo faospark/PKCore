@@ -47,6 +47,7 @@ public sealed class ModConfiguration
     public ConfigEntry<bool> ShowSaveSlotPartyPortraits { get; private set; }
     public ConfigEntry<string> MercFortFence { get; private set; }
     public ConfigEntry<bool> ColoredIntroAndFlashbacks { get; private set; }
+    public ConfigEntry<bool> EnableRepeatStatueRewards { get; private set; }
 
     // War Ability Mod
     public ConfigEntry<bool> EnableWarAbilityMod { get; private set; }
@@ -79,6 +80,7 @@ public sealed class ModConfiguration
 
     // EXPERIMENTAL FEATURES (at end of config file)
     public ConfigEntry<bool> EnableDebugMenu2 { get; private set; }
+    public ConfigEntry<bool> RestoreDormantCastleFeatures { get; private set; }
 
     // Hidden internal settings - not exposed in config file at all
     // These are hardcoded to false and cannot be changed by users
@@ -297,6 +299,13 @@ public sealed class ModConfiguration
             "Enable war battle ability modification. Allows you to customize character abilities in Suikoden 2's war battles. Wont appear on the game menu of Apple but will have an effect on battle. Base is already boosted but can be further configures in PKCore/Config/S2WarAbilities.json"
         );
 
+        EnableRepeatStatueRewards = _config.Bind(
+            "05 Game : Suikoden 2",
+            "EnableRepeatStatueRewards",
+            true,
+            "Grants Guardian Deity statue rewards from Jude every time you change or rebuild the statue at his workshop, rather than the vanilla one-time limit."
+        );
+
 
         // Suikoden 1 Castle Rune Master (Quick Rune)
         EnableS1QuickRuneMaster = _config.Bind(
@@ -407,6 +416,13 @@ public sealed class ModConfiguration
             "EnableDebugMenu2",
             false,
             "[EXPERIMENTAL] Enable the DebugMenu2 object which is normally disabled in the game. This may provide access to developer debug features."
+        );
+
+        RestoreDormantCastleFeatures = _config.Bind(
+            "zz - Experimental",
+            "RestoreDormantCastleFeatures",
+            true,
+            "[EXPERIMENTAL] Restores safe cut/dormant castle features: activates the direct living quarters shortcut door to Yuzu's pasture (vk13 -> vk03) and fixes Karen's cut dance choreography (vk19)."
         );
 
         // ========================================

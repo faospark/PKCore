@@ -368,6 +368,13 @@ public class Plugin : BasePlugin
             harmony.PatchAll(typeof(Patches.S1QuickRunePatch));
         }
 
+        // Guardian Deity Repeat Rewards (Suikoden 2)
+        if (Config.EnableRepeatStatueRewards.Value)
+        {
+            Log.LogInfo("Applying Guardian Deity Repeat Rewards patch...");
+            harmony.PatchAll(typeof(GuardianDeityRepeatRewardsPatch));
+        }
+
 
 
         // PSP Launcher Patch
