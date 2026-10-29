@@ -23,8 +23,9 @@ When researching map locations, NPC placements, trigger bytecodes, or treasure c
 
 Never repeat the following historical naming errors or cross-game conflations:
 
-1. **`ryube_forest.md` (`vb09`, `vb10`, `vb11`, `vb20`, `vb21`)**:
-   - **Correct Name**: **Ryube Forest & Tsai's Hermit Hut** (*リューベの森 / 深き森 / Deep Woods*).
+1. **`ryube_forest.md` (`vb07`, `vb09`, `vb10`, `vb11`, `vb20`, `vb21`)**:
+   - **Correct Name**: **Ryube Forest & Tsai's Hermit Hut** (*リューベの森の小道 / リューベの森 / 深き森 / Deep Woods*).
+   - **Scope**: Covers the entrance forest trail with the bird's nest (Kinnison & Shiro) and Bonaparte's clearing (`vb07`), as well as the deep woods trails and Tsai the Fire Spear inventor's cottage (`vb09`–`vb21`).
    - **Never**: Do NOT call this "Mt. Tigerwolf". Mt. Tigerwolf is an iconic Suikoden I mountain in Toran Republic (`bg_va7`–`bg_vad`), completely absent in Suikoden II.
 2. **`tigermouth_village.md` (`vg04`, `vg06`)**:
    - **Correct Name**: **Tigermouth Mountain Settlement** (*虎口の村*).
@@ -32,9 +33,9 @@ Never repeat the following historical naming errors or cross-game conflations:
 3. **`banner_pass.md` (`vf03`)**:
    - **Correct Name**: **Banner Pass (Toran Mountain Trail)** (*バナー峠*).
    - **Never**: Do NOT call this "Mt. Ryukan". Mt. Ryukan is Doctor Ryukan's mountain hermitage in Suikoden I (`bg_vc0`). `vf03` connects Banner Village to Gregminster in Suikoden II, featuring the Giant Worm boss and the hidden approach to Rokkaku Hamlet.
-4. **`swallow_pass.md` (`vb07`, `vb08`, `vb17`)**:
-   - **Correct Name**: **Swallow Pass & Highland Border Gate** (*燕の峠*).
-   - Disambiguated from Ryube Forest so it exclusively covers the trail between Toto/Ryube and the Highland border gate.
+4. **`swallow_pass.md` (`vb08`, `vb17`)**:
+   - **Correct Name**: **Swallow Pass & Highland Border Gate** (*燕の峠 / ハイランド関所*).
+   - Disambiguated so it exclusively covers the rocky mountain pass ascending north and the fortified Highland border gate blocked by soldiers prior to the war.
 5. **Sprite Pattern `fpno 83`**:
    - **Identity**: In Suikoden II map data, `fpno 83` is **Bonaparte** (Millie's runaway wild boar/beast), NOT Luca Blight.
 

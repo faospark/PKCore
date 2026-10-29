@@ -10,11 +10,12 @@ All notable changes to PKCore (formerly PKextended) are documented in this file.
   - **Resolution of Retail One-Time Reward Lock**:
     - Discovered that retail Suikoden II permanently locks Guardian Deity statue blessings after the player's first statue evaluation (`syugoitm` / `vk33`). When receiving the reward, the engine sets `parts_no[3] = 1` and marks **Story Flag 148 bit 32 (0x20)** as claimed.
     - When the player subsequently alters or rebuilds the statue at Jude's workshop (`h_shugo` / `vk20`), vanilla code writes the new packed combination to `parts_no[2]` and sets inspection bit 16 (0x10), but **fails to clear lock bit 32**, rendering all subsequent statue blessings permanently unobtainable.
-  - **Mechanism**:
-    - Implemented `GuardianDeityRepeatRewardsPatch.cs` with Harmony prefix and postfix hooks targeting `GSD2::EventOverlayClass.h_shugo` (`Entry` and `Destroy`), `syugoSet.Entry`, and `syugoitm.s_OverlayAddItem2Main`.
-    - Hooked workshop statue customization confirmation (`h_shugo.Destroy` where `shugo_work.step == 0x5b` or `parts_no[2]` altered): resets `parts_no[3] = 0`, executes `OldSrcBase.game_work.eventFlgOFF(148, 0x20)` to clear the claimed lock, and executes `eventFlgON(148, 0x10)` to arm the shrine inspection event.
-    - Hooked `syugoSet.Entry` on roof shrine entry (`vk33`): automatically validates that any new or save-edited statue combination arms the shrine inspection trigger (`ev[06]`/`ev[16]`) so the player receives Jude's commentary and blessing.
-    - Hooked `syugoitm.s_OverlayAddItem2Main`: records the successfully delivered combination ID to avoid duplicate rewards without changing parts.
+  - **Forensic Fixes & Lifecycle Robustness**:
+    - **Workshop Exit Hook**: Identified that `h_shugo.Destroy` is uncalled dead code in the retail engine. Relocated the workshop exit trigger to `h_shugo.ShugoMain` returning `1`, ensuring `ArmStatueReward` reliably executes every time the customizer closes.
+    - **Visual Mesh Preservation**: Discovered that retail `syugoSet$$Entry` skips 3D model loading when `parts_no[3] == 0`, causing the statue to revert to an uncarved plain stone rock (`ano = 15`). Locked `parts_no[3] = 1` in memory across all transitions so the custom statue model is permanently visible.
+    - **Cutscene Map Scoping**: Scoped `syugoSet.Entry` evaluation strictly to `vk33` (Castle Roof Shrine) via `MACHICON_OnMapInitPatch.CurrentMapId`, preventing corridor transitions (`vk32`) from misfiring the evaluation state.
+    - **Party Reaction & Flag 123 Reset**: Cleared Story Flag 123 bits (`8`, `16`, `32`, `64`) in `ArmStatueReward` so party member reactions, portraits, and commentary refresh properly for every newly sculpted statue.
+    - **Clean Cutscene Completion**: Removed premature flag modifications from `syugoitm`, allowing native cutscene `Ev 16` to naturally fade in and set Story Flag 148 bit 32 upon full completion without causing black screen locks.
   - **Configuration (`EnableRepeatStatueRewards`)**:
     - Added `EnableRepeatStatueRewards` (Boolean, default `true`) under `[05 Game : Suikoden 2]` in `ModConfiguration.cs`.
 
