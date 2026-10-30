@@ -6,6 +6,18 @@ All notable changes to PKCore (formerly PKextended) are documented in this file.
 
 ## [2026.10.29]
 
+- **Living Quarters Shortcut Door Restoration (`MapTrackingPatch.cs`)**:
+  - **Resolution of Map Load Lifecycle Hook**:
+    - Discovered that `ApplyDormantCastleRestorations` was previously only invoked during `MACHICON.EventInit`. In Suikoden II HD Remaster, `EventInit` is not called when transitioning rooms within Castle HQ or loading saves; instead, `MACHICON.OnMapInit` executes for every room load.
+    - Added hook in `MACHICON_OnMapInitPatch.Postfix` to execute restorations reliably on every scene transition.
+  - **Bytecode Scan & Strict Array Length Preservation**:
+    - Replaced hardcoded offset assumptions with a sliding 3-byte window search across `eventForm` arrays to find `[33, 0, 4]` (`base_lv == 4`) and overwrite with NOPs `[0, 0, 0]`.
+  - **Active Restorations**:
+    - `vk13` Submap 4 `ev[13]`: Restored Konami's cut interactive shortcut door at `(X: 23..24, Y: 135..148)` executing `ECMapChenge` directly to the Combat Dojo (`vk03` at 50, 23).
+    - `vk13` Submap 4 `ev[12]`: Restored the step-on tripwire at `(X: 28..46, Y: 133..146)` executing `ECSubmapChenge` back to the main living quarters corridor (`vk13_00` at 10, 15).
+  - **Configuration (`RestoreDormantCastleFeatures`)**:
+    - Routed through existing setting `RestoreDormantCastleFeatures = true` under `[zz - Experimental]` in `faospark.pkcore.cfg`.
+
 - **Repeatable Guardian Deity Statue Rewards (`GuardianDeityRepeatRewardsPatch.cs`, `ModConfiguration.cs`, `Plugin.cs`)**:
   - **Resolution of Retail One-Time Reward Lock**:
     - Discovered that retail Suikoden II permanently locks Guardian Deity statue blessings after the player's first statue evaluation (`syugoitm` / `vk33`). When receiving the reward, the engine sets `parts_no[3] = 1` and marks **Story Flag 148 bit 32 (0x20)** as claimed.

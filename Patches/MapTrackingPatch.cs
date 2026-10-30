@@ -1,3 +1,5 @@
+extern alias GSD2;
+
 using HarmonyLib;
 using System;
 
@@ -24,6 +26,22 @@ public static class MACHICON_OnMapInitPatch
         CurrentMapId = ParseMapIdFromMachiName(machiName);
 
         Plugin.Log.LogInfo($"[Map Tracking] MACHICON MapID resolved to: {CurrentMapId ?? "null"} (Raw: {machiName})");
+
+        try
+        {
+            string rawName = machiName ?? string.Empty;
+            string assetName = __instance.mdat?.name ?? string.Empty;
+            MachiLoader_Load_Patch.ApplyDormantCastleRestorations(__instance.mdat, rawName, assetName);
+
+            if (__instance.econ?.mdat != null && __instance.econ.mdat != __instance.mdat)
+            {
+                MachiLoader_Load_Patch.ApplyDormantCastleRestorations(__instance.econ.mdat, rawName, __instance.econ.mdat.name);
+            }
+        }
+        catch (Exception ex)
+        {
+            Plugin.Log.LogError($"[MapTrackingPatch] Error during OnMapInit dormant restorations: {ex}");
+        }
     }
 
     public static int PlayerX => CurrentMachicon != null ? CurrentMachicon.px : 0;
@@ -107,11 +125,10 @@ public static class MachiLoader_Load_Patch
         if (__instance == null) return;
         try
         {
-            string mapName = __instance.GetMapName();
-            if (string.IsNullOrEmpty(mapName) || !mapName.StartsWith("vk"))
-                return;
+            string rawName = __instance.GetMapName() ?? string.Empty;
+            string assetName = __instance.mdat?.name ?? string.Empty;
 
-            ApplyDormantCastleRestorations(__instance, mapName);
+            ApplyDormantCastleRestorations(__instance.mdat, rawName, assetName);
         }
         catch (Exception ex)
         {
@@ -123,54 +140,30 @@ public static class MachiLoader_Load_Patch
     /// Safely restores verified dormant castle features in memory without altering JSON files on disk.
     /// Preserves strict byte lengths by using NOP padding [0, 0, 0].
     /// </summary>
-    private static void ApplyDormantCastleRestorations(MACHICON machicon, string mapName)
+    public static void ApplyDormantCastleRestorations(MACHIDAT mdat, string rawName, string assetName)
     {
         if (Plugin.Config?.RestoreDormantCastleFeatures?.Value != true)
             return;
 
-        var mdat = machicon?.mdat;
-        var ed = mdat?.eventdata;
-        if (ed?.mapeventdat == null)
+        string currentMapId = MACHICON_OnMapInitPatch.CurrentMapId ?? string.Empty;
+        bool isVk19 = (!string.IsNullOrEmpty(rawName) && rawName.StartsWith("vk19", StringComparison.OrdinalIgnoreCase))
+            || (!string.IsNullOrEmpty(assetName) && assetName.StartsWith("vk19", StringComparison.OrdinalIgnoreCase))
+            || (!string.IsNullOrEmpty(currentMapId) && currentMapId.StartsWith("vk19", StringComparison.OrdinalIgnoreCase));
+
+        bool isVk16 = (!string.IsNullOrEmpty(rawName) && rawName.StartsWith("vk16", StringComparison.OrdinalIgnoreCase))
+            || (!string.IsNullOrEmpty(assetName) && assetName.StartsWith("vk16", StringComparison.OrdinalIgnoreCase))
+            || (!string.IsNullOrEmpty(currentMapId) && currentMapId.StartsWith("vk16", StringComparison.OrdinalIgnoreCase));
+
+        if (!isVk19 && !isVk16)
             return;
 
-        // 1. vk13 Submap 4: The Secret Pasture Shortcut Door
-        // ev[12] (Step-on zone) and ev[13] (Action door)
-        if (mapName.StartsWith("vk13") && ed.mapeventdat.Count > 4)
-        {
-            var sub4 = ed.mapeventdat[4];
-            if (sub4?.eventdat != null)
-            {
-                // ev[12]: [33, 0, 4, 1, 28, 46, 2, 133, 146, 255, 254]
-                if (sub4.eventdat.Count > 12 && sub4.eventdat[12]?.eventForm != null)
-                {
-                    var form12 = sub4.eventdat[12].eventForm;
-                    if (form12.Length >= 3 && form12[0] == 33 && form12[1] == 0 && form12[2] == 4)
-                    {
-                        form12[0] = 0; // NOP
-                        form12[1] = 0; // NOP
-                        form12[2] = 0; // NOP
-                        Plugin.Log.LogInfo("[DormantCastle] Restored vk13 Sub 4 ev[12] Pasture Step-On shortcut zone.");
-                    }
-                }
+        var ed = mdat?.eventdata;
+        if (ed?.mapeventdat == null || ed.mapeventdat.Count == 0)
+            return;
 
-                // ev[13]: [33, 0, 4, 1, 23, 24, 2, 135, 148, 9, 2, 255, 254]
-                if (sub4.eventdat.Count > 13 && sub4.eventdat[13]?.eventForm != null)
-                {
-                    var form13 = sub4.eventdat[13].eventForm;
-                    if (form13.Length >= 3 && form13[0] == 33 && form13[1] == 0 && form13[2] == 4)
-                    {
-                        form13[0] = 0; // NOP
-                        form13[1] = 0; // NOP
-                        form13[2] = 0; // NOP
-                        Plugin.Log.LogInfo("[DormantCastle] Restored vk13 Sub 4 ev[13] Pasture Action shortcut door.");
-                    }
-                }
-            }
-        }
-
-        // 2. vk19 Submap 0: Karen & Stage Dancers Cut Choreography
+        // 1. vk19 Submap 0: Karen & Stage Dancers Cut Choreography
         // ev[62..65]: [5, 9, 26, 0, 48, <seq>, 1, 1, 255, 254]
-        if (mapName.StartsWith("vk19") && ed.mapeventdat.Count > 0)
+        if (isVk19 && ed.mapeventdat.Count > 0)
         {
             var sub0 = ed.mapeventdat[0];
             if (sub0?.eventdat != null)
@@ -201,6 +194,44 @@ public static class MachiLoader_Load_Patch
                 }
             }
         }
+
+        // 2. vk16 Submap 0: Fallen Heroes Memorial Sequence (Castle Cemetery)
+        // ev[1, 2, 5, 6, 7, 8, 9, 10, 11, 13, 14]: NOP the [33, 0, 4] Castle Tier check
+        // Strictly preserves byte length with [0, 0, 0] NOP padding per engine rules.
+        if (isVk16 && ed.mapeventdat.Count > 0)
+        {
+            var sub0 = ed.mapeventdat[0];
+            if (sub0?.eventdat != null)
+            {
+                int memorialRestoredCount = 0;
+                int[] targetEvents = new int[] { 1, 2, 5, 6, 7, 8, 9, 10, 11, 13, 14 };
+
+                foreach (int evIdx in targetEvents)
+                {
+                    if (sub0.eventdat.Count > evIdx && sub0.eventdat[evIdx]?.eventForm != null)
+                    {
+                        var form = sub0.eventdat[evIdx].eventForm;
+                        for (int i = 0; i <= form.Length - 3; i++)
+                        {
+                            // Opcode 33: [33, 0, 4] (base_lv == 4)
+                            if (form[i] == 33 && form[i + 1] == 0 && form[i + 2] == 4)
+                            {
+                                form[i] = 0;     // NOP
+                                form[i + 1] = 0; // NOP
+                                form[i + 2] = 0; // NOP
+                                memorialRestoredCount++;
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                if (memorialRestoredCount > 0)
+                {
+                    Plugin.Log.LogInfo($"[DormantCastle] Restored {memorialRestoredCount} Fallen Heroes Memorial scripts (vk16 cemetery) by NOPing [33, 0, 4].");
+                }
+            }
+        }
     }
 
     [HarmonyPostfix]
@@ -214,6 +245,17 @@ public static class MachiLoader_Load_Patch
         {
             LastLoadedEventcon = __result;
             LastLoadedMachiDat = __result.mdat;
+
+            try
+            {
+                string rawName = __instance != null ? __instance.GetMapName() ?? string.Empty : string.Empty;
+                string assetName = __result.mdat?.name ?? string.Empty;
+                ApplyDormantCastleRestorations(__result.mdat, rawName, assetName);
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogError($"[MapTrackingPatch] Error during EventInit postfix: {ex}");
+            }
         }
         ImGuiOverlayUI.OnMapChanged();
     }

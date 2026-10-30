@@ -121,25 +121,38 @@ In `vk21.json` (Great Hall & Main Foyer, Level 3/4), Submap Layer 1, script `ev[
 
 ---
 
-## 4. The 50 Cut "Castle Level 5" Scripts (`base_lv >= 4`)
-### 4.1 The Internal 0-Indexed Castle Progression Architecture
-In `GSD2.GAME_DATA`, the castle headquarters progression level is tracked by the single-byte field `byte base_lv` (located at offset `0x2C`):
+## 4. Forensic Analysis of Castle Level 4 Scripts (`base_lv == 4` / `[33, 0, 4]`)
+### 4.1 The 5 Sequential Base Stages & `base_lv` Progression
+In `GSD2.GAME_DATA`, the headquarters progression is tracked by `byte base_lv` (offset `0x60`). The player experiences **5 sequential base stages**:
 
-- `base_lv == 0`: **Tier 1** (Mercenary Fort / Early North Window Ruins)
-- `base_lv == 1`: **Tier 2** (North Window Castle established with initial recruits)
-- `base_lv == 2`: **Tier 3** (Mid-game expansion after Two River / Greenhill campaigns)
-- `base_lv == 3`: **Tier 4** (The Grand Fortress — **The Hard Retail Cap**)
-- `base_lv == 4`: **Tier 5** (**The Cut 5th Expansion Tier**)
+- `base_lv == 0` (Stage 1 / Index 0): **Mobile / Temporary Headquarters**:
+  - Does *not* end with the Mercenary Fort destruction. The HQ is wherever the party is stationed (Mercenary Fort, Leona's Tavern / Muse hotel). Early recruitment is already active here (Tuta, Anita, and Matilda glitch encounters like Humphrey & Futch).
+  - **Stage 1 officially ends when North Window is cleared, Shu is recruited, and Barbara becomes accessible in the Vault.**
+- `base_lv == 1` (Stage 2 / Index 1): **Castle Level 1 (North Window Functional Headquarters)**:
+  - Established when Barbara opens the Vault (k02 Submap 1 v[0..1] check [33, 0, 1]).
+- `base_lv == 2` (Stage 3 / Index 2): **Castle Level 2 (First Expansion)**:
+  - Unlocked when recruit count reaches the first expansion milestone (~30 recruits).
+- `base_lv == 3` (Stage 4 / Index 3): **Castle Level 3 (Second Expansion)**:
+  - Unlocked when recruit count reaches the second expansion milestone (~60 recruits).
+- `base_lv == 4` (Stage 5 / Index 4): **Castle Level 4 (The Grand Fortress)**:
+  - Unlocked upon recruiting 101+ Stars of Destiny. Pesmerga (`[33, 0, 4]`) and Genshu (`[33, 1, 4]`) recruit.
 
-In the retail game release, `base_lv` reaches a mathematical ceiling of `3`. It is never incremented to `4` under any story milestone, recruit count, or progression trigger. Consequently, exactly **50 distinct event scripts** distributed across 10 castle maps are stranded in the compiled binary as unreachable dead code.
+Because Index 0 is Stage 1 (the pre-Barbara mobile HQ), what players and guides experience as **"Castle Level 4" is technically the 5th headquarters state** (`base_lv == 4`).
 
 ### 4.2 Precondition & Command Bytecode Anatomy
-The 50 scripts evaluate castle tier via **Opcode 33** inside their `eventForm` precondition bytecode array:
+The scripts evaluate castle tier via **Opcode 33** inside their `eventForm` precondition bytecode array:
 
-$$\text{Condition: } [33, \text{cmp\_op}, \text{threshold}]$$
+$$\text{Format: } [33, \text{param1}, \text{param2}]$$
 
-- `[33, 1, 4]`: Evaluates `base_lv >= 4` (Tier 5 or higher)
-- `[33, 0, 4]`: Evaluates `base_lv == 4` (Strict Tier 5 equality)
+Opcode 33 checks `GAME_WORK.base_lv` (Castle Level) against `param2`:
+- `param1 == 0`: `return 0 if param2 != base_lv` (Strict Equality: `base_lv == param2`)
+- `param1 == 1`: `return 0 if base_lv < param2` (Greater or Equal: `base_lv >= param2`)
+- `param1 == 2`: `return 0 if base_lv > param2` (Less or Equal: `base_lv <= param2`)
+
+Common values in bytecode:
+- `[33, 0, 4]`: Evaluates `base_lv == 4` (Strict Castle Level 4 equality)
+- `[33, 1, 4]`: Evaluates `base_lv >= 4` (Castle Level 4 or higher)
+- `[33, 2, 2]`: Evaluates `base_lv <= 2` (Castle Level 2 or lower)
 
 Trigger mechanisms (`etyp`) across the 50 scripts:
 - **40 scripts with `etyp = 2`** (Map Initialization / Autorun): Execute immediately when the submap loads into memory to spawn props, NPCs, or apply tile overlays.
@@ -232,15 +245,20 @@ Contains 3 cut scripts in Submap 0 (`ev[15]`, `ev[18]`, and `ev[25]`). In Tier 5
 | 32 | `sub[0] ev[18]` | MapInit (Autorun On Load) | `CastleTier >= 4 AND FlagIsSet(112, bit 0x40)` | `[0, 41, 255, 254, 204, 204, 204, 204]` | Obj[41] (**Truncated**, max=39) |
 | 33 | `sub[0] ev[25]` | Action (Talk/Inspect) | `FlagIsSet(112, bit 0x40) AND CastleTier >= 4 AND FacingDir(36..9) AND FlagIsSet(255, bit 0xFE)` | `[56, 38, 0, 3, 4, 1, 0, 9, 3, 38, 2, 30, 1, 1, 4, 23]...` | Custom Cutscene Sequence |
 
-#### 4.3.8 VK13: HQ Interior: Private Residences & Secret Pasture Passage (5 Scripts)
+#### 4.3.8 VK13: HQ 4F Penthouse (Riou's Bedroom, Shu's Office & Cutscene Staging) (5 Scripts)
 
-Contains 5 cut scripts across Submaps 2 and 4. Most critically, Submap 4 contains scripts `ev[12]` (Step-on Zone, `etyp=128`) and `ev[13]` (Action/Inspect Door, `etyp=1`), which establish a direct shortcut passage connecting the Castle Living Quarters (X=23..24, Y=135..148) directly to the outer Farm and Pasture (`vk03` Submap 0 at X=50, Y=23 via `ECMapChenge`). In Tier 5, players could bypass the entire lower castle and step straight into the farm from the residential wing.
+Contains 5 cut scripts across Submaps 2 and 4. Critically, Submap 4 is an event-staging layer for the **4th-floor Penthouse** (specifically the night infiltration sequence where Lucia attacks Riou in his bedroom).
+
+The two warps in Submap 4 (`ev[12]` and `ev[13]`) are developer test shortcuts left behind in staging data:
+- `ev[12]` (Step-on Zone, `etyp=128`): Warps locally to `vk13` Submap 0 `(10, 15)`.
+- `ev[13]` (Action/Inspect, `etyp=1`): Warps across maps to `vk03` Submap 0 `(50, 23)` (Pasture/Farm). This was used by developers during cutscene scripting to quickly jump between the 4F bedroom and ground-level grounds without navigating 4 elevator flights. Physically, a 4th-floor penthouse bedroom cannot open into the ground-floor pasture.
+- `ev[15]` & `ev[16]`: Cloned guard visibility toggles (`disp = 1`) referencing Objects 18 and 19. In retail Submap 4, the entity array stops at 12 objects (`obj[0..11]`), meaning these guards do not exist on this layer.
 
 | # | Script ID | Type (`etyp`) | Decoded Precondition (`eventForm`) | Decoded Commands (`eventCom`) | Target Object & Status |
 |---|---|---|---|---|---|
 | 34 | `sub[2] ev[37]` | MapInit (Autorun On Load) | `CastleTier >= 4` | `[0, 23, 255, 254, 204, 204, 204, 204]` | Obj[23] (**Truncated**, max=15) |
-| 35 | `sub[4] ev[12]` | TriggerZone (Step-On) | `CastleTier == 4 AND X_Range(28..46) AND Y_Range(133..146)` | `[31, 0, 10, 15, 255, 254, 204, 204, 204, 204]` | Transition `vk13` sub[0] to (10,15) |
-| 36 | `sub[4] ev[13]` | Action (Talk/Inspect) | `CastleTier == 4 AND X_Range(23..24) AND Y_Range(135..148) AND ButtonPress(0x02)` | `[32, 3, 0, 50, 23, 255, 254, 204, 204, 204, 204]` | Map Transition to `vk03` sub[0] at (50,23) |
+| 35 | `sub[4] ev[12]` | TriggerZone (Step-On) | `CastleTier == 4 AND X_Range(28..46) AND Y_Range(133..146)` | `[31, 0, 10, 15, 255, 254, 204, 204, 204, 204]` | Staging Dev Warp: `vk13` sub[0] to (10,15) |
+| 36 | `sub[4] ev[13]` | Action (Talk/Inspect) | `CastleTier == 4 AND X_Range(23..24) AND Y_Range(135..148) AND ButtonPress(0x02)` | `[32, 3, 0, 50, 23, 255, 254, 204, 204, 204, 204]` | Staging Dev Warp: to `vk03` sub[0] at (50,23) |
 | 37 | `sub[4] ev[15]` | MapInit (Autorun On Load) | `FlagIsSet(126, bit 0x40) AND CastleTier == 4` | `[0, 18, 255, 254, 204, 204, 204, 204]` | Obj[18] (**Truncated**, max=11) |
 | 38 | `sub[4] ev[16]` | MapInit (Autorun On Load) | `FlagIsSet(126, bit 0x40) AND CastleTier == 4` | `[0, 19, 255, 254, 204, 204, 204, 204]` | Obj[19] (**Truncated**, max=11) |
 
@@ -270,14 +288,36 @@ Contains 9 cut scripts in Submap 0 (`ev[2, 5..11, 14]`). This represents the sin
 | 49 | `sub[0] ev[11]` | Action (Talk/Inspect) | `FlagIsSet(146, bit 0x40) AND FlagNotSet(132, bit 0x20) AND CastleTier == 4` | `[117, 0, 0, 5, 14, 3, 1, 30, 24, 14, 14, 40, 5, 16, 6, 1]...` | Custom Cutscene Sequence |
 | 50 | `sub[0] ev[14]` | Action (Talk/Inspect) | `FlagIsSet(143, bit 0x01) AND FlagNotSet(134, bit 0x01) AND X_Range(38..42) AND Y_Range(18..25) AND CastleTier == 4` | `[117, 0, 0, 73, 90, 11, 3, 2, 120, 24, 14, 15, 0, 5, 0, 2]...` | Custom Cutscene Sequence |
 
-### 4.4 Synthesis: What Castle Level 5 Looked Like Before Being Cut
-By cross-referencing all 50 scripts with map coordinates and engine subsystems, the complete scope of Konami's intended Castle Level 5 design can be reconstructed:
+### 4.4 Synthesis: The 4 Operational Reality Categories of the 50 "Castle Level 5" Scripts
+By cross-referencing all 50 scripts with actual entity definitions and engine subsystems, the scripts divide into 4 distinct categories rather than all being usable player features:
 
-1. **Direct Fast-Travel Architecture**: In Tier 5, a dedicated shortcut door opened in the private living quarters (`vk13` Submap 4) connecting directly to the rear animal pasture (`vk03` Submap 0). Players no longer had to traverse multiple elevator shafts, stairwells, and the central hall to access the farm.
-2. **Pasture Enclosure Expansion**: Yuzu's farm gained three extra livestock pen enclosures (Objects 38, 39, 40) and four extra grazing animals (Objects 41..44) rendered via dynamic tile overlays (`ECOverlayPset`).
-3. **Hospitality & Capacity Upgrade**: The 3F guest quarters (`vk11`) and tavern (`vk04`) unlocked multiple additional bedrooms, tables, and patrons, providing visual feedback that the castle had reached maximum continental alliance recruitment.
-4. **Fortress Defense Hardening**: The rooftop parapet (`vk14`) and central courtyard (`vk09`) received additional battlements, perimeter banners, and lookout sentries.
-5. **The Grand Fallen Heroes Memorial Sequence**: The most substantial lost content in Tier 5 resides in `vk16` (the cemetery). Rather than remaining a static screen, the Tier 5 graveyard featured a dramatic multi-character cutscene where core story actors (Flik, Viktor, Nanami, Freed Y, Tsai, Hoi) gathered around upgraded stone monuments, with custom camera choreography, screen fades, and emotional portrait expressions honoring those lost in the Dunan Unification War.
+1. **Category A: Developer Staging & Debug Shortcuts (4 Scripts)**:
+   - Left behind in cutscene staging submaps like `vk13` Submap 4 (the night infiltration attack scene where Lucia attacks Riou in his bedroom).
+   - The warp to the farm (`vk03`) and the local corridor warp were developer debug shortcuts used during cutscene scripting to bypass elevator travel. They are not physical castle doors.
+
+2. **Category B: Truncated Entity "Ghost Spawns" (26 Scripts)**:
+   - Single-opcode `ECODispOn(obj)` commands (`[0, target_obj, 255, 254]`) attempting to set `disp = 1` on object IDs that Konami trimmed/deleted from the ends of the `eventobj` arrays before release:
+     - `vk02` (Vault & Corridors): All 9 scripts target deleted objects 18..26.
+     - `vk04` (Tavern 2F): Targets deleted objects 47 and 48.
+     - `vk08` (Docks): Targets deleted object 32.
+     - `vk09` (Courtyard): Targets deleted objects 37, 38, 40.
+     - `vk11` (Guest Quarters): Targets deleted objects 15, 35, 37, 39, 40.
+     - `vk12` (Infirmary): Targets deleted object 41.
+     - `vk13` (Living Quarters / Penthouse): Targets deleted objects 18, 19, 23.
+     - `vk14` (Rooftop Parapet): Targets deleted object 49.
+   - Forcing these scripts to execute in retail causes immediate out-of-bounds null exceptions because the underlying entities no longer exist.
+
+3. **Category C: Tile Overlay Decorators (`ECOverlayPset` - 10 Scripts)**:
+   - Aesthetic cosmetic tile alterations to backgrounds:
+     - `vk03` (Pasture): 4 scripts (`ev[110..113]`) adding tile overlays for animal pens.
+     - `vk09` (Courtyard): 2 scripts (`ev[62], ev[64]`) adding perimeter tile banners.
+     - `vk14` (Roof Parapet): 2 scripts (`ev[65], ev[66]`) reinforcing parapet battlements.
+     - `vk16` (Cemetery): 2 scripts (`ev[6], ev[10]`) updating monument stone tiles.
+
+4. **Category D: Genuine Recoverable Content & Story Sequences (10 Scripts)**:
+   - **`vk16` (Castle Cemetery - 7 cutscenes)**: The single largest genuine cut narrative set piece in Dunan Castle. Scripts `ev[2]`, `ev[5]`, `ev[7]`, `ev[8]`, `ev[9]`, `ev[11]`, and `ev[14]` contain extensive choreographed cutscene bytecode (up to 114 bytes each) with camera pans, emotional face portraits, and party grouping featuring Viktor, Flik, Nanami, Freed Y, Tsai, Apple, and Hoi visiting the graves of fallen comrades.
+   - **`vk03` (Pasture - 3 scripts)**: Intact props `obj[38]`, `obj[39]`, `obj[40]` at coordinates `(66,20)`, `(68,20)`, `(70,20)` that still physically exist in the map data (`disp: 0`).
+   - **`vk12` (Infirmary - 2 scripts)**: Medicine cabinet Object 38 exists at `(53,117)`, and `ev[25]` is an interactive examination dialogue (`etyp = 1`) for bed patient `obj[36]`.
 
 ---
 
