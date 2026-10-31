@@ -483,8 +483,8 @@ Suikoden II contains 16 distinct military engagements, each managed by its own g
 
 ## 7. Formation Roster UI & Engine Synchronization (`Butai.cs`)
 
-### Why Custom Stats Originally Only Appeared in War Battles
-In vanilla gameplay, Apple's unit organization screen at Castle HQ (`vk07`) is managed by `Butai.cs`, whereas active war encounters run inside `WarChapter.cs`.
+### Pipeline Synchronization: Menu UI vs. Active Combat
+In vanilla gameplay, Apple's unit organization screen at Castle HQ (`vk07`) is managed by `Butai.cs` / `Overlay_teamchg.cs`, whereas active war encounters run inside `WarChapter.cs`.
 
 ```
 Castle HQ Room (vk07)                Active War Battle Map
@@ -494,14 +494,19 @@ Castle HQ Room (vk07)                Active War Battle Map
  Butai.InitButai()                     w_chara.charaInit()
        │                                      │
        ▼                                      ▼
-Reads w_dat_butai.chara_butai          Reads w_dat_butai.chara_butai
-(Shows Vanilla Stats in UI)            (PKCore Applies Custom JSON)
+Reads w_dat_butai.chara_butai          Reads w_chara.chara(i)
+(PKCore Synchronizes JSON)             (PKCore Applies Custom JSON)
 ```
 
-1. **`w_chara.charaInit`**: Only invoked when loading into an actual war map (`WarChapter`).
-2. **`Butai.InitButai`**: Instantiated separately whenever the player talks to Apple in the strategy room. `Butai` reads the static array `w_dat_butai.chara_butai`.
+1. **`w_chara.charaInit`**: Invoked when loading into an active tactical war map (`WarChapter`). `WarAbilityPatch` applies custom stats directly to `w_chara.chara(0..107)`.
+2. **`Butai.InitButai`**: Instantiated separately whenever the player talks to Apple in the strategy room (`vk07`). `Butai` reads from the static array `w_dat_butai.chara_butai` (76 squad characters) to compute and render:
+   - Leader Attack (`GetCharaMainPower`) & Defense (`GetCharaMainToughness`)
+   - Subunit Assist Attack (`GetCharaSubPower`) & Assist Defense (`GetCharaSubToughness`)
+   - Squad Aggregate Attack (`GetTeamPower`) & Toughness (`GetTeamToughness`)
+   - Special Abilities (`GetCharaTokugi`, `GetCharaAbility`, `CheckTeamAbility`)
 
-Because `PKCore` patches `w_chara.charaInit` and `w_dat_butai` at the start of battle, custom configurations take full mathematical effect during combat encounters, while Apple's unit management UI displays base engine figures unless `Butai.InitButai` is synchronized.
+### PKCore Synchronization Solution
+`PKCore` hooks `Butai.InitButai` with a Harmony prefix (`BeforeInitButai`), looping through `w_dat_butai.chara_butai` to inject your custom JSON configuration before the squad formation UI computes and displays team stats. It also synchronizes `w_dat_butai.chara_butai` immediately upon GSD2 scene load, ensuring 100% parity between Apple's squad formation screen and actual tactical combat.
 
 ---
 

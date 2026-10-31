@@ -6,6 +6,14 @@ All notable changes to PKCore (formerly PKextended) are documented in this file.
 
 ## [2026.10.31]
 
+- **War Battle Formation Menu Synchronization (`WarAbilityPatch.cs`)**:
+  - Synchronized Apple's Unit Formation and Team Change menu at Castle HQ (`vk07`) with custom war modifications (`S2WarAbilities.json`).
+  - **Resolution of Menu vs. Battlefield Pipeline Discrepancy**:
+    - Discovered that while active combat reads `w_chara.charaInit()` and `w_chara.chara(i)`, Apple's formation roster UI (`Butai.cs` / `Overlay_teamchg.cs`) displays stats, unit power, toughness, and special abilities directly from the static table `w_dat_butai.chara_butai`.
+    - Added a Harmony prefix on `Butai.InitButai` (`BeforeInitButai`) to populate and synchronize `w_dat_butai.chara_butai` with the loaded JSON configuration every time the player opens the squad assignment menu.
+    - Also synchronizes `w_dat_butai.chara_butai` immediately upon GSD2 scene load.
+    - Fixed character configuration registration to properly index characters configured only with `bonusAttack` / `bonusDefense` (subunit specialists like Apple, Klaus, Huan).
+
 - **Live Scene Object & NPC Inspector Enhancement (`ImGuiOverlayUI.cs`)**:
   - Upgraded the Submap Object & NPC Inspector in Tab 4 ("Castle & World State") to resolve discrepancies between static bytecode flags and active Unity scene instances:
     - Pre-scans active `MapEventObjectHD` scene components in the Unity hierarchy during main thread telemetry updates (`UpdateTelemetryCache`).

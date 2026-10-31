@@ -84,12 +84,13 @@ namespace PKCore.Patches
             GlobalAbilities = WarAbilityConfigLoader.ParseAbilities(Config.GlobalAbilities);
             
             // Parse character-specific abilities
+            CharacterConfigs.Clear();
             foreach (var kvp in Config.CharacterAbilities)
             {
                 if (int.TryParse(kvp.Key, out int characterIndex))
                 {
                     var abilities = WarAbilityConfigLoader.ParseAbilities(kvp.Value.Abilities);
-                    if (abilities.Length > 0 || kvp.Value.Attack.HasValue || kvp.Value.Defense.HasValue)
+                    if (abilities.Length > 0 || kvp.Value.Attack.HasValue || kvp.Value.Defense.HasValue || kvp.Value.BonusAttack.HasValue || kvp.Value.BonusDefense.HasValue)
                     {
                         CharacterConfigs[characterIndex] = kvp.Value;
                     }
@@ -150,6 +151,22 @@ namespace PKCore.Patches
                 {
                     Logger.LogWarning("[WarAbilityPatch] Could not find w_chara.charaInit or patch method");
                 }
+
+                // 3. Patch Butai.InitButai (Apple's Formation Menu in HQ)
+                var initButaiMethod = AccessTools.Method(typeof(Butai), nameof(Butai.InitButai));
+                var prefixInitButai = AccessTools.Method(typeof(WarAbilityPatch), nameof(BeforeInitButai));
+
+                if (initButaiMethod != null && prefixInitButai != null)
+                {
+                    harmony.Patch(initButaiMethod, prefix: new HarmonyMethod(prefixInitButai));
+                }
+                else
+                {
+                    Logger.LogWarning("[WarAbilityPatch] Could not find Butai.InitButai or patch method");
+                }
+
+                // Immediately synchronize Butai roster table on GSD2 load
+                ModifyAllButaiCharacters();
                 
                 isPatched = true;
                 if (Plugin.Config.DetailedLogs.Value)
@@ -186,7 +203,51 @@ namespace PKCore.Patches
         /// </summary>
         public static void AfterCharaInit()
         {
-             ModifyAllWarCharacters();
+            ModifyAllWarCharacters();
+        }
+
+        /// <summary>
+        /// Harmony prefix for Butai.InitButai - called when opening Apple's formation roster menu in HQ
+        /// </summary>
+        public static void BeforeInitButai()
+        {
+            ModifyAllButaiCharacters();
+        }
+
+        private static void ModifyAllButaiCharacters()
+        {
+            if (Config == null) return;
+            if (!GameDetection.IsGSD2()) return; // Extra safety check
+
+            try
+            {
+                var butaiList = w_dat_butai.chara_butai;
+                if (butaiList == null || butaiList.Length == 0) return;
+
+                Logger.LogInfo($"[WarAbilityPatch] Modifying {butaiList.Length} Butai roster characters for Apple's formation menu...");
+
+                for (int i = 0; i < butaiList.Length; i++)
+                {
+                    try
+                    {
+                        var chara = butaiList[i];
+                        if (chara != null)
+                        {
+                            ModifyCharacterAbilities(i, chara);
+                        }
+                    }
+                    catch
+                    {
+                        continue;
+                    }
+                }
+
+                Logger.LogInfo($"[WarAbilityPatch] Finished modifying Butai formation roster");
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError($"[WarAbilityPatch] Error modifying butai roster: {ex.Message}");
+            }
         }
 
         private static void ModifyAllWarCharacters()
