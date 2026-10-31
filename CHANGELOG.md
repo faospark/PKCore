@@ -6,6 +6,15 @@ All notable changes to PKCore (formerly PKextended) are documented in this file.
 
 ## [2026.10.31]
 
+- **Live Scene Object & NPC Inspector Enhancement (`ImGuiOverlayUI.cs`)**:
+  - Upgraded the Submap Object & NPC Inspector in Tab 4 ("Castle & World State") to resolve discrepancies between static bytecode flags and active Unity scene instances:
+    - Pre-scans active `MapEventObjectHD` scene components in the Unity hierarchy during main thread telemetry updates (`UpdateTelemetryCache`).
+    - Distinguishes 3 distinct object states:
+      - `[Shown]` (green): Fully instantiated and active in the live Unity scene hierarchy (`activeInHierarchy == true`).
+      - `[Off/Trig]` (yellow): Marked `disp != 0` in map bytecode (`mapeventdat`), but currently inactive in the scene (e.g. invisible trigger zones, collision volumes, or story-suppressed actors).
+      - `[Hidden]` (red): Marked `disp == 0` (cut, dormant, or disabled actors).
+    - Toggling an object now updates both the underlying `mapeventdat` bytecode and dynamically synchronizes live Unity scene instances (`MapEventObjectHD.gameObject.SetActive`, `visibleSync`, and `ExclusiveCheck`) with hot reload.
+
 - **Unified Dear ImGui Control Suite & Feature Dashboard (`ImGuiOverlayUI.cs`)**:
   - Transformed the `[F10]` overlay into a multi-tabbed interactive control suite exposing PKCore features in real-time:
     - **Gameplay & Exploration Tab**: Live toggle for Encounter None `[F4]` with backend status indicator, world map cloud/sunray toggles, and direct trigger for Remote Castle Rune Master (Jeane, S1) with real-time safety validation.

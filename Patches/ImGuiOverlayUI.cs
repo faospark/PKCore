@@ -70,6 +70,7 @@ public static class ImGuiOverlayUI
         public int H;
         public int Otyp;
         public byte Disp;
+        public bool IsActiveInScene;
     }
 
     // Cached telemetry data updated strictly on Unity main thread
@@ -687,10 +688,31 @@ public static class ImGuiOverlayUI
                         var objs = ed.mapeventdat[submapIdx]?.eventobj;
                         if (objs != null)
                         {
+                            // Pre-scan live MapEventObjectHD in scene to determine actual runtime visibility
+                            var liveMap = new System.Collections.Generic.Dictionary<int, bool>();
+                            try
+                            {
+                                var hdList = UnityEngine.Object.FindObjectsOfType<MapEventObjectHD>();
+                                if (hdList != null)
+                                {
+                                    foreach (var hd in hdList)
+                                    {
+                                        if (hd != null && hd.gameObject != null)
+                                        {
+                                            liveMap[hd.objID] = hd.gameObject.activeInHierarchy;
+                                        }
+                                    }
+                                }
+                            }
+                            catch { }
+
                             for (int i = 0; i < objs.Count; i++)
                             {
                                 var o = objs[i];
                                 if (o == null) continue;
+
+                                bool activeInScene = liveMap.TryGetValue(i, out bool act) ? act : (o.disp != 0);
+
                                 _cachedAreaObjects.Add(new AreaObjectSnapshot
                                 {
                                     Index = i,
@@ -701,7 +723,8 @@ public static class ImGuiOverlayUI
                                     W = o.w,
                                     H = o.h,
                                     Otyp = o.otyp,
-                                    Disp = o.disp
+                                    Disp = o.disp,
+                                    IsActiveInScene = activeInScene
                                 });
                             }
                         }
@@ -1469,7 +1492,7 @@ public static class ImGuiOverlayUI
                                     int enabledCount = 0;
                                     for (int i = 0; i < _cachedAreaObjects.Count; i++)
                                     {
-                                        if (_cachedAreaObjects[i].Disp == 0) disabledCount++;
+                                        if (!_cachedAreaObjects[i].IsActiveInScene && _cachedAreaObjects[i].Disp == 0) disabledCount++;
                                         else enabledCount++;
                                     }
 
@@ -1481,36 +1504,47 @@ public static class ImGuiOverlayUI
                                     }
 
                                     ImGui.Spacing();
-                                    ImGui.BeginChild("ObjectsListScroll", new Vector2(0, 200f), true);
+                                    ImGui.BeginChild("ObjectsListScroll", new Vector2(0, 220f), true);
 
                                     for (int i = 0; i < _cachedAreaObjects.Count; i++)
                                     {
                                         var o = _cachedAreaObjects[i];
 
-                                        bool isVisible = o.Disp != 0;
-                                        Vector4 statusColor = isVisible ? new Vector4(0.3f, 1f, 0.4f, 1f) : new Vector4(0.85f, 0.4f, 0.4f, 1f);
-                                        string statusText = isVisible ? "[Show]" : "[Hide]";
+                                        bool isLive = o.IsActiveInScene;
+                                        bool isMarkedDisp = o.Disp != 0;
+
+                                        // Status: Active (live in scene) vs Hidden
+                                        Vector4 statusColor = isLive 
+                                            ? new Vector4(0.3f, 1f, 0.4f, 1f) 
+                                            : (isMarkedDisp ? new Vector4(0.9f, 0.7f, 0.2f, 1f) : new Vector4(0.85f, 0.4f, 0.4f, 1f));
+                                        
+                                        string statusText = isLive 
+                                            ? "[Shown]" 
+                                            : (isMarkedDisp ? "[Off/Trig]" : "[Hidden]");
 
                                         ImGui.PushID($"ObjRow_{o.Index}");
 
-                                        ImGui.TextColored(statusColor, statusText);
+                                        ImGui.TextColored(statusColor, $"{statusText,-10}");
                                         ImGui.SameLine();
                                         ImGui.TextColored(new Vector4(0.9f, 0.9f, 0.4f, 1f), $"[{o.Index:D2}]");
                                         ImGui.SameLine();
 
-                                        Vector4 nameColor = isVisible ? new Vector4(0.95f, 0.95f, 0.95f, 1f) : new Vector4(0.55f, 0.55f, 0.55f, 1f);
+                                        Vector4 nameColor = isLive 
+                                            ? new Vector4(0.95f, 0.95f, 0.95f, 1f) 
+                                            : (isMarkedDisp ? new Vector4(0.75f, 0.75f, 0.75f, 1f) : new Vector4(0.50f, 0.50f, 0.50f, 1f));
                                         ImGui.TextColored(nameColor, $"{o.Name,-18}");
                                         ImGui.SameLine();
 
                                         ImGui.TextDisabled($"fp:{o.Fpno,-3} ({o.X,2},{o.Y,2})");
 
                                         ImGui.SameLine();
-                                        string toggleLabel = isVisible ? "Hide##Toggle" : "Show##Toggle";
+                                        string toggleLabel = isMarkedDisp ? "Hide##Toggle" : "Show##Toggle";
                                         if (ImGui.SmallButton(toggleLabel))
                                         {
-                                            byte nextDisp = (byte)(isVisible ? 0 : 1);
+                                            byte nextDisp = (byte)(isMarkedDisp ? 0 : 1);
                                             _pendingObjectToggles.Add((o.Index, nextDisp));
                                             o.Disp = nextDisp;
+                                            o.IsActiveInScene = (nextDisp != 0);
                                             _pendingRoomReload = true;
                                         }
 

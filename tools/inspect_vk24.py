@@ -3,25 +3,20 @@ import json
 with open(r'd:\Modding\suikodum\Mobobehaviour\vk24.json', 'r', encoding='utf-8') as f:
     vk24 = json.load(f)
 
-print("vk24 keys:", list(vk24.keys()))
-ed = vk24['eventdata']
-med = ed.get('mapeventdat', [])
-print(f"mapeventdat count: {len(med)}")
-for idx, m in enumerate(med):
-    print(f"  submap {idx}: mapno={m.get('mapno')}, okaz={m.get('okaz')}, evkaz={m.get('evkaz')}")
+# Inspect dialogue in vk24's sce_msg:
+with open(r'd:\Modding\suikodum\TextAsset\text_gsd2_en', 'r', encoding='utf-8') as f:
+    text_data = json.load(f)
+text_map = {it['id']: it.get('text', '') for it in text_data['textList']}
 
-for i, o in enumerate(med[0]['eventobj']):
-    print(f"obj[{i}]: fpno={o.get('fpno')}, otyp={o.get('otyp')}, pos=({o.get('x')}, {o.get('y')}), ano={o.get('ano')}, disp={o.get('disp')}, ozok={o.get('ozok')}")
+print("vk24 sce_msg count:", len(vk24['eventdata'].get('sce_msg', [])))
+for g_idx, g in enumerate(vk24['eventdata'].get('sce_msg', [])):
+    print(f"Group {g_idx}: len={len(g['msg_index'])}")
 
-# Check textures
-import os
-print("\nTextures vk24:", [f for f in os.listdir(r'd:\Modding\suikodum\Texture2D') if 'vk24' in f])
-
-# Check warps
-print("\n--- Warps in vk24 ---")
-for s_idx, s in enumerate(med):
-    for e_idx, ev in enumerate(s.get('eventdat', [])):
-        com = ev.get('eventCom', [])
-        for i in range(len(com)-3):
-            if com[i] == 31:
-                print(f"Sub {s_idx} ev[{e_idx}]: Warp -> {com[i:i+6]}")
+# Check dialogue IDs in text_data around war councils or major late game alliance meetings:
+# In vk24 ev[23]: com had [24, 9, 1, 1], [24, 9, 1, 2], [24, 9, 0, 27], [24, 10, 0, 28]...
+# Let's inspect where these dialogues point in textList:
+# Let's search textList for Greenhill / Matilda invasion strategy, or Shu's war strategy in the assembly!
+for it in text_data['textList']:
+    t = it.get('text', '')
+    if 'greenhill' in t.lower() and ('matilda' in t.lower() or 'highway' in t.lower()) and ('plan' in t.lower() or 'strategy' in t.lower() or 'ambush' in t.lower()):
+        print(f"ID {it['id']}: {t[:100]}")
