@@ -47,7 +47,6 @@ public sealed class ModConfiguration
     public ConfigEntry<bool> ShowSaveSlotPartyPortraits { get; private set; }
     public ConfigEntry<string> MercFortFence { get; private set; }
     public ConfigEntry<bool> ColoredIntroAndFlashbacks { get; private set; }
-    public ConfigEntry<bool> EnableRepeatStatueRewards { get; private set; }
 
     // War Ability Mod
     public ConfigEntry<bool> EnableWarAbilityMod { get; private set; }
@@ -298,14 +297,6 @@ public sealed class ModConfiguration
             true,
             "Enable war battle ability modification. Allows you to customize character abilities in Suikoden 2's war battles. Wont appear on the game menu of Apple but will have an effect on battle. Base is already boosted but can be further configures in PKCore/Config/S2WarAbilities.json"
         );
-
-        EnableRepeatStatueRewards = _config.Bind(
-            "05 Game : Suikoden 2",
-            "EnableRepeatStatueRewards",
-            true,
-            "Grants Guardian Deity statue rewards from Jude every time you change or rebuild the statue at his workshop, rather than the vanilla one-time limit."
-        );
-
 
         // Suikoden 1 Castle Rune Master (Quick Rune)
         EnableS1QuickRuneMaster = _config.Bind(

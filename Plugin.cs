@@ -341,6 +341,7 @@ public class Plugin : BasePlugin
 
         // Map ID Tracking (shared by Map Object & S2 patches)
         harmony.PatchAll(typeof(MACHICON_OnMapInitPatch));
+        harmony.PatchAll(typeof(MachiLoader_Load_Patch));
 
 
         // Reaction Monitor (MapChara/r_action trigger)
@@ -367,15 +368,6 @@ public class Plugin : BasePlugin
             Log.LogInfo("Applying Suikoden 1 Quick Rune Master patch...");
             harmony.PatchAll(typeof(Patches.S1QuickRunePatch));
         }
-
-        // Guardian Deity Repeat Rewards (Suikoden 2)
-        if (Config.EnableRepeatStatueRewards.Value)
-        {
-            Log.LogInfo("Applying Guardian Deity Repeat Rewards patch...");
-            harmony.PatchAll(typeof(GuardianDeityRepeatRewardsPatch));
-        }
-
-
 
         // PSP Launcher Patch
         // Now handled by Update loop instead of Harmony postfix

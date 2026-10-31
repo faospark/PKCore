@@ -44,7 +44,6 @@
   - Disassembles `GameAssembly.dll` native x86_64 instructions in <100ms: `disasm.bat <0xAddress> [bytes]`
   - **NEVER attempt full Ghidra decompiler runs on `GameAssembly.dll`**: Full headless decompile hangs because the 63 MB binary is too massive. All symbols and addresses are already known and indexed.
 - **REA Synergy**: Anchor with `sym.bat` $\rightarrow$ analyze native flow with REA disassembler $\rightarrow$ cycle call targets back to `sym.bat <0xAddress>` $\rightarrow$ implement Harmony hook.
-- **AST Knowledge Graph**: After modifying workspace code, run `graphify update .` to keep AST data synchronized.
 
 ## 4. Harmony & IL2CPP Rules
 - **Game Scoping & Namespaces**:

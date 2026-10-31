@@ -22,6 +22,14 @@ public static class MACHICON_OnMapInitPatch
         if (__instance == null) return;
 
         CurrentMachicon = __instance;
+        if (__instance.mdat != null)
+        {
+            MachiLoader_Load_Patch.LastLoadedMachiDat = __instance.mdat;
+        }
+        if (__instance.econ != null)
+        {
+            MachiLoader_Load_Patch.LastLoadedEventcon = __instance.econ;
+        }
         string machiName = __instance.GetMapName();
         CurrentMapId = ParseMapIdFromMachiName(machiName);
 

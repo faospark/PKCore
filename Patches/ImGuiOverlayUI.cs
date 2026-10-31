@@ -18,8 +18,9 @@ namespace PKCore.Patches;
 /// </summary>
 public static class ImGuiOverlayUI
 {
-    public static bool IsOpen { get => false; set { } }
+    public static bool IsOpen { get => _showDevMenu; set => _showDevMenu = value; }
     public static bool ShowBathhouseWindow { get => false; set { } }
+    private static bool _showDevMenu = false;
 
     public static bool ShowLocationHUD
     {
@@ -58,11 +59,33 @@ public static class ImGuiOverlayUI
     private static string _dumpFeedback = "";
     private static float _dumpFeedbackTime = 0f;
 
-    // Cached telemetry data updated on Unity main thread
+    public class AreaObjectSnapshot
+    {
+        public int Index;
+        public int Fpno;
+        public int X;
+        public int Y;
+        public int W;
+        public int H;
+        public int Otyp;
+        public byte Disp;
+    }
+
+    // Cached telemetry data updated strictly on Unity main thread
     private static string _cachedMapId = "(None)";
     private static int _cachedStars = 0;
     private static int _cachedPlayerX = 0;
     private static int _cachedPlayerY = 0;
+    private static int _cachedMx = 0;
+    private static int _cachedMy = 0;
+    private static byte _cachedCastleStage = 0;
+    private static bool _cachedHasCastleData = false;
+    private static readonly System.Collections.Generic.List<AreaObjectSnapshot> _cachedAreaObjects = new();
+
+    // Queued mutations applied strictly on Unity main thread
+    private static readonly System.Collections.Generic.List<(int Index, byte NewDisp)> _pendingObjectToggles = new();
+    private static byte? _pendingCastleStage = null;
+    private static bool _pendingDanceTrigger = false;
 
     // Camera Zoom / FOV management
     public static float CameraZoom => _cameraZoom;
@@ -402,6 +425,70 @@ public static class ImGuiOverlayUI
     /// </summary>
     public static void Update()
     {
+        // Drain pending main-thread mutations safely
+        if (_pendingCastleStage.HasValue)
+        {
+            try
+            {
+                var gw = GSD2::GAME_WORK.Instance;
+                if (gw?.game_data != null)
+                {
+                    gw.game_data.base_lv = _pendingCastleStage.Value;
+                    Plugin.Log.LogInfo($"[DevMenu] Set Castle base_lv -> {_pendingCastleStage.Value}");
+                }
+            }
+            catch { }
+            _pendingCastleStage = null;
+        }
+
+        if (_pendingDanceTrigger)
+        {
+            try
+            {
+                var econ = MachiLoader_Load_Patch.LastLoadedEventcon;
+                if (econ != null)
+                {
+                    econ.EventControll(1);
+                    Plugin.Log.LogInfo("[DevMenu] Triggered Ballroom Dance Routine via EventControll(1).");
+                }
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogError($"[DevMenu] Dance trigger failed: {ex.Message}");
+            }
+            _pendingDanceTrigger = false;
+        }
+
+        if (_pendingObjectToggles.Count > 0)
+        {
+            try
+            {
+                var mdat = MachiLoader_Load_Patch.LastLoadedMachiDat;
+                int submapIdx = MACHICON_OnMapInitPatch.CurrentSubmapIndex;
+                var ed = mdat?.eventdata;
+                if (ed?.mapeventdat != null && submapIdx >= 0 && submapIdx < ed.mapeventdat.Count)
+                {
+                    var objs = ed.mapeventdat[submapIdx]?.eventobj;
+                    if (objs != null)
+                    {
+                        foreach (var (idx, newDisp) in _pendingObjectToggles)
+                        {
+                            if (idx >= 0 && idx < objs.Count && objs[idx] != null)
+                            {
+                                objs[idx].disp = newDisp;
+                                Plugin.Log.LogInfo($"[DevMenu] Mutated obj[{idx}].disp -> {newDisp}");
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogError($"[DevMenu] Error applying object toggles: {ex.Message}");
+            }
+            _pendingObjectToggles.Clear();
+        }
+
         if (_pendingCursorVisible.HasValue)
         {
             bool val = _pendingCursorVisible.Value;
@@ -414,10 +501,19 @@ public static class ImGuiOverlayUI
             var keyboard = UnityEngine.InputSystem.Keyboard.current;
             if (keyboard != null)
             {
-                if (keyboard.escapeKey.wasPressedThisFrame && _showHudNoteInput)
+                if (keyboard.escapeKey.wasPressedThisFrame)
                 {
-                    _showHudNoteInput = false;
-                    SetImGuiCursorVisible(false);
+                    if (_showHudNoteInput || _showDevMenu)
+                    {
+                        _showHudNoteInput = false;
+                        _showDevMenu = false;
+                        SetImGuiCursorVisible(false);
+                    }
+                }
+                else if (keyboard.f10Key.wasPressedThisFrame)
+                {
+                    _showDevMenu = !_showDevMenu;
+                    SetImGuiCursorVisible(_showDevMenu || _showHudNoteInput);
                 }
                 else if (keyboard.numpad5Key.wasPressedThisFrame)
                 {
@@ -475,6 +571,80 @@ public static class ImGuiOverlayUI
             try { _cachedStars = GSD2::G2_SYS.Mem108Chk(0); } catch { _cachedStars = 0; }
             _cachedPlayerX = MACHICON_OnMapInitPatch.PlayerX;
             _cachedPlayerY = MACHICON_OnMapInitPatch.PlayerY;
+
+            try
+            {
+                var mc = MACHICON_OnMapInitPatch.CurrentMachicon;
+                if (mc != null)
+                {
+                    _cachedMx = mc.mx;
+                    _cachedMy = mc.my;
+                }
+                else
+                {
+                    _cachedMx = 0;
+                    _cachedMy = 0;
+                }
+            }
+            catch
+            {
+                _cachedMx = 0;
+                _cachedMy = 0;
+            }
+
+            try
+            {
+                var gw = GSD2::GAME_WORK.Instance;
+                if (gw != null && gw.game_data != null)
+                {
+                    _cachedCastleStage = gw.game_data.base_lv;
+                    _cachedHasCastleData = true;
+                }
+                else
+                {
+                    _cachedHasCastleData = false;
+                }
+            }
+            catch
+            {
+                _cachedHasCastleData = false;
+            }
+
+            if (_showDevMenu)
+            {
+                try
+                {
+                    var mdat = MachiLoader_Load_Patch.LastLoadedMachiDat;
+                    int submapIdx = MACHICON_OnMapInitPatch.CurrentSubmapIndex;
+                    var ed = mdat?.eventdata;
+
+                    _cachedAreaObjects.Clear();
+                    if (ed?.mapeventdat != null && submapIdx >= 0 && submapIdx < ed.mapeventdat.Count)
+                    {
+                        var objs = ed.mapeventdat[submapIdx]?.eventobj;
+                        if (objs != null)
+                        {
+                            for (int i = 0; i < objs.Count; i++)
+                            {
+                                var o = objs[i];
+                                if (o == null) continue;
+                                _cachedAreaObjects.Add(new AreaObjectSnapshot
+                                {
+                                    Index = i,
+                                    Fpno = o.fpno,
+                                    X = o.x,
+                                    Y = o.y,
+                                    W = o.w,
+                                    H = o.h,
+                                    Otyp = o.otyp,
+                                    Disp = o.disp
+                                });
+                            }
+                        }
+                    }
+                }
+                catch { }
+            }
         }
         catch { }
     }
@@ -556,7 +726,7 @@ public static class ImGuiOverlayUI
         try
         {
             var io = ImGui.GetIO();
-            if (_showHudNoteInput)
+            if (_showHudNoteInput || _showDevMenu)
             {
                 io.ConfigFlags &= ~ImGuiConfigFlags.NoMouse;
                 io.MouseDrawCursor = true;
@@ -570,6 +740,10 @@ public static class ImGuiOverlayUI
         catch { }
 
         DrawBottomLocationHUD();
+        if (_showDevMenu)
+        {
+            DrawDevMenu();
+        }
     }
 
     /// <summary>
@@ -598,13 +772,11 @@ public static class ImGuiOverlayUI
 
             if (ImGui.Begin("PKCoreLocationHUD###PKCoreLocationHUD", hudFlags))
             {
-                int mx = MACHICON_OnMapInitPatch.CurrentMachicon != null ? MACHICON_OnMapInitPatch.CurrentMachicon.mx : 0;
-                int my = MACHICON_OnMapInitPatch.CurrentMachicon != null ? MACHICON_OnMapInitPatch.CurrentMachicon.my : 0;
                 ImGui.TextColored(GetAccentColor(), "Location:");
                 ImGui.SameLine();
                 ImGui.TextColored(new Vector4(1f, 0.9f, 0.4f, 1f), _cachedMapId);
                 ImGui.SameLine();
-                ImGui.TextColored(new Vector4(0.35f, 0.85f, 1f, 1f), $"P:({_cachedPlayerX},{_cachedPlayerY}) M:({mx},{my}) T:({mx/16},{my/16})");
+                ImGui.TextColored(new Vector4(0.35f, 0.85f, 1f, 1f), $"P:({_cachedPlayerX},{_cachedPlayerY}) M:({_cachedMx},{_cachedMy}) T:({_cachedMx/16},{_cachedMy/16})");
 
                 ImGui.SameLine();
                 string noteBtnLabel = _showHudNoteInput ? "[Hide Note]" : (string.IsNullOrEmpty(_locationNotes) ? "[+ Note]" : "[Edit Note]");
@@ -625,6 +797,14 @@ public static class ImGuiOverlayUI
                 if (ImGui.SmallButton("Open Log##HudOpenLog"))
                 {
                     OpenDumpLocation();
+                }
+
+                ImGui.SameLine();
+                string menuBtnLabel = _showDevMenu ? "[Close Menu]" : "[Menu]";
+                if (ImGui.SmallButton(menuBtnLabel + "##ToggleDevMenu"))
+                {
+                    _showDevMenu = !_showDevMenu;
+                    RequestCursorVisible(_showDevMenu || _showHudNoteInput);
                 }
 
                 ImGui.SameLine();
@@ -699,6 +879,162 @@ public static class ImGuiOverlayUI
             ImGui.End();
 
             ImGui.PopStyleVar(3);
+        }
+        catch { }
+    }
+
+    /// <summary>
+    /// Renders the PKCore Cut Content & Testing Menu.
+    /// </summary>
+    private static void DrawDevMenu()
+    {
+        try
+        {
+            ImGui.SetNextWindowSize(new Vector2(380f, 280f), ImGuiCond.FirstUseEver);
+            if (ImGui.Begin("PKCore Restorations & Testing##DevMenu", ref _showDevMenu, ImGuiWindowFlags.NoCollapse))
+            {
+                ImGui.TextColored(GetAccentColor(), "Cut Content Testing");
+                ImGui.Separator();
+
+                ImGui.Spacing();
+                ImGui.Text("Active Map: " + (_cachedMapId ?? "None"));
+
+                ImGui.Spacing();
+                if (ImGui.CollapsingHeader("Castle Stage & State", ImGuiTreeNodeFlags.DefaultOpen))
+                {
+                    try
+                    {
+                        if (_cachedHasCastleData)
+                        {
+                            byte currentTier = _cachedCastleStage;
+                            ImGui.Text($"Current Castle Stage: Level {currentTier} (internal base_lv: {currentTier})");
+                            ImGui.Spacing();
+
+                            for (byte lvl = 0; lvl <= 4; lvl++)
+                            {
+                                string label = lvl switch
+                                {
+                                    0 => "Stage 0 (Mobile / Fort)",
+                                    1 => "Stage 1 (Castle Level 1)",
+                                    2 => "Stage 2 (Castle Level 2 - Two River)",
+                                    3 => "Stage 3 (Castle Level 3 - Post-Greenhill)",
+                                    4 => "Stage 4 (Castle Level 4 - Grand Fortress)",
+                                    _ => $"Stage {lvl}"
+                                };
+
+                                if (currentTier == lvl)
+                                {
+                                    ImGui.TextColored(new Vector4(0.2f, 0.9f, 0.55f, 1f), $"-> {label} [Active]");
+                                }
+                                else
+                                {
+                                    if (ImGui.Button($"Set {label}##SetBaseLv{lvl}"))
+                                    {
+                                        _pendingCastleStage = lvl;
+                                        _cachedCastleStage = lvl;
+                                        Plugin.Log.LogInfo($"[DevMenu] Queued Castle base_lv -> {lvl}.");
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            ImGui.TextDisabled("Game state not yet loaded.");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        ImGui.TextColored(new Vector4(1f, 0.4f, 0.4f, 1f), $"Error: {ex.Message}");
+                    }
+                }
+
+                ImGui.Spacing();
+                if (ImGui.CollapsingHeader("Area Objects & NPC Inspector", ImGuiTreeNodeFlags.DefaultOpen))
+                {
+                    try
+                    {
+                        if (_cachedAreaObjects != null && _cachedAreaObjects.Count > 0)
+                        {
+                            int disabledCount = 0;
+                            int enabledCount = 0;
+                            for (int i = 0; i < _cachedAreaObjects.Count; i++)
+                            {
+                                if (_cachedAreaObjects[i].Disp == 0) disabledCount++;
+                                else enabledCount++;
+                            }
+
+                            ImGui.Text($"Total Objects: {_cachedAreaObjects.Count}  |  Visible: {enabledCount}  |  Disabled: {disabledCount}");
+                            ImGui.Spacing();
+
+                            ImGui.BeginChild("ObjectsListScroll", new Vector2(0, 200f), true);
+
+                            for (int i = 0; i < _cachedAreaObjects.Count; i++)
+                            {
+                                var o = _cachedAreaObjects[i];
+
+                                bool isVisible = o.Disp != 0;
+                                Vector4 statusColor = isVisible ? new Vector4(0.3f, 1f, 0.4f, 1f) : new Vector4(0.85f, 0.4f, 0.4f, 1f);
+                                string statusText = isVisible ? "[Visible]" : "[Hidden]";
+
+                                ImGui.PushID($"ObjRow_{o.Index}");
+
+                                ImGui.TextColored(statusColor, statusText);
+                                ImGui.SameLine();
+                                ImGui.TextColored(new Vector4(0.9f, 0.9f, 0.4f, 1f), $"obj[{o.Index:D2}]");
+                                ImGui.SameLine();
+                                ImGui.Text($"fpno:{o.Fpno,-5} pos:({o.X,2},{o.Y,2}) size:({o.W}x{o.H}) typ:{o.Otyp}");
+
+                                ImGui.SameLine();
+                                string toggleLabel = isVisible ? "Hide##Toggle" : "Show##Toggle";
+                                if (ImGui.SmallButton(toggleLabel))
+                                {
+                                    byte nextDisp = (byte)(isVisible ? 0 : 1);
+                                    _pendingObjectToggles.Add((o.Index, nextDisp));
+                                    o.Disp = nextDisp;
+                                }
+
+                                ImGui.PopID();
+                            }
+
+                            ImGui.EndChild();
+                        }
+                        else
+                        {
+                            ImGui.TextDisabled("No event objects found in current submap.");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        ImGui.TextColored(new Vector4(1f, 0.4f, 0.4f, 1f), $"Error reading objects: {ex.Message}");
+                    }
+                }
+
+                ImGui.Spacing();
+                if (ImGui.CollapsingHeader("Restored Features & Cut Content", ImGuiTreeNodeFlags.None))
+                {
+                    if (ImGui.Button("Trigger Ballroom Dance Routine (vk19)"))
+                    {
+                        _pendingDanceTrigger = true;
+                    }
+
+                    ImGui.Spacing();
+                    ImGui.TextDisabled("Castle Level 4 Dormant Features:");
+                    ImGui.BulletText("vk03: Animal Paddock tier 4 feeding troughs (obj 37..40)");
+                    ImGui.BulletText("vk09: Theater / Concert Hall expansion & backstage");
+                    ImGui.BulletText("vk11: Armory / Forge upper expansion tiers");
+                    ImGui.BulletText("vk13: Riou's Living Quarters / Penthouse exterior pathing");
+                    ImGui.BulletText("vk14: Stone tablet & library archive expansions");
+                    ImGui.BulletText("vk16: Cut Fallen Heroes Memorial Stage");
+                }
+
+                ImGui.Spacing();
+                if (ImGui.Button("Close Menu##DevMenuClose"))
+                {
+                    _showDevMenu = false;
+                    RequestCursorVisible(_showHudNoteInput);
+                }
+            }
+            ImGui.End();
         }
         catch { }
     }

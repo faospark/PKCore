@@ -107,7 +107,7 @@ The 62 verified Level 4 scripts are distributed across 16 map zones:
 | **Cave of the Wind** | `vd06.json` | 4 | Retail Active: Pesmerga spawn, cutscene, talk, and step triggers |
 | **Two River Sewers** | `vg15.json` | 1 | Retail Active: Kobold settlement late-game dialogue |
 | **HQ Vault & Corridors** | `vk02.json` | 9 | Pruned Dead Code: Ghost spawns for trimmed Objects 18–26 |
-| **HQ Pasture & Farm** | `vk03.json` | 7 | Recoverable (3) & Tile Overlays (4): Fences and pen graphics |
+| **HQ Pasture & Farm** | `vk03.json` | 7 | **Debunked / Dud**: Superseded by retail `vk19`. Objects 38–40 are invisible collision hitboxes, not graphics; stone wall door is a dead-end boundary |
 | **HQ Tavern 2F** | `vk04.json` | 2 | Pruned Dead Code: Ghost spawns for trimmed Objects 47, 48 |
 | **HQ Docks** | `vk08.json` | 1 | Pruned Dead Code: Ghost spawn for trimmed Object 32 |
 | **HQ Courtyard** | `vk09.json` | 5 | Pruned Dead Code (3) & Tile Overlays (2): Perimeter banners |
@@ -115,7 +115,7 @@ The 62 verified Level 4 scripts are distributed across 16 map zones:
 | **HQ Infirmary** | `vk12.json` | 3 | Recoverable (2) & Pruned Dead Code (1): Medicine prop & patient check |
 | **HQ Penthouse** | `vk13.json` | 6 | Debunked Staging (4), Pruned Dead Code (1), Recoverable (1) |
 | **HQ Roof Parapet** | `vk14.json` | 3 | Pruned Dead Code (1) & Tile Overlays (2): Parapet battlements |
-| **HQ Cemetery** | `vk16.json` | 12 | Recoverable (7), Tile Overlays (4), Engine Helpers (1): Memorial sequence |
+| **HQ Cemetery** | `vk16.json` | 12 | **Cutscene-Only Stage**: Dedicated non-playable memorial cutscene container. Impractical for seamless room integration due to missing exit geometry and hard-coded event loops |
 | **Total** | **16 Maps** | **62** | **Full Game Coverage** |
 
 ---
@@ -237,19 +237,37 @@ flowchart TD
     end
 ```
 
-#### 1. The Fallen Heroes Memorial Sequence (`vk16` Castle Cemetery — 7 Cutscenes)
+#### 1. The Fallen Heroes Memorial Sequence (`vk16` Castle Cemetery — 7 Cutscenes) [Impractical / Cutscene Container]
 The single most substantial narrative sequence in Dunan Castle. Core story actors (**Viktor, Flik, Nanami, Freed Y, Tsai, Apple, Hoi**) gather around the headstones to honor fallen comrades.
 - **Physical Entities Exist**: In `vk16` Submap 0, Objects 1 through 9 exist at origin `(0, 0)` with their correct sprite patterns (`fpno 18` Flik, `fpno 3` Viktor, `fpno 2` Nanami, `fpno 52` Freed Y, `fpno 35` Tsai, `fpno 19` Hoi, `fpno 54` Apple).
-- **Intact Bytecode Choreography**:
-  - `ev[2]` (94 bytes): Camera panning, party clustering (`ECPartyCloseN`), and dialogue.
-  - `ev[7]` (114 bytes): Multi-actor positioning, emotional face portraits (`ECWindowFaceHyojyo`), and individual tributes.
-  - `ev[9]` (44 bytes): Mid-scene dialogue and screen color transitions (`ECBatParChg`).
-  - `ev[11]` (87 bytes): Nanami and Freed Y commemorative reflections.
-  - `ev[14]` (93 bytes): Final group assembly and memorial tile state changes.
+- **Implementation Reality**:
+  - In-engine testing confirmed that `vk16` is a **special cutscene container**, not an ordinary playable room.
+  - It lacks normal entrance/exit transition triggers back to the live castle (`vk23`).
+  - Autorun loops and scene-step dependencies freeze standard party movement, making seamless gameplay restoration impractical without extensive custom scripting.
+- **Associated Extracted Dialogues (String IDs 1011160001–1011161076 via Game Master Text Index)**:
+  - **Viktor & Flik (War Council & Aftermath Reflection)**:
+    > *"Eh, it'll work out somehow. Maybe we'll come up with a good idea tomorrow. Anyway, don't worry about it for now, [Hero]. Just go get some grub and sleep."*  
+    > *"Look, there is a great power within you. And I don't mean that rune on your hand either. You've shouldered the hopes of many people, and you have a duty to carry them through to the end. And that goes for all those who died in this war too..."*  
+    > *"Leave it, Flik. He needs to do this... But I just want ya to remember one thing, [Hero]. You've always got a home to come back to here."*
+  - **General Kiba & Klaus (The Decisive Gamble)**:
+    > *"General Kiba... I have a great favor to ask of you. The next battle will be the one to truly determine the outcome of this war. If we hope to win, we're going to have to make a hefty gambit."*  
+    > *"Master Shu, I have already died once with my defeat, so I do not fear death. But when I see how Commander [Hero] wins over the hearts of others to fight through this war... I find myself believing in miracles, unbecoming of a general as that may be. All I ask in return is that you take care of my son, Klaus."*
+  - **Apple & Shu (The 3 War Cards Confrontation)**:
+    > *"When I came up with the plan to attack Muse... you knew that it was going to fail, didn't you?"*  
+    > *"Yeah. I gave it a fifty-fifty chance at best... Apple. There are 3 cards on that table there. Would you take one of them for me? What does it say?"*  
+    > *"Fire... Nothing else."*  
+    > *"I see... You may go now, Apple."*
 
-#### 2. Intact Pasture Props (`vk03` Submap 0 — 3 Objects)
+#### 2. Pasture & Farm Props (`vk03` Submap 0 — 7 Scripts) [Debunked / Dud]
 - `ev[107]`, `ev[108]`, `ev[109]` toggle visibility (`disp = 1`) for Objects 38, 39, and 40.
-- Unlike pruned rooms, Objects 38, 39, and 40 **physically exist in the retail array** at coordinates `(66, 20)`, `(68, 20)`, and `(70, 20)` with `disp = 0` (hidden). Restoring them safely adds functional animal enclosure fences.
+- **In-Game Verification**:
+  - Objects 38, 39, and 40 possess `otyp: 4` (invisible collision barrier) with `fpno: 0` (no visual sprite).
+  - Activating them does **not** draw visible fence graphics; it only creates an invisible collision wall.
+  - In retail *Suikoden II*, Konami abandoned `vk03` and built the active farm in **`vk19`**, where the open gate is drawn directly into the background tilemap.
+  - The stone wall wooden door at the bottom of the farm is a dead visual backdrop with an inaccessible collision boundary. Restoring it as a playable doorway leads to dead-end coordinate mismatches. Verified as a **dud / debunked cut feature**.
+- **Dialogue & Inspection Reality**:
+  - `vk03` contains 12 `sce_msg` groups. Inspection indices in `vk03` map to Combat Dojo and sparring practice lines (e.g. *Practice Shields*, *Sword on Display*, *Practice Weapons*), confirming `vk03` was originally mapped to the training grounds dojo structure before pasture coordinates were decoupled.
+  - Retail farm dialogue resides in **`vk19`**, where Yuzu and garden/pasture NPCs have 555 dedicated dialogue strings (`1011190001`–`1011190555`), confirming that no actual animal dialogue or pasture lore was lost.
 
 #### 3. Medical Prop & Examination Dialogue (`vk12` Submap 0 — 2 Scripts)
 - `ev[15]`: Sets `disp = 1` for Object 38, which physically exists at `(53, 117)` with `fpno 65167` (a medical supply shelf).
@@ -263,7 +281,7 @@ The single most substantial narrative sequence in Dunan Castle. Core story actor
 |---|:---:|:---:|:---:|---|
 | **Outer World (`vc18`, `vd02`, `vd06`, `vg15`)** | 8 | 0 | 0 | **Leave Untouched**: Already 100% active in retail |
 | **Castle Vault & Corridors (`vk02`)** | 9 | 9 (Pruned) | 0 | **Do Not Restore**: Objects deleted from array; causes crashes |
-| **Pasture & Farm (`vk03`)** | 7 | 0 | 7 (3 Props, 4 Overlays) | **Safe to Restore**: Objects 38–40 exist; overlays repaint fences |
+| **Pasture & Farm (`vk03`)** | 7 | 7 (Dud) | 0 | **Debunked**: Objects 38–40 are invisible collision hitboxes (otyp: 4, fpno: 0); superseded by retail `vk19`; stone wall door is a dead-end |
 | **Tavern 2F (`vk04`)** | 2 | 2 (Pruned) | 0 | **Do Not Restore**: Objects 47, 48 deleted |
 | **Docks (`vk08`)** | 1 | 1 (Pruned) | 0 | **Do Not Restore**: Object 32 deleted |
 | **Courtyard (`vk09`)** | 5 | 3 (Pruned) | 2 (Tile Overlays) | **Partially Safe**: Overlays safe; skip ghost objects 37, 38, 40 |
@@ -271,5 +289,5 @@ The single most substantial narrative sequence in Dunan Castle. Core story actor
 | **Infirmary (`vk12`)** | 3 | 1 (Pruned) | 2 (1 Prop, 1 Dialogue) | **Safe to Restore**: Object 38 and dialogue `ev[25]` intact |
 | **Penthouse (`vk13`)** | 6 | 5 (4 Remnants/Staging, 1 Pruned) | 1 (Sub 3 `ev[9]`) | **Architectural Remnants**: Left doorway transition and staging layers |
 | **Rooftop Parapet (`vk14`)** | 3 | 1 (Pruned) | 2 (Tile Overlays) | **Partially Safe**: Overlays safe; skip ghost object 49 |
-| **Castle Cemetery (`vk16`)** | 12 | 1 (Helper) | 11 (7 Cutscenes, 4 Overlays) | **High Value Restoration**: Complete intact memorial cutscenes |
-| **Total** | **62** | **29** | **25** | **Strict Boundary Enforcement** |
+| **Castle Cemetery (`vk16`)** | 12 | 12 (Special Stage) | 0 | **Impractical / Special Stage**: Standalone cutscene container lacking live playable gameplay architecture and return exit geometry |
+| **Total** | **62** | **48** | **5** | **Strict Boundary Enforcement** |
