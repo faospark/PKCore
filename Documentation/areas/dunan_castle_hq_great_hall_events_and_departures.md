@@ -1,4 +1,4 @@
-# Suikoden II Geographic Area Catalog: Castle HQ: Lake Dunan Docks & Fishing Pier
+# Suikoden II Geographic Area Catalog: Castle HQ: Great Hall Event Staging & Lake Departures (vk22)
 
 **Geographic Scope & Role**: Fortress harbor; Amada's patrol boat moorings, fast transport gangway, and the fishing mini-game wooden pier.
 

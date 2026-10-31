@@ -1177,182 +1177,435 @@ public static class ImGuiOverlayUI
         catch { }
     }
 
+    private static readonly string[] _availableThemes = new[]
+    {
+        "Classic Blue",
+        "Matrix",
+        "Obsidian Black",
+        "Dark Magenta"
+    };
+
+    private static readonly string[] _availableSaveColors = new[]
+    {
+        "default", "black", "blue", "cyan", "green", "navy", "pink", "purple", "red", "white", "yellow", "random"
+    };
+
+    private static readonly string[] _availableSMAAOptions = new[]
+    {
+        "Off", "Low", "Medium", "High"
+    };
+
     /// <summary>
-    /// Renders the PKCore Cut Content & Testing Menu.
+    /// Renders the unified PKCore Control Suite & Feature Dashboard.
     /// </summary>
     private static void DrawDevMenu()
     {
         try
         {
-            if (!GameDetection.IsGSD2())
+            ImGui.SetNextWindowSize(new Vector2(620f, 520f), ImGuiCond.FirstUseEver);
+            if (ImGui.Begin("PKCore Control Suite [F10]###PKCoreControlSuite", ref _showDevMenu, ImGuiWindowFlags.NoCollapse))
             {
-                ImGui.SetNextWindowSize(new Vector2(420f, 160f), ImGuiCond.FirstUseEver);
-                if (ImGui.Begin("PKCore Dev Menu##DevMenu", ref _showDevMenu, ImGuiWindowFlags.NoCollapse))
-                {
-                    ImGui.TextColored(new Vector4(1f, 0.4f, 0.4f, 1f), "Suikoden 2 Exclusive Feature");
-                    ImGui.Separator();
-                    ImGui.Spacing();
-                    ImGui.TextWrapped("The Dev Menu, Castle Stage modifier, and Area Object Inspector are currently designed exclusively for Suikoden 2. Suikoden 1 uses distinct memory and map structures.");
-                    ImGui.Spacing();
-                    if (ImGui.Button("Close##DevMenuCloseS1"))
-                    {
-                        _showDevMenu = false;
-                        RequestCursorVisible(_showHudNoteInput);
-                    }
-                }
-                ImGui.End();
-                return;
-            }
-
-            ImGui.SetNextWindowSize(new Vector2(560f, 440f), ImGuiCond.FirstUseEver);
-            if (ImGui.Begin("PKCore Restorations & Testing##DevMenu", ref _showDevMenu, ImGuiWindowFlags.NoCollapse))
-            {
-                ImGui.TextColored(GetAccentColor(), "Suikoden II Dev Menu & Object Inspector");
+                ImGui.TextColored(GetAccentColor(), "Project Kyaro Core Dashboard");
+                ImGui.SameLine();
+                string activeGame = GameDetection.IsGSD1() ? "[Suikoden I]" : (GameDetection.IsGSD2() ? "[Suikoden II]" : "[Launcher / Menu]");
+                ImGui.TextColored(new Vector4(0.35f, 0.85f, 1f, 1f), activeGame);
                 ImGui.Separator();
 
-                ImGui.Spacing();
-                ImGui.Text("Active Map: " + (_cachedMapId ?? "None"));
-
-                ImGui.Spacing();
-                if (ImGui.CollapsingHeader("Castle Stage & State", ImGuiTreeNodeFlags.DefaultOpen))
+                if (ImGui.BeginTabBar("PKCoreMainTabs", ImGuiTabBarFlags.None))
                 {
-                    try
+                    // =========================================================
+                    // TAB 1: GAMEPLAY & EXPLORATION
+                    // =========================================================
+                    if (ImGui.BeginTabItem("Gameplay & Exploration###TabGameplay"))
                     {
-                        if (_cachedHasCastleData)
+                        ImGui.Spacing();
+                        ImGui.TextColored(GetAccentColor(), "Encounters & Battles");
+
+                        bool encNone = EncounterNonePatch.IsEncounterNone;
+                        if (ImGui.Checkbox("Suppress Random Encounters (Encounter None [F4])", ref encNone))
                         {
-                            byte currentTier = _cachedCastleStage;
-                            ImGui.Text($"Current Castle Stage: Level {currentTier} (internal base_lv: {currentTier})");
-                            ImGui.Spacing();
+                            EncounterNonePatch.SetEncounterNone(encNone);
+                        }
+                        ImGui.TextDisabled($"Status: {(EncounterNonePatch.IsEncounterNone ? "SUPPRESSED" : "Normal")} | Backend: {EncounterNonePatch.BackendStatus}");
 
-                            for (byte lvl = 0; lvl <= 4; lvl++)
+                        ImGui.Spacing();
+                        ImGui.Separator();
+                        ImGui.Spacing();
+                        ImGui.TextColored(GetAccentColor(), "World Map Visuals");
+
+                        if (Plugin.Config != null)
+                        {
+                            bool noClouds = Plugin.Config.DisableWorldMapClouds.Value;
+                            if (ImGui.Checkbox("Disable World Map Clouds", ref noClouds))
                             {
-                                string label = lvl switch
-                                {
-                                    0 => "Stage 0 (Mobile / Fort)",
-                                    1 => "Stage 1 (Castle Level 1)",
-                                    2 => "Stage 2 (Castle Level 2 - Two River)",
-                                    3 => "Stage 3 (Castle Level 3 - Post-Greenhill)",
-                                    4 => "Stage 4 (Castle Level 4 - Grand Fortress)",
-                                    _ => $"Stage {lvl}"
-                                };
+                                Plugin.Config.DisableWorldMapClouds.Value = noClouds;
+                            }
 
-                                if (currentTier == lvl)
+                            bool noSunrays = Plugin.Config.DisableWorldMapSunrays.Value;
+                            if (ImGui.Checkbox("Disable World Map Sunrays", ref noSunrays))
+                            {
+                                Plugin.Config.DisableWorldMapSunrays.Value = noSunrays;
+                            }
+                        }
+
+                        if (GameDetection.IsGSD1())
+                        {
+                            ImGui.Spacing();
+                            ImGui.Separator();
+                            ImGui.Spacing();
+                            ImGui.TextColored(GetAccentColor(), "Suikoden I Castle Services");
+
+                            bool canOpenRune = S1QuickRunePatch.CanOpenRuneMaster(out string runeReason);
+                            if (!canOpenRune)
+                            {
+                                ImGui.BeginDisabled();
+                            }
+                            if (ImGui.Button("Open Remote Castle Rune Master (Jeane)##QuickRuneBtn"))
+                            {
+                                _pendingOpenRuneMaster = true;
+                            }
+                            if (!canOpenRune)
+                            {
+                                ImGui.EndDisabled();
+                                ImGui.SameLine();
+                                ImGui.TextColored(new Vector4(1f, 0.4f, 0.4f, 1f), $"({runeReason})");
+                            }
+                        }
+
+                        ImGui.EndTabItem();
+                    }
+
+                    // =========================================================
+                    // TAB 2: VISUALS & SHADERS
+                    // =========================================================
+                    if (ImGui.BeginTabItem("Visuals & Shaders###TabVisuals"))
+                    {
+                        ImGui.Spacing();
+                        ImGui.TextColored(GetAccentColor(), "Save Point Customization");
+
+                        if (Plugin.Config != null)
+                        {
+                            string curColor = Plugin.Config.SavePointColor.Value ?? "default";
+                            int colorIdx = Array.FindIndex(_availableSaveColors, c => string.Equals(c, curColor, StringComparison.OrdinalIgnoreCase));
+                            if (colorIdx < 0) colorIdx = 0;
+
+                            ImGui.SetNextItemWidth(160f);
+                            if (ImGui.Combo("Save Point Color", ref colorIdx, _availableSaveColors, _availableSaveColors.Length))
+                            {
+                                Plugin.Config.SavePointColor.Value = _availableSaveColors[colorIdx];
+                                CustomTexturePatch.RefreshSavePointColorForRoomEntry(_cachedMapId);
+                            }
+
+                            bool noGlow = Plugin.Config.DisableSavePointGlow.Value;
+                            if (ImGui.Checkbox("Disable Save Point White Glow", ref noGlow))
+                            {
+                                Plugin.Config.DisableSavePointGlow.Value = noGlow;
+                            }
+
+                            ImGui.Spacing();
+                            ImGui.Separator();
+                            ImGui.Spacing();
+                            ImGui.TextColored(GetAccentColor(), "Sprite Rendering & Anti-Aliasing");
+
+                            bool spriteFilt = Plugin.Config.SpriteFilteringEnabled.Value;
+                            if (ImGui.Checkbox("Sprite Filtering (Bilinear + 2x Anisotropic)", ref spriteFilt))
+                            {
+                                Plugin.Config.SpriteFilteringEnabled.Value = spriteFilt;
+                                SpriteFilteringPatch.Initialize();
+                            }
+
+                            bool noPostProc = Plugin.Config.DisableSpritePostProcessing.Value;
+                            if (ImGui.Checkbox("Disable Sprite Post-Processing (Fixes outline bleed & bloom)", ref noPostProc))
+                            {
+                                Plugin.Config.DisableSpritePostProcessing.Value = noPostProc;
+                                DisableSpritePostProcessingPatch.Initialize();
+                            }
+
+                            string curSMAA = Plugin.Config.SMAAQuality.Value ?? "Low";
+                            int smaaIdx = Array.FindIndex(_availableSMAAOptions, opt => string.Equals(opt, curSMAA, StringComparison.OrdinalIgnoreCase));
+                            if (smaaIdx < 0) smaaIdx = 1;
+
+                            ImGui.SetNextItemWidth(160f);
+                            if (ImGui.Combo("SMAA Anti-Aliasing", ref smaaIdx, _availableSMAAOptions, _availableSMAAOptions.Length))
+                            {
+                                Plugin.Config.SMAAQuality.Value = _availableSMAAOptions[smaaIdx];
+                            }
+                        }
+
+                        ImGui.EndTabItem();
+                    }
+
+                    // =========================================================
+                    // TAB 3: INTERFACE & WINDOW
+                    // =========================================================
+                    if (ImGui.BeginTabItem("Interface & Window###TabInterface"))
+                    {
+                        ImGui.Spacing();
+                        ImGui.TextColored(GetAccentColor(), "Window Display Modes");
+
+                        if (Plugin.Config != null)
+                        {
+                            bool borderless = Plugin.Config.EnableBorderlessWindow.Value;
+                            if (ImGui.Checkbox("Borderless Floating Window Mode", ref borderless))
+                            {
+                                Plugin.Config.EnableBorderlessWindow.Value = borderless;
+                                BorderlessWindowPatch.Initialize();
+                            }
+                            ImGui.TextDisabled("Removes OS titlebar and borders in windowed mode for custom compact sizes.");
+
+                            ImGui.Spacing();
+                            ImGui.Separator();
+                            ImGui.Spacing();
+                            ImGui.TextColored(GetAccentColor(), "Dialog & Menu Scaling");
+
+                            bool scaleDialog = Plugin.Config.ScaleDownDialogBox.Value;
+                            if (ImGui.Checkbox("Scale Down Dialog Box (80% Size)", ref scaleDialog))
+                            {
+                                Plugin.Config.ScaleDownDialogBox.Value = scaleDialog;
+                            }
+
+                            bool miniUI = Plugin.Config.MinimalUI.Value;
+                            if (ImGui.Checkbox("Minimal UI Texture Variants", ref miniUI))
+                            {
+                                Plugin.Config.MinimalUI.Value = miniUI;
+                            }
+
+                            bool noMask = Plugin.Config.DisablePortraitDialogMask.Value;
+                            if (ImGui.Checkbox("Disable Portrait Dialog Mask", ref noMask))
+                            {
+                                Plugin.Config.DisablePortraitDialogMask.Value = noMask;
+                            }
+
+                            bool noTips = Plugin.Config.DisableUITips.Value;
+                            if (ImGui.Checkbox("Disable Control Tips Overlay (UITips)", ref noTips))
+                            {
+                                Plugin.Config.DisableUITips.Value = noTips;
+                            }
+
+                            ImGui.Spacing();
+                            ImGui.Separator();
+                            ImGui.Spacing();
+                            ImGui.TextColored(GetAccentColor(), "Save Window Aesthetics");
+
+                            bool classicSave = Plugin.Config.ClassicSaveWindow.Value;
+                            if (ImGui.Checkbox("Classic PSX Save Window Look", ref classicSave))
+                            {
+                                Plugin.Config.ClassicSaveWindow.Value = classicSave;
+                            }
+
+                            bool partyPortraits = Plugin.Config.ShowSaveSlotPartyPortraits.Value;
+                            if (ImGui.Checkbox("Show Save Slot Party Member Mini-Portraits", ref partyPortraits))
+                            {
+                                Plugin.Config.ShowSaveSlotPartyPortraits.Value = partyPortraits;
+                            }
+                        }
+
+                        ImGui.EndTabItem();
+                    }
+
+                    // =========================================================
+                    // TAB 4: CASTLE & WORLD STATE (S2)
+                    // =========================================================
+                    if (ImGui.BeginTabItem("Castle & World State###TabCastle"))
+                    {
+                        ImGui.Spacing();
+                        if (!GameDetection.IsGSD2())
+                        {
+                            ImGui.TextColored(new Vector4(1f, 0.4f, 0.4f, 1f), "Suikoden II Feature");
+                            ImGui.TextWrapped("The Castle Stage modifier and Area Object Inspector are currently designed exclusively for Suikoden II map structures.");
+                        }
+                        else
+                        {
+                            ImGui.Text("Active Map: " + (_cachedMapId ?? "None"));
+
+                            ImGui.Spacing();
+                            if (ImGui.CollapsingHeader("Castle Stage & State", ImGuiTreeNodeFlags.DefaultOpen))
+                            {
+                                if (_cachedHasCastleData)
                                 {
-                                    ImGui.TextColored(new Vector4(0.2f, 0.9f, 0.55f, 1f), $"-> {label} [Active]");
+                                    byte currentTier = _cachedCastleStage;
+                                    ImGui.Text($"Current Castle Stage: Level {currentTier} (internal base_lv: {currentTier})");
+                                    ImGui.Spacing();
+
+                                    for (byte lvl = 0; lvl <= 4; lvl++)
+                                    {
+                                        string label = lvl switch
+                                        {
+                                            0 => "Stage 0 (Mobile / Fort)",
+                                            1 => "Stage 1 (Castle Level 1)",
+                                            2 => "Stage 2 (Castle Level 2 - Two River)",
+                                            3 => "Stage 3 (Castle Level 3 - Post-Greenhill)",
+                                            4 => "Stage 4 (Castle Level 4 - Grand Fortress)",
+                                            _ => $"Stage {lvl}"
+                                        };
+
+                                        if (currentTier == lvl)
+                                        {
+                                            ImGui.TextColored(new Vector4(0.2f, 0.9f, 0.55f, 1f), $"-> {label} [Active]");
+                                        }
+                                        else
+                                        {
+                                            if (ImGui.Button($"Set {label}##SetBaseLv{lvl}"))
+                                            {
+                                                _pendingCastleStage = lvl;
+                                                _cachedCastleStage = lvl;
+                                                Plugin.Log.LogInfo($"[DevMenu] Queued Castle base_lv -> {lvl}.");
+                                            }
+                                        }
+                                    }
                                 }
                                 else
                                 {
-                                    if (ImGui.Button($"Set {label}##SetBaseLv{lvl}"))
-                                    {
-                                        _pendingCastleStage = lvl;
-                                        _cachedCastleStage = lvl;
-                                        Plugin.Log.LogInfo($"[DevMenu] Queued Castle base_lv -> {lvl}.");
-                                    }
+                                    ImGui.TextDisabled("Game state not yet loaded.");
                                 }
-                            }
-                        }
-                        else
-                        {
-                            ImGui.TextDisabled("Game state not yet loaded.");
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        ImGui.TextColored(new Vector4(1f, 0.4f, 0.4f, 1f), $"Error: {ex.Message}");
-                    }
-                }
-
-                ImGui.Spacing();
-                if (ImGui.CollapsingHeader("Area Objects & NPC Inspector", ImGuiTreeNodeFlags.DefaultOpen))
-                {
-                    try
-                    {
-                        if (_cachedAreaObjects != null && _cachedAreaObjects.Count > 0)
-                        {
-                            int disabledCount = 0;
-                            int enabledCount = 0;
-                            for (int i = 0; i < _cachedAreaObjects.Count; i++)
-                            {
-                                if (_cachedAreaObjects[i].Disp == 0) disabledCount++;
-                                else enabledCount++;
-                            }
-
-                            ImGui.Text($"Total Objects: {_cachedAreaObjects.Count}  |  Visible: {enabledCount}  |  Hidden: {disabledCount}");
-                            ImGui.SameLine();
-                            if (ImGui.SmallButton("Reload Room / Objects##DevReloadBtn"))
-                            {
-                                _pendingRoomReload = true;
                             }
 
                             ImGui.Spacing();
-                            ImGui.BeginChild("ObjectsListScroll", new Vector2(0, 240f), true);
-
-                            for (int i = 0; i < _cachedAreaObjects.Count; i++)
+                            if (ImGui.CollapsingHeader("Area Objects & NPC Inspector", ImGuiTreeNodeFlags.DefaultOpen))
                             {
-                                var o = _cachedAreaObjects[i];
-
-                                bool isVisible = o.Disp != 0;
-                                Vector4 statusColor = isVisible ? new Vector4(0.3f, 1f, 0.4f, 1f) : new Vector4(0.85f, 0.4f, 0.4f, 1f);
-                                string statusText = isVisible ? "[Show]" : "[Hide]";
-
-                                ImGui.PushID($"ObjRow_{o.Index}");
-
-                                ImGui.TextColored(statusColor, statusText);
-                                ImGui.SameLine();
-                                ImGui.TextColored(new Vector4(0.9f, 0.9f, 0.4f, 1f), $"[{o.Index:D2}]");
-                                ImGui.SameLine();
-
-                                Vector4 nameColor = isVisible ? new Vector4(0.95f, 0.95f, 0.95f, 1f) : new Vector4(0.55f, 0.55f, 0.55f, 1f);
-                                ImGui.TextColored(nameColor, $"{o.Name,-18}");
-                                ImGui.SameLine();
-
-                                ImGui.TextDisabled($"fp:{o.Fpno,-3} ({o.X,2},{o.Y,2})");
-
-                                ImGui.SameLine();
-                                string toggleLabel = isVisible ? "Hide##Toggle" : "Show##Toggle";
-                                if (ImGui.SmallButton(toggleLabel))
+                                if (_cachedAreaObjects != null && _cachedAreaObjects.Count > 0)
                                 {
-                                    byte nextDisp = (byte)(isVisible ? 0 : 1);
-                                    _pendingObjectToggles.Add((o.Index, nextDisp));
-                                    o.Disp = nextDisp;
-                                    _pendingRoomReload = true;
-                                }
+                                    int disabledCount = 0;
+                                    int enabledCount = 0;
+                                    for (int i = 0; i < _cachedAreaObjects.Count; i++)
+                                    {
+                                        if (_cachedAreaObjects[i].Disp == 0) disabledCount++;
+                                        else enabledCount++;
+                                    }
 
-                                ImGui.PopID();
+                                    ImGui.Text($"Total Objects: {_cachedAreaObjects.Count}  |  Visible: {enabledCount}  |  Hidden: {disabledCount}");
+                                    ImGui.SameLine();
+                                    if (ImGui.SmallButton("Reload Room / Objects##DevReloadBtn"))
+                                    {
+                                        _pendingRoomReload = true;
+                                    }
+
+                                    ImGui.Spacing();
+                                    ImGui.BeginChild("ObjectsListScroll", new Vector2(0, 200f), true);
+
+                                    for (int i = 0; i < _cachedAreaObjects.Count; i++)
+                                    {
+                                        var o = _cachedAreaObjects[i];
+
+                                        bool isVisible = o.Disp != 0;
+                                        Vector4 statusColor = isVisible ? new Vector4(0.3f, 1f, 0.4f, 1f) : new Vector4(0.85f, 0.4f, 0.4f, 1f);
+                                        string statusText = isVisible ? "[Show]" : "[Hide]";
+
+                                        ImGui.PushID($"ObjRow_{o.Index}");
+
+                                        ImGui.TextColored(statusColor, statusText);
+                                        ImGui.SameLine();
+                                        ImGui.TextColored(new Vector4(0.9f, 0.9f, 0.4f, 1f), $"[{o.Index:D2}]");
+                                        ImGui.SameLine();
+
+                                        Vector4 nameColor = isVisible ? new Vector4(0.95f, 0.95f, 0.95f, 1f) : new Vector4(0.55f, 0.55f, 0.55f, 1f);
+                                        ImGui.TextColored(nameColor, $"{o.Name,-18}");
+                                        ImGui.SameLine();
+
+                                        ImGui.TextDisabled($"fp:{o.Fpno,-3} ({o.X,2},{o.Y,2})");
+
+                                        ImGui.SameLine();
+                                        string toggleLabel = isVisible ? "Hide##Toggle" : "Show##Toggle";
+                                        if (ImGui.SmallButton(toggleLabel))
+                                        {
+                                            byte nextDisp = (byte)(isVisible ? 0 : 1);
+                                            _pendingObjectToggles.Add((o.Index, nextDisp));
+                                            o.Disp = nextDisp;
+                                            _pendingRoomReload = true;
+                                        }
+
+                                        ImGui.PopID();
+                                    }
+
+                                    ImGui.EndChild();
+                                }
+                                else
+                                {
+                                    ImGui.TextDisabled("No event objects found in current submap.");
+                                }
                             }
 
-                            ImGui.EndChild();
+                            ImGui.Spacing();
+                            if (ImGui.CollapsingHeader("Restored Features & Cut Content", ImGuiTreeNodeFlags.None))
+                            {
+                                if (ImGui.Button("Trigger Ballroom Dance Routine (vk19)"))
+                                {
+                                    _pendingDanceTrigger = true;
+                                }
+
+                                ImGui.Spacing();
+                                ImGui.TextDisabled("Castle Level 4 Dormant Features:");
+                                ImGui.BulletText("vk03: Animal Paddock tier 4 feeding troughs (obj 37..40)");
+                                ImGui.BulletText("vk09: Theater / Concert Hall expansion & backstage");
+                                ImGui.BulletText("vk11: Armory / Forge upper expansion tiers");
+                                ImGui.BulletText("vk13: Riou's Living Quarters / Penthouse exterior pathing");
+                                ImGui.BulletText("vk14: Stone tablet & library archive expansions");
+                                ImGui.BulletText("vk16: Cut Fallen Heroes Memorial Stage");
+                            }
                         }
-                        else
+
+                        ImGui.EndTabItem();
+                    }
+
+                    // =========================================================
+                    // TAB 5: SYSTEM & TELEMETRY
+                    // =========================================================
+                    if (ImGui.BeginTabItem("System & Themes###TabSystem"))
+                    {
+                        ImGui.Spacing();
+                        ImGui.TextColored(GetAccentColor(), "Overlay Themes & Customization");
+
+                        int themeIdx = (int)_currentTheme;
+                        ImGui.SetNextItemWidth(160f);
+                        if (ImGui.Combo("Color Theme", ref themeIdx, _availableThemes, _availableThemes.Length))
                         {
-                            ImGui.TextDisabled("No event objects found in current submap.");
+                            SetTheme((ThemePreset)themeIdx);
                         }
+
+                        bool showHud = ShowLocationHUD;
+                        if (ImGui.Checkbox("Show Bottom-Left Location HUD", ref showHud))
+                        {
+                            ShowLocationHUD = showHud;
+                        }
+
+                        bool mouseVis = MouseCursorPatch.IsEnabled;
+                        if (ImGui.Checkbox("Force OS Mouse Cursor Visible", ref mouseVis))
+                        {
+                            MouseCursorPatch.IsEnabled = mouseVis;
+                            RequestCursorVisible(mouseVis);
+                        }
+
+                        ImGui.Spacing();
+                        ImGui.Separator();
+                        ImGui.Spacing();
+                        ImGui.TextColored(GetAccentColor(), "Camera Telemetry & Logs");
+
+                        ImGui.Text($"Camera FOV Zoom: {_cameraZoom:F2}x");
+                        ImGui.SameLine();
+                        if (ImGui.SmallButton("Reset (1x)##SysResetZoom"))
+                        {
+                            SetCameraZoom(1.0f);
+                        }
+
+                        ImGui.Spacing();
+                        if (ImGui.Button("Dump Current Location to Log [NumPad 5]##SysDumpBtn"))
+                        {
+                            DumpCurrentLocation();
+                        }
+                        ImGui.SameLine();
+                        if (ImGui.Button("Open Logs Directory##SysOpenLogBtn"))
+                        {
+                            OpenDumpLocation();
+                        }
+
+                        ImGui.EndTabItem();
                     }
-                    catch (Exception ex)
-                    {
-                        ImGui.TextColored(new Vector4(1f, 0.4f, 0.4f, 1f), $"Error reading objects: {ex.Message}");
-                    }
+
+                    ImGui.EndTabBar();
                 }
 
                 ImGui.Spacing();
-                if (ImGui.CollapsingHeader("Restored Features & Cut Content", ImGuiTreeNodeFlags.None))
-                {
-                    if (ImGui.Button("Trigger Ballroom Dance Routine (vk19)"))
-                    {
-                        _pendingDanceTrigger = true;
-                    }
-
-                    ImGui.Spacing();
-                    ImGui.TextDisabled("Castle Level 4 Dormant Features:");
-                    ImGui.BulletText("vk03: Animal Paddock tier 4 feeding troughs (obj 37..40)");
-                    ImGui.BulletText("vk09: Theater / Concert Hall expansion & backstage");
-                    ImGui.BulletText("vk11: Armory / Forge upper expansion tiers");
-                    ImGui.BulletText("vk13: Riou's Living Quarters / Penthouse exterior pathing");
-                    ImGui.BulletText("vk14: Stone tablet & library archive expansions");
-                    ImGui.BulletText("vk16: Cut Fallen Heroes Memorial Stage");
-                }
-
-                ImGui.Spacing();
+                ImGui.Separator();
                 if (ImGui.Button("Close Menu##DevMenuClose"))
                 {
                     _showDevMenu = false;

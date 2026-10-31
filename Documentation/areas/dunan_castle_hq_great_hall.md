@@ -1,4 +1,4 @@
-# Suikoden II Geographic Area Catalog: Castle HQ: Commander Riou's Bedroom
+# Suikoden II Geographic Area Catalog: Castle HQ: Great Hall & Main Assembly Hall (vk10)
 
 **Geographic Scope & Role**: Riou and Nanami's private living quarters; Riou's rest bed, writing desk, Nanami's terrace, and personal diary records.
 

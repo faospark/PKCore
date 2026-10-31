@@ -1,4 +1,4 @@
-# Suikoden II Geographic Area Catalog: Castle HQ: Castle Inn & Lodging Rooms
+# Suikoden II Geographic Area Catalog: Castle HQ: Entrance, Storage Vault & Tavern/Inn (Alternate Tier State: vk31)
 
 **Geographic Scope & Role**: Overnight recovery lodge; traveler guest beds, nightstands, and the Journeyman Save station for castle guests.
 

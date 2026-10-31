@@ -6,6 +6,15 @@ All notable changes to PKCore (formerly PKextended) are documented in this file.
 
 ## [2026.10.31]
 
+- **Unified Dear ImGui Control Suite & Feature Dashboard (`ImGuiOverlayUI.cs`)**:
+  - Transformed the `[F10]` overlay into a multi-tabbed interactive control suite exposing PKCore features in real-time:
+    - **Gameplay & Exploration Tab**: Live toggle for Encounter None `[F4]` with backend status indicator, world map cloud/sunray toggles, and direct trigger for Remote Castle Rune Master (Jeane, S1) with real-time safety validation.
+    - **Visuals & Shaders Tab**: Live save point color picker (12 colors + random) with instant shader refresh, save point glow toggle, sprite filtering (bilinear + 2x aniso), sprite post-processing toggle (bloom/outline seam fix), and SMAA anti-aliasing selector.
+    - **Interface & Window Tab**: Live toggles for borderless floating window mode, dialog box 80% scaling, minimal UI textures, portrait dialog mask disable, UITips control overlay disable, classic PSX save window, and save slot party mini-portraits.
+    - **Castle & World State Tab (S2)**: Castle stage 0-4 modifier, live submap NPC/prop inspector with per-object visibility toggles, hot room reload, and cut ballroom choreography trigger.
+    - **System & Themes Tab**: Live ImGui color themes (Classic Blue, Matrix, Obsidian Black, Dark Magenta), OS mouse cursor visibility toggle, FOV reset, and [NumPad 5] location dump / log viewer.
+  - All config changes update `faospark.pkcore.cfg` and trigger appropriate runtime updates without requiring a game restart.
+
 - **Floating Borderless Window Mode Restoration (`BorderlessWindowPatch.cs`)**:
   - Restored `BorderlessWindowPatch.cs` to enable true floating borderless windowed mode.
   - Unlike Unity's native `-popupwindow` (which forces full-screen borderless stretched to desktop resolution), this feature strips Win32 OS window chrome (`WS_CAPTION`, `WS_THICKFRAME`, `WS_SYSMENU`, `WS_MINIMIZEBOX`, `WS_MAXIMIZEBOX`) via `SetWindowLong` and `SetWindowPos` while keeping the engine in `FullScreenMode.Windowed`.
