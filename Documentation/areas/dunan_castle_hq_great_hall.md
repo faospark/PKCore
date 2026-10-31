@@ -1,6 +1,6 @@
 # Suikoden II Geographic Area Catalog: Castle HQ: Great Hall & Main Assembly Hall (vk10)
 
-**Geographic Scope & Role**: Riou and Nanami's private living quarters; Riou's rest bed, writing desk, Nanami's terrace, and personal diary records.
+**Geographic Scope & Role**: Castle HQ Great Hall & Main Assembly Chamber (`vk10`). Primary council chamber and throne staging for major strategic assemblies, foreign delegations (Matilda Knights, Two River envoy, Highland summits), council debates, and key narrative story sequences.
 
 **Regional Category**: Region `VK` | **Master Maps Included**: `vk10`
 

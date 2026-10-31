@@ -339,7 +339,8 @@ The Dunan Castle Headquarters is the largest composite map group in the game, sp
 | `vk07` | **War Strategy Chamber** | **Shu, Apple, Klaus** (Tactical war councils, battle deployments). |
 | `vk08` | **Tech Workshop & Library** | **Meg & Gadget** (Inventions), **Emilia** (Castle book archives). |
 | `vk09` | **Concert Stage** | **Karen** (Dance rhythm mini-game), musicians (sound test). |
-| `vk10` | **Commander's Quarters** | Riou and Nanami's private bedroom, rest bed, diary. |
+| `vk10` | **Great Hall & Main Assembly Hall** | Primary council chamber and throne staging for major strategic assemblies, foreign delegations, and story councils. |
+| `vk13` | **Commander Riou's Suite & Upper Residence** | Riou and Nanami's private bedroom, rest bed, save crystal, diary, training quarters, and upper residential corridors. |
 | `vk11` | **Castle Grounds & Pond** | **Badeaux** (Animal sanctuary, wild beast recruiting). |
 | `vk12` | **Cartography Archives** | **Templeton** (Full interactive world map display). |
 | `vk14` | **Castle Balconies & Overlooks** | Scenic overlooks of Lake Dunan. |
@@ -349,10 +350,11 @@ The Dunan Castle Headquarters is the largest composite map group in the game, sp
 | `vk19` | **Farm & Animal Pastures** | **Tony** (Vegetable seeds / crops), **Yuzu** (Animal breeding). |
 | `vk20` | **Kitchen & Restaurant** | **Hai Yo** (Iron Chef cooking duels, recipe book collection). |
 | `vk21` | **High Ramparts & Walls** | Exterior stone ramparts and defensive catapult positions. |
-| `vk22` | **Lake Dunan Docks** | **Amada** (Boat launch, fishing mini-game). |
+| `vk22` | **Great Hall Event Staging & Lake Departures** | Story event staging for Great Hall gatherings and lakeside departures (Amada boat launch, fleet assembly). |
+| `vk24` | **Tier 1 Assembly / Early Council** | Early council assembly room during Castle Level 1 (pre-restoration North Window staging). |
 | `vk23` | **Memorial & Graveyard** | Memorial stones for fallen allies. |
 | `vk29` | **Teleportation Chamber & Elevator** | **Viki** (Blinking Magic teleport), **Adlai** (Mechanical castle elevator). |
-| `vk31` | **Castle Inn & Lodging** | Overnight resting quarters for visitors and travelers. |
+| `vk31` | **Entrance Vault & Tavern (Alt State)** | Alternate tier layout for Castle entrance, storage vault, and tavern/inn facilities. |
 | `vk33` | **Guardian Deity Shrine** | **Jude** (Custom four-part guardian deity statue assembly). |
 
 ---
@@ -366,4 +368,4 @@ The Dunan Castle Headquarters is the largest composite map group in the game, sp
 | **`ve04`** | Greenhill-Matilda Path | `GreenhillMatildaBorderPatch.cs` | Unlocks early entry to Matilda and enables early **Viki** recruitment (`ve04_04`). |
 | **`ve05`** | Greenhill Checkpoint | `GreenhillMatildaBorderPatch.cs` | Neutralizes guard triggers blocking passage between Greenhill and Matilda. |
 | **`vj17`** | Sajah Village | `SajahShopUnlockPatch.cs` | Bypasses endgame story flags to unlock Sajah's Level 16 forge and rare finds. |
-| **`va11`** | Kyaro Plaza | `TenzanPassEncounterPatch.cs` | Map event and monster battle table injections. |
+| **`va11`** | Tenzan Pass | `TenzanPassEncounterPatch.cs` (`PKTenzanPassPatch`) | Map event and monster battle table injections (Chimera boss encounter). |

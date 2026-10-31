@@ -1,8 +1,8 @@
 # Suikoden II Master Map Entities, Triggers & World Objects Catalog
 
-## Exhaustive Engine Architecture, Trigger Bytecode & 62 Distinct Geographic Area Volumes
+## Exhaustive Engine Architecture, Trigger Bytecode & 64 Distinct Geographic Area Volumes
 
-This document and its **62 dedicated geographic area volumes** in `Documentation/areas/` form the definitive, unabridged technical reference for all **4,901 NPCs**, **1,552 Dynamic Props**, **3,207 Collision Triggers**, **90 Save Orbs**, and **27 Dungeon Chest Clusters** across all 226 master map assets in **Suikoden II HD Remaster** (`GSD2`).
+This document and its **64 dedicated geographic area volumes** in `Documentation/areas/` form the definitive, unabridged technical reference for all **4,901 NPCs**, **1,552 Dynamic Props**, **3,207 Collision Triggers**, **90 Save Orbs**, and **27 Dungeon Chest Clusters** across all 226 master map assets in **Suikoden II HD Remaster** (`GSD2`).
 
 Every single area has its own dedicated file in full. Every single entity—whether a living actor, an invisible trigger dot, a decorative prop (bonsai, well rim, water bucket, tea table, chair), a treasure chest, or a Journeyman save orb—is fully itemized with exact coordinates, dimensions, facing direction, collision bitmasks, and decompiled bytecode execution scripts.
 
@@ -131,62 +131,63 @@ Every single distinct geographic location in Suikoden II is documented in full i
 | 5 | **Tigermouth Mountain Settlement** | `vg04`, `vg06` | **459 lines** | [areas/tigermouth_village.md](areas/tigermouth_village.md) |
 | 6 | **Castle HQ: Tetsu's Castle Bathhouse** | `vk06` | **598 lines** | [areas/dunan_castle_hq_bathhouse.md](areas/dunan_castle_hq_bathhouse.md) |
 | 7 | **Castle HQ: Cartography Room** | `vk12` | **264 lines** | [areas/dunan_castle_hq_library_and_archives.md](areas/dunan_castle_hq_library_and_archives.md) |
-| 8 | **Castle HQ: Commander Riou's Bedroom** | `vk10` | **671 lines** | [areas/dunan_castle_hq_commanders_quarters.md](areas/dunan_castle_hq_commanders_quarters.md) |
+| 8 | **Castle HQ: Great Hall & Main Assembly Hall** | `vk10` | **671 lines** | [areas/dunan_castle_hq_great_hall.md](areas/dunan_castle_hq_great_hall.md) |
 | 9 | **Castle HQ: Concert Stage & Music Hall** | `vk09` | **365 lines** | [areas/dunan_castle_hq_concert_stage.md](areas/dunan_castle_hq_concert_stage.md) |
-| 10 | **Castle HQ: Lake Dunan Docks & Fishing Pier** | `vk22` | **321 lines** | [areas/dunan_castle_hq_docks_and_fishing.md](areas/dunan_castle_hq_docks_and_fishing.md) |
+| 10 | **Castle HQ: Great Hall Event Staging & Lake Departures** | `vk22` | **321 lines** | [areas/dunan_castle_hq_great_hall_events_and_departures.md](areas/dunan_castle_hq_great_hall_events_and_departures.md) |
 | 11 | **Castle HQ: Combat Dojo & Sparring Arena** | `vk03` | **342 lines** | [areas/dunan_castle_hq_dojo_and_training.md](areas/dunan_castle_hq_dojo_and_training.md) |
 | 12 | **Castle HQ: Tony's Farm & Pastures** | `vk19` | **278 lines** | [areas/dunan_castle_hq_farm_and_pastures.md](areas/dunan_castle_hq_farm_and_pastures.md) |
 | 13 | **Castle HQ: Great Hall & Main Foyers** | `vk01`, `vk14`, `vk21`, `vk34` | **2,752 lines** | [areas/dunan_castle_hq_castle_garden.md](areas/dunan_castle_hq_castle_garden.md) |
 | 14 | **Castle HQ: Grounds, Gardens & Animal Sanctuary** | `vk11`, `vk18` | **843 lines** | [areas/dunan_castle_hq_castle_square.md](areas/dunan_castle_hq_castle_square.md) |
 | 15 | **Castle HQ: Jude's Guardian Deity Shrine** | `vk33` | **198 lines** | [areas/dunan_castle_hq_guardian_deity_shrine.md](areas/dunan_castle_hq_guardian_deity_shrine.md) |
 | 16 | **Castle HQ: Dr. Huan's Medical Clinic** | `vk05` | **482 lines** | [areas/dunan_castle_hq_infirmary_and_clinic.md](areas/dunan_castle_hq_infirmary_and_clinic.md) |
-| 17 | **Castle HQ: Castle Inn & Lodging Rooms** | `vk31` | **413 lines** | [areas/dunan_castle_hq_inn_and_lodging.md](areas/dunan_castle_hq_inn_and_lodging.md) |
-| 18 | **Castle HQ: Living Quarters & Corridors** | `vk13`, `vk16`, `vk17`, `vk24`, `vk25`, `vk26`, `vk27`, `vk28`, `vk30`, `vk35`, `vk36`, `vk37` | **2,928 lines** | [areas/dunan_castle_hq_living_quarters_and_corridors.md](areas/dunan_castle_hq_living_quarters_and_corridors.md) |
+| 17 | **Castle HQ: Entrance Vault & Tavern (Alt State)** | `vk31` | **413 lines** | [areas/dunan_castle_hq_entrance_vault_and_tavern_alt.md](areas/dunan_castle_hq_entrance_vault_and_tavern_alt.md) |
+| 18 | **Castle HQ: Living Quarters & Corridors** | `vk16`, `vk17`, `vk24`, `vk25`, `vk26`, `vk27`, `vk28`, `vk30`, `vk35`, `vk36`, `vk37` | **2,203 lines** | [areas/dunan_castle_hq_living_quarters_and_corridors.md](areas/dunan_castle_hq_living_quarters_and_corridors.md) |
+| 20 | **Castle HQ: Riou's Suite & Upper Residence** | `vk13` | **759 lines** | [areas/dunan_castle_hq_riou_quarters_and_residence.md](areas/dunan_castle_hq_riou_quarters_and_residence.md) |
 | 19 | **Castle HQ: Memorial Graveyard** | `vk23` | **287 lines** | [areas/dunan_castle_hq_memorial_graveyard.md](areas/dunan_castle_hq_memorial_graveyard.md) |
-| 20 | **Castle HQ: Hai Yo's Restaurant & Kitchen** | `vk20` | **376 lines** | [areas/dunan_castle_hq_restaurant_and_kitchen.md](areas/dunan_castle_hq_restaurant_and_kitchen.md) |
-| 21 | **Castle HQ: Tavern & Gambling Parlor** | `vk04` | **820 lines** | [areas/dunan_castle_hq_barracks_and_team_quarters.md](areas/dunan_castle_hq_barracks_and_team_quarters.md) |
-| 22 | **Castle HQ: Viki Teleport & Mechanical Elevator** | `vk29`, `vk32` | **723 lines** | [areas/dunan_castle_hq_teleport_and_elevator.md](areas/dunan_castle_hq_teleport_and_elevator.md) |
-| 23 | **Castle HQ: Barbara's Vault & Richmond Detective** | `vk02` | **1,141 lines** | [areas/dunan_castle_hq_shopping_area.md](areas/dunan_castle_hq_shopping_area.md) |
-| 24 | **Castle HQ: War Strategy Chamber** | `vk07` | **624 lines** | [areas/dunan_castle_hq_war_strategy_room.md](areas/dunan_castle_hq_war_strategy_room.md) |
-| 25 | **Castle HQ: Watchtower & High Roof** | `vk15` | **117 lines** | [areas/dunan_castle_hq_watchtower_and_roof.md](areas/dunan_castle_hq_watchtower_and_roof.md) |
-| 26 | **Castle HQ: Workshop & Library Archives** | `vk08` | **488 lines** | [areas/dunan_castle_hq_entrance_vault_and_tavern.md](areas/dunan_castle_hq_entrance_vault_and_tavern.md) |
-| 27 | **Forest Village Settlement** | `ve02`, `ve10`, `ve11`, `ve12` | **899 lines** | [areas/forest_village.md](areas/forest_village.md) |
-| 28 | **Greenhill Principality (City & Outskirts)** | `ve01`, `ve08`, `ve09`, `ve13`, `ve14`, `ve16` | **1,771 lines** | [areas/greenhill_city.md](areas/greenhill_city.md) |
-| 29 | **Greenhill-Matilda Forest Trail & Checkpoint** | `ve04`, `ve05`, `ve15` | **518 lines** | [areas/greenhill_matilda_path_and_border.md](areas/greenhill_matilda_path_and_border.md) |
-| 30 | **Gregminster Capital Avenues** | `vf04` | **215 lines** | [areas/gregminster_capital.md](areas/gregminster_capital.md) |
-| 31 | **Highland Military Recon Encampment** | `vc14`, `vc16`, `vc20`, `vc23`, `vc30` | **792 lines** | [areas/highland_recon_camp_muse.md](areas/highland_recon_camp_muse.md) |
-| 32 | **Highland Youth Brigade Camp** | `va01`, `va02` | **530 lines** | [areas/highland_youth_brigade_camp.md](areas/highland_youth_brigade_camp.md) |
-| 33 | **Highway Village Frontier Settlement** | `vi11`, `vi12`, `vi14` | **719 lines** | [areas/highway_village.md](areas/highway_village.md) |
-| 34 | **Kobold Village Settlement** | `vh03`, `vh07`, `vh09` | **835 lines** | [areas/kobold_village.md](areas/kobold_village.md) |
-| 35 | **Kuskus Town & River Docks** | `vd15`, `vd16` | **319 lines** | [areas/kuskus_town.md](areas/kuskus_town.md) |
-| 36 | **Kyaro Town (Plaza, Homes & Execution Grounds)** | `va08`, `va09`, `va10`, `va11`, `va12`, `va13`, `va14`, `va15`, `va16`, `va17`, `va18`, `va19`, `va20`, `va21`, `va22`, `va23`, `va25`, `va26` | **1,716 lines** | [areas/kyaro_town.md](areas/kyaro_town.md) |
-| 37 | **L'Renouille Imperial Capital Citadel** | `vj01`, `vj02`, `vj03`, `vj04`, `vj05`, `vj06`, `vj07`, `vj08`, `vj09`, `vj10`, `vj11`, `vj12`, `vj13`, `vj14`, `vj15`, `vj16`, `vj18`, `vj19`, `vj20`, `vj21`, `vj22`, `vj23`, `vj24` | **3,319 lines** | [areas/l_renouille_citadel.md](areas/l_renouille_citadel.md) |
-| 38 | **Lakewest Town & Docks** | `vh02`, `vh10` | **740 lines** | [areas/lakewest_town.md](areas/lakewest_town.md) |
-| 39 | **Viktor's Mercenary Fortress** | `vb01`, `vb02`, `vb12`, `vb13`, `vb14`, `vb15`, `vb16`, `vb19` | **1,523 lines** | [areas/mercenary_fortress.md](areas/mercenary_fortress.md) |
-| 40 | **Mt. Rakutei Dragon Cliffs & Peak** | `vi08`, `vi09`, `vi13`, `vi15` | **655 lines** | [areas/mt_rakutei.md](areas/mt_rakutei.md) |
-| 41 | **Banner Pass (Toran Mountain Trail)** | `vf03` | **949 lines** | [areas/banner_pass.md](areas/banner_pass.md) |
-| 42 | **Ryube Forest & Tsai's Hermit Hut** | `vb07`, `vb09`, `vb10`, `vb11`, `vb20`, `vb21` | **1,211 lines** | [areas/ryube_forest.md](areas/ryube_forest.md) |
-| 43 | **Muse City (Plaza, City Hall & Ruins)** | `vc01`, `vc02`, `vc03`, `vc09`, `vc10`, `vc11`, `vc15`, `vc21`, `vc22`, `vc24`, `vc25`, `vc26`, `vc27`, `vc28`, `vc29`, `vc31` | **3,944 lines** | [areas/muse_city.md](areas/muse_city.md) |
-| 44 | **New Leaf Academy (Campus, Dorms & Cellar)** | `ve03`, `ve06`, `ve07` | **1,387 lines** | [areas/new_leaf_academy.md](areas/new_leaf_academy.md) |
-| 45 | **North Sparrow Mountain Pass & Checkpoint** | `va04`, `va05`, `va06`, `va07` | **614 lines** | [areas/north_sparrow_pass.md](areas/north_sparrow_pass.md) |
-| 46 | **North Window Ghost Town Ruins** | `vd04`, `vd07` | **352 lines** | [areas/north_window_ruins.md](areas/north_window_ruins.md) |
-| 47 | **Radat Town & Canal Wharf** | `vd02`, `vd05`, `vd20` | **820 lines** | [areas/radat_town.md](areas/radat_town.md) |
-| 48 | **Rockaxe Castle Citadel & Ramparts** | `vi01`, `vi02`, `vi03`, `vi04`, `vi05`, `vi06`, `vi07`, `vi10` | **1,964 lines** | [areas/rockaxe_citadel_and_castle.md](areas/rockaxe_citadel_and_castle.md) |
-| 49 | **Ryube Village & Outskirts** | `vb05`, `vb06`, `vb18` | **1,056 lines** | [areas/ryube_village.md](areas/ryube_village.md) |
-| 50 | **Sajah Frontier Village** | `vj17` | **316 lines** | [areas/sajah_village.md](areas/sajah_village.md) |
-| 51 | **Ancient Sindar Ruins Caverns** | `vc06`, `vc07`, `vc08`, `vc12`, `vc13` | **2,012 lines** | [areas/sindar_ruins.md](areas/sindar_ruins.md) |
-| 52 | **South Window Capital City** | `vd01`, `vd03`, `vd08`, `vd09`, `vd10`, `vd11`, `vd12`, `vd14`, `vd17`, `vd18`, `vd19` | **2,358 lines** | [areas/south_window_city.md](areas/south_window_city.md) |
-| 53 | **Swallow Pass & Highland Border Gate** | `vb08`, `vb17` | **597 lines** | [areas/swallow_pass.md](areas/swallow_pass.md) |
-| 54 | **Tenzan Pass Mountain Cliff** | `va03`, `va24` | **740 lines** | [areas/tenzan_pass.md](areas/tenzan_pass.md) |
-| 55 | **Tiger Cave & Mt. Senai Shrines** | `vg09`, `vg15` | **483 lines** | [areas/tiger_cave_mt_senai.md](areas/tiger_cave_mt_senai.md) |
-| 56 | **Tinto Mining City & Mayor Hall** | `vg01`, `vg02`, `vg03`, `vg17` | **1,368 lines** | [areas/tinto_city.md](areas/tinto_city.md) |
-| 57 | **Tinto Mines & Underground Caverns** | `vg05`, `vg07`, `vg10`, `vg11`, `vg12`, `vg14` | **891 lines** | [areas/tinto_mines.md](areas/tinto_mines.md) |
-| 58 | **Toran Castle Presidential Palace** | `vf05` | **370 lines** | [areas/toran_castle_palace.md](areas/toran_castle_palace.md) |
-| 59 | **Toto Village (Peaceful & Burned Ruins)** | `vb03`, `vb04` | **514 lines** | [areas/toto_village.md](areas/toto_village.md) |
-| 60 | **Two River City (Human, Wingly & Kobold)** | `vh01`, `vh05`, `vh06`, `vh11`, `vh12` | **2,132 lines** | [areas/two_river_city.md](areas/two_river_city.md) |
-| 61 | **Drakemouth Village & Border Road** | `vh08` | **350 lines** | [areas/drakemouth_village.md](areas/drakemouth_village.md) |
-| 62 | **Two River Subterranean Sewers** | `vh04` | **416 lines** | [areas/two_river_sewers.md](areas/two_river_sewers.md) |
-| 63 | **White Deer Country Inn** | `vc04`, `vc05` | **441 lines** | [areas/white_deer_inn.md](areas/white_deer_inn.md) |
+| 21 | **Castle HQ: Hai Yo's Restaurant & Kitchen** | `vk20` | **376 lines** | [areas/dunan_castle_hq_restaurant_and_kitchen.md](areas/dunan_castle_hq_restaurant_and_kitchen.md) |
+| 22 | **Castle HQ: Tavern & Gambling Parlor** | `vk04` | **820 lines** | [areas/dunan_castle_hq_barracks_and_team_quarters.md](areas/dunan_castle_hq_barracks_and_team_quarters.md) |
+| 23 | **Castle HQ: Viki Teleport & Mechanical Elevator** | `vk29`, `vk32` | **723 lines** | [areas/dunan_castle_hq_teleport_and_elevator.md](areas/dunan_castle_hq_teleport_and_elevator.md) |
+| 24 | **Castle HQ: Barbara's Vault & Richmond Detective** | `vk02` | **1,141 lines** | [areas/dunan_castle_hq_shopping_area.md](areas/dunan_castle_hq_shopping_area.md) |
+| 25 | **Castle HQ: War Strategy Chamber** | `vk07` | **624 lines** | [areas/dunan_castle_hq_war_strategy_room.md](areas/dunan_castle_hq_war_strategy_room.md) |
+| 26 | **Castle HQ: Watchtower & High Roof** | `vk15` | **117 lines** | [areas/dunan_castle_hq_watchtower_and_roof.md](areas/dunan_castle_hq_watchtower_and_roof.md) |
+| 27 | **Castle HQ: Workshop & Library Archives** | `vk08` | **488 lines** | [areas/dunan_castle_hq_entrance_vault_and_tavern.md](areas/dunan_castle_hq_entrance_vault_and_tavern.md) |
+| 28 | **Forest Village Settlement** | `ve02`, `ve10`, `ve11`, `ve12` | **899 lines** | [areas/forest_village.md](areas/forest_village.md) |
+| 29 | **Greenhill Principality (City & Outskirts)** | `ve01`, `ve08`, `ve09`, `ve13`, `ve14`, `ve16` | **1,771 lines** | [areas/greenhill_city.md](areas/greenhill_city.md) |
+| 30 | **Greenhill-Matilda Forest Trail & Checkpoint** | `ve04`, `ve05`, `ve15` | **518 lines** | [areas/greenhill_matilda_path_and_border.md](areas/greenhill_matilda_path_and_border.md) |
+| 31 | **Gregminster Capital Avenues** | `vf04` | **215 lines** | [areas/gregminster_capital.md](areas/gregminster_capital.md) |
+| 32 | **Highland Military Recon Encampment** | `vc14`, `vc16`, `vc20`, `vc23`, `vc30` | **792 lines** | [areas/highland_recon_camp_muse.md](areas/highland_recon_camp_muse.md) |
+| 33 | **Highland Youth Brigade Camp** | `va01`, `va02` | **530 lines** | [areas/highland_youth_brigade_camp.md](areas/highland_youth_brigade_camp.md) |
+| 34 | **Highway Village Frontier Settlement** | `vi11`, `vi12`, `vi14` | **719 lines** | [areas/highway_village.md](areas/highway_village.md) |
+| 35 | **Kobold Village Settlement** | `vh03`, `vh07`, `vh09` | **835 lines** | [areas/kobold_village.md](areas/kobold_village.md) |
+| 36 | **Kuskus Town & River Docks** | `vd15`, `vd16` | **319 lines** | [areas/kuskus_town.md](areas/kuskus_town.md) |
+| 37 | **Kyaro Town (Plaza, Homes & Execution Grounds)** | `va08`, `va09`, `va10`, `va11`, `va12`, `va13`, `va14`, `va15`, `va16`, `va17`, `va18`, `va19`, `va20`, `va21`, `va22`, `va23`, `va25`, `va26` | **1,716 lines** | [areas/kyaro_town.md](areas/kyaro_town.md) |
+| 38 | **L'Renouille Imperial Capital Citadel** | `vj01`, `vj02`, `vj03`, `vj04`, `vj05`, `vj06`, `vj07`, `vj08`, `vj09`, `vj10`, `vj11`, `vj12`, `vj13`, `vj14`, `vj15`, `vj16`, `vj18`, `vj19`, `vj20`, `vj21`, `vj22`, `vj23`, `vj24` | **3,319 lines** | [areas/l_renouille_citadel.md](areas/l_renouille_citadel.md) |
+| 39 | **Lakewest Town & Docks** | `vh02`, `vh10` | **740 lines** | [areas/lakewest_town.md](areas/lakewest_town.md) |
+| 40 | **Viktor's Mercenary Fortress** | `vb01`, `vb02`, `vb12`, `vb13`, `vb14`, `vb15`, `vb16`, `vb19` | **1,523 lines** | [areas/mercenary_fortress.md](areas/mercenary_fortress.md) |
+| 41 | **Mt. Rakutei Dragon Cliffs & Peak** | `vi08`, `vi09`, `vi13`, `vi15` | **655 lines** | [areas/mt_rakutei.md](areas/mt_rakutei.md) |
+| 42 | **Banner Pass (Toran Mountain Trail)** | `vf03` | **949 lines** | [areas/banner_pass.md](areas/banner_pass.md) |
+| 43 | **Ryube Forest & Tsai's Hermit Hut** | `vb07`, `vb09`, `vb10`, `vb11`, `vb20`, `vb21` | **1,211 lines** | [areas/ryube_forest.md](areas/ryube_forest.md) |
+| 44 | **Muse City (Plaza, City Hall & Ruins)** | `vc01`, `vc02`, `vc03`, `vc09`, `vc10`, `vc11`, `vc15`, `vc21`, `vc22`, `vc24`, `vc25`, `vc26`, `vc27`, `vc28`, `vc29`, `vc31` | **3,944 lines** | [areas/muse_city.md](areas/muse_city.md) |
+| 45 | **New Leaf Academy (Campus, Dorms & Cellar)** | `ve03`, `ve06`, `ve07` | **1,387 lines** | [areas/new_leaf_academy.md](areas/new_leaf_academy.md) |
+| 46 | **North Sparrow Mountain Pass & Checkpoint** | `va04`, `va05`, `va06`, `va07` | **614 lines** | [areas/north_sparrow_pass.md](areas/north_sparrow_pass.md) |
+| 47 | **North Window Ghost Town Ruins** | `vd04`, `vd07` | **352 lines** | [areas/north_window_ruins.md](areas/north_window_ruins.md) |
+| 48 | **Radat Town & Canal Wharf** | `vd02`, `vd05`, `vd20` | **820 lines** | [areas/radat_town.md](areas/radat_town.md) |
+| 49 | **Rockaxe Castle Citadel & Ramparts** | `vi01`, `vi02`, `vi03`, `vi04`, `vi05`, `vi06`, `vi07`, `vi10` | **1,964 lines** | [areas/rockaxe_citadel_and_castle.md](areas/rockaxe_citadel_and_castle.md) |
+| 50 | **Ryube Village & Outskirts** | `vb05`, `vb06`, `vb18` | **1,056 lines** | [areas/ryube_village.md](areas/ryube_village.md) |
+| 51 | **Sajah Frontier Village** | `vj17` | **316 lines** | [areas/sajah_village.md](areas/sajah_village.md) |
+| 52 | **Ancient Sindar Ruins Caverns** | `vc06`, `vc07`, `vc08`, `vc12`, `vc13` | **2,012 lines** | [areas/sindar_ruins.md](areas/sindar_ruins.md) |
+| 53 | **South Window Capital City** | `vd01`, `vd03`, `vd08`, `vd09`, `vd10`, `vd11`, `vd12`, `vd14`, `vd17`, `vd18`, `vd19` | **2,358 lines** | [areas/south_window_city.md](areas/south_window_city.md) |
+| 54 | **Swallow Pass & Highland Border Gate** | `vb08`, `vb17` | **597 lines** | [areas/swallow_pass.md](areas/swallow_pass.md) |
+| 55 | **Tenzan Pass Mountain Cliff** | `va03`, `va24` | **740 lines** | [areas/tenzan_pass.md](areas/tenzan_pass.md) |
+| 56 | **Tiger Cave & Mt. Senai Shrines** | `vg09`, `vg15` | **483 lines** | [areas/tiger_cave_mt_senai.md](areas/tiger_cave_mt_senai.md) |
+| 57 | **Tinto Mining City & Mayor Hall** | `vg01`, `vg02`, `vg03`, `vg17` | **1,368 lines** | [areas/tinto_city.md](areas/tinto_city.md) |
+| 58 | **Tinto Mines & Underground Caverns** | `vg05`, `vg07`, `vg10`, `vg11`, `vg12`, `vg14` | **891 lines** | [areas/tinto_mines.md](areas/tinto_mines.md) |
+| 59 | **Toran Castle Presidential Palace** | `vf05` | **370 lines** | [areas/toran_castle_palace.md](areas/toran_castle_palace.md) |
+| 60 | **Toto Village (Peaceful & Burned Ruins)** | `vb03`, `vb04` | **514 lines** | [areas/toto_village.md](areas/toto_village.md) |
+| 61 | **Two River City (Human, Wingly & Kobold)** | `vh01`, `vh05`, `vh06`, `vh11`, `vh12` | **2,132 lines** | [areas/two_river_city.md](areas/two_river_city.md) |
+| 62 | **Drakemouth Village & Border Road** | `vh08` | **350 lines** | [areas/drakemouth_village.md](areas/drakemouth_village.md) |
+| 63 | **Two River Subterranean Sewers** | `vh04` | **416 lines** | [areas/two_river_sewers.md](areas/two_river_sewers.md) |
+| 64 | **White Deer Country Inn** | `vc04`, `vc05` | **441 lines** | [areas/white_deer_inn.md](areas/white_deer_inn.md) |
 
 ---
 
