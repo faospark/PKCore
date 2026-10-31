@@ -63,6 +63,7 @@ public static class ImGuiOverlayUI
     {
         public int Index;
         public int Fpno;
+        public string Name = "";
         public int X;
         public int Y;
         public int W;
@@ -86,6 +87,8 @@ public static class ImGuiOverlayUI
     private static readonly System.Collections.Generic.List<(int Index, byte NewDisp)> _pendingObjectToggles = new();
     private static byte? _pendingCastleStage = null;
     private static bool _pendingDanceTrigger = false;
+    private static bool _pendingRoomReload = false;
+    private static bool _pendingOpenRuneMaster = false;
 
     // Camera Zoom / FOV management
     public static float CameraZoom => _cameraZoom;
@@ -466,6 +469,7 @@ public static class ImGuiOverlayUI
                 var mdat = MachiLoader_Load_Patch.LastLoadedMachiDat;
                 int submapIdx = MACHICON_OnMapInitPatch.CurrentSubmapIndex;
                 var ed = mdat?.eventdata;
+
                 if (ed?.mapeventdat != null && submapIdx >= 0 && submapIdx < ed.mapeventdat.Count)
                 {
                     var objs = ed.mapeventdat[submapIdx]?.eventobj;
@@ -477,6 +481,25 @@ public static class ImGuiOverlayUI
                             {
                                 objs[idx].disp = newDisp;
                                 Plugin.Log.LogInfo($"[DevMenu] Mutated obj[{idx}].disp -> {newDisp}");
+
+                                // Live update scene GameObject if present
+                                try
+                                {
+                                    var hdList = UnityEngine.Object.FindObjectsOfType<MapEventObjectHD>();
+                                    if (hdList != null)
+                                    {
+                                        foreach (var hd in hdList)
+                                        {
+                                            if (hd != null && hd.objID == idx)
+                                            {
+                                                hd.gameObject.SetActive(newDisp != 0);
+                                                hd.visibleSync = (newDisp != 0);
+                                                try { hd.ExclusiveCheck(newDisp != 0); } catch { }
+                                            }
+                                        }
+                                    }
+                                }
+                                catch { }
                             }
                         }
                     }
@@ -487,6 +510,45 @@ public static class ImGuiOverlayUI
                 Plugin.Log.LogError($"[DevMenu] Error applying object toggles: {ex.Message}");
             }
             _pendingObjectToggles.Clear();
+        }
+
+        if (_pendingRoomReload)
+        {
+            _pendingRoomReload = false;
+            try
+            {
+                var mc = MACHICON_OnMapInitPatch.CurrentMachicon;
+                if (mc != null)
+                {
+                    mc.OnMapInit();
+                    Plugin.Log.LogInfo("[DevMenu] Hot-reloaded current room via CurrentMachicon.OnMapInit().");
+                }
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogError($"[DevMenu] Room reload error: {ex.Message}");
+            }
+        }
+
+        if (_pendingOpenRuneMaster)
+        {
+            _pendingOpenRuneMaster = false;
+            try
+            {
+                if (S1QuickRunePatch.CanOpenRuneMaster(out string reason))
+                {
+                    S1QuickRunePatch.OpenRuneMaster();
+                    Plugin.Log.LogInfo("[ImGui] Triggered Remote Castle Rune Master from ImGui menu.");
+                }
+                else
+                {
+                    Plugin.Log.LogWarning($"[ImGui] Cannot open Remote Rune Master: {reason}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogError($"[ImGui] Error opening Remote Rune Master: {ex.Message}");
+            }
         }
 
         if (_pendingCursorVisible.HasValue)
@@ -612,6 +674,7 @@ public static class ImGuiOverlayUI
 
             if (_showDevMenu)
             {
+                EnsureDynamicNamesPopulated();
                 try
                 {
                     var mdat = MachiLoader_Load_Patch.LastLoadedMachiDat;
@@ -632,6 +695,7 @@ public static class ImGuiOverlayUI
                                 {
                                     Index = i,
                                     Fpno = o.fpno,
+                                    Name = GetEntityName(o.fpno, o.otyp),
                                     X = o.x,
                                     Y = o.y,
                                     W = o.w,
@@ -708,6 +772,236 @@ public static class ImGuiOverlayUI
                 Plugin.Log.LogError($"[ImGuiOverlayUI] Failed to open dump location: {ex}");
             }
         });
+    }
+
+
+    private static readonly System.Collections.Generic.Dictionary<int, string> _staticFpnoNames = new()
+    {
+        { 1, "Riou" },
+        { 2, "Flik" },
+        { 3, "Viktor" },
+        { 4, "Viki" },
+        { 5, "Sheena" },
+        { 6, "Clive" },
+        { 7, "Hix" },
+        { 8, "Tengaar" },
+        { 9, "Futch" },
+        { 10, "Humphrey" },
+        { 11, "Georg" },
+        { 12, "Valeria" },
+        { 13, "Pesmerga" },
+        { 14, "Lorelai" },
+        { 15, "Shin" },
+        { 16, "Rikimaru" },
+        { 17, "Tomo" },
+        { 18, "Nanami" },
+        { 19, "Eilie" },
+        { 20, "Rina" },
+        { 21, "Bolgan" },
+        { 22, "Tuta" },
+        { 23, "Hanna" },
+        { 24, "Milie" },
+        { 25, "Karen" },
+        { 26, "Shiro" },
+        { 27, "Zamza" },
+        { 28, "Gengen" },
+        { 29, "Gabotcha" },
+        { 30, "Kinnison" },
+        { 31, "Shilo" },
+        { 32, "Miklotov" },
+        { 33, "Camus" },
+        { 34, "Hauser" },
+        { 35, "Freed Y" },
+        { 36, "Kahn" },
+        { 37, "Amada" },
+        { 38, "Tai Ho" },
+        { 39, "Anita" },
+        { 40, "Bob" },
+        { 41, "Meg" },
+        { 42, "Gadget" },
+        { 43, "Ayda" },
+        { 44, "Killey" },
+        { 45, "Sierra" },
+        { 46, "Oulan" },
+        { 47, "Genshu" },
+        { 48, "Mukumuku" },
+        { 49, "Abizboah" },
+        { 50, "Feather" },
+        { 51, "Badeaux" },
+        { 52, "Tsai" },
+        { 53, "Luc" },
+        { 54, "Chaco" },
+        { 55, "Nina" },
+        { 56, "Sid" },
+        { 57, "Yoshino" },
+        { 58, "Gijimu" },
+        { 59, "Koyu" },
+        { 60, "Lo Wen" },
+        { 61, "Mazus" },
+        { 62, "Sasuke" },
+        { 63, "Mondo" },
+        { 64, "Vincent" },
+        { 65, "Simone" },
+        { 66, "Hai Yo" },
+        { 67, "Stallion" },
+        { 68, "Wakaba" },
+        { 69, "Long Chan-Chan" },
+        { 70, "Gantetsu" },
+        { 71, "Hoi" },
+        { 72, "Siegfried" },
+        { 73, "Kasumi" },
+        { 74, "Rulodia" },
+        { 75, "Makumaku" },
+        { 76, "Mikumiku" },
+        { 77, "Mekumeku" },
+        { 78, "MokuMoku" },
+        { 79, "Chuchara" },
+        { 80, "Jowy 1" },
+        { 81, "Jowy 2" },
+        { 82, "McDohl" },
+        { 83, "Milie Sans Bonapart" },
+        { 84, "Bonaparte" },
+        { 85, "Apple" },
+        { 86, "Templton" },
+        { 87, "Kiba" },
+        { 88, "Fitcher" },
+        { 89, "Shu" },
+        { 90, "Tetsu" },
+        { 91, "Leona" },
+        { 92, "Huan" },
+        { 93, "Jess" },
+        { 94, "Hilda" },
+        { 95, "Alex" },
+        { 96, "Emilia" },
+        { 97, "Tenkou" },
+        { 98, "Barbara" },
+        { 99, "Richmond" },
+        { 100, "Yam Koo" },
+        { 101, "Teresa" },
+        { 102, "Yuzu" },
+        { 103, "Taki" },
+        { 104, "Tony" },
+        { 105, "Adlai" },
+        { 106, "Gordon" },
+        { 107, "Hans" },
+        { 108, "Connell" },
+        { 109, "Lebrante" },
+        { 110, "Tessai" },
+        { 111, "Raura" },
+        { 112, "Annallee" },
+        { 113, "Pico" },
+        { 114, "Alberto" },
+        { 115, "Jude" },
+        { 116, "Jeane" },
+        { 117, "Ridley" },
+        { 118, "Klaus" },
+        { 119, "Max" },
+        { 120, "Marlowe" },
+        { 121, "Gilbert" },
+        { 122, "Boris" },
+        { 123, "Pilika 1" },
+        { 124, "Pilika 2" },
+        { 125, "Gremio" },
+        { 126, "NA-" },
+        { 127, "NA-" },
+        { 128, "Marx" },
+        { 129, "Joanna" },
+        { 130, "Leknaat" },
+        { 131, "Lepant" },
+        { 132, "Varkas" },
+        { 133, "Alen" },
+        { 134, "Glenshiel" },
+        { 135, "Anabelle" },
+        { 136, "Granmeyer" },
+        { 137, "Makai" },
+        { 138, "Gustav" },
+        { 139, "Gordeau" },
+        { 140, "Luca" },
+        { 141, "Jillia" },
+        { 142, "Solon Jhee" },
+        { 143, "Culgan" },
+        { 144, "Seed" },
+        { 145, "Rowd" },
+        { 146, "Agares" },
+        { 147, "Leon" },
+        { 148, "Han" },
+        { 149, "Genkaku" },
+        { 150, "Sasarai" },
+        { 151, "Neclord" },
+        { 152, "Suikoden" },
+        { 153, "Celestial Sword" },
+        { 154, "Lilly" },
+        { 155, "Lucia" },
+        { 156, "Yuber" },
+        { 157, "Kage" },
+        { 158, "Antonio" },
+        { 159, "Lester" },
+        { 160, "Cleo" },
+        { 161, "Pahn" },
+        { 162, "Marie" },
+        { 163, "Sarah" },
+        { 164, "Tesla" },
+        { 165, "Liukan" },
+        { 166, "Eileen" },
+        { 167, "Elza" },
+        { 168, "Ellie" },
+        { 169, "Pohl" },
+    };
+
+    private static readonly System.Collections.Generic.Dictionary<int, string> _dynamicFpnoNames = new();
+    private static bool _dynamicNamesPopulated = false;
+
+    private static void EnsureDynamicNamesPopulated()
+    {
+        if (_dynamicNamesPopulated || !GameDetection.IsGSD2()) return;
+        try
+        {
+            for (int i = 0; i <= 200; i++)
+            {
+                try
+                {
+                    int faceNo = GSD2::w_chara.GetCharaFaceNo(i);
+                    if (faceNo > 0)
+                    {
+                        string bigName = GSD2::w_chara.GetCharaBigNameString(i);
+                        if (!string.IsNullOrWhiteSpace(bigName))
+                        {
+                            _dynamicFpnoNames[faceNo] = bigName.Trim();
+                        }
+                    }
+                }
+                catch { }
+            }
+            _dynamicNamesPopulated = true;
+        }
+        catch { }
+    }
+
+    public static string GetEntityName(int fpno, int otyp)
+    {
+        short signedFp = (short)fpno;
+
+        if (signedFp == 0)
+        {
+            return otyp == 0 ? "Trigger / Zone" : "Mechanism";
+        }
+
+        if (_dynamicFpnoNames.TryGetValue(signedFp, out string dynName) && !string.IsNullOrEmpty(dynName))
+        {
+            return dynName;
+        }
+
+        if (_staticFpnoNames.TryGetValue(signedFp, out string statName))
+        {
+            return statName;
+        }
+
+        if (signedFp < 0 || signedFp > 1000)
+        {
+            return $"Prop #{fpno & 0xFFFF}";
+        }
+
+        return $"NPC #{signedFp}";
     }
 
     /// <summary>
@@ -890,10 +1184,30 @@ public static class ImGuiOverlayUI
     {
         try
         {
-            ImGui.SetNextWindowSize(new Vector2(380f, 280f), ImGuiCond.FirstUseEver);
+            if (!GameDetection.IsGSD2())
+            {
+                ImGui.SetNextWindowSize(new Vector2(420f, 160f), ImGuiCond.FirstUseEver);
+                if (ImGui.Begin("PKCore Dev Menu##DevMenu", ref _showDevMenu, ImGuiWindowFlags.NoCollapse))
+                {
+                    ImGui.TextColored(new Vector4(1f, 0.4f, 0.4f, 1f), "Suikoden 2 Exclusive Feature");
+                    ImGui.Separator();
+                    ImGui.Spacing();
+                    ImGui.TextWrapped("The Dev Menu, Castle Stage modifier, and Area Object Inspector are currently designed exclusively for Suikoden 2. Suikoden 1 uses distinct memory and map structures.");
+                    ImGui.Spacing();
+                    if (ImGui.Button("Close##DevMenuCloseS1"))
+                    {
+                        _showDevMenu = false;
+                        RequestCursorVisible(_showHudNoteInput);
+                    }
+                }
+                ImGui.End();
+                return;
+            }
+
+            ImGui.SetNextWindowSize(new Vector2(560f, 440f), ImGuiCond.FirstUseEver);
             if (ImGui.Begin("PKCore Restorations & Testing##DevMenu", ref _showDevMenu, ImGuiWindowFlags.NoCollapse))
             {
-                ImGui.TextColored(GetAccentColor(), "Cut Content Testing");
+                ImGui.TextColored(GetAccentColor(), "Suikoden II Dev Menu & Object Inspector");
                 ImGui.Separator();
 
                 ImGui.Spacing();
@@ -963,10 +1277,15 @@ public static class ImGuiOverlayUI
                                 else enabledCount++;
                             }
 
-                            ImGui.Text($"Total Objects: {_cachedAreaObjects.Count}  |  Visible: {enabledCount}  |  Disabled: {disabledCount}");
-                            ImGui.Spacing();
+                            ImGui.Text($"Total Objects: {_cachedAreaObjects.Count}  |  Visible: {enabledCount}  |  Hidden: {disabledCount}");
+                            ImGui.SameLine();
+                            if (ImGui.SmallButton("Reload Room / Objects##DevReloadBtn"))
+                            {
+                                _pendingRoomReload = true;
+                            }
 
-                            ImGui.BeginChild("ObjectsListScroll", new Vector2(0, 200f), true);
+                            ImGui.Spacing();
+                            ImGui.BeginChild("ObjectsListScroll", new Vector2(0, 240f), true);
 
                             for (int i = 0; i < _cachedAreaObjects.Count; i++)
                             {
@@ -974,15 +1293,20 @@ public static class ImGuiOverlayUI
 
                                 bool isVisible = o.Disp != 0;
                                 Vector4 statusColor = isVisible ? new Vector4(0.3f, 1f, 0.4f, 1f) : new Vector4(0.85f, 0.4f, 0.4f, 1f);
-                                string statusText = isVisible ? "[Visible]" : "[Hidden]";
+                                string statusText = isVisible ? "[Show]" : "[Hide]";
 
                                 ImGui.PushID($"ObjRow_{o.Index}");
 
                                 ImGui.TextColored(statusColor, statusText);
                                 ImGui.SameLine();
-                                ImGui.TextColored(new Vector4(0.9f, 0.9f, 0.4f, 1f), $"obj[{o.Index:D2}]");
+                                ImGui.TextColored(new Vector4(0.9f, 0.9f, 0.4f, 1f), $"[{o.Index:D2}]");
                                 ImGui.SameLine();
-                                ImGui.Text($"fpno:{o.Fpno,-5} pos:({o.X,2},{o.Y,2}) size:({o.W}x{o.H}) typ:{o.Otyp}");
+
+                                Vector4 nameColor = isVisible ? new Vector4(0.95f, 0.95f, 0.95f, 1f) : new Vector4(0.55f, 0.55f, 0.55f, 1f);
+                                ImGui.TextColored(nameColor, $"{o.Name,-18}");
+                                ImGui.SameLine();
+
+                                ImGui.TextDisabled($"fp:{o.Fpno,-3} ({o.X,2},{o.Y,2})");
 
                                 ImGui.SameLine();
                                 string toggleLabel = isVisible ? "Hide##Toggle" : "Show##Toggle";
@@ -991,6 +1315,7 @@ public static class ImGuiOverlayUI
                                     byte nextDisp = (byte)(isVisible ? 0 : 1);
                                     _pendingObjectToggles.Add((o.Index, nextDisp));
                                     o.Disp = nextDisp;
+                                    _pendingRoomReload = true;
                                 }
 
                                 ImGui.PopID();

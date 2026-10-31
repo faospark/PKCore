@@ -130,26 +130,26 @@ Every single distinct geographic location in Suikoden II is documented in full i
 | 4 | **Crom Village & Outskirts Path** | `vg08`, `vg13`, `vg16` | **1,103 lines** | [areas/crom_village.md](areas/crom_village.md) |
 | 5 | **Tigermouth Mountain Settlement** | `vg04`, `vg06` | **459 lines** | [areas/tigermouth_village.md](areas/tigermouth_village.md) |
 | 6 | **Castle HQ: Tetsu's Castle Bathhouse** | `vk06` | **598 lines** | [areas/dunan_castle_hq_bathhouse.md](areas/dunan_castle_hq_bathhouse.md) |
-| 7 | **Castle HQ: Cartography Room** | `vk12` | **264 lines** | [areas/dunan_castle_hq_cartography_room.md](areas/dunan_castle_hq_cartography_room.md) |
+| 7 | **Castle HQ: Cartography Room** | `vk12` | **264 lines** | [areas/dunan_castle_hq_library_and_archives.md](areas/dunan_castle_hq_library_and_archives.md) |
 | 8 | **Castle HQ: Commander Riou's Bedroom** | `vk10` | **671 lines** | [areas/dunan_castle_hq_commanders_quarters.md](areas/dunan_castle_hq_commanders_quarters.md) |
 | 9 | **Castle HQ: Concert Stage & Music Hall** | `vk09` | **365 lines** | [areas/dunan_castle_hq_concert_stage.md](areas/dunan_castle_hq_concert_stage.md) |
 | 10 | **Castle HQ: Lake Dunan Docks & Fishing Pier** | `vk22` | **321 lines** | [areas/dunan_castle_hq_docks_and_fishing.md](areas/dunan_castle_hq_docks_and_fishing.md) |
 | 11 | **Castle HQ: Combat Dojo & Sparring Arena** | `vk03` | **342 lines** | [areas/dunan_castle_hq_dojo_and_training.md](areas/dunan_castle_hq_dojo_and_training.md) |
 | 12 | **Castle HQ: Tony's Farm & Pastures** | `vk19` | **278 lines** | [areas/dunan_castle_hq_farm_and_pastures.md](areas/dunan_castle_hq_farm_and_pastures.md) |
-| 13 | **Castle HQ: Great Hall & Main Foyers** | `vk01`, `vk14`, `vk21`, `vk34` | **2,752 lines** | [areas/dunan_castle_hq_great_hall_and_entry.md](areas/dunan_castle_hq_great_hall_and_entry.md) |
-| 14 | **Castle HQ: Grounds, Gardens & Animal Sanctuary** | `vk11`, `vk18` | **843 lines** | [areas/dunan_castle_hq_grounds_and_sanctuary.md](areas/dunan_castle_hq_grounds_and_sanctuary.md) |
+| 13 | **Castle HQ: Great Hall & Main Foyers** | `vk01`, `vk14`, `vk21`, `vk34` | **2,752 lines** | [areas/dunan_castle_hq_castle_garden.md](areas/dunan_castle_hq_castle_garden.md) |
+| 14 | **Castle HQ: Grounds, Gardens & Animal Sanctuary** | `vk11`, `vk18` | **843 lines** | [areas/dunan_castle_hq_castle_square.md](areas/dunan_castle_hq_castle_square.md) |
 | 15 | **Castle HQ: Jude's Guardian Deity Shrine** | `vk33` | **198 lines** | [areas/dunan_castle_hq_guardian_deity_shrine.md](areas/dunan_castle_hq_guardian_deity_shrine.md) |
 | 16 | **Castle HQ: Dr. Huan's Medical Clinic** | `vk05` | **482 lines** | [areas/dunan_castle_hq_infirmary_and_clinic.md](areas/dunan_castle_hq_infirmary_and_clinic.md) |
 | 17 | **Castle HQ: Castle Inn & Lodging Rooms** | `vk31` | **413 lines** | [areas/dunan_castle_hq_inn_and_lodging.md](areas/dunan_castle_hq_inn_and_lodging.md) |
 | 18 | **Castle HQ: Living Quarters & Corridors** | `vk13`, `vk16`, `vk17`, `vk24`, `vk25`, `vk26`, `vk27`, `vk28`, `vk30`, `vk35`, `vk36`, `vk37` | **2,928 lines** | [areas/dunan_castle_hq_living_quarters_and_corridors.md](areas/dunan_castle_hq_living_quarters_and_corridors.md) |
 | 19 | **Castle HQ: Memorial Graveyard** | `vk23` | **287 lines** | [areas/dunan_castle_hq_memorial_graveyard.md](areas/dunan_castle_hq_memorial_graveyard.md) |
 | 20 | **Castle HQ: Hai Yo's Restaurant & Kitchen** | `vk20` | **376 lines** | [areas/dunan_castle_hq_restaurant_and_kitchen.md](areas/dunan_castle_hq_restaurant_and_kitchen.md) |
-| 21 | **Castle HQ: Tavern & Gambling Parlor** | `vk04` | **820 lines** | [areas/dunan_castle_hq_tavern_and_dice.md](areas/dunan_castle_hq_tavern_and_dice.md) |
+| 21 | **Castle HQ: Tavern & Gambling Parlor** | `vk04` | **820 lines** | [areas/dunan_castle_hq_barracks_and_team_quarters.md](areas/dunan_castle_hq_barracks_and_team_quarters.md) |
 | 22 | **Castle HQ: Viki Teleport & Mechanical Elevator** | `vk29`, `vk32` | **723 lines** | [areas/dunan_castle_hq_teleport_and_elevator.md](areas/dunan_castle_hq_teleport_and_elevator.md) |
-| 23 | **Castle HQ: Barbara's Vault & Richmond Detective** | `vk02` | **1,141 lines** | [areas/dunan_castle_hq_vault_and_detective.md](areas/dunan_castle_hq_vault_and_detective.md) |
+| 23 | **Castle HQ: Barbara's Vault & Richmond Detective** | `vk02` | **1,141 lines** | [areas/dunan_castle_hq_shopping_area.md](areas/dunan_castle_hq_shopping_area.md) |
 | 24 | **Castle HQ: War Strategy Chamber** | `vk07` | **624 lines** | [areas/dunan_castle_hq_war_strategy_room.md](areas/dunan_castle_hq_war_strategy_room.md) |
 | 25 | **Castle HQ: Watchtower & High Roof** | `vk15` | **117 lines** | [areas/dunan_castle_hq_watchtower_and_roof.md](areas/dunan_castle_hq_watchtower_and_roof.md) |
-| 26 | **Castle HQ: Workshop & Library Archives** | `vk08` | **488 lines** | [areas/dunan_castle_hq_workshop_and_library.md](areas/dunan_castle_hq_workshop_and_library.md) |
+| 26 | **Castle HQ: Workshop & Library Archives** | `vk08` | **488 lines** | [areas/dunan_castle_hq_entrance_vault_and_tavern.md](areas/dunan_castle_hq_entrance_vault_and_tavern.md) |
 | 27 | **Forest Village Settlement** | `ve02`, `ve10`, `ve11`, `ve12` | **899 lines** | [areas/forest_village.md](areas/forest_village.md) |
 | 28 | **Greenhill Principality (City & Outskirts)** | `ve01`, `ve08`, `ve09`, `ve13`, `ve14`, `ve16` | **1,771 lines** | [areas/greenhill_city.md](areas/greenhill_city.md) |
 | 29 | **Greenhill-Matilda Forest Trail & Checkpoint** | `ve04`, `ve05`, `ve15` | **518 lines** | [areas/greenhill_matilda_path_and_border.md](areas/greenhill_matilda_path_and_border.md) |

@@ -4,6 +4,15 @@ All notable changes to PKCore (formerly PKextended) are documented in this file.
 
 ---
 
+## [2026.10.31]
+
+- **Floating Borderless Window Mode Restoration (`BorderlessWindowPatch.cs`)**:
+  - Restored `BorderlessWindowPatch.cs` to enable true floating borderless windowed mode.
+  - Unlike Unity's native `-popupwindow` (which forces full-screen borderless stretched to desktop resolution), this feature strips Win32 OS window chrome (`WS_CAPTION`, `WS_THICKFRAME`, `WS_SYSMENU`, `WS_MINIMIZEBOX`, `WS_MAXIMIZEBOX`) via `SetWindowLong` and `SetWindowPos` while keeping the engine in `FullScreenMode.Windowed`.
+  - Enables players to run the game at lower or arbitrary custom window resolutions without window borders or title bars.
+  - Re-added configuration binding `EnableBorderlessWindow = false` under section `[Utilty]` in `faospark.pkcore.cfg`.
+  - Intercepts `Screen.SetResolution` overloads to re-apply borderless styling cleanly on any resolution change.
+
 ## [2026.10.29]
 
 - **Living Quarters Shortcut Door Restoration (`MapTrackingPatch.cs`)**:

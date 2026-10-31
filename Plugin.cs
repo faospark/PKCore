@@ -139,6 +139,14 @@ public class Plugin : BasePlugin
             harmony.PatchAll(typeof(MouseCursorPatch));
         }
 
+        // Borderless Window Mode (Strips borders in windowed mode for custom compact sizes)
+        if (Config.EnableBorderlessWindow.Value)
+        {
+            Log.LogInfo("Applying BorderlessWindow patches...");
+            harmony.PatchAll(typeof(BorderlessWindowPatch));
+            BorderlessWindowPatch.Initialize();
+        }
+
         // Encounter None (F4 Hotkey)
         EncounterNonePatch.Initialize();
         harmony.PatchAll(typeof(EncounterNonePatch));
@@ -395,5 +403,10 @@ public class PkCoreMainLoop : MonoBehaviour
         {
             Plugin.Instance.LateUpdate();
         }
+    }
+
+    public void ApplyBorderlessStyle()
+    {
+        PKCore.Patches.BorderlessWindowPatch.ApplyBorderlessStyle();
     }
 }

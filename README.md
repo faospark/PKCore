@@ -62,12 +62,15 @@ The **core DLL component** for **[Project Kyaro](https://www.nexusmods.com/suiko
 * Location Dump [NumPad 5] (Press [NumPad 5] anytime in gameplay or click the HUD button to instantly dump current map and location notes to `\Suikoden I and II HD Remaster\PKCore\Logs\locationdump.log`)
 * Encounter None [F4] (Toggle random battle encounters on/off with [F4] or via Dear ImGui overlay; automatically delegates to Suikoden_Fix multiplier when present, with native fallback hooks for S1 & S2)
 * Show Mouse Cursor (Live runtime toggle via Dear ImGui overlay and configuration to unlock and force OS cursor visibility)
+* Borderless Floating Window Mode (Strips Win32 title bars and borders while remaining in windowed mode, enabling custom smaller resolutions in clean borderless windows)
 * Clean Exit on ALT+F4 (Force immediate shutdown instead of hanging)
 * High-Speed Decompiled Symbol Indexer & CLI Query Tool (Sub-millisecond lookups for C# types, members, and native IL2CPP addresses)
 
-> **Borderless Mode**: For borderless fullscreen window, use Unity's native `-popupwindow` launch argument:
-> - **Steam**: Right-click game → Properties → Launch Options → Add `-popupwindow`
-> - **Epic Games**: Create a shortcut to the game executable and add `-popupwindow` to the Target field
+> **Borderless Modes**:
+> - **Floating Windowed Borderless (Custom Resolutions / Smaller Windows)**: Enable `EnableBorderlessWindow = true` under `[Utilty]` in `PKCore.cfg`. Strips the OS window caption and resizing frame while retaining windowed mode.
+> - **Fullscreen Borderless (Full Desktop)**: Use Unity's native `-popupwindow` launch argument:
+>   - **Steam**: Right-click game → Properties → Launch Options → Add `-popupwindow`
+>   - **Epic Games**: Create a shortcut to the game executable and add `-popupwindow` to the Target field
 
 **[Additionals from Nexus Bundle]**
 

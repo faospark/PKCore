@@ -183,7 +183,7 @@ Resolved 1,913 condition checks where story scripts inspected the party's bag fo
 - Annotated inventory check: Item #1 -> [Medicine]
 
 
-### `dunan_castle_hq_cartography_room.md` (2 changes)
+### `dunan_castle_hq_library_and_archives.md` (2 changes)
 
 **Inventory Item Check Annotations** (2):
 - Annotated inventory check: Item #1 -> [Medicine]
@@ -273,7 +273,7 @@ Resolved 1,913 condition checks where story scripts inspected the party's bag fo
 - Annotated inventory check: Item #1 -> [Medicine]
 
 
-### `dunan_castle_hq_great_hall_and_entry.md` (169 changes)
+### `dunan_castle_hq_castle_garden.md` (169 changes)
 
 **Party Recruitment Annotations** (2):
 - Annotated recruit action: ID 101 -> [Teresa]
@@ -306,7 +306,7 @@ Resolved 1,913 condition checks where story scripts inspected the party's bag fo
 - *... and 134 more item check annotations*
 
 
-### `dunan_castle_hq_grounds_and_sanctuary.md` (8 changes)
+### `dunan_castle_hq_castle_square.md` (8 changes)
 
 **Inventory Item Check Annotations** (8):
 - Annotated inventory check: Item #9 -> [Kindness Drops]
@@ -451,7 +451,7 @@ Resolved 1,913 condition checks where story scripts inspected the party's bag fo
 - Annotated inventory check: Item #32 -> [Drinking Set]
 
 
-### `dunan_castle_hq_tavern_and_dice.md` (4 changes)
+### `dunan_castle_hq_barracks_and_team_quarters.md` (4 changes)
 
 **Inventory Item Check Annotations** (4):
 - Annotated inventory check: Item #1 -> [Medicine]
@@ -487,7 +487,7 @@ Resolved 1,913 condition checks where story scripts inspected the party's bag fo
 - Annotated inventory check: Item #1 -> [Medicine]
 
 
-### `dunan_castle_hq_vault_and_detective.md` (6 changes)
+### `dunan_castle_hq_shopping_area.md` (6 changes)
 
 **Inventory Item Check Annotations** (6):
 - Annotated inventory check: Item #1 -> [Medicine]
@@ -546,7 +546,7 @@ Resolved 1,913 condition checks where story scripts inspected the party's bag fo
 - Annotated inventory check: Item #64 -> [Recipe #33]
 
 
-### `dunan_castle_hq_workshop_and_library.md` (7 changes)
+### `dunan_castle_hq_entrance_vault_and_tavern.md` (7 changes)
 
 **Inventory Item Check Annotations** (7):
 - Annotated inventory check: Item #4 -> [Throat Drops]

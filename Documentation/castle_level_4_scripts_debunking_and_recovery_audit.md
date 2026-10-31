@@ -102,20 +102,20 @@ The 62 verified Level 4 scripts are distributed across 16 map zones:
 
 | Geographic Area | Map File | Script Count | Operational Nature |
 |---|---|:---:|---|
-| **Coronet Town** | `vc18.json` | 2 | Retail Active: Genshu recruitment dialogue checks |
-| **Muse-Greenhill Border** | `vd02.json` | 1 | Retail Active: Matilda border gate state at Level 4 |
+| **Coronet Town Docks** | `vc18.json` | 2 | Retail Active: Genshu recruitment dialogue checks |
+| **Radat Wharf & Sluice Gate** | `vd02.json` | 1 | Retail Active: Sluice gate / river bridge state at Level 4 |
 | **Cave of the Wind** | `vd06.json` | 4 | Retail Active: Pesmerga spawn, cutscene, talk, and step triggers |
-| **Two River Sewers** | `vg15.json` | 1 | Retail Active: Kobold settlement late-game dialogue |
-| **HQ Vault & Corridors** | `vk02.json` | 9 | Pruned Dead Code: Ghost spawns for trimmed Objects 18–26 |
-| **HQ Pasture & Farm** | `vk03.json` | 7 | **Debunked / Dud**: Superseded by retail `vk19`. Objects 38–40 are invisible collision hitboxes, not graphics; stone wall door is a dead-end boundary |
-| **HQ Tavern 2F** | `vk04.json` | 2 | Pruned Dead Code: Ghost spawns for trimmed Objects 47, 48 |
-| **HQ Docks** | `vk08.json` | 1 | Pruned Dead Code: Ghost spawn for trimmed Object 32 |
-| **HQ Courtyard** | `vk09.json` | 5 | Pruned Dead Code (3) & Tile Overlays (2): Perimeter banners |
-| **HQ Guest Rooms** | `vk11.json` | 6 | Pruned Dead Code: Ghost spawns for trimmed Objects 15, 35, 37, 39, 40 |
-| **HQ Infirmary** | `vk12.json` | 3 | Recoverable (2) & Pruned Dead Code (1): Medicine prop & patient check |
-| **HQ Penthouse** | `vk13.json` | 6 | Debunked Staging (4), Pruned Dead Code (1), Recoverable (1) |
-| **HQ Roof Parapet** | `vk14.json` | 3 | Pruned Dead Code (1) & Tile Overlays (2): Parapet battlements |
-| **HQ Cemetery** | `vk16.json` | 12 | **Cutscene-Only Stage**: Dedicated non-playable memorial cutscene container. Impractical for seamless room integration due to missing exit geometry and hard-coded event loops |
+| **Tinto Mines** | `vg15.json` | 1 | Retail Active: Mazus mine enclave dialogue |
+| **Castle Shopping Area** | `vk02.json` | 9 | Pruned Dead Code: Ghost spawns for trimmed commercial shops (Objects 18–26) |
+| **Castle Dojo & Sparring Arena** | `vk03.json` | 7 | **Debunked / Dud**: Superseded by retail `vk19`. Objects 38–40 are invisible collision hitboxes, not graphics; stone wall door is a dead-end boundary |
+| **Castle Barracks & Team Quarters** | `vk04.json` | 2 | Pruned Dead Code: Ghost spawns for trimmed Objects 47, 48 |
+| **Castle Main Entrance & Tavern/Inn** | `vk08.json` | 1 | Pruned Dead Code: Ghost spawn for trimmed Object 32 |
+| **Concert Stage & Dance Hall** | `vk09.json` | 5 | Pruned Dead Code (3) & Tile Overlays (2): Perimeter banners |
+| **Castle Square** | `vk11.json` | 6 | Pruned Dead Code: Ghost spawns for trimmed courtyard objects (15, 35, 37, 39, 40) |
+| **Castle Library** | `vk12.json` | 3 | Recoverable (2) & Pruned Dead Code (1): Medicine shelf prop & patient check |
+| **4F VIP Area / Strategist's War Room** | `vk13.json` | 6 | Debunked Staging (4), Pruned Dead Code (1), Recoverable (1) |
+| **Castle Garden** | `vk14.json` | 3 | Pruned Dead Code (1) & Tile Overlays (2): Garden battlements |
+| **Mainline Cutscene Staging Container** | `vk16.json` | 12 | **Debunked: Mainline Cutscene Container**: Dedicated non-playable stage holding standard retail story cutscenes (Epilogue departure, Kiba war council, Shu & Apple cards). No cut/locked content. |
 | **Total** | **16 Maps** | **62** | **Full Game Coverage** |
 
 ---
@@ -127,14 +127,14 @@ These scripts function completely as intended in retail vanilla *Suikoden II*. T
 
 | Map | Submap | Event | Trigger (`etyp`) | Condition Bytecode | Action (`eventCom`) | Vanilla Function |
 |---|:---:|:---:|:---:|---|---|---|
-| `vc18` | 0 | `ev[27]` | Action (1) | `[33, 1, 4, 4, 23, 8, 5, 8]` | Dialogue Sequence (258 B) | Genshu recruitment check: Castle Level 4 & Level 40 Riou |
-| `vc18` | 0 | `ev[28]` | Action (1) | `[33, 1, 4, 3, 23, 8, 5, 8]` | Dialogue Sequence (255 B) | Genshu alternative dialogue at Castle Level 4 |
-| `vd02` | 0 | `ev[56]` | MapInit (2) | `[33, 1, 4, 3, 29, 8, 4, 29, 128]` | `ECOverlayPset` (19 B) | Muse-Greenhill border gate visual state at Castle Level 4 |
-| `vd06` | 18 | `ev[10]` | MapInit (2) | `[4, 151, 64, 33, 0, 4, 24, 13, 2]` | `ECOverlayPset` (17 B) | Pesmerga chamber spawn trigger at Castle Level 4 |
+| `vc18` | 0 | `ev[27]` | Action (1) | `[33, 1, 4, 4, 23, 8, 5, 8]` | Dialogue Sequence (258 B) | Genshu recruitment check: Castle Level 4 & Level 40 Riou (Coronet Town Docks) |
+| `vc18` | 0 | `ev[28]` | Action (1) | `[33, 1, 4, 3, 23, 8, 5, 8]` | Dialogue Sequence (255 B) | Genshu alternative dialogue at Castle Level 4 (Coronet Town Docks) |
+| `vd02` | 0 | `ev[56]` | MapInit (2) | `[33, 1, 4, 3, 29, 8, 4, 29, 128]` | `ECOverlayPset` (19 B) | Radat Wharf / Sluice Gate visual bridge state at Castle Level 4 |
+| `vd06` | 18 | `ev[10]` | MapInit (2) | `[4, 151, 64, 33, 0, 4, 24, 13, 2]` | `ECOverlayPset` (17 B) | Pesmerga chamber spawn trigger at Castle Level 4 (Cave of the Wind) |
 | `vd06` | 18 | `ev[11]` | Action (1) | `[33, 0, 4, 24, 13, 2, 4, 146, 32, 1...]` | Cutscene Sequence (235 B) | Pesmerga introductory walk-in cutscene at Castle Level 4 |
 | `vd06` | 18 | `ev[12]` | Action (1) | `[33, 0, 4, 24, 13, 2, 3, 146, 32, 5, 10]` | Dialogue Sequence (199 B) | Pesmerga recruitment dialogue at Castle Level 4 |
 | `vd06` | 18 | `ev[13]` | StepOn (128) | `[33, 0, 4, 24, 13, 2, 6, 1]` | `ECMapChenge` (12 B) | Pesmerga chamber boundary trigger at Castle Level 4 |
-| `vg15` | 2 | `ev[46]` | Action (1) | `[4, 151, 64, 3, 208, 4, 4, 208, 8, 33, 1, 4, 5, 8]` | Dialogue Sequence (350 B) | Two River Sewer / Kobold settlement dialogue at Castle Level 4 |
+| `vg15` | 2 | `ev[46]` | Action (1) | `[4, 151, 64, 3, 208, 4, 4, 208, 8, 33, 1, 4, 5, 8]` | Dialogue Sequence (350 B) | Tinto Mines Mazus enclave dialogue at Castle Level 4 |
 
 ---
 
@@ -237,26 +237,15 @@ flowchart TD
     end
 ```
 
-#### 1. The Fallen Heroes Memorial Sequence (`vk16` Castle Cemetery — 7 Cutscenes) [Impractical / Cutscene Container]
-The single most substantial narrative sequence in Dunan Castle. Core story actors (**Viktor, Flik, Nanami, Freed Y, Tsai, Apple, Hoi**) gather around the headstones to honor fallen comrades.
+#### 1. The Fallen Heroes Memorial Sequence (`vk16` Castle Cemetery — 7 Cutscenes) [Debunked: Mainline Retail Story Container]
+Originally hypothesized as an unreleased "memorial room" holding dormant or locked-out cut content. Forensic string and opcode analysis confirmed that `vk16` is simply the dedicated non-playable cutscene staging container for **mainline retail story cutscenes**:
 - **Physical Entities Exist**: In `vk16` Submap 0, Objects 1 through 9 exist at origin `(0, 0)` with their correct sprite patterns (`fpno 18` Flik, `fpno 3` Viktor, `fpno 2` Nanami, `fpno 52` Freed Y, `fpno 35` Tsai, `fpno 19` Hoi, `fpno 54` Apple).
-- **Implementation Reality**:
-  - In-engine testing confirmed that `vk16` is a **special cutscene container**, not an ordinary playable room.
-  - It lacks normal entrance/exit transition triggers back to the live castle (`vk23`).
-  - Autorun loops and scene-step dependencies freeze standard party movement, making seamless gameplay restoration impractical without extensive custom scripting.
-- **Associated Extracted Dialogues (String IDs 1011160001–1011161076 via Game Master Text Index)**:
-  - **Viktor & Flik (War Council & Aftermath Reflection)**:
-    > *"Eh, it'll work out somehow. Maybe we'll come up with a good idea tomorrow. Anyway, don't worry about it for now, [Hero]. Just go get some grub and sleep."*  
-    > *"Look, there is a great power within you. And I don't mean that rune on your hand either. You've shouldered the hopes of many people, and you have a duty to carry them through to the end. And that goes for all those who died in this war too..."*  
-    > *"Leave it, Flik. He needs to do this... But I just want ya to remember one thing, [Hero]. You've always got a home to come back to here."*
-  - **General Kiba & Klaus (The Decisive Gamble)**:
-    > *"General Kiba... I have a great favor to ask of you. The next battle will be the one to truly determine the outcome of this war. If we hope to win, we're going to have to make a hefty gambit."*  
-    > *"Master Shu, I have already died once with my defeat, so I do not fear death. But when I see how Commander [Hero] wins over the hearts of others to fight through this war... I find myself believing in miracles, unbecoming of a general as that may be. All I ask in return is that you take care of my son, Klaus."*
-  - **Apple & Shu (The 3 War Cards Confrontation)**:
-    > *"When I came up with the plan to attack Muse... you knew that it was going to fail, didn't you?"*  
-    > *"Yeah. I gave it a fifty-fifty chance at best... Apple. There are 3 cards on that table there. Would you take one of them for me? What does it say?"*  
-    > *"Fire... Nothing else."*  
-    > *"I see... You may go now, Apple."*
+- **Forensic Verification & Dialogue Grounding**:
+  - All 1,076 text entries routed through `vk16` in `text_gsd2_tbl` are standard, fully implemented retail scenes:
+    - **Epilogue Departure Cutscene**: Viktor and Flik confront Riou when he prepares to leave the castle after the war ends (*"Leave it, Flik. He needs to do this... But I just want ya to remember one thing, [Hero]. You've always got a home to come back to here."*).
+    - **War Council Strategy**: Shu and General Kiba plan the decoy offensive east of Muse before Kiba marches to his death (*"General Kiba... I have a great favor to ask of you... All I ask in return is that you take care of my son, Klaus."*).
+    - **Apple & Shu Optional Scene**: Apple visits Shu's study at night before the Matilda offensive and draws one of the three war cards (*"Fire... Nothing else."*).
+  - **Conclusion**: There is **no hidden or locked-out dialogue** in `vk16`. The scripts are standard mainline narrative sequences loaded into a headless stage container. Reclassifying `vk16` as **Debunked / Vanilla Staging Container**.
 
 #### 2. Pasture & Farm Props (`vk03` Submap 0 — 7 Scripts) [Debunked / Dud]
 - `ev[107]`, `ev[108]`, `ev[109]` toggle visibility (`disp = 1`) for Objects 38, 39, and 40.
@@ -279,15 +268,15 @@ The single most substantial narrative sequence in Dunan Castle. Core story actor
 
 | Facility / Map | Total Level 4 Scripts | Debunked / Dead Code | Actionable / Recoverable | Restoration Strategy |
 |---|:---:|:---:|:---:|---|
-| **Outer World (`vc18`, `vd02`, `vd06`, `vg15`)** | 8 | 0 | 0 | **Leave Untouched**: Already 100% active in retail |
-| **Castle Vault & Corridors (`vk02`)** | 9 | 9 (Pruned) | 0 | **Do Not Restore**: Objects deleted from array; causes crashes |
-| **Pasture & Farm (`vk03`)** | 7 | 7 (Dud) | 0 | **Debunked**: Objects 38–40 are invisible collision hitboxes (otyp: 4, fpno: 0); superseded by retail `vk19`; stone wall door is a dead-end |
-| **Tavern 2F (`vk04`)** | 2 | 2 (Pruned) | 0 | **Do Not Restore**: Objects 47, 48 deleted |
-| **Docks (`vk08`)** | 1 | 1 (Pruned) | 0 | **Do Not Restore**: Object 32 deleted |
-| **Courtyard (`vk09`)** | 5 | 3 (Pruned) | 2 (Tile Overlays) | **Partially Safe**: Overlays safe; skip ghost objects 37, 38, 40 |
-| **Guest Quarters (`vk11`)** | 6 | 6 (Pruned) | 0 | **Do Not Restore**: Objects 15, 35, 37, 39, 40 deleted |
-| **Infirmary (`vk12`)** | 3 | 1 (Pruned) | 2 (1 Prop, 1 Dialogue) | **Safe to Restore**: Object 38 and dialogue `ev[25]` intact |
-| **Penthouse (`vk13`)** | 6 | 5 (4 Remnants/Staging, 1 Pruned) | 1 (Sub 3 `ev[9]`) | **Architectural Remnants**: Left doorway transition and staging layers |
-| **Rooftop Parapet (`vk14`)** | 3 | 1 (Pruned) | 2 (Tile Overlays) | **Partially Safe**: Overlays safe; skip ghost object 49 |
-| **Castle Cemetery (`vk16`)** | 12 | 12 (Special Stage) | 0 | **Impractical / Special Stage**: Standalone cutscene container lacking live playable gameplay architecture and return exit geometry |
+| **Outer World (`vc18`, `vd02`, `vd06`, `vg15`)** | 8 | 0 | 0 | **Leave Untouched**: Already 100% active in retail (Coronet Docks, Radat Wharf, Cave of the Wind, Tinto Mines) |
+| **Castle Shopping Area (`vk02`)** | 9 | 9 (Pruned) | 0 | **Do Not Restore**: Objects deleted from array; causes crashes |
+| **Castle Dojo & Sparring Arena (`vk03`)** | 7 | 7 (Dud) | 0 | **Debunked**: Objects 38–40 are invisible collision hitboxes (otyp: 4, fpno: 0); superseded by retail `vk19`; stone wall door is a dead-end |
+| **Castle Barracks & Quarters (`vk04`)** | 2 | 2 (Pruned) | 0 | **Do Not Restore**: Objects 47, 48 deleted |
+| **Castle Entrance & Tavern/Inn (`vk08`)** | 1 | 1 (Pruned) | 0 | **Do Not Restore**: Object 32 deleted |
+| **Concert Stage & Dance Hall (`vk09`)** | 5 | 3 (Pruned) | 2 (Tile Overlays) | **Partially Safe**: Overlays safe; skip ghost objects 37, 38, 40 |
+| **Castle Square (`vk11`)** | 6 | 6 (Pruned) | 0 | **Do Not Restore**: Objects 15, 35, 37, 39, 40 deleted |
+| **Castle Library (`vk12`)** | 3 | 1 (Pruned) | 2 (1 Prop, 1 Dialogue) | **Safe to Restore**: Object 38 and dialogue `ev[25]` intact |
+| **4F VIP Area / Strategist's War Room (`vk13`)** | 6 | 5 (4 Remnants/Staging, 1 Pruned) | 1 (Sub 3 `ev[9]`) | **Architectural Remnants**: Left doorway transition and staging layers |
+| **Castle Garden (`vk14`)** | 3 | 1 (Pruned) | 2 (Tile Overlays) | **Partially Safe**: Overlays safe; skip ghost object 49 |
+| **Mainline Story Cutscene Staging (`vk16`)** | 12 | 12 (Mainline Staging) | 0 | **Debunked**: Dedicated staging container for standard retail story cutscenes (Epilogue departure, Kiba war council, Shu & Apple cards); no cut or hidden dialogue exists |
 | **Total** | **62** | **48** | **5** | **Strict Boundary Enforcement** |

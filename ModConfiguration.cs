@@ -353,6 +353,13 @@ public sealed class ModConfiguration
             "Show mouse cursor when hovering over the game window. Useful for debugging with Unity Explorer or accessing overlays."
         );
 
+        EnableBorderlessWindow = _config.Bind(
+            "Utilty",
+            "EnableBorderlessWindow",
+            false,
+            "Enable borderless floating window mode. Strips title bars and borders while remaining in windowed mode, allowing arbitrary or lower resolutions in compact borderless windows."
+        );
+
         // Diagnostics section - all logging and debugging settings
         LogTextIDs = _config.Bind(
             "zz - Diagnostics",

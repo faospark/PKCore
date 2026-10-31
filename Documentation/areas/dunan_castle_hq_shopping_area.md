@@ -1,6 +1,6 @@
-# Suikoden II Geographic Area Catalog: Castle HQ: Barbara's Vault & Richmond Detective
+# Suikoden II Geographic Area Catalog: Castle HQ: Shopping Area (Commercial Wing & Shops)
 
-**Geographic Scope & Role**: Logistics and investigation floor; Barbara's equipment item vault counters, Richmond's detective desk, and character dossier archives.
+**Geographic Scope & Role**: Castle commercial wing and shop facilities; Hans's Armor Shop, Jeane's Rune Shop, Lebrante's Appraisal, Tessai's Blacksmith Forge, Raura's Scroll Shop, Gordon's Trade Post, and Templeton's Room.
 
 **Regional Category**: Region `VK` | **Master Maps Included**: `vk02`
 

@@ -240,7 +240,7 @@ public static class S1QuickRunePatch
     /// <summary>
     /// Opens the native Rune Master shop UI.
     /// </summary>
-    private static void OpenRuneMaster()
+    public static void OpenRuneMaster()
     {
         try
         {

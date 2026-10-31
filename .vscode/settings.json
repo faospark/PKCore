@@ -1,4 +1,7 @@
 {
   "dotnet.defaultSolution": "PKCore.sln",
-  "omnisharp.defaultLaunchSolution": "PKCore.sln"
+  "omnisharp.defaultLaunchSolution": "PKCore.sln",
+  "workbench.editorAssociations": {
+    "*.md": "antigravity.artifactEditor"
+  }
 }
