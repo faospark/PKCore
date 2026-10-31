@@ -4,5 +4,6 @@ with open(r'd:\Modding\suikodum\TextAsset\text_gsd2_en', 'r', encoding='utf-8') 
     text_data = json.load(f)
 
 for it in text_data['textList']:
-    if 1011290000 <= it['id'] <= 1011290050:
-        print(f"ID {it['id']}: {repr(it.get('text', ''))}")
+    t = it.get('text', '')
+    if 'guardian deity' in t.lower() or 'jude' in t.lower():
+        print(f"ID {it['id']}: {repr(t[:100])}")
