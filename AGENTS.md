@@ -17,6 +17,11 @@
   - If the user questions a decision, catches a regression, or calls out unrequested changes, **STOP all background tool executions immediately**.
   - Never fire off silent background searches, log inspections, or evasive tool calls to cover tracks or stall.
   - Directly, plainly, and immediately acknowledge what was done, own the mistake, and apply the exact fix requested without debate or side-tangents.
+- **Save Editor Backup & Dialog Discipline (Zero Unsolicited Popups)**:
+  - In `suisaveeditor`, `.bak` backup creation must happen **100% SILENTLY**. NEVER trigger browser file downloads (`a.click()`), save dialogs, or modal alert popups upon opening a file.
+  - In Desktop Tauri, `.bak` is copied silently to disk using native filesystem calls (`std::fs::copy`) in the same directory.
+  - In Web browser mode, `.bak` snapshots are cached silently in memory / `localStorage` (NO download triggers on open).
+  - Save As operations must open natively in the exact same directory where the file was loaded from without intermediate JS `prompt()` or modal popups.
 
 ## 2. Workspace Boundaries & Build Discipline
 - **Target Projects**:
