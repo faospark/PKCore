@@ -38,6 +38,25 @@
   - **Runtime Diagnostics & Logs**: Inspect `...\Suikoden I and II HD Remaster\BepInEx\LogOutput.log` for runtime output, text message IDs, character slot IDs, and errors.
 
 ## 3. Grounding & Fast Analysis Tooling
+- **MANDATORY: Check `tools/starthere.md` Before Writing Any Script**:
+  - **Zero Throwaway Script Rule**: NEVER write ad-hoc Python inspection or search scripts (e.g. `check_vk*.py`, `find_flag*.py`, `inspect_save*.py`) in project roots or scratch folders.
+  - The centralized, reusable CLI tool suite in `tools/` covers all needs. Always check `tools/starthere.md` and use the existing tools.
+- **Universal Map & Event Bytecode Engine (`mobo_query.bat` / `tools\mobo_query.bat`)**:
+  - Search map opcodes: `mobo_query.bat --op 30 --map "v*"`
+  - Search event flags (on/off/wait): `mobo_query.bat --flag 61 --map "vk*"`
+  - Search dialogue & system text: `mobo_query.bat --text "Hai Yo"`
+  - Inspect map objects & bytecode: `mobo_query.bat --map vk30 --summary` (or `--mobj`, `--events`, `--bytecode`)
+- **Universal Save Examiner & Diff (`save_inspector.bat` / `tools\save_inspector.bat`)**:
+  - List recent decrypted saves: `save_inspector.bat --list`
+  - Inspect flag values with bits: `save_inspector.bat --save Data0.json --flags 61 71 148`
+  - Deep diff two saves: `save_inspector.bat --diff Data147.json Data0.json` (reveals every flag bit transition and modified game variable)
+- **IL2CPP Metadata & String Literals (`meta_query.bat` / `tools\meta_query.bat`)**:
+  - Search method signatures & RVAs: `meta_query.bat --method "MACHICON.EventInit"`
+  - Reverse-lookup method from address: `meta_query.bat --method-addr 0x1818bb190`
+  - Search string literals: `meta_query.bat --string "IsIPAExtensions"`
+- **Native Call & Pattern Scanner (`binary_scanner.bat` / `tools\binary_scanner.bat`)**:
+  - Find all relative calls to a function: `binary_scanner.bat --calls-to 0x181a46050`
+  - Search raw machine code patterns in `GameAssembly.dll`: `binary_scanner.bat --hex "48 83 EC 28 E8"`
 - **High-Speed Symbol Search (`sym.bat` / `tools\sym.bat`)**:
   - Always query the local symbol index before doing broad grep searches across Suisource. Responds in <3ms.
   - Callable from root (`d:\Appz\sym.bat`) or project tools folder (`tools\sym.bat`).
