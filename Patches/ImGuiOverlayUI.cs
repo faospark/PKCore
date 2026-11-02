@@ -87,7 +87,6 @@ public static class ImGuiOverlayUI
     // Queued mutations applied strictly on Unity main thread
     private static readonly System.Collections.Generic.List<(int Index, byte NewDisp)> _pendingObjectToggles = new();
     private static byte? _pendingCastleStage = null;
-    private static bool _pendingDanceTrigger = false;
     private static bool _pendingRoomReload = false;
     private static bool _pendingOpenRuneMaster = false;
 
@@ -443,24 +442,6 @@ public static class ImGuiOverlayUI
             }
             catch { }
             _pendingCastleStage = null;
-        }
-
-        if (_pendingDanceTrigger)
-        {
-            try
-            {
-                var econ = MachiLoader_Load_Patch.LastLoadedEventcon;
-                if (econ != null)
-                {
-                    econ.EventControll(1);
-                    Plugin.Log.LogInfo("[DevMenu] Triggered Ballroom Dance Routine via EventControll(1).");
-                }
-            }
-            catch (Exception ex)
-            {
-                Plugin.Log.LogError($"[DevMenu] Dance trigger failed: {ex.Message}");
-            }
-            _pendingDanceTrigger = false;
         }
 
         if (_pendingObjectToggles.Count > 0)
@@ -1557,24 +1538,6 @@ public static class ImGuiOverlayUI
                                 {
                                     ImGui.TextDisabled("No event objects found in current submap.");
                                 }
-                            }
-
-                            ImGui.Spacing();
-                            if (ImGui.CollapsingHeader("Restored Features & Cut Content", ImGuiTreeNodeFlags.None))
-                            {
-                                if (ImGui.Button("Trigger Ballroom Dance Routine (vk19)"))
-                                {
-                                    _pendingDanceTrigger = true;
-                                }
-
-                                ImGui.Spacing();
-                                ImGui.TextDisabled("Castle Level 4 Dormant Features:");
-                                ImGui.BulletText("vk03: Animal Paddock tier 4 feeding troughs (obj 37..40)");
-                                ImGui.BulletText("vk09: Theater / Concert Hall expansion & backstage");
-                                ImGui.BulletText("vk11: Armory / Forge upper expansion tiers");
-                                ImGui.BulletText("vk13: Riou's Living Quarters / Penthouse exterior pathing");
-                                ImGui.BulletText("vk14: Stone tablet & library archive expansions");
-                                ImGui.BulletText("vk16: Cut Fallen Heroes Memorial Stage");
                             }
                         }
 

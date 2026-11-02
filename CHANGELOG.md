@@ -4,6 +4,76 @@ All notable changes to PKCore (formerly PKextended) are documented in this file.
 
 ---
 
+## [2026.11.03]
+
+- **Debunked Feature Removal - Dunan Castle HQ Dormant Features**:
+  - Completely removed `RestoreDormantCastleFeatures`, the Living Quarters shortcut door (`vk13`), and Karen's ballroom choreography routines (`vk19`) following verification that these features have been debunked.
+  - Removed associated config bindings in `ModConfiguration.cs`, event bytecode hooks in `MapTrackingPatch.cs`, and DevMenu controls in `ImGuiOverlayUI.cs`.
+
+
+- **Documentation Alignment & Standalone Companion Plugins Catalog (README.md)**:
+  - Reorganized README.md to cleanly separate PKCore's built-in systems from features decoupled into standalone companion plugins (PKBattlePatch, PKRuneSagePlus, PKS2BathNPCPatch, PKTenzanPassPatch, and PKButtonPrompts).
+  - Added dedicated sections for standalone plugins, updated the Migration Guide, and synchronized documentation with current features (Clive Quest Replay, Cook-Off Minigame Loop & Cooldown Reduction, Town FOV 110, War Battle Formation Sync, and Dear ImGui Control Suite & HUD).
+
+
+- **Clive Quest Replay from Lakewest (`S2CliveQuestReplayPatch.cs`)**:
+  - Implemented automatic replay functionality for Clive's pursuit questline from Lakewest onward after viewing/finishing the Elza finale duel in Sajah Village.
+  - **Late-Game Event-Agnostic Design**:
+    - Because early-game Muse entrance and South Window recruitment are tied to early story states that no longer exist late-game, the pursuit cleanly restarts from Lakewest (`vh02` / `vh10`), which remains fully accessible and event-agnostic in the late game.
+    - Hooked into map transition tracking (`MACHICON.OnMapInit` in `MapTrackingPatch.cs`). Upon entering Lakewest with the Sajah finale finished:
+      - Clears milestone bits 2-7 on `event_flag[94]`, while strictly preserving Bit 0 (Muse encounter) and Bit 1 (Clive recruitment), resetting `event_flag[94]` to `0x03`.
+      - Clears the engine's master quest completion lockout (`event_flag[89] & 0x80`) and temporary markers (`event_flag[89] & 0x30`).
+      - Clears the Rockaxe inn cutscene completion marker (`event_flag[59] & 0x01`).
+      - Clears the Radat tavern hostage standoff completion flag (`event_flag[158] & 0x04`).
+      - Clears the Castle HQ infirmary cutscene completion flag (`event_flag[146] & 0x80`).
+    - **In-Flight Self-Healing**: Entering Rockaxe (`vi01`), Radat (`vd19`), or Castle HQ living quarters (`vk04` / `vk35`) while on their respective pending steps will immediately heal any stale lockout flags (`event_flag[59]`, `event_flag[158]`, or `event_flag[146]`), enabling immediate cutscene triggering even on existing saves without needing to re-visit Lakewest. Additionally hooked `MACHICON.EventInit` prefix in `MapTrackingPatch.cs` to ensure flags are cleared before map initialization parses dormant scene actors.
+    - With Clive in the active battle party, speaking with the Lakewest NPC triggers Elza's letter scene, allowing players to replay the sequence through Forest Village, Rockaxe, Radat, Muse Hill, and Sajah Village indefinitely.
+    - Fully compatible with the HD Remaster's native `EventTimer` option in settings (`UIConfigWindow`) to disable the side-quest countdown timer.
+  - **Configuration Settings**:
+    - Added `LoopCliveQuest = true` under section `[05 Game : Suikoden 2]` in `faospark.pkcore.cfg`.
+
+- **Suikoden 2 Infinite Cook-Off Minigame Loop & Opponent Synchronization (`S2CookOffLoopPatch.cs`)**:
+  - Implemented automatic post-storyline looping and opponent synchronization for Hai Yo's cook-off battles in Dunan Castle restaurant.
+  - **Arena Opponent Synchronization & Bytecode Architecture**:
+    - Discovered that vanilla Suikoden II structures the 12 rival cook-off matches in the following canonical order:
+      1. Ky Yun (Yu Kum), 2. Goetsu, 3. Shinki, 4. Ryuki, 5. Bashok, 6. Ryuko, 7. Antonio, 8. Gyokuran, 9. Retso (Match 1), 10. Lester, 11. Retso (Match 2), 12. Jinkai.
+    - Native `Overlay_rbattle.rbattleinit` determines the rival chef by iterating 12 bits across `event_flag[152]` and `event_flag[153]`, incrementing `battle_num` for every set bit, and querying `chef_table[battle_num - 1]`.
+    - Identified that when resetting from a completed storyline save, lingering intermediate flags on `event_flag[148]` (`0x04` and `0x08`, which trigger the Gyokuran and Lester sub-events) caused `vk06` event 9 to immediately fire and set bit 7 of `event_flag[152]` alongside bit 0. This caused `vk30` cutscene logic to introduce Match 1 (Ky Yun) while `Overlay_rbattle` counted 2 set bits and loaded Match 2 (Goetsu).
+    - **Resolution**:
+      - Purged all stale intermediate stage bits (`0x0E`) on `event_flag[148]` and auxiliary scene markers on `event_flag[153]`.
+      - Implemented `SynchronizeMatchQueue(int targetMatch)` to enforce continuous bit sequences (`0..targetMatch-1`), ensuring the native bit-counter and cutscene opcode conditions are in 100% alignment.
+      - Implemented Harmony `Prefix` and `Postfix` hooks on `EventOverlayClass.Overlay_rbattle.rbattleinit` to automatically synchronize queue flags before asset loading and verify that `battle_num` and `chal_num` match the introduced chef with zero desync.
+      - Added self-healing logic upon map transition to automatically repair existing saves where flags were in an intermediate or fragmented state.
+  - **Progression Architecture & Cutscene Safety**:
+    - Defeating the final chef (Jinkai, Match 12) triggers the grand post-contest celebration and farm cutscene in `vk19` (Event 104), which permanently sets the engine's master completion gate flag (Flag 494 / `event_flag[61] & 0x40`).
+    - Hooked into map transition tracking (`MACHICON.OnMapInit` in `MapTrackingPatch.cs`) to evaluate completion status whenever the player exits `vk19` or loads a completed save.
+    - Preserves cutscene integrity: resets are strictly suppressed while actively located inside `vk19`, allowing the victory celebration sequence to play to full completion without interruption.
+    - Upon exiting the celebration scene (or upon map load on a completed save file), clears Flag 494, auxiliary cutscene markers (Flag 493), all 12 match queue scheduling bits (`event_flag[152]` & `event_flag[153]`), and match victory bits (`event_flag[71]` & lower nibble of `event_flag[72]`).
+    - Entering the castle hub (`vk06`) immediately re-schedules Match 1 (Chef Antonio), cycling seamlessly through all 12 rival chefs again.
+    - **100% Recipe & Bonus Preservation**: All collected recipes (`food_resipi`), secret ingredients, and taste preferences are untouched.
+  - **Active Cooldown Reduction (`ReduceCookOffCooldown`)**:
+    - Discovered that vanilla Suikoden II imposes internal 30-60 minute active player movement cooldowns evaluated via Opcode 37 against internal timers in `game_data.event_time`:
+      - `event_time[8][1]`: Castle hub (`vk06` Submap 1) match dispatcher requiring 30-60 minutes between each scheduled chef.
+      - `event_time[10][1]`: Restaurant (`vk05`) challenger readiness check where `< 30 mins` forces Hai Yo's "Come back later" dialogue.
+    - Added instant saturation of timers 8, 10, and 1 to allow immediate consecutive battles without artificial waiting periods.
+  - **Configuration Settings**:
+    - Added `LoopCookOffMatches = true` under section `[05 Game : Suikoden 2]` in `faospark.pkcore.cfg`.
+    - Added `ReduceCookOffCooldown = true` under section `[05 Game : Suikoden 2]` in `faospark.pkcore.cfg` (bypasses the 30-60 min active gameplay wait).
+
+## [2026.11.02]
+
+- **Town Field of View (FOV) Camera Expansion (`TownFOVPatch.cs`)**:
+  - Implemented configurable Field of View (FOV) patch set to 110 by default when exploring towns and indoor maps for both Suikoden I and Suikoden II.
+  - **Camera Architecture Synchronization**:
+    - Both games instantiate town environments through the shared `GSDShare` engine subsystem using `CameraManager.Type.HDMap` (`Camera/HDCamera`).
+    - Hooked `CameraManager.ChangeCameraJust` and `CameraManager.ChangeCamera` (`[HarmonyPostfix]`) to immediately apply the 110 FOV upon entering towns and indoor rooms.
+    - Hooked `BindCamera.Sync` to ensure all secondary depth, background, and foreground effect cameras stay in exact synchronization with the expanded FOV.
+    - Added per-frame maintenance in `PkCoreMainLoop.Update` to keep the 110 FOV locked across interior room transitions and cutscenes without jitter.
+    - World map (`HDField`) and combat modes (`BattleChapter` / `FieldCamera`) remain unaffected and preserve their dedicated projection calculations.
+  - **Configuration Settings**:
+    - Added `EnableTownFOV = true` under section `[03 General]` in `faospark.pkcore.cfg`.
+    - Added `TownFOV = 110.0` under section `[03 General]` in `faospark.pkcore.cfg` (customizable float FOV value).
+
 ## [2026.10.31]
 
 - **War Battle Formation Menu Synchronization (`WarAbilityPatch.cs`)**:

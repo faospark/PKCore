@@ -93,6 +93,8 @@ public class Plugin : BasePlugin
         Patches.EncounterNonePatch.UpdateInput();
         Patches.S1QuickRunePatch.Update();
         Patches.ImGuiOverlayUI.Update();
+        Patches.TownFOVPatch.Update();
+        Patches.S2CookOffLoopPatch.Update();
         AssetLoader.Update();
     }
 
@@ -214,6 +216,13 @@ public class Plugin : BasePlugin
         {
             Log.LogInfo("Applying WorldMapEffects Patch (Disable Clouds)...");
             harmony.PatchAll(typeof(WorldMapEffectsPatch));
+        }
+
+        // Town FOV Patch (Suikoden 1 & 2 HD Towns/Indoor maps)
+        if (Config.EnableTownFOV.Value)
+        {
+            Log.LogInfo($"Applying Town FOV patch (FOV: {Config.TownFOV.Value})...");
+            TownFOVPatch.Initialize(harmony);
         }
 
         // Sprite Post-Processing patch
@@ -376,6 +385,9 @@ public class Plugin : BasePlugin
             Log.LogInfo("Applying Suikoden 1 Quick Rune Master patch...");
             harmony.PatchAll(typeof(Patches.S1QuickRunePatch));
         }
+
+        // Suikoden 2 Cook-off battle synchronization
+        harmony.PatchAll(typeof(Patches.S2CookOffLoopPatch.OverlayRbattleInitPatch));
 
         // PSP Launcher Patch
         // Now handled by Update loop instead of Harmony postfix

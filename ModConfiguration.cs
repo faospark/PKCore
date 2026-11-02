@@ -51,10 +51,21 @@ public sealed class ModConfiguration
     // War Ability Mod
     public ConfigEntry<bool> EnableWarAbilityMod { get; private set; }
 
+    // Suikoden 2 Cook-Off Settings
+    public ConfigEntry<bool> LoopCookOffMatches { get; private set; }
+    public ConfigEntry<bool> ReduceCookOffCooldown { get; private set; }
+
+    // Suikoden 2 Clive Quest Replay
+    public ConfigEntry<bool> LoopCliveQuest { get; private set; }
+
 
     // World Map Settings
     public ConfigEntry<bool> DisableWorldMapClouds { get; private set; }
     public ConfigEntry<bool> DisableWorldMapSunrays { get; private set; }
+
+    // Town FOV Settings
+    public ConfigEntry<bool> EnableTownFOV { get; private set; }
+    public ConfigEntry<float> TownFOV { get; private set; }
 
     // Suikoden 1 UI Settings
     public ConfigEntry<bool> S1ScaledDownWorldMap { get; private set; }
@@ -79,7 +90,6 @@ public sealed class ModConfiguration
 
     // EXPERIMENTAL FEATURES (at end of config file)
     public ConfigEntry<bool> EnableDebugMenu2 { get; private set; }
-    public ConfigEntry<bool> RestoreDormantCastleFeatures { get; private set; }
 
     // Hidden internal settings - not exposed in config file at all
     // These are hardcoded to false and cannot be changed by users
@@ -247,7 +257,21 @@ public sealed class ModConfiguration
             "Disable sunray glow effects on the world map for Suikoden 1 and 2. Set to false to keep the original sunray glow effects."
         );
         
-       BetterLauncherBGM = _config.Bind(
+        EnableTownFOV = _config.Bind(
+            "03 General",
+            "EnableTownFOV",
+            true,
+            "Sets the camera FOV (Field of View) in towns and indoor maps to custom value (default 110) for both Suikoden 1 and Suikoden 2."
+        );
+
+        TownFOV = _config.Bind(
+            "03 General",
+            "TownFOV",
+            110.0f,
+            "Target camera Field of View (FOV) when inside towns and indoor maps. Default is 110."
+        );
+
+        BetterLauncherBGM = _config.Bind(
             "03 General",
             "BetterLauncherBGM",
             true,
@@ -296,6 +320,27 @@ public sealed class ModConfiguration
             "EnableWarAbilityMod",
             true,
             "Enable war battle ability modification. Allows you to customize character abilities in Suikoden 2's war battles. Wont appear on the game menu of Apple but will have an effect on battle. Base is already boosted but can be further configures in PKCore/Config/S2WarAbilities.json"
+        );
+
+        LoopCookOffMatches = _config.Bind(
+            "05 Game : Suikoden 2",
+            "LoopCookOffMatches",
+            true,
+            "Automatically restarts cook-off battles from Chef Antonio after defeating the final chef and viewing the post-contest celebration. All recipes and seasonings are preserved."
+        );
+
+        ReduceCookOffCooldown = _config.Bind(
+            "05 Game : Suikoden 2",
+            "ReduceCookOffCooldown",
+            true,
+            "Removes the 30-60 minute active gameplay cooldown between cook-off matches, allowing consecutive battles with rival chefs to trigger immediately upon entering the restaurant or castle hall."
+        );
+
+        LoopCliveQuest = _config.Bind(
+            "05 Game : Suikoden 2",
+            "LoopCliveQuest",
+            true,
+            "Automatically resets Clive's pursuit quest back to Lakewest upon entering Lakewest with the Sajah Village finale completed. Allows replaying the complete questline from Lakewest to Sajah indefinitely in the late game."
         );
 
         // Suikoden 1 Castle Rune Master (Quick Rune)
@@ -414,13 +459,6 @@ public sealed class ModConfiguration
             "EnableDebugMenu2",
             false,
             "[EXPERIMENTAL] Enable the DebugMenu2 object which is normally disabled in the game. This may provide access to developer debug features."
-        );
-
-        RestoreDormantCastleFeatures = _config.Bind(
-            "zz - Experimental",
-            "RestoreDormantCastleFeatures",
-            true,
-            "[EXPERIMENTAL] Restores safe cut/dormant castle features: activates the direct living quarters shortcut door to Yuzu's pasture (vk13 -> vk03) and fixes Karen's cut dance choreography (vk19)."
         );
 
         // ========================================
