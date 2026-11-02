@@ -56,7 +56,7 @@ public static class DDSLoader
             
             if (originalWidth != header.Width || originalHeight != header.Height)
             {
-                Plugin.Log.LogWarning($"DDS texture {textureName ?? "unknown"}: dimensions {originalWidth}x{originalHeight} are not multiples of 4. Padding to {header.Width}x{header.Height}.");
+                if (Plugin.Config?.DetailedLogs?.Value == true) Plugin.Log.LogWarning($"DDS texture {textureName ?? "unknown"}: dimensions {originalWidth}x{originalHeight} are not multiples of 4. Padding to {header.Width}x{header.Height}.");
             }
             
             // Create texture with appropriate format

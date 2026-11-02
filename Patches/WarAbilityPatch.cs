@@ -224,7 +224,7 @@ namespace PKCore.Patches
                 var butaiList = w_dat_butai.chara_butai;
                 if (butaiList == null || butaiList.Length == 0) return;
 
-                Logger.LogInfo($"[WarAbilityPatch] Modifying {butaiList.Length} Butai roster characters for Apple's formation menu...");
+                if (Plugin.Config.DetailedLogs.Value) Logger.LogInfo($"[WarAbilityPatch] Modifying {butaiList.Length} Butai roster characters for Apple's formation menu...");
 
                 for (int i = 0; i < butaiList.Length; i++)
                 {
@@ -242,7 +242,7 @@ namespace PKCore.Patches
                     }
                 }
 
-                Logger.LogInfo($"[WarAbilityPatch] Finished modifying Butai formation roster");
+                Logger.LogInfo($"[WarAbilityPatch] Synchronized custom war abilities for {butaiList.Length} Butai formation roster entries.");
             }
             catch (Exception ex)
             {
@@ -257,7 +257,7 @@ namespace PKCore.Patches
 
             try
             {
-                Logger.LogInfo($"[WarAbilityPatch] Modifying all war characters...");
+                if (Plugin.Config.DetailedLogs.Value) Logger.LogInfo($"[WarAbilityPatch] Modifying all war characters...");
                 
                 // Log battle status flags
                 LogBattleStatusFlags();
@@ -280,7 +280,7 @@ namespace PKCore.Patches
                     }
                 }
                 
-                Logger.LogInfo($"[WarAbilityPatch] Finished modifying all characters");
+                Logger.LogInfo($"[WarAbilityPatch] Synchronized custom war abilities for active war battle.");
             }
             catch (Exception ex)
             {
@@ -304,7 +304,7 @@ namespace PKCore.Patches
                 string unitType = GetUnitTypeInfo(character);
                 
                 // Log character stats including bonuses
-                Logger.LogInfo($"[{unitType}] Character {nameIndex} - " +
+                if (Plugin.Config.DetailedLogs.Value) Logger.LogInfo($"[{unitType}] Character {nameIndex} - " +
                     $"ATK: {character.attack} (Bonus: {character.assist_attack}), " +
                     $"DEF: {character.defense} (Bonus: {character.assist_defense}) - " +
                     $"Abilities: {abilityString}");
@@ -312,7 +312,7 @@ namespace PKCore.Patches
                 // Apply custom config
                 if (CharacterConfigs.TryGetValue(nameIndex, out var config))
                 {
-                    Logger.LogInfo($"Applying custom configuration to character {nameIndex}");
+                    if (Plugin.Config.DetailedLogs.Value) Logger.LogInfo($"Applying custom configuration to character {nameIndex}");
                     
                     // Abilities
                     if (config.Abilities != null && config.Abilities.Count > 0)
@@ -325,24 +325,24 @@ namespace PKCore.Patches
                     if (config.Attack.HasValue)
                     {
                         character.attack = config.Attack.Value;
-                        Logger.LogInfo($"  ➜ Updated attack to {config.Attack.Value}");
+                        if (Plugin.Config.DetailedLogs.Value) Logger.LogInfo($"  ➜ Updated attack to {config.Attack.Value}");
                     }
                     if (config.Defense.HasValue)
                     {
                         character.defense = config.Defense.Value;
-                        Logger.LogInfo($"  ➜ Updated defense to {config.Defense.Value}");
+                        if (Plugin.Config.DetailedLogs.Value) Logger.LogInfo($"  ➜ Updated defense to {config.Defense.Value}");
                     }
 
                     // Bonus Stats (from unit composition)
                     if (config.BonusAttack.HasValue)
                     {
                         character.assist_attack = config.BonusAttack.Value;
-                        Logger.LogInfo($"  ➜ Updated assist_attack bonus to {config.BonusAttack.Value}");
+                        if (Plugin.Config.DetailedLogs.Value) Logger.LogInfo($"  ➜ Updated assist_attack bonus to {config.BonusAttack.Value}");
                     }
                     if (config.BonusDefense.HasValue)
                     {
                         character.assist_defense = config.BonusDefense.Value;
-                        Logger.LogInfo($"  ➜ Updated assist_defense bonus to {config.BonusDefense.Value}");
+                        if (Plugin.Config.DetailedLogs.Value) Logger.LogInfo($"  ➜ Updated assist_defense bonus to {config.BonusDefense.Value}");
                     }
                 }
                 // Or apply global abilities
@@ -375,8 +375,8 @@ namespace PKCore.Patches
             var abilityList = abilities.Where(a => a != war_data_h.tagSPECIAL_ABILITY.SP_NONE).ToList();
             InitializeAbilityUsageCounts(character, abilityList);
             
-            Logger.LogInfo($"✓ Initialized usage counts (9 uses each) for {abilityList.Count} abilities on character {character.name}");
-            Logger.LogInfo($"Replaced abilities: {FormatAbilities(newAbilityArray)}");
+            if (Plugin.Config.DetailedLogs.Value) Logger.LogInfo($"✓ Initialized usage counts (9 uses each) for {abilityList.Count} abilities on character {character.name}");
+            if (Plugin.Config.DetailedLogs.Value) Logger.LogInfo($"Replaced abilities: {FormatAbilities(newAbilityArray)}");
         }
 
         private static void AddAbilities(WAR_CHARA_TYPE character, war_data_h.tagSPECIAL_ABILITY[] abilitiesToAdd)

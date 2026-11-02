@@ -124,7 +124,7 @@ public partial class CustomTexturePatch
                     shouldSkipReplacementLog = replacementTexPath.ToLower().Contains("characters");
                 }
                 
-                if (!shouldSkipReplacementLog)
+                if (!shouldSkipReplacementLog && (Plugin.Config.DetailedLogs.Value || Plugin.Config.LogReplaceableTextures.Value))
                 {
                     if (Plugin.Config.LogReplaceableTextures.Value)
                     {
