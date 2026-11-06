@@ -4,6 +4,15 @@ All notable changes to PKCore (formerly PKextended) are documented in this file.
 
 ---
 
+## [2026.11.06]
+
+- **Removed Encounter None Patch (`EncounterNonePatch.cs`)**:
+  - Removed `EncounterNonePatch.cs` and the `[F4]` hotkey polling routine from `Plugin.cs`.
+  - Encounter rate adjustment and suppression are now exclusively delegated to `Suikoden_Fix` (`EncounterRateMultiplier`).
+  - Removed native fallback Harmony hooks (`EVENTCON.EventBatlleCheck`, `Village_c.v_wanderingMonsterChk`, `Fmain_c.f_wanderingMonsterChk`).
+
+---
+
 ## [2026.11.05]
 
 - **Fix Clive Quest Castle Infirmary Cutscene Infinite Loop (`S2CliveQuestReplayPatch.cs`)**:

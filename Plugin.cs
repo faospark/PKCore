@@ -89,7 +89,6 @@ public class Plugin : BasePlugin
         if (Config.EnhancedGallery.Value)
             Patches.PSPGalleryEnhanced.Update();
         Patches.MenuScalePatch.ApplyLauncherConfigScaling();
-        Patches.EncounterNonePatch.UpdateInput();
         Patches.S1QuickRunePatch.Update();
         Patches.S2CookOffLoopPatch.Update();
         AssetLoader.Update();
@@ -144,10 +143,6 @@ public class Plugin : BasePlugin
             harmony.PatchAll(typeof(BorderlessWindowPatch));
             BorderlessWindowPatch.Initialize();
         }
-
-        // Encounter None (F4 Hotkey)
-        EncounterNonePatch.Initialize();
-        harmony.PatchAll(typeof(EncounterNonePatch));
 
         // Custom Texture Replacement
         if (Config.EnableCustomTextures.Value || Config.LogReplaceableTextures.Value)
