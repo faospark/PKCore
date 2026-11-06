@@ -369,6 +369,7 @@ public class Plugin : BasePlugin
 
         // Suikoden 2 Cook-off battle synchronization
         harmony.PatchAll(typeof(Patches.S2CookOffLoopPatch.OverlayRbattleInitPatch));
+        MACHICON_OnMapInitPatch.OnMapChangedEvent += () => Patches.S2CookOffLoopPatch.CheckAndResetCookOffs(MACHICON_OnMapInitPatch.CurrentMapId);
 
         // Real-time Event Flag Logger (Suikoden 1 & 2)
         if (Config.LogEventFlagsS1.Value || Config.LogEventFlagsS2.Value)

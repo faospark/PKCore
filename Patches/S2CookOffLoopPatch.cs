@@ -309,6 +309,51 @@ public static class S2CookOffLoopPatch
             {
                 timer1[1] = SATURATED_TIMER_SECONDS;
             }
+
+            // --- CHALLENGER QUEUE SELF-HEALING & WAITING STATUS ---
+            if (gw.event_flag == null || gw.event_flag.Length <= MATCHES_9_TO_12_QUEUE_BYTE)
+                return;
+
+            // Never tamper with flags while actively inside the cook-off arena (vk30)
+            string currentMapId = MACHICON_OnMapInitPatch.CurrentMapId ?? "";
+            if (currentMapId.StartsWith("vk30", StringComparison.OrdinalIgnoreCase))
+                return;
+
+            // Chef Hai Yo (Character ID 66, 0-indexed) must be recruited (mode 2)
+            if (GSD2::G2_SYS.G2_cha_flag(2, 66) == 0)
+                return;
+
+            // If the cook-off master completion gate (Flag 494) is active, do not force challengers
+            if ((gw.event_flag[MASTER_COMPLETION_BYTE] & FLAG_494_BIT) != 0)
+                return;
+
+            // Calculate victories to determine upcoming match (1..12)
+            byte won1 = gw.event_flag[MATCHES_1_TO_8_WON_BYTE];
+            byte won2 = (byte)(gw.event_flag[MATCHES_9_TO_12_WON_BYTE] & 0x0F);
+            int wonCount = 0;
+            for (int i = 0; i < 8; i++) if ((won1 & (1 << i)) != 0) wonCount++;
+            for (int i = 0; i < 4; i++) if ((won2 & (1 << i)) != 0) wonCount++;
+
+            if (wonCount >= 12)
+                return;
+
+            int targetMatch = wonCount + 1;
+
+            // 1. Purge stale in-scene / battle / lost flags from byte 153 (bits 4..6: 0x10, 0x20, 0x40).
+            // Stale bits (such as 0x20 left after an exit or loss) block arena (vk30) pre-battle cutscenes.
+            gw.event_flag[MATCHES_9_TO_12_QUEUE_BYTE] = (byte)(gw.event_flag[MATCHES_9_TO_12_QUEUE_BYTE] & 0x0F);
+
+            // 2. Synchronize queue bitmasks on flags 152 and 153 for targetMatch
+            SynchronizeMatchQueue(targetMatch);
+
+            // 3. Ensure challenger waiting flag is set on flag 148 (Bit 1 / 0x02).
+            // Without this, the restaurant entrance in vk06 never triggers the match cutscene.
+            if (gw.event_flag.Length > RESTAURANT_CHALLENGER_WAITING_BYTE &&
+                (gw.event_flag[RESTAURANT_CHALLENGER_WAITING_BYTE] & FLAG_1185_BIT) == 0)
+            {
+                gw.event_flag[RESTAURANT_CHALLENGER_WAITING_BYTE] |= FLAG_1185_BIT;
+                Plugin.Log.LogInfo($"[Cook-Off Loop] Challenger for Match {targetMatch} ({ChefNames[targetMatch - 1]}) is now WAITING in the restaurant (Flag 148 bit 1 set).");
+            }
         }
         catch (Exception ex)
         {

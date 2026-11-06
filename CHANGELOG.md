@@ -6,6 +6,19 @@ All notable changes to PKCore (formerly PKextended) are documented in this file.
 
 ## [2026.11.06]
 
+- **Fix Cook-Off Side Quest Queue Desync & Challenger Waiting Softlock (`S2CookOffLoopPatch.cs`)**:
+  - Resolved an engine softlock where games that had not yet started the cook-off sidequest (or exited/interrupted a match) were permanently prevented from spawning rival chefs:
+    - **Queue Self-Healing**: When `ReduceCookOffCooldown` is active and Chef Hai Yo is recruited (`G2_SYS.G2_cha_flag(2, 66) != 0`), automatically calculates the target match from current victories (`flag[71]` and `flag[72] & 0x0F`), synchronizes the continuous queue bits across `flag[152]` and `flag[153] & 0x0F`, and asserts `flag[148] |= 0x02` (Challenger Waiting in Restaurant).
+    - **Purge Stale Battle State Flags**: Automatically clears stale battle/lost/in-scene high bits on `flag[153]` (bits `0x10`, `0x20`, `0x40`), which previously prevented the arena (`vk30`) pre-battle cutscenes from initiating.
+    - **Map Transition Lifecycle**: Hooked `CheckAndResetCookOffs` to `MACHICON_OnMapInitPatch.OnMapChangedEvent` in `Plugin.cs` so map load evaluation and post-Jinkai loop resets occur reliably across room transitions.
+
+- **Fix Viki Gender Tagging in Suikoden 2 Bathhouse (`NPCBathVisitorPatch.cs`)**:
+  - Corrected canonical character ID mapping for Viki in `FemaleCharaIds`:
+    - Viki's internal character ID is `4`. Previously, ID `4` was mistakenly cataloged as male (under the assumption that ID `4` was Bob, who is actually ID `40`), while Viki was misattributed to ID `60` (Lo Wen).
+    - Added ID `4` (Viki) to `FemaleCharaIds` in `NPCBathVisitorPatch.cs`.
+    - Relabeled ID `60` to Lo Wen.
+    - As a result, `f_main.GetSeibetu(4)` now correctly evaluates Viki as Female (`1`), routing her to the women's bathhouse tub positions (slots 6..11 behind the partition).
+
 - **Removed Encounter None Patch (`EncounterNonePatch.cs`)**:
   - Removed `EncounterNonePatch.cs` and the `[F4]` hotkey polling routine from `Plugin.cs`.
   - Encounter rate adjustment and suppression are now exclusively delegated to `Suikoden_Fix` (`EncounterRateMultiplier`).

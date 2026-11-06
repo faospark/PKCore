@@ -322,11 +322,10 @@ Investigation of bathhouse gender separation revealed two major systemic flaws i
   ```
 * **Flaw 1: NPC Gender Zeroing**: For any character `ID > 79`, `GetSeibetu` computes gender by reading the bitmask `ckd_info[chara_id][1] & 0xf`. Because non-combatant castle NPCs cannot equip battle armor, their attribute records are zeroed.
   * **Consequence**: `GetSeibetu` evaluated to `0` (Male) for **every single non-combatant NPC**, incorrectly sending female companions (Apple, Leona, Barbara, Teresa, Pilika, Jeane, Taki, Yuzu, etc.) to Case 0 (`0x18201aa27`, Men's Tub) and leaving the women's tub empty.
-* **Flaw 2: Vanilla Male Character Misclassifications (Bob, Chaco, Kiba, Alex)**: In vanilla Konami game data, several male characters were assigned female attribute values in `ckd_info[chara_id][1] & 0xf`:
-  * **Bob** (`player_bic`, ID 4): Byte 1 is `0x21` (`val = 1`). Vanilla evaluates Bob as **Female**, causing `GetFuroPos` to jump to Case 1 and place Bob inside the **women's tub behind the partition**!
-  * **Chaco** (`player_zko`, ID 17): Byte 1 is `0x34` (`val = 4`). Vanilla evaluates Chaco as **Female**, placing the young Winghorde boy into the women's tub!
-  * **General Kiba** (ID 86): Byte 1 is `0x21` (`val = 1`).
+* **Flaw 2: Vanilla Male Character Misclassifications (Kiba, Alex)**: In vanilla Konami game data, several male characters were assigned female attribute values in `ckd_info[chara_id][1] & 0xf`:
+  * **General Kiba** (ID 86/87): Byte 1 is `0x21` (`val = 1`).
   * **Alex** (ID 103): Byte 1 is `0x21` (`val = 1`).
+  *(Note: ID 4 is Viki, who is canonically female. Earlier mod documentation conflated ID 4 with Bob [who is actually ID 40]).*
 
 ---
 
@@ -343,8 +342,8 @@ Restoring NPC bath sprites requires eliminating all engine traps, correctly rout
    * Completely eliminates the `System.IndexOutOfRangeException` in `CreateFuroEquipAnime`.
 3. **Gender Resolution Hook (`f_main.GetSeibetu`)**:
    * Harmony prefix on `EventOverlayClass.f_main$$GetSeibetu` using verified ground-truth GSD2 character IDs (`player_*.json`).
-   * Explicitly maps all canonical female characters (Nanami [18], Eilie [19], Rina [20], Nina [55], Tengaar [8], Millie [24], Meg [25], Karen [14], Kasumi [41/73], Valeria [12], Anita [39], Ayda [43], Sierra [42/45], Oulan [46], Tomo [57], Viki [60], Wakaba [68], Hanna [23], Mikumiku [83], Rulodia [71], Apple [84/85], Teresa Wisemail [95/102], Barbara [96], Yuzu [98], Pilika [100/124], Emilia [102], Raura [104], Elza [172]) to `1` (Female).
-   * Strictly classifies all other characters (including **Bob [4]**, **Chaco [17]**, **Kiba [86/87]**, **Marlowe [91/120]**, **Richmond [86/93]**, **Tenkou [99]**, **Templeton [97/101]**, **Adlai [101/105]**, and **Alex [103]**) as `0` (Male).
+   * Explicitly maps all canonical female characters (Nanami [18], Eilie [19], Rina [20], Nina [55], Tengaar [8], Millie [24], Meg [25], Karen [14], Kasumi [41/73], Valeria [12], Anita [39], Ayda [43], Sierra [42/45], Oulan [46], Tomo [57], Viki [4], Lo Wen [60], Wakaba [68], Hanna [23], Mikumiku [83], Rulodia [71], Apple [84/85], Teresa Wisemail [95/102], Barbara [96], Yuzu [98], Pilika [100/124], Emilia [102], Raura [104], Elza [172]) to `1` (Female).
+   * Strictly classifies all other characters (including **Bob [40]**, **Chaco [54]**, **Kiba [86/87]**, **Marlowe [91/120]**, **Richmond [86/93]**, **Tenkou [99]**, **Templeton [97/101]**, **Adlai [101/105]**, and **Alex [103]**) as `0` (Male).
    * **Root Cause of Tenkou in Women's Tub**: Character ID 99 was previously labeled as "Taki" and placed in female pools. 2D image cross-correlation of `hp_furo_19_atlas` slot 3 confirmed ID 99 is Tenkou (bearded man with gold headband). Reclassified ID 99 to `MaleCastleNPCs` and `PermanentCastleMales`, ensuring he routes strictly to the men's tub.
    * **Root Cause of Teresa in Men's Tub**: Character ID 95 in `hp_furo_18_atlas` slot 4 contains the dark green haired female sprite (Teresa Wisemail), which was previously miscataloged under `MaleCastleNPCs` as Alex, while ID 91 (bare-chested young man) was miscataloged under female pools as Teresa. Reclassified ID 95 and ID 102 to `FemaleCharaIds` and `FemaleCastleNPCs`, guaranteeing Teresa routes strictly to the women's tub.
 
