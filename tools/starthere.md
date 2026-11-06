@@ -25,6 +25,7 @@
 | Search string literals from memory dumps | `meta_query.bat` | `meta_query.bat --string "Hai Yo"` |
 | Find which functions call a native VA | `binary_scanner.bat` | `binary_scanner.bat --calls-to 0x181a46050` |
 | Search raw byte patterns in `GameAssembly` | `binary_scanner.bat` | `binary_scanner.bat --hex "48 83 EC 28 E8"` |
+| Tail live game BepInEx log output | `tail_log.bat` | `tail_log.bat` |
 
 ---
 

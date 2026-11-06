@@ -10,7 +10,6 @@ namespace PKCore;
 [BepInPlugin("faospark.pkcore", "PKCore", "2026.03.01")]
 [BepInDependency("d3xMachina.suikoden_fix", BepInDependency.DependencyFlags.SoftDependency)]
 [BepInDependency("faospark.SquidFam", BepInDependency.DependencyFlags.SoftDependency)]
-[BepInDependency("iDeathHD.DearImGuiInjection", BepInDependency.DependencyFlags.SoftDependency)]
 public class Plugin : BasePlugin
 {
     public static Plugin Instance { get; private set; }
@@ -92,15 +91,12 @@ public class Plugin : BasePlugin
         Patches.MenuScalePatch.ApplyLauncherConfigScaling();
         Patches.EncounterNonePatch.UpdateInput();
         Patches.S1QuickRunePatch.Update();
-        Patches.ImGuiOverlayUI.Update();
-        Patches.TownFOVPatch.Update();
         Patches.S2CookOffLoopPatch.Update();
         AssetLoader.Update();
     }
 
     public void LateUpdate()
     {
-        Patches.ImGuiOverlayUI.LateUpdate();
     }
 
     private void ApplyPatches()
@@ -152,10 +148,6 @@ public class Plugin : BasePlugin
         // Encounter None (F4 Hotkey)
         EncounterNonePatch.Initialize();
         harmony.PatchAll(typeof(EncounterNonePatch));
-
-        // Dear ImGui Overlay (F10 Hotkey, DirectX Present Hook via DearImGuiInjection)
-        Patches.ImGuiOverlayUI.Initialize();
-        harmony.PatchAll(typeof(BindCamera_Sync_Patch));
 
         // Custom Texture Replacement
         if (Config.EnableCustomTextures.Value || Config.LogReplaceableTextures.Value)
@@ -216,13 +208,6 @@ public class Plugin : BasePlugin
         {
             Log.LogInfo("Applying WorldMapEffects Patch (Disable Clouds)...");
             harmony.PatchAll(typeof(WorldMapEffectsPatch));
-        }
-
-        // Town FOV Patch (Suikoden 1 & 2 HD Towns/Indoor maps)
-        if (Config.EnableTownFOV.Value)
-        {
-            Log.LogInfo($"Applying Town FOV patch (FOV: {Config.TownFOV.Value})...");
-            TownFOVPatch.Initialize(harmony);
         }
 
         // Sprite Post-Processing patch
@@ -379,6 +364,7 @@ public class Plugin : BasePlugin
             harmony.PatchAll(typeof(SaveSlotPartyPortraitPatch));
         }
 
+
         // Suikoden 1 Castle Rune Master (Quick Rune)
         if (Config.EnableS1QuickRuneMaster.Value)
         {
@@ -388,6 +374,13 @@ public class Plugin : BasePlugin
 
         // Suikoden 2 Cook-off battle synchronization
         harmony.PatchAll(typeof(Patches.S2CookOffLoopPatch.OverlayRbattleInitPatch));
+
+        // Real-time Event Flag Logger (Suikoden 1 & 2)
+        if (Config.LogEventFlagsS1.Value || Config.LogEventFlagsS2.Value)
+        {
+            EventFlagLoggerPatch.Initialize(harmony);
+        }
+
 
         // PSP Launcher Patch
         // Now handled by Update loop instead of Harmony postfix

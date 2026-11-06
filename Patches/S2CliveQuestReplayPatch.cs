@@ -18,8 +18,9 @@ namespace PKCore.Patches;
 /// 4. Clears the Radat tavern hostage standoff flag (event_flag[158] bit 2).
 /// 5. Clears the Castle HQ infirmary cutscene completion flag (event_flag[146] bit 7).
 ///
-/// Also includes live in-flight self-healing: if entering Rockaxe (vi01), Radat (vd19), or Castle HQ (vk04 / vk35)
+/// Also includes live in-flight self-healing: if entering Rockaxe (vi01) or Radat (vd19)
 /// while that step is pending, any lingering step lockout bit is immediately cleared.
+/// Preemptively clears the Castle HQ infirmary completion flag (event_flag[146] bit 7) upon entering Radat.
 ///
 /// Note: In Suikoden II HD Remaster, the side-quest event timer can be disabled natively
 /// in the game settings (UIConfigWindow -> EventTimer), so no clock manipulation is required.
@@ -149,29 +150,6 @@ public static class S2CliveQuestReplayPatch
                     {
                         gw.event_flag[INFIRMARY_SCENE_BYTE] = (byte)(gw.event_flag[INFIRMARY_SCENE_BYTE] & ~FLAG_INFIRMARY_SCENE_BIT);
                         Plugin.Log.LogInfo($"[Clive Quest Replay] Radat active: Preemptively cleared Castle Infirmary lockout flag (event_flag[146] bit 7).");
-                    }
-                }
-                return;
-            }
-
-            // 4. Castle Infirmary Self-Healing: Entering Castle HQ living quarters (vk04 / vk35) while on the Infirmary quest milestone
-            // Requires Radat done (bit 5 / 0x20) and Muse Hill not yet completed in milestone byte (bit 6 / 0x40 == 0)
-            bool isCastleLivingQuarters = currentMapId.StartsWith("vk04", StringComparison.OrdinalIgnoreCase) ||
-                                         currentMapId.StartsWith("vk35", StringComparison.OrdinalIgnoreCase);
-            if (isCastleLivingQuarters)
-            {
-                bool isInfirmaryPending = (flag94 & 0x20) != 0 && (flag94 & 0x40) == 0;
-                if (isInfirmaryPending)
-                {
-                    bool isLockedOut = (gw.event_flag[INFIRMARY_SCENE_BYTE] & FLAG_INFIRMARY_SCENE_BIT) != 0 ||
-                                       (gw.event_flag[MASTER_LOCKOUT_BYTE] & FLAG_MASTER_LOCKOUT_BIT) != 0;
-
-                    if (isLockedOut)
-                    {
-                        gw.event_flag[INFIRMARY_SCENE_BYTE] = (byte)(gw.event_flag[INFIRMARY_SCENE_BYTE] & ~FLAG_INFIRMARY_SCENE_BIT);
-                        gw.event_flag[MASTER_LOCKOUT_BYTE] = (byte)(gw.event_flag[MASTER_LOCKOUT_BYTE] & ~FLAG_MASTER_LOCKOUT_BIT);
-                        Plugin.Log.LogInfo($"[Clive Quest Replay] Castle Infirmary pending: Cleared lingering lockout flags " +
-                                           $"(event_flag[146] bit 7, event_flag[89] bit 7). Castle infirmary scene is now active!");
                     }
                 }
                 return;

@@ -16,7 +16,6 @@ The **core DLL component** for **[Project Kyaro](https://www.nexusmods.com/suiko
 * NPC Portraits Framework & Comprehensive Portrait Variant Support
 * Clive's Pursuit Quest Replay (S2, indefinitely replay the pursuit arc from Lakewest after the Sajah finale with in-flight self-healing flags)
 * Infinite Cook-Off Battles Loop & Cooldown Reduction (S2, loop Hai Yo's cook-off battles after Jinkai with full recipe preservation, plus instant cooldown bypass)
-* Expanded Town Field of View (FOV) (S1 & S2, expands town and indoor camera FOV to 110 with full depth camera synchronization)
 * Repeatable Guardian Deity Statue Rewards (S2, receive blessings from Jude every time you redesign the statue at his workshop)
 * Remote Castle Rune Master Access via Right Stick Down (S1, open Jeane's rune shop from anywhere on the field with field state validation)
 * Boosted War Battles & Formation Menu Synchronization (S2, customize war stats/abilities with live synchronization into Apple's squad formation UI)
@@ -49,6 +48,8 @@ The **core DLL component** for **[Project Kyaro](https://www.nexusmods.com/suiko
 
 **[Utility & In-Game Tools]**
 
+* Save/Load Diagnostic Performance Profiler (S1 & S2) (High-resolution stopwatch benchmarking for save/load operations, UI slot enumeration, disk reads, SuikodenFix decrypted JSON parsing, and full world transitions in Suikoden 1 and Suikoden 2 to pinpoint file I/O bottlenecks; toggled via `EnableSavePerformanceLogging` under `[zz - Diagnostics]`)
+* Real-Time Event Flag Logger (S1 & S2) (Live telemetry hooks intercepting flag operations in Suikoden 1 and Suikoden 2, logging byte offsets, bitmasks, and binary bit values directly to BepInEx log to streamline save editing and reverse-engineering; toggled via `LogEventFlagsS1` and `LogEventFlagsS2` under `[zz - Diagnostics]`)
 * Dear ImGui Feature Dashboard & In-Game Control Suite [F10] (Multi-tabbed real-time configuration overlay for gameplay toggles, shader/crystal colors, UI adjustments, Castle HQ state modifiers, live scene object inspector, and system themes)
 * Dear ImGui Location & Notes HUD (Streamlined bottom-left telemetry HUD displaying current map and location name, live camera zoom / FOV controls with [PageDown]/[PageUp]/[Home] hotkeys, interactive notes entry, [NumPad 5] log dump to `\PKCore\Logs\locationdump.log`, and zero gamepad or movement input interference)
 * Location Dump [NumPad 5] (Press [NumPad 5] anytime in gameplay or click the HUD button to instantly dump current map and location notes to `\Suikoden I and II HD Remaster\PKCore\Logs\locationdump.log`)
@@ -95,7 +96,6 @@ The following features are now managed in their own dedicated plugins, but their
 #### PKCore Built-In Systems
 - **Clive's Pursuit Quest Replay (S2)**: Automatically resets Clive's questline back to Lakewest upon entering Lakewest after finishing the Sajah Village finale, allowing indefinite replay of the pursuit arc in late game with in-flight self-healing flags for Rockaxe and Radat.
 - **Infinite Cook-Off Minigame Loop & Cooldown Reduction (S2)**: Automatically restarts Hai Yo's cook-off battles from Chef Antonio (Match 1) after defeating final chef Jinkai and viewing the garden cutscene, while preserving all recipes, seasonings, and bonuses. Also provides a configurable toggle (`ReduceCookOffCooldown`) to bypass the vanilla 30-60 minute active movement cooldown between matches.
-- **Town & Indoor Field of View Expansion (FOV 110)**: Expands the camera FOV to 110 in towns and indoor maps for both Suikoden I and Suikoden II with full secondary depth camera (`BindCamera.Sync`) synchronization and interior scene persistence.
 - **Remote Castle Rune Master Access via Right Stick Down (S1)**: Open Jeane's rune shop from anywhere on the field with area background load verification, loading screen immunity, and complete background player movement silencing.
 - **Repeatable Guardian Deity Statue Rewards (S2)**: In retail Suikoden II, Guardian Deity blessings are locked permanently after your first statue evaluation (setting Story Flag 148 bit 32), leaving subsequent statue redesigns at Jude's workshop (`vk20`) without rewards. PKCore monitors workshop exits, reliably re-arms reward triggers, preserves the custom 3D statue model across transitions, and refreshes party reactions (Story Flag 123) for every newly sculpted combination. Configurable via `EnableRepeatStatueRewards` under `[05 Game : Suikoden 2]` in `faospark.pkcore.cfg`.
 - **War Battle Modding & Formation Menu Synchronization (S2)**: Customize character stats, tactical abilities, and subunit bonuses in Suikoden 2 war battles via `S2WarAbilities.json`. Synchronizes custom war stats not only into active combat, but also live into Apple's squad formation roster and team change menu at Castle HQ (`w_dat_butai.chara_butai`), including proper indexing for subunit specialists (Apple, Klaus, Huan).

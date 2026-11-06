@@ -63,13 +63,33 @@ public static class DisableCustomPostEffectPatch
     }
 
     /// <summary>
-    /// Prefix for CustomPostEffect.OnRenderImage - returns false to skip original method
+    /// Prefix for CustomPostEffect.OnRenderImage - selectively skips execution only for sepia/monotone flashbacks
+    /// Preserves nighttime (CameraNightMaterial) and combat effect shaders
     /// </summary>
-    public static bool OnRenderImage_Prefix()
+    public static bool OnRenderImage_Prefix(CustomPostEffect __instance)
     {
-        // Return false to skip the original OnRenderImage method
-        // This effectively disables the post-processing effect
-        return false;
+        if (__instance == null || __instance.material == null)
+            return true;
+
+        string matName = __instance.material.name;
+        if (string.IsNullOrEmpty(matName))
+            return true;
+
+        // Never disable night scenes or combat/war special visual filters
+        if (matName.IndexOf("Night", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
+            matName.IndexOf("RevColor", System.StringComparison.OrdinalIgnoreCase) >= 0)
+        {
+            return true; // Allow original OnRenderImage to render the night/filter effect
+        }
+
+        // Only skip for monotone / sepia filters (intro and flashback sequences)
+        if (matName.IndexOf("Monotone", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
+            matName.IndexOf("Sepia", System.StringComparison.OrdinalIgnoreCase) >= 0)
+        {
+            return false; // Skip original method to keep intro/flashbacks in full color
+        }
+
+        return true;
     }
 
     /// <summary>

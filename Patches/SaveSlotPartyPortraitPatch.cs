@@ -38,6 +38,31 @@ namespace PKCore.Patches
             gcRoots.Clear();
         }
 
+        /// <summary>
+        /// Cleans up destroyed UI containers and stale sprite instances, while keeping healthy
+        /// in-memory thumbnails alive across save menu visits for 0ms re-open performance.
+        /// </summary>
+        public static void CleanupInvalidCache()
+        {
+            List<string> staleKeys = null;
+            foreach (var kvp in portraitCache)
+            {
+                if (!IsSpriteValid(kvp.Value))
+                {
+                    if (staleKeys == null) staleKeys = new List<string>();
+                    staleKeys.Add(kvp.Key);
+                }
+            }
+            if (staleKeys != null)
+            {
+                foreach (var k in staleKeys) portraitCache.Remove(k);
+            }
+
+            pendingLoadIds.Clear();
+            missingPortraitCache.Clear();
+            slotPortraitContainers.Clear();
+        }
+
         private static bool IsSpriteValid(Sprite sprite)
         {
             if (sprite == null || sprite.Pointer == IntPtr.Zero)
@@ -67,7 +92,7 @@ namespace PKCore.Patches
             if (__instance == null || !Plugin.Config.ShowSaveSlotPartyPortraits.Value)
                 return;
 
-            ResetCache();
+            CleanupInvalidCache();
             AttachMonitor(__instance.gameObject);
         }
 
@@ -81,7 +106,7 @@ namespace PKCore.Patches
             if (__instance == null || !Plugin.Config.ShowSaveSlotPartyPortraits.Value)
                 return;
 
-            ResetCache();
+            CleanupInvalidCache();
             AttachMonitor(__instance.gameObject);
         }
 
@@ -105,7 +130,7 @@ namespace PKCore.Patches
 
         private static void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, UnityEngine.SceneManagement.LoadSceneMode mode)
         {
-            ResetCache();
+            CleanupInvalidCache();
         }
 
         /// <summary>
@@ -534,12 +559,208 @@ namespace PKCore.Patches
             }
         }
 
+        private static Sprite LoadThumbnailSprite(string thumbBasePath)
+        {
+            try
+            {
+                string ddsPath = thumbBasePath + ".dds";
+                string pngPath = thumbBasePath + ".png";
+
+                string activePath = null;
+                if (File.Exists(ddsPath)) activePath = ddsPath;
+                else if (File.Exists(pngPath)) activePath = pngPath;
+
+                if (activePath == null) return null;
+
+                Texture2D thumbTex = null;
+                if (activePath.EndsWith(".dds", StringComparison.OrdinalIgnoreCase))
+                {
+                    thumbTex = AssetLoader.LoadTextureFromFile(activePath, Path.GetFileNameWithoutExtension(activePath), "SaveSlotPartyThumbnail");
+                }
+                else
+                {
+                    byte[] pngBytes = File.ReadAllBytes(activePath);
+                    if (pngBytes != null && pngBytes.Length > 0)
+                    {
+                        thumbTex = new Texture2D(2, 2, TextureFormat.RGBA32, false);
+                        if (!ImageConversion.LoadImage(thumbTex, pngBytes))
+                        {
+                            UnityEngine.Object.Destroy(thumbTex);
+                            thumbTex = null;
+                        }
+                    }
+                }
+
+                if (thumbTex != null && thumbTex.Pointer != IntPtr.Zero)
+                {
+                    thumbTex.filterMode = FilterMode.Bilinear;
+                    thumbTex.wrapMode = TextureWrapMode.Clamp;
+                    thumbTex.hideFlags = HideFlags.DontUnloadUnusedAsset;
+                    UnityEngine.Object.DontDestroyOnLoad(thumbTex);
+                    gcRoots.Add(thumbTex);
+
+                    Sprite thumbSprite = Sprite.Create(
+                        thumbTex,
+                        new Rect(0, 0, thumbTex.width, thumbTex.height),
+                        new Vector2(0.5f, 0.5f),
+                        100f,
+                        0,
+                        SpriteMeshType.FullRect
+                    );
+                    thumbSprite.hideFlags = HideFlags.DontUnloadUnusedAsset;
+                    UnityEngine.Object.DontDestroyOnLoad(thumbSprite);
+                    gcRoots.Add(thumbSprite);
+
+                    return thumbSprite;
+                }
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogError($"[SaveSlotPortrait] Failed to load thumbnail {thumbBasePath}: {ex.Message}");
+            }
+            return null;
+        }
+
+        private static Rect CalculateFaceCropRect(int width, int height)
+        {
+            if (width <= 0 || height <= 0) return Rect.zero;
+            int cropSize = Mathf.Min(width, height);
+            float posX = (width - cropSize) * 0.5f;
+            float posY = height > width ? (height - cropSize) : 0f; // Top square for face
+            return new Rect(posX, posY, cropSize, cropSize);
+        }
+
+        private static Rect CalculateFaceCropRect(Sprite sprite)
+        {
+            if (sprite == null) return Rect.zero;
+            Rect r = sprite.rect;
+            int cropSize = Mathf.Min((int)r.width, (int)r.height);
+            float posX = r.x + (r.width - cropSize) * 0.5f;
+            float posY = r.height > r.width ? (r.y + (r.height - cropSize)) : r.y;
+            return new Rect(posX, posY, cropSize, cropSize);
+        }
+
+        private static byte[] CreateThumbnailPngBytes(Texture2D sourceTex, Rect cropRect, int targetSize = 64)
+        {
+            if (sourceTex == null || sourceTex.Pointer == IntPtr.Zero) return null;
+
+            int cropX = Mathf.Clamp((int)cropRect.x, 0, sourceTex.width - 1);
+            int cropY = Mathf.Clamp((int)cropRect.y, 0, sourceTex.height - 1);
+            int cropW = Mathf.Clamp((int)cropRect.width, 1, sourceTex.width - cropX);
+            int cropH = Mathf.Clamp((int)cropRect.height, 1, sourceTex.height - cropY);
+
+            // Fast CPU path: if texture is readable
+            try
+            {
+                Color[] rawPixels = sourceTex.GetPixels(cropX, cropY, cropW, cropH);
+                if (rawPixels != null && rawPixels.Length == cropW * cropH)
+                {
+                    Texture2D thumb = new Texture2D(targetSize, targetSize, TextureFormat.RGBA32, false);
+                    Color[] scaled = new Color[targetSize * targetSize];
+
+                    for (int y = 0; y < targetSize; y++)
+                    {
+                        float v = (float)y / (targetSize - 1) * (cropH - 1);
+                        int y0 = (int)v;
+                        int y1 = Mathf.Min(y0 + 1, cropH - 1);
+                        float dy = v - y0;
+
+                        for (int x = 0; x < targetSize; x++)
+                        {
+                            float u = (float)x / (targetSize - 1) * (cropW - 1);
+                            int x0 = (int)u;
+                            int x1 = Mathf.Min(x0 + 1, cropW - 1);
+                            float dx = u - x0;
+
+                            Color c00 = rawPixels[y0 * cropW + x0];
+                            Color c10 = rawPixels[y0 * cropW + x1];
+                            Color c01 = rawPixels[y1 * cropW + x0];
+                            Color c11 = rawPixels[y1 * cropW + x1];
+
+                            Color top = Color.Lerp(c00, c10, dx);
+                            Color bot = Color.Lerp(c01, c11, dx);
+                            scaled[y * targetSize + x] = Color.Lerp(top, bot, dy);
+                        }
+                    }
+
+                    thumb.SetPixels(scaled);
+                    thumb.Apply(false, false);
+                    byte[] png = ImageConversion.EncodeToPNG(thumb);
+                    UnityEngine.Object.Destroy(thumb);
+                    return png;
+                }
+            }
+            catch
+            {
+                // Unreadable / compressed texture fallback
+            }
+
+            RenderTexture rt = null;
+            RenderTexture prevRt = RenderTexture.active;
+            Texture2D readTex = null;
+            try
+            {
+                rt = RenderTexture.GetTemporary(targetSize, targetSize, 0, RenderTextureFormat.ARGB32);
+
+                float scaleX = (float)cropW / sourceTex.width;
+                float scaleY = (float)cropH / sourceTex.height;
+                float offsetX = (float)cropX / sourceTex.width;
+                float offsetY = (float)cropY / sourceTex.height;
+
+                Graphics.Blit(sourceTex, rt, new Vector2(scaleX, scaleY), new Vector2(offsetX, offsetY));
+
+                RenderTexture.active = rt;
+                readTex = new Texture2D(targetSize, targetSize, TextureFormat.RGBA32, false);
+                readTex.ReadPixels(new Rect(0, 0, targetSize, targetSize), 0, 0);
+                readTex.Apply(false, false);
+
+                return ImageConversion.EncodeToPNG(readTex);
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogError($"[SaveSlotPortrait] RenderTexture blit fallback failed: {ex.Message}");
+            }
+            finally
+            {
+                RenderTexture.active = prevRt;
+                if (rt != null) RenderTexture.ReleaseTemporary(rt);
+                if (readTex != null) UnityEngine.Object.Destroy(readTex);
+            }
+
+            return null;
+        }
+
+        private static bool SaveThumbnail(Texture2D sourceTex, Rect cropRect, string thumbBasePath, int targetSize = 64)
+        {
+            if (sourceTex == null || sourceTex.Pointer == IntPtr.Zero) return false;
+
+            try
+            {
+                string dir = Path.GetDirectoryName(thumbBasePath);
+                if (!Directory.Exists(dir))
+                    Directory.CreateDirectory(dir);
+
+                string pngPath = thumbBasePath + ".png";
+                byte[] pngBytes = CreateThumbnailPngBytes(sourceTex, cropRect, targetSize);
+                if (pngBytes != null && pngBytes.Length > 0)
+                {
+                    File.WriteAllBytes(pngPath, pngBytes);
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogError($"[SaveSlotPortrait] Failed saving thumbnail to {thumbBasePath}: {ex.Message}");
+            }
+            return false;
+        }
+
         /// <summary>
-        /// Fast portrait loader with static caching and custom texture prioritization
+        /// Fast portrait loader with persistent disk thumbnails and custom texture prioritization
         /// </summary>
         public static Sprite GetOrLoadPortraitSprite(int charId, MonoBehaviour runner, Image targetImage = null)
         {
-            if (charId <= 0 || charId >= 255) return null;
+            if (charId < 0 || charId >= 255) return null;
 
             bool isGSD1 = GameDetection.IsGSD1() || (UISaveLoad1.Inst != null && UISaveLoad2.Inst == null);
             bool isGSD2 = GameDetection.IsGSD2() || UISaveLoad2.Inst != null;
@@ -550,7 +771,7 @@ namespace PKCore.Patches
             if (missingPortraitCache.Contains(cacheKey))
                 return null;
 
-            // 1. Instant Cache Hit (0ms) - only return if underlying texture is alive and valid
+            // 1. Instant Cache Hit in RAM (0ms)
             if (portraitCache.TryGetValue(cacheKey, out Sprite cachedSprite))
             {
                 if (IsSpriteValid(cachedSprite))
@@ -559,10 +780,8 @@ namespace PKCore.Patches
                     portraitCache.Remove(cacheKey);
             }
 
-            // 2. Priority 1: Check Custom External Texture (PKCore/Textures/)
-            Texture2D customTex = null;
-            List<string> candidateNames = new List<string>();
-
+            // 2. Resolve Portrait ID for this character
+            string portraitId = null;
             if (isGSD1)
             {
                 int faceId = -1;
@@ -570,54 +789,59 @@ namespace PKCore.Patches
                 {
                     faceId = Ws_face_c.CharacterIDConvertToFaceIDStatic((ushort)charId);
                 }
-                catch (Exception ex)
-                {
-                    Plugin.Log.LogWarning($"[SaveSlotPortrait] CharacterIDConvertToFaceIDStatic failed for charId {charId}: {ex.Message}");
-                }
+                catch { }
 
-                if (faceId >= 0)
-                {
-                    candidateNames.Add($"fp_gsd1_{faceId:D3}");
-                    candidateNames.Add($"fp_gsd1_{faceId}");
-                    candidateNames.Add($"fp_{faceId:D3}");
-                    candidateNames.Add($"fp_{faceId}");
-                }
-
-                candidateNames.Add($"fp_gsd1_{charId:D3}");
-                candidateNames.Add($"fp_gsd1_{charId}");
-                candidateNames.Add($"fp_{charId:D3}");
-                candidateNames.Add($"fp_{charId}");
+                portraitId = faceId >= 0 ? $"fp_gsd1_{faceId:D3}" : $"fp_gsd1_{charId:D3}";
             }
             else
             {
-                candidateNames.Add($"fp_{charId:D3}");
-                candidateNames.Add($"fp_{charId}");
-                candidateNames.Add($"fp_gsd2_{charId:D3}");
-                candidateNames.Add($"fp_gsd2_{charId}");
+                portraitId = $"fp_{charId:D3}";
             }
 
-            foreach (var name in candidateNames)
+            string thumbDir = Path.Combine(BepInEx.Paths.GameRootPath, "PKCore", "Cache", isGSD1 ? "s1savethumb" : "s2savethumb");
+            string thumbBasePath = Path.Combine(thumbDir, $"thumb_{portraitId}");
+
+            // 3. Fast Disk Thumbnail Hit (.dds first, then .png)
+            Sprite diskThumb = LoadThumbnailSprite(thumbBasePath);
+            if (IsSpriteValid(diskThumb))
             {
-                try
-                {
-                    customTex = CustomTexturePatch.LoadCustomTexture(name);
-                    if (customTex != null && customTex.Pointer != IntPtr.Zero)
-                        break;
-                }
-                catch { }
+                portraitCache[cacheKey] = diskThumb;
+                return diskThumb;
+            }
+
+            // 4. Priority 1: Check Custom External Texture via CustomTexturePatch
+            Texture2D customTex = CustomTexturePatch.LoadCustomTexture(portraitId);
+            if (customTex == null && isGSD1)
+            {
+                // Try alternate unpadded or fallback naming
+                customTex = CustomTexturePatch.LoadCustomTexture($"fp_gsd1_{charId}");
+            }
+            if (customTex == null && isGSD2)
+            {
+                customTex = CustomTexturePatch.LoadCustomTexture($"fp_gsd2_{charId:D3}");
             }
 
             if (customTex != null && customTex.Pointer != IntPtr.Zero)
             {
-                Sprite customSprite = CreateSquareFaceSprite(customTex);
-                if (IsSpriteValid(customSprite))
+                Rect crop = CalculateFaceCropRect(customTex.width, customTex.height);
+                SaveThumbnail(customTex, crop, thumbBasePath);
+
+                Sprite generatedThumb = LoadThumbnailSprite(thumbBasePath);
+                if (IsSpriteValid(generatedThumb))
                 {
-                    portraitCache[cacheKey] = customSprite;
-                    return customSprite;
+                    portraitCache[cacheKey] = generatedThumb;
+                    return generatedThumb;
+                }
+
+                Sprite fallbackSprite = CreateSquareFaceSprite(customTex);
+                if (IsSpriteValid(fallbackSprite))
+                {
+                    portraitCache[cacheKey] = fallbackSprite;
+                    return fallbackSprite;
                 }
             }
 
-            // 3. Priority 2: Synchronous Native Face Sprite via ImageLoader.LoadImage (GSD2)
+            // 5. Priority 2: Synchronous Native Face Sprite (GSD2)
             if (isGSD2)
             {
                 try
@@ -625,6 +849,16 @@ namespace PKCore.Patches
                     Sprite nativeSprite = ImageLoader.LoadImage(charId);
                     if (IsSpriteValid(nativeSprite))
                     {
+                        Rect crop = CalculateFaceCropRect(nativeSprite);
+                        SaveThumbnail(nativeSprite.texture, crop, thumbBasePath);
+
+                        Sprite generatedThumb = LoadThumbnailSprite(thumbBasePath);
+                        if (IsSpriteValid(generatedThumb))
+                        {
+                            portraitCache[cacheKey] = generatedThumb;
+                            return generatedThumb;
+                        }
+
                         nativeSprite.hideFlags = HideFlags.DontUnloadUnusedAsset;
                         UnityEngine.Object.DontDestroyOnLoad(nativeSprite);
                         gcRoots.Add(nativeSprite);
@@ -635,7 +869,7 @@ namespace PKCore.Patches
                 catch { }
             }
 
-            // 4. Priority 3: Fallback to Async Native Loader if needed (GSD2)
+            // 6. Priority 3: Fallback to Async Native Loader (GSD2)
             if (isGSD2 && runner != null && !pendingLoadIds.Contains(cacheKey))
             {
                 pendingLoadIds.Add(cacheKey);
@@ -646,14 +880,20 @@ namespace PKCore.Patches
                         pendingLoadIds.Remove(cacheKey);
                         if (IsSpriteValid(loadedSprite))
                         {
-                            loadedSprite.hideFlags = HideFlags.DontUnloadUnusedAsset;
-                            UnityEngine.Object.DontDestroyOnLoad(loadedSprite);
-                            gcRoots.Add(loadedSprite);
-                            portraitCache[cacheKey] = loadedSprite;
+                            Rect crop = CalculateFaceCropRect(loadedSprite);
+                            SaveThumbnail(loadedSprite.texture, crop, thumbBasePath);
+
+                            Sprite generatedThumb = LoadThumbnailSprite(thumbBasePath);
+                            Sprite finalSprite = IsSpriteValid(generatedThumb) ? generatedThumb : loadedSprite;
+
+                            finalSprite.hideFlags = HideFlags.DontUnloadUnusedAsset;
+                            UnityEngine.Object.DontDestroyOnLoad(finalSprite);
+                            gcRoots.Add(finalSprite);
+                            portraitCache[cacheKey] = finalSprite;
 
                             if (targetImage != null && targetImage.Pointer != IntPtr.Zero)
                             {
-                                targetImage.sprite = loadedSprite;
+                                targetImage.sprite = finalSprite;
                                 targetImage.preserveAspect = true;
                                 targetImage.color = Color.white;
                                 if (!targetImage.gameObject.activeSelf)

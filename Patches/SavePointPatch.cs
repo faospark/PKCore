@@ -46,7 +46,7 @@ public partial class CustomTexturePatch
     /// <summary>
     /// Refresh save point color state when entering a new room/scene.
     /// </summary>
-    internal static void RefreshSavePointColorForRoomEntry(string roomName)
+    public static void RefreshSavePointColorForRoomEntry(string roomName)
     {
         if (!string.Equals(Plugin.Config.SavePointColor.Value, "random", StringComparison.OrdinalIgnoreCase))
             return;

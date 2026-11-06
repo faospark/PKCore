@@ -16,6 +16,13 @@ public static class MACHICON_OnMapInitPatch
 
     public static MACHICON CurrentMachicon;
 
+    public static event Action OnMapChangedEvent;
+
+    public static void TriggerMapChanged()
+    {
+        OnMapChangedEvent?.Invoke();
+    }
+
     [HarmonyPostfix]
     public static void Postfix(MACHICON __instance)
     {
@@ -138,6 +145,6 @@ public static class MachiLoader_Load_Patch
             LastLoadedEventcon = __result;
             LastLoadedMachiDat = __result.mdat;
         }
-        ImGuiOverlayUI.OnMapChanged();
+        MACHICON_OnMapInitPatch.TriggerMapChanged();
     }
 }

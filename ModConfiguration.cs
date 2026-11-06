@@ -20,8 +20,6 @@ public sealed class ModConfiguration
     // Display Settings
     public ConfigEntry<bool> EnableBorderlessWindow { get; private set; }
     public ConfigEntry<bool> ShowMouseCursor { get; private set; }
-    public ConfigEntry<string> ImGuiTheme { get; private set; }
-    public ConfigEntry<bool> ShowLocationHUD { get; private set; }
 
     // Custom Texture Settings
     public HiddenConfigEntry<bool> EnableCustomTextures { get; private set; }
@@ -32,6 +30,8 @@ public sealed class ModConfiguration
 
     // NPC Portrait & Asset Settings
     public ConfigEntry<bool> LogTextIDs { get; private set; }
+    public ConfigEntry<bool> LogEventFlagsS1 { get; private set; }
+    public ConfigEntry<bool> LogEventFlagsS2 { get; private set; }
     public ConfigEntry<bool> DumpTextDatabase { get; private set; }
     public ConfigEntry<bool> DumpJsonAssets { get; private set; }
     public ConfigEntry<bool> EnableJsonOverrides { get; private set; }
@@ -62,10 +62,6 @@ public sealed class ModConfiguration
     // World Map Settings
     public ConfigEntry<bool> DisableWorldMapClouds { get; private set; }
     public ConfigEntry<bool> DisableWorldMapSunrays { get; private set; }
-
-    // Town FOV Settings
-    public ConfigEntry<bool> EnableTownFOV { get; private set; }
-    public ConfigEntry<float> TownFOV { get; private set; }
 
     // Suikoden 1 UI Settings
     public ConfigEntry<bool> S1ScaledDownWorldMap { get; private set; }
@@ -166,6 +162,7 @@ public sealed class ModConfiguration
             "Mimics the feel of the PSX version of Save/Load window for Both Games giving the save/load window a more nostalgic feel instead of the very generic looking window"
         );
 
+
         ShowSaveSlotPartyPortraits = _config.Bind(
             "02 User Interface",
             "ShowSaveSlotPartyPortraits",
@@ -185,20 +182,6 @@ public sealed class ModConfiguration
             "ScaleDownDialogBox",
             true,
             "Compact dialog box. false = Normal, true = 80% size with adjusted position"
-        );
-
-        ImGuiTheme = _config.Bind(
-            "02 User Interface",
-            "ImGuiTheme",
-            "Classic Blue",
-            "Dear ImGui Overlay color theme. Options: 'Classic Blue', 'Matrix', 'Obsidian Black', 'Dark Magenta'."
-        );
-
-        ShowLocationHUD = _config.Bind(
-            "02 User Interface",
-            "ShowLocationHUD",
-            true,
-            "Displays a small HUD box at the bottom of the screen showing current map location telemetry when the Dear ImGui overlay is closed."
         );
 
         ScaledDownMenu = _config.Bind(
@@ -257,20 +240,6 @@ public sealed class ModConfiguration
             "Disable sunray glow effects on the world map for Suikoden 1 and 2. Set to false to keep the original sunray glow effects."
         );
         
-        EnableTownFOV = _config.Bind(
-            "03 General",
-            "EnableTownFOV",
-            true,
-            "Sets the camera FOV (Field of View) in towns and indoor maps to custom value (default 110) for both Suikoden 1 and Suikoden 2."
-        );
-
-        TownFOV = _config.Bind(
-            "03 General",
-            "TownFOV",
-            110.0f,
-            "Target camera Field of View (FOV) when inside towns and indoor maps. Default is 110."
-        );
-
         BetterLauncherBGM = _config.Bind(
             "03 General",
             "BetterLauncherBGM",
@@ -411,6 +380,20 @@ public sealed class ModConfiguration
             "LogTextIDs",
             false,
             "Log all text ID lookups to the console. Enable this to find the ID of dialog lines you want to replace. WARNING: Creates a lot of log output."
+        );
+
+        LogEventFlagsS1 = _config.Bind(
+            "zz - Diagnostics",
+            "LogEventFlagsS1",
+            true,
+            "Log Suikoden 1 story and temporary event flag modifications in real time to the BepInEx console/log. Useful for mapping quest and progression flags."
+        );
+
+        LogEventFlagsS2 = _config.Bind(
+            "zz - Diagnostics",
+            "LogEventFlagsS2",
+            true,
+            "Log Suikoden 2 event flag modifications (eventFlgON / eventFlgOFF) in real time to the BepInEx console/log. Useful for mapping story, quest, and recruitment flags."
         );
 
         DumpTextDatabase = _config.Bind(

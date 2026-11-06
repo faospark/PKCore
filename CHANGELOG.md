@@ -4,7 +4,35 @@ All notable changes to PKCore (formerly PKextended) are documented in this file.
 
 ---
 
+## [2026.11.05]
+
+- **Fix Clive Quest Castle Infirmary Cutscene Infinite Loop (`S2CliveQuestReplayPatch.cs`)**:
+  - Removed erroneous Castle Infirmary self-healing routine that cleared `event_flag[146] bit 7` upon entering Castle HQ living quarters (`vk04` / `vk35`).
+  - `event_flag[146] bit 7` is the scene completion flag set by the cutscene itself. Because quest milestone bit 6 (`event_flag[94] & 0x40`) is only awarded later at Muse Hill, clearing `event_flag[146] bit 7` on HQ map entry caused the infirmary cutscene to replay infinitely every time the area was entered.
+  - Replay clearing for this cutscene remains correctly handled upfront at Lakewest reset and during the Radat standoff prior to arriving at Castle HQ.
+
+- **Removed Town Field of View (FOV) Camera Expansion (`TownFOVPatch.cs`)**:
+  - Completely removed the Town FOV patch and its background update synchronization routines.
+  - Removed `EnableTownFOV` and `TownFOV` configuration entries from `ModConfiguration.cs` and `faospark.pkcore.cfg`.
+  - Removed `TownFOVPatch.Update()` and initialization hook calls from `Plugin.cs`.
+
+---
+
 ## [2026.11.03]
+
+- **Save Slot Party Portrait Pre-Generated Thumbnails & Cache (`SaveSlotPartyPortraitPatch.cs`)**:
+  - Implemented persistent disk thumbnail generation and memory preservation for party portraits in save/load menus:
+    - **1:1 Portrait ID Naming**: Thumbnails are named strictly after the resolved portrait asset ID (`thumb_fp_gsd1_008`, `thumb_fp_gsd1_071`, `thumb_fp_001`, etc.) rather than decoupled party slot numbers, ensuring 100% accuracy and consistency across both games.
+    - **Unified Resolution Flow**: Uses the standard `CustomTexturePatch.LoadCustomTexture` resolver for both S1 and S2 without redundant filesystem traversal layers.
+    - **DDS and PNG Thumbnail Support**: Checks for `thumb_{portraitId}.dds` first before falling back to `.png`, allowing modders to supply pre-baked DDS thumbnails.
+    - **In-Memory Cache Preservation**: Retains healthy thumbnail sprites in RAM across menu opens for instantaneous 0ms display and smooth scrolling.
+
+- **Real-Time Event Flag Logger for S1 & S2 (`EventFlagLoggerPatch.cs`)**:
+  - Implemented real-time event flag monitoring patches for Suikoden I and Suikoden II to aid in reverse-engineering quest, recruitment, and story progression flags for `suisaveeditor` and mod development.
+  - **Suikoden II (GSD2)**: Intercepts `GSD2::GAME_WORK.eventFlgON` and `eventFlgOFF`, logging exact byte indices (`_fno`), hexadecimal masks, and binary bitfields (e.g. `[S2 FLAG ON ] Byte 0x96 (150) |= Mask 0x02 (Bits: 00000010)`).
+  - **Suikoden I (GSD1)**: Intercepts `GSD1::GAME_WORK.SetStoryFlagS`, `OverwriteStoryFlagS`, `SetTmpEventFlagS`, `ClearTmpEventFlagS`, and `OverwriteTmpEventFlagS`.
+  - **Configuration**:
+    - Added independent toggles `LogEventFlagsS1 = true` and `LogEventFlagsS2 = true` under section `[zz - Diagnostics]` in `faospark.pkcore.cfg` (enabled by default).
 
 - **Debunked Feature Removal - Dunan Castle HQ Dormant Features**:
   - Completely removed `RestoreDormantCastleFeatures`, the Living Quarters shortcut door (`vk13`), and Karen's ballroom choreography routines (`vk19`) following verification that these features have been debunked.
