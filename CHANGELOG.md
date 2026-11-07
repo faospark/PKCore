@@ -12,12 +12,20 @@ All notable changes to PKCore (formerly PKextended) are documented in this file.
     - **Purge Stale Battle State Flags**: Automatically clears stale battle/lost/in-scene high bits on `flag[153]` (bits `0x10`, `0x20`, `0x40`), which previously prevented the arena (`vk30`) pre-battle cutscenes from initiating.
     - **Map Transition Lifecycle**: Hooked `CheckAndResetCookOffs` to `MACHICON_OnMapInitPatch.OnMapChangedEvent` in `Plugin.cs` so map load evaluation and post-Jinkai loop resets occur reliably across room transitions.
 
-- **Fix Viki Gender Tagging in Suikoden 2 Bathhouse (`NPCBathVisitorPatch.cs`)**:
-  - Corrected canonical character ID mapping for Viki in `FemaleCharaIds`:
-    - Viki's internal character ID is `4`. Previously, ID `4` was mistakenly cataloged as male (under the assumption that ID `4` was Bob, who is actually ID `40`), while Viki was misattributed to ID `60` (Lo Wen).
-    - Added ID `4` (Viki) to `FemaleCharaIds` in `NPCBathVisitorPatch.cs`.
-    - Relabeled ID `60` to Lo Wen.
-    - As a result, `f_main.GetSeibetu(4)` now correctly evaluates Viki as Female (`1`), routing her to the women's bathhouse tub positions (slots 6..11 behind the partition).
+- **Native Gender Scope Refactor & Vignette Protection in Bathhouse (`NPCBathVisitorPatch.cs`)**:
+  - **Scoped Gender Routing Strictly to Castle NPCs (`chara_id >= 84`)**:
+    - Refactored `GetSeibetu_Prefix` so that all playable combat characters (IDs `0..83`) run 100% vanilla native engine logic (`return true;`), leaving Viki (4), Tomo (17), Bob (40), Chaco (54), Hoi (71), Rulodia (75), and Vincent/Simone (64/65) completely untouched.
+    - Intervenes only for Castle NPC bath visitors (`chara_id >= 84`) using `FemaleCastleNPCsSet`.
+  - **Reverse-Engineered & Protected All 4 Native Bath Vignettes**:
+    - Disassembled `fc_event.cs` (`CheckCharaEvent00..04`) in `GameAssembly.dll` and updated `IsSpecialBathEventParty` with exact byte-level condition checks:
+      1. Flik & Viktor in Marble Bath (`CheckCharaEvent00`: party count == 3, IDs 2 & 3).
+      2. Flik, Viktor & Nina in Rock Bath (`CheckCharaEvent01`: party count == 4, IDs 2, 3 & 55).
+      3. Heavyweight Muscle Men in Regular Bath (`CheckCharaEvent03`: party count == 4, Long Chan-Chan [69], Bolgan [21], Gantetsu [70]).
+      4. Flik & Viktor in Cypress Bath (`CheckCharaEvent04`: party count == 3, IDs 2 & 3).
+    - Preserves exact vanilla party counts for all vignette parties, ensuring native cutscenes trigger without interruption from visitor injection.
+  - **FuroEnd IndexOutOfRangeException Guard (`G2_SYS.G2_hoka`)**:
+    - Guarded `G2_SYS.G2_hoka(mode, pcno)` to safely return `0` when `pcno < 0 || pcno >= 6`.
+    - Vanilla party buffers only allocate 6 combat party member slots. When 8-bather capacity is enabled, `FuroEnd` iterates across all 8 bather slots upon bath completion; querying slots 6 and 7 previously threw repeated `System.IndexOutOfRangeException` errors in the engine logs.
 
 - **Removed Encounter None Patch (`EncounterNonePatch.cs`)**:
   - Removed `EncounterNonePatch.cs` and the `[F4]` hotkey polling routine from `Plugin.cs`.

@@ -1,5 +1,8 @@
 # Suikoden II Character Battle Ranges Reference & Modding Guide
 
+> [!NOTE]
+> This document provides the master combat range reference and roster breakdown for Suikoden II. In the Project Kyaro modding suite, live weapon/attack range modification (e.g. converting `Kasumi:M, Luc:M, Mazus:M, Viki:M` to Medium range) and party formation spacing adjustments (`wide`, `widest`) are actively powered by the dedicated companion plugin **`PKBattlePatch`** (`faospark.pkbattlepatch.cfg`).
+
 In **Suikoden II**, every combat-capable character usable in regular 6-person party battles is assigned an attack range based on their weapon and combat style. This determines their positioning requirements and valid target rows during combat.
 
 ---

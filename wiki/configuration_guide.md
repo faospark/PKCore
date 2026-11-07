@@ -1,6 +1,6 @@
 # PKCore Configuration Guide
 
-This document outlines all available configuration options for PKCore located in `BepInEx/config/faospark.pkcore.cfg`.
+This document outlines all available configuration options for **PKCore** located in `BepInEx/config/faospark.pkcore.cfg`, along with references for companion plugins within the Project Kyaro Suite.
 
 ---
 
@@ -23,16 +23,19 @@ This document outlines all available configuration options for PKCore located in
 
 | Setting | Type | Default | Description |
 | :--- | :---: | :---: | :--- |
-| **ControllerPromptType** | `string` | `PlayStation` | Controller type to display for button prompts:<br>• `PlayStation`, `PlayStation4`, `DS4`, `PS4` (`_01` suffix)<br>• `PlayStation5`, `DualSense`, `PS5` (`_02` suffix)<br>• `Generic`, `PC`, `Keyboard` (`_00` suffix)<br>• `Xbox` (`_03` suffix)<br>• `Switch`, `Nintendo` (`_04` suffix) |
 | **LoadLauncherUITextures** | `bool` | `true` | Load custom launcher UI textures based on unused game assets in `Textures/launcher/`. |
 | **MinimalUI** | `bool` | `true` | Enable minimal UI texture variants. When `false`, custom textures with `minimal` in their path are skipped. |
 | **ClassicSaveWindow** | `bool` | `true` | Restores classic PSX-style Save/Load window layout for a nostalgic presentation in both games. |
-| **ShowSaveSlotPartyPortraits** | `bool` | `true` | Displays mini party member portraits next to character levels (`Txt_Lv`) in save/load slots for both Suikoden I and Suikoden II. |
+| **ShowSaveSlotPartyPortraits** | `bool` | `true` | Displays mini party member portraits next to character levels (`Txt_Lv`) in save/load slots for both Suikoden I and Suikoden II with 0ms in-memory caching. |
 | **DisablePortraitDialogMask** | `bool` | `false` | Disable the `Face_Mask_01` texture overlay on character portraits in dialog windows. Supports custom DDS/PNG masks. |
+| **DisableUITips** | `bool` | `false` | Disables the bottom-screen controller prompt and UI tip overlay bar across all scenes. |
 | **ScaleDownDialogBox** | `bool` | `true` | Compact dialog box (`80%` size with adjusted positioning for improved scene visibility). |
 | **ScaledDownMenu** | `string` / `bool` | `true` | Scaled-down main pause/status menu (`80%` size with adjusted positioning). |
 | **PSPLauncher** | `bool` | `false` | Enable the PSP-inspired launcher interface. |
 | **EnhancedGallery** | `bool` | `true` | Replaces Movies, Events, and Sounds gallery backgrounds with custom textures inspired by the PSP release. |
+
+> [!NOTE]
+> Controller button prompt glyph overrides (`Xbox`, `PlayStation`, `Switch`) are now managed by the dedicated companion plugin **`PKButtonPrompts`** (`BepInEx/config/faospark.pkbuttonprompts.cfg`).
 
 ---
 
@@ -58,6 +61,8 @@ This document outlines all available configuration options for PKCore located in
 | :--- | :---: | :---: | :--- |
 | **S1ScaledDownWorldMap** | `bool` | `true` | Scale down Suikoden 1 world map UI to `80%` with adjusted positioning for better screen visibility. |
 | **TirRunTexture** | `string` | `default` | Texture variant for Tir's running animation (`default`, `alt`, `pixel`). Works with Project Kyaro Sprites on or off. |
+| **EnableS1QuickRuneMaster** | `bool` | `false` | Open Jeane's Castle Rune Master shop from anywhere in the field by clicking the Right Stick Down ([R3]). |
+| **S1QuickRuneMasterRequireJeane** | `bool` | `true` | Require Jeane to be recruited before remote rune master access is permitted. |
 
 ---
 
@@ -70,11 +75,13 @@ This document outlines all available configuration options for PKCore located in
 | **EnablePortraitSystem** | `bool` | `true` | Enable custom NPC portrait injection. Supports both Suikoden I and II. Supports PNG and DDS (BC1/BC3/BC7) in `Textures/GSD1/NPCPortraits/` and `Textures/GSD2/NPCPortraits/`. |
 | **MercFortFence** | `string` | `default` | Mercenary Fortress fence texture variant (`default`, `bamboo`, etc., looks for suffix `_<value>`). |
 | **ColoredIntroAndFlashbacks** | `bool` | `true` | Restores full color to Suikoden 2 intro and flashback scenes by disabling grayscale post-processing effects. |
-| **EnableWarAbilityMod** | `bool` | `true` | Enable tactical war battle ability customization via `PKCore/Config/S2WarAbilities.json`. |
-| **EnableBattlePositionAdjustments** | `bool` | `true` | Adjust 6-character party formation positions in Suikoden 2 battles so back-row characters do not visually block front-row characters. |
-| **S2BattlePositionPreset** | `string` | `wide` | Battle formation spacing preset for Suikoden 2:<br>• `default`: Vanilla spacing<br>• `wide`: Moderate spacing, front row shifted forward/left (Recommended)<br>• `widest`: Large spacing for maximum character visibility |
-| **EnableCharacterRangeOverrides** | `bool` | `true` | Enable custom character weapon/attack range overrides in Suikoden 2 (supports live hot-reloading). |
-| **S2CharacterRangeOverrides** | `string` | `Kasumi:M, Luc:M, Mazus:M, Viki:M, Gantetsu:M, Badeaux:M, Sierra:M` | Comma-separated list of character range overrides in `Character:Range` format (`S` = Short, `M` = Medium, `L` = Long). Allows back-row attacks without formation warnings. |
+| **EnableWarAbilityMod** | `bool` | `true` | Enable tactical war battle ability and stat customization via `PKCore/Config/S2WarAbilities.json`, live synchronized into Apple's squad formation menu at Castle HQ. |
+| **LoopCookOffMatches** | `bool` | `false` | Automatically restart Hai Yo's cook-off battles from Match 1 (Antonio) after defeating Chef Jinkai, retaining all learned recipes, seasonings, and bonuses. |
+| **ReduceCookOffCooldown** | `bool` | `false` | Bypasses the vanilla 30-60 minute active movement timer between cook-off challenges. |
+| **LoopCliveQuest** | `bool` | `false` | Automatically re-arms Clive's pursuit quest from Lakewest upon entering Lakewest after completing the Sajah finale. |
+
+> [!NOTE]
+> Combat battle formation spacing (`wide`, `widest`), attack range overrides (`Kasumi:M, Luc:M, etc.`), live enemy Level/HP bars, memory auto-battle, and post-battle smart healing are managed by the companion plugin **`PKBattlePatch`** (`BepInEx/config/faospark.pkbattlepatch.cfg`).
 
 ---
 
@@ -93,13 +100,14 @@ This document outlines all available configuration options for PKCore located in
 
 ## [Utility]
 
-**Window & Developer Tools**
+**Window, Telemetry & In-Game Tools**
 
 | Setting | Type | Default | Description |
 | :--- | :---: | :---: | :--- |
-| **ShowMouseCursor** | `bool` | `false` | Show mouse cursor over the game window. Useful for UnityExplorer or debugging overlays. |
+| **EnableBorderlessWindow** | `bool` | `false` | Floating borderless window mode. Strips OS title bars and window frames while remaining windowed, allowing custom resolutions without stretching across the entire desktop. |
+| **ShowMouseCursor** | `bool` | `false` | Show mouse cursor over the game window. Useful for Dear ImGui overlay interaction and debugging. |
 
-> **Note:** Borderless window mode has been removed in favor of Unity's native `-popupwindow` launch parameter (set in Steam Launch Options).
+> **Fullscreen Desktop Borderless**: Set Unity's native `-popupwindow` launch parameter in Steam Properties → Launch Options.
 
 ---
 
@@ -109,13 +117,13 @@ This document outlines all available configuration options for PKCore located in
 
 | Setting | Type | Default | Description |
 | :--- | :---: | :---: | :--- |
-| **LogTextIDs** | `bool` | `false` | Log dialogue message IDs to console. Useful for identifying IDs for `DialogOverrides.json` and `SpeakerOverrides.json`. (Verbose!) |
+| **LogTextIDs** | `bool` | `false` | Log dialogue message IDs to console. Useful for identifying IDs for `DialogOverrides.json` and `SpeakerOverrides.json`. |
+| **LogEventFlagsS1** | `bool` | `false` | Live telemetry logging every story flag operation (byte offset, bitmask, bit state) in Suikoden 1. |
+| **LogEventFlagsS2** | `bool` | `false` | Live telemetry logging every story flag operation in Suikoden 2. |
 | **DumpTextDatabase** | `bool` | `false` | Accumulates all seen text IDs and dialogue lines into `PKCore/Debug/TextDB_GSD1.json` and `TextDB_GSD2.json` at runtime. |
 | **DumpJsonAssets** | `bool` | `true` | Dumps all loaded AssetBundle TextAssets and JSON files (e.g., event data, map data, scripts) to `PKCore/Debug/JsonDumps/`. |
 | **EnableJsonOverrides** | `bool` | `true` | Enable loading custom JSON asset overrides from `PKCore/JsonOverrides/` to replace game AssetBundle TextAssets. |
 | **DetailedLogs** | `bool` | `false` | Enable verbose logging for texture replacements and patch lifecycle events. |
-| **LogReplaceableTextures** | `bool` | `false` | Log every discovered replaceable texture name at runtime. Useful for identifying texture filenames for custom replacements. |
-| **LogBattlePositions** | `bool` | `false` | Log party member coordinates and battle formation offsets on battle start for diagnostic tuning. |
 
 ---
 

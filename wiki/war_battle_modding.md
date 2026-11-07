@@ -254,16 +254,19 @@ Because Konami never implemented targeting logic for `SP_KIN_SLAYER`, its `selec
 
 ---
 
-## 6. The 16 War Battles of Suikoden II: Complete Tactical Dossier
+## 6. The Canonical War Battles of Suikoden II: Complete Tactical Dossier
 
-Suikoden II contains 16 distinct military engagements, each managed by its own game data file (`w_dat_1` through `w_dat_16`). Below is the complete tactical breakdown of every engagement, including deployed allied squads, enemy command units, map configurations, and mission-critical triggers.
+Suikoden II contains 14 canonical military engagements across the Dunan Unification War. Below is the complete tactical breakdown of every engagement, including deployed allied squads, enemy command units, map configurations, and mission-critical triggers (including the scripted **Matilda Border Battle** refugee rescue).
+
+> [!NOTE]
+> In the underlying GSD2 engine (`GameAssembly.dll`), army encounters are indexed across internal battle tables and grid terrain layers (`field_data_0` through `field_data_11`). Several hypothetical/fictional battles (such as Tinto mountain wars or fallback skirmishes) do not exist in the final game; the campaign follows the 14 historical engagements detailed below.
 
 ---
 
-### War 1: Defense of the Mercenary Fort (`w_dat_1`)
-* **Map Configuration**: `field_data_1` (Fort perimeter & clearing)
+### Battle 1: Defending the Mercenary Fortress
+* **Map Configuration**: Mercenary Fort perimeter & clearing
 * **Engine Milestone**: `Flag 0xA9, Bit 0x40`
-* **Strategic Context**: Introductory tactical skirmish. Highland launches an unprovoked assault on Viktor's Mercenary Fort.
+* **Strategic Context**: Introductory tactical tutorial battle. Apple provides real-time instructions on movement, commands, and range mechanics as Highland launches an initial assault on Viktor's fort.
 * **Allied Order of Battle**:
   * **Viktor's Squad** (Leader: Viktor `ID 4`, ATK 8, DEF 7)
   * **Flik's Squad** (Leader: Flik `ID 3`, ATK 7, DEF 7, `SP_MOUNT`)
@@ -278,206 +281,203 @@ Suikoden II contains 16 distinct military engagements, each managed by its own g
 
 ---
 
-### War 2: Defense of Radat - Shu's River Ambush (`w_dat_2`)
-* **Map Configuration**: `field_data_2` (Radat eastern bridge & riverside)
-* **Engine Milestone**: `Flag 0xAA, Bit 0x02`
-* **Strategic Context**: Solon Jhee attempts a blitzkrieg march through Radat. Strategist Shu designs a trap using the river's sluice gates.
+### Battle 2: Second Defense of the Mercenary Fortress
+* **Map Configuration**: Mercenary Fort exterior
+* **Engine Milestone**: `Flag 0xA9, Bit 0x80`
+* **Strategic Context**: Highland returns in overwhelming numbers under King Luca Blight, deploying incendiary fire arrows against the wooden fortress.
 * **Allied Order of Battle**:
-  * **Riou's Vanguard** (Leader: Riou `ID 3347`, ATK 8, DEF 9, `SP_SHINING_SHIELD`; Shu `ID 90`, Assist +3 ATK / +1 DEF, `SP_CRITICAL`)
+  * **Viktor's Squad** (Viktor `ID 4`)
+  * **Flik's Squad** (Flik `ID 3`)
+  * **Riou & Jowy's Unit** (Riou `ID 3347`, Jowy `ID 81`)
+* **Highland Imperial Order of Battle**:
+  * **Luca Blight's Vanguard** (Leader: Luca Blight `ID 3361`, `SP_MOUNT`)
+  * **Highland Fire Archer Battalions** (ID `3369`, `SP_AIMING`)
+* **Tactical Conditions**: Hard-scripted loss/withdrawal. Incendiary volleys engulf the fortress in flames, forcing Viktor and Flik to order a full retreat south toward Toto and Ryube.
+
+---
+
+### Battle 3: Defense of Muse City
+* **Map Configuration**: Muse City outer walls & western plains
+* **Engine Milestone**: `Flag 0xAB, Bit 0x10`
+* **Strategic Context**: Highland forces under Luca Blight attempt a frontal breakthrough against Muse City's gates. High Mayor Anabelle directs city defense alongside mercenary captain Gilbert.
+* **Allied Order of Battle**:
+  * **Muse City Wall Defense** (Local garrison)
+  * **Viktor & Flik's Reinforcements**
+  * **Riou's Strike Squad**
+* **Highland Imperial Order of Battle**:
+  * **Gilbert's Mercenary Cavalry** (Leader: Gilbert `ID 42`, ATK 7, DEF 6, `SP_MOUNT`)
+  * **Highland Shock Troops** (ID `3369`, ATK 8, DEF 5)
+* **Tactical Conditions**: Gilbert initially fights under contract for Highland. When Gilbert's unit suffers damage or is directly engaged by Allied forces, Gilbert realizes Highland's depravity and defects to the Allied side (turning green). Highland retreats shortly thereafter.
+
+---
+
+### Battle 4: Defend your HQ from Solon Jhee (First Castle Defense)
+* **Map Configuration**: North Window / Lake Castle southern shore
+* **Engine Milestone**: `Flag 0x0F, Bit 0x10`
+* **Strategic Context**: Following the liberation of North Window Castle, Highland General Solon Jhee attempts to crush the fledgling Dunan army before the stronghold can be properly fortified.
+* **Allied Order of Battle**:
+  * **Riou's Vanguard** (Leader: Riou `ID 3347`, ATK 8, DEF 9, `SP_SHINING_SHIELD`)
   * **Flik's Cavalry** (Leader: Flik `ID 3`, ATK 7, DEF 7, `SP_MOUNT`)
   * **Viktor's Heavy Infantry** (Leader: Viktor `ID 4`, ATK 8, DEF 7)
-  * **Freed Y's Radat Guard** (Leader: Freed Y `ID 3348`, ATK 6, DEF 7)
-  * **Apple's Support Unit** (Subunit: Apple `ID 86`, Assist +1 ATK / +2 DEF, `SP_SEE_THROUGH`)
+  * **Freed Y's South Window Guard** (Leader: Freed Y `ID 3348`, ATK 6, DEF 7)
 * **Highland Imperial Order of Battle**:
   * **General Solon Jhee** (Leader: Solon Jhee `ID 3369`, ATK 7, DEF 4)
-  * **Highland Vanguard Assault** (ID `3369`, ATK 9, DEF 3, `SP_MOUNT`)
-  * **Highland Line Infantry** (ID `3369`, ATK 7, DEF 4)
-* **Tactical Conditions**: Allied units lure Solon Jhee across the central bridge. Once past tile X:12, Shu triggers the water flood event, severing the enemy's rear retreat route and forcing Solon Jhee's route.
+  * **Highland Frontline Cavalry** (ID `3369`, ATK 8, DEF 5, `SP_MOUNT`)
+  * **Highland Infantry Line** (ID `3369`, ATK 7, DEF 4)
+* **Tactical Conditions**: Repel and defeat Solon Jhee's command. Solon Jhee suffers a total defeat; upon returning to Highland command, he is executed by Luca Blight for failure.
 
 ---
 
-### War 3: Defense of Two River City (`w_dat_3`)
-* **Map Configuration**: `field_data_3` (Two River urban perimeter & waterways)
-* **Engine Milestone**: `Flag 0x0C, Bit 0x80`
-* **Strategic Context**: General Kiba advances on Two River. Humans, Kobolds, and Winged Horde must overcome racial discord to form a unified defense.
+### Battle 5: Matilda Border Battle (Refugee Rescue)
+* **Map Configuration**: Muse-Matilda highway border checkpoint
+* **Engine Milestone**: `Flag 0x59, Bit 0x02`
+* **Strategic Context**: Terrified refugees flee south from Muse following Highland atrocities, attempting to reach sanctuary in the Matilda Knightdom. Riou and Miklotov arrive at the border post to plead for their admittance.
+* **Allied & Civilian Order of Battle**:
+  * **Riou & Miklotov's Detachment** (Guest: Miklotov `ID 33`, ATK 11, DEF 6, `SP_MOUNT`)
+  * **Muse City Refugees** (Leader: Refugees `ID 3351`, ATK 1, DEF 1, **1 HP**)
+* **Highland Pursuing Battalions**:
+  * **Highland Refugee Hunters** (Leader: Highland Officer `ID 3369`, ATK 8, DEF 5, `SP_MOUNT`)
+  * **Highland Light Cavalry** (ID `3369`, ATK 8, DEF 5)
+* **Matilda Neutral / Hostile Watch**:
+  * **Commander Gorudo's Border Guard** (Gorudo `ID 121` stationed behind barricades)
+* **Tactical Conditions**: Hard-scripted tragedy. Gorudo refuses to open the border gates (*"It's happening outside of our territory. We have no right to intervene... Let no one past the border, refugee or otherwise."* - Text ID `2000010446`). The refugee unit is overwhelmed and eliminated by Highland. Outraged by Gorudo's cowardice, Miklotov later breaks with the Matilda Knights and defects to Riou.
+
+---
+
+### Battle 6: Defense of South Window (Battle of Radat)
+* **Map Configuration**: Radat eastern bridge & riverside
+* **Engine Milestone**: `Flag 0xAA, Bit 0x02`
+* **Strategic Context**: Imperial General Kiba Windamier and his strategist son Klaus march on South Window through Radat. Strategist Shu devises an environmental trap utilizing the river sluice gates.
 * **Allied Order of Battle**:
-  * **Riou's Command Squad** (Leader: Riou `ID 3347`, ATK 8, DEF 9, `SP_SHINING_SHIELD`)
-  * **Ridley's Kobold Shock Force** (Leader: Ridley `ID 118`, ATK 10, DEF 7, `SP_CRITICAL`)
-  * **Two River Kobold Militia** (ID `3351`, ATK 1, DEF 0)
-  * **Chaco's Winged Scouts** (Leader: Chaco `ID 55`, ATK 7, DEF 2, `SP_FLYING`, `SP_MOUNT`)
-  * **Fitcher & City Guardians** (Two River Support)
+  * **Riou's Vanguard** (Leader: Riou `ID 3347`, ATK 8, DEF 9, `SP_SHINING_SHIELD`; Shu `ID 90`, Assist +3 ATK / +1 DEF, `SP_CRITICAL`)
+  * **Flik's Squad** (Leader: Flik `ID 3`, ATK 7, DEF 7, `SP_MOUNT`)
+  * **Viktor's Squad** (Leader: Viktor `ID 4`, ATK 8, DEF 7)
+  * **Freed Y's Garrison** (Leader: Freed Y `ID 3348`, ATK 6, DEF 7)
+  * **Apple's Staff Unit** (Subunit: Apple `ID 86`, Assist +1 ATK / +2 DEF, `SP_SEE_THROUGH`)
 * **Highland Imperial Order of Battle**:
-  * **General Kiba's 1st Division** (Leader: Kiba `ID 88`, ATK 7, DEF 13, `SP_HP_PLUS` [3 HP])
-  * **Klaus's Tactical Command** (Subunit: Klaus `ID 119`, Assist +3 DEF, `SP_SEE_THROUGH`)
+  * **General Kiba Windamier** (Leader: Kiba `ID 88`, ATK 7, DEF 13, `SP_HP_PLUS` [3 HP])
+  * **Strategist Klaus** (Subunit: Klaus `ID 119`, Assist +3 DEF, `SP_SEE_THROUGH`)
   * **Highland Armored Shock Troops** (ID `3369`, ATK 8, DEF 5, `SP_MOUNT`)
-  * **Highland Bowmen** (ID `3369`, ATK 7, DEF 4, `SP_AIMING`)
-* **Tactical Conditions**: Chaco's aerial division harasses Kiba's flank; Ridley holds the central causeway until Highland vanguard retreats.
+  * **Highland Line Infantry** (ID `3369`, ATK 7, DEF 4)
+* **Tactical Conditions**: Lure Kiba's vanguard across the central river crossing. Once in position, Shu triggers the sluice floodgates, severing Kiba's advance route and forcing a Highland tactical disengagement.
 
 ---
 
-### War 4: Lake Castle Perimeter Skirmish (`w_dat_4`)
-* **Map Configuration**: `field_data_4` (North Window shore & marsh)
-* **Engine Milestone**: `Flag 0x0F, Bit 0x10`
-* **Strategic Context**: Highland exploratory detachment probes the perimeter of Dunan's newly established Lake Castle HQ.
-* **Allied Order of Battle**:
-  * **Riou's Squad** (Leader: Riou `ID 3347`)
-  * **Viktor's Squad** (Leader: Viktor `ID 4`)
-  * **Flik's Squad** (Leader: Flik `ID 3`)
-* **Highland Imperial Order of Battle**:
-  * **Imperial Recon Detachment** (Leader: Highland Captain `ID 3369`, ATK 7, DEF 4)
-  * **Advance Light Cavalry** (ID `3369`, ATK 8, DEF 5)
-* **Tactical Conditions**: Low-intensity perimeter rout; clears outer patrol grounds before full castle fortification.
-
----
-
-### War 5: Major Defense of Dunan HQ (`w_dat_5`)
-* **Map Configuration**: `field_data_5` (South plains of Dunan Lake Castle)
+### Battle 7: Showdown with the Kibas (Major HQ Defense)
+* **Map Configuration**: South plains of Dunan Lake Castle HQ
 * **Engine Milestone**: `Flag 0x10, Bit 0x80`
-* **Strategic Context**: General Kiba marches full Highland legion on Dunan HQ. The climax of the Toran Republic diplomatic pact and Kiba's eventual defection.
+* **Strategic Context**: General Kiba launches a full-scale assault against Dunan Castle HQ. Dunan Alliance forces mobilize their complete tactical roster alongside reinforcements from the Toran Republic.
 * **Allied Order of Battle**:
-  * **Dunan Grand Army**: Full player-customized roster available at Apple's War Room (Riou, Viktor, Flik, Ridley, Tsai, Humphrey, etc.)
-  * **Toran Reinforcements** (Valeria `ID 13` or Kasumi `ID 74` depending on recruitment choice)
+  * **Dunan Grand Army**: Full player-customized roster from Apple's War Room (Riou, Viktor, Flik, Ridley, Tsai, Humphrey, etc.)
+  * **Toran Envoy Squad** (Valeria `ID 13` or Kasumi `ID 74` depending on recruitment choice)
 * **Highland Imperial Order of Battle**:
   * **Supreme Commander Kiba** (Leader: Kiba `ID 88`, ATK 7, DEF 13, `SP_HP_PLUS` [3 Max HP])
   * **Chief Strategist Klaus** (Subunit: Klaus `ID 119`, Assist +3 DEF, `SP_SEE_THROUGH`)
   * **Highland Iron Vanguard** (ID `3369`, ATK 9, DEF 3, `SP_MOUNT`)
   * **Highland Heavy Crossbowmen** (ID `3369`, ATK 7, DEF 4, `SP_AIMING`)
-* **Tactical Conditions**: Defeat Kiba's central unit. Triggers Kiba & Klaus surrender, recruiting both into the Dunan Alliance as permanent officers.
+* **Tactical Conditions**: Defeat Kiba's central command squad. Upon their defeat, Kiba and Klaus formally surrender and join the Dunan Alliance as permanent high commanders.
 
 ---
 
-### War 6: Luca Blight Night Ambush (`w_dat_6`)
-* **Map Configuration**: `field_data_6` (Woodland crossroads at dusk)
-* **Engine Milestone**: `Flag 0x74, Bit 0x20`
-* **Strategic Context**: Shu's three-stage nocturnal trap to assassinate the mad Highland King Luca Blight.
+### Battle 8: Rescue Ridley Wizen (Forest Ambush)
+* **Map Configuration**: Forest crossroads & hills
+* **Engine Milestone**: `Flag 0x6E, Bit 0x08`
+* **Strategic Context**: General Ridley's Kobold division is lured into a deep woodland cul-de-sac and encircled by Highland ambush forces. Riou leads a rapid-response relief column to break the perimeter.
 * **Allied Order of Battle**:
-  * **Riou's Ambush Force** (Riou `ID 3347`, Luc `ID 54`, Shu `ID 90`)
-  * **Flik's Ambush Force** (Flik `ID 3`, Ayda `ID 44`, Camus `ID 34`)
-  * **Viktor's Ambush Force** (Viktor `ID 4`, Humphrey `ID 11`, Miklotov `ID 33`)
+  * **Ridley's Kobold Vanguard** (Leader: Ridley `ID 118`, ATK 10, DEF 7, `SP_CRITICAL` - Isolated & Surrounded)
+  * **Riou's Relief Column**: Fast-moving allied strike squads.
+* **Highland Ambush Division**:
+  * **Highland Ambush Commander** (Leader: Highland Captain `ID 3369`, ATK 8, DEF 6)
+  * **Highland Encirclement Cavalry** (ID `3369`, ATK 8, DEF 5, `SP_MOUNT`)
+  * **Highland Forest Bowmen** (ID `3369`, ATK 7, DEF 4, `SP_AIMING`)
+* **Tactical Conditions**: Breakthrough the Highland perimeter before Ridley's squad is wiped out. Reaching Ridley's coordinates breaks the siege and allows both units to withdraw safely.
+
+---
+
+### Battle 9: Battle against Luca Blight outside the HQ (Night Ambush)
+* **Map Configuration**: Woodland crossroads at night
+* **Engine Milestone**: `Flag 0x74, Bit 0x20`
+* **Strategic Context**: Shu's three-stage nocturnal ambush trap to assassinate the mad Highland King Luca Blight.
+* **Allied Order of Battle**:
+  * **Flik's 1st Ambush Force** (Flik `ID 3`, Ayda `ID 44`, Camus `ID 34`)
+  * **Viktor's 2nd Ambush Force** (Viktor `ID 4`, Humphrey `ID 11`, Miklotov `ID 33`)
+  * **Riou's 3rd Ambush Force** (Riou `ID 3347`, Luc `ID 54`, Shu `ID 90`)
 * **Highland Imperial Order of Battle**:
   * **King Luca Blight** (Boss: Luca Blight `ID 3361`, **ATK 18, DEF 17**, `SP_MOUNT`, **3 Max HP**)
   * **White Wolf Royal Guards** (ID `3369`, ATK 9, DEF 5, `SP_MOUNT`)
-* **Tactical Conditions**: Luca Blight cannot be conventionally routed. Dealing 2 hits triggers the sequence where his squad scatters into the woods, leading to the legendary 3-party combat duel.
+* **Tactical Conditions**: Luca Blight cannot be routed normally on the grid. Scoring 2 hits on Luca causes his escort to collapse into the forest, transitioning directly into the legendary 3-party combat duel.
 
 ---
 
-### War 7: Liberation of Greenhill City (`w_dat_7`)
-* **Map Configuration**: `field_data_7` (Greenhill outer gates and academy lawns)
+### Battle 10: Two-Front War against Highland (Greenhill & South Window)
+* **Map Configuration**: Greenhill city approach / eastern plains
 * **Engine Milestone**: `Flag 0x75, Bit 0x08`
-* **Strategic Context**: Joint offensive alongside Mayor Teresa Wisemail to liberate Greenhill from Karaya and Nether Gate occupiers.
-* **Allied Order of Battle**:
-  * **Teresa's Snipers** (Leader: Teresa `ID 102`, ATK 5, DEF 6, `SP_AIMING`; Shin `ID 16`, Assist +1 ATK, `SP_CRITICAL`)
-  * **Dunan Core Division** (Riou, Flik, Viktor, Hauser)
-* **Highland & Karaya Order of Battle**:
-  * **Yuber's Chaos Unit** (Leader: Yuber `ID 152`, **ATK 14, DEF 6**, `SP_MOUNT`)
+* **Strategic Context**: Highland coordinates a simultaneous two-pronged offensive against the Alliance. Riou's strategic council divides forces:
+  * **Eastern Front**: Viktor holds the line against King Jowy Atreides.
+  * **Western Front (Greenhill)**: General Kiba defends the city gates against Yuber and Lucia of the Karaya clan.
+* **Allied Order of Battle (Greenhill Front)**:
+  * **General Kiba's Defense Force** (Leader: Kiba `ID 88`, ATK 7, DEF 13, `SP_HP_PLUS`)
+  * **Teresa's Snipers** (Leader: Teresa `ID 102`, ATK 5, DEF 6, `SP_AIMING`; Shin `ID 16`)
+* **Highland & Karaya Coalition**:
+  * **Yuber's Black Knight Unit** (Leader: Yuber `ID 152`, **ATK 14, DEF 6**, `SP_MOUNT`)
   * **Lucia's Karaya Shock Clan** (Leader: Lucia `ID 146`, ATK 8, DEF 7, `SP_FOREST_WALK`)
-  * **Highland Occupying Garrison** (ID `3369`)
-* **Tactical Conditions**: Eliminate Yuber or breach inner gate. Yuber vanishes when pressured, causing remaining Karaya troops to withdraw into the grasslands.
+  * **Highland Line Infantry** (ID `3369`)
+* **Tactical Conditions**: Inflict damage on Yuber or Lucia's squads. Once pressured, Yuber withdraws whimsically, causing Karaya forces to disengage and securing Greenhill.
 
 ---
 
-### War 8: Matilda Border Campaign (`w_dat_8`)
-* **Map Configuration**: `field_data_8` (Matilda forest borders & highway)
-* **Engine Milestone**: `Flag 0x77, Bit 0x10/0x20`
-* **Strategic Context**: Dunan moves north to liberate the Knights of Matilda from Highland vassalage under Commander Gorudo.
-* **Allied Order of Battle**:
-  * **Dunan Main Army** (Riou, Kiba, Klaus, Ridley, Hauser)
-  * **Matilda Defectors (Mid-Battle Reinforcement)**: Camus (`ID 34`, ATK 9, DEF 8) & Miklotov (`ID 33`, ATK 11, DEF 6)
-* **Opposing Coalition**:
-  * **Commander Gorudo's Matilda Guard** (Gorudo `ID 121`, ATK 9, DEF 9)
-  * **Matilda Heavy Knights** (ID `3350`, ATK 5, DEF 4, `SP_MOUNT`)
-  * **Highland Liaison Officers** (ID `3369`)
-* **Tactical Conditions**: On Turn 3, Miklotov and Camus renounce Gorudo's cowardice, turning their units green (Allied) and collapsing Gorudo's frontline.
-
----
-
-### War 9: Liberation of Muse City (`w_dat_9`)
-* **Map Configuration**: `field_data_9` (Muse fortress ramparts & eastern plains)
+### Battle 11: The Battle to Retake Muse City
+* **Map Configuration**: Muse fortress ramparts & eastern plains
 * **Engine Milestone**: `Flag 0x78, Bit 0x10/0x20`
-* **Strategic Context**: Dunan launches a full frontal assault to recapture Muse City from King Jowy Atreides.
+* **Strategic Context**: Dunan launches a major frontal offensive to liberate Muse City from Highland occupation under King Jowy.
 * **Allied Order of Battle**:
-  * **Dunan Liberation Army**: Full player tactical roster.
+  * **Dunan Liberation Army**: Full player-customized tactical army roster.
 * **Highland Imperial Order of Battle**:
   * **King Jowy Atreides** (Leader: Jowy `ID 81`, **ATK 13, DEF 11**, `SP_MOUNT`)
   * **Strategist Culgan** (Leader: Culgan `ID 143`, ATK 9, DEF 10, `SP_MOUNT`)
   * **Iron Shield Seed** (Leader: Seed `ID 144`, ATK 7, DEF 9, `SP_MOUNT`)
   * **Golden Wolf Legionnaires** (ID `3369`, ATK 8, DEF 5, `SP_MOUNT`)
-* **Tactical Conditions**: Breach Muse gate perimeter. Jowy executes a calculated retreat back into Highland heartland, setting the stage for the capital campaign.
+* **Tactical Conditions**: Breach the outer defensive ring around Muse. Jowy executes a calculated retreat back into the Highland heartland, liberating Muse.
 
 ---
 
-### War 10: Tinto Mountain Defense (`w_dat_10`)
-* **Map Configuration**: `field_data_10` (Rugged rocky plateaus of Tinto)
-* **Engine Milestone**: `Flag 0x7A, Bit 0x04`
-* **Strategic Context**: Fighting off Neclord's supernatural undead horde in steep crags.
+### Battle 12: The Conquest of Matilda (Battle for Rockaxe)
+* **Map Configuration**: Matilda borders & Rockaxe approach
+* **Engine Milestone**: `Flag 0x77, Bit 0x10/0x20`
+* **Strategic Context**: Dunan advances north into Matilda to depose traitor Commander Gorudo and sever Highland's western flank.
 * **Allied Order of Battle**:
-  * **Riou & Gustav's Garrison**
-  * **Hauser's Mountain Division** (Hauser `ID 35`, ATK 9, DEF 7)
-  * **Tinto Bandit Strike Force** (Gijimu `ID 59`, Koyu `ID 60`, Lowen `ID 61` - `SP_CONFUSED_FIGHT`)
-* **Zombie / Vampire Legion**:
-  * **Neclord's Vanguard** (Undead shock battalions)
-  * **Zombie Swarm** (High numbers, low mobility, high attrition)
-* **Tactical Conditions**: Heavy mountain tiles (Movement cost 3). Templeton's `SP_THROUGH_ROAD` or Chaco's `SP_FLYING` are required for fast flanking.
+  * **Dunan Main Division** (Riou, Kiba, Klaus, Ridley, Hauser)
+  * **Matilda Defectors (Turn 3 Reinforcement)**: Camus (`ID 34`, ATK 9, DEF 8) & Miklotov (`ID 33`, ATK 11, DEF 6)
+* **Opposing Coalition**:
+  * **Commander Gorudo's Loyalists** (Leader: Gorudo `ID 121`, ATK 9, DEF 9)
+  * **Matilda Heavy Knights** (ID `3350`, ATK 5, DEF 4, `SP_MOUNT`)
+  * **Highland Allied Officers** (ID `3369`)
+* **Tactical Conditions**: On Turn 3, Miklotov and Camus publicly renounce Gorudo, turning their White Knight units green (Allied). Gorudo's defensive line crumbles, clearing the way for the Rockaxe Castle infiltration.
 
 ---
 
-### War 11: South Window Border Defense (`w_dat_11`)
-* **Map Configuration**: `field_data_11` (South Window river boundary)
-* **Strategic Context**: Countering secondary Highland reconnaissance and incursions along the southern frontier.
-* **Allied Order of Battle**: Freed Y, Viktor, Flik, local border guard.
-* **Highland Forces**: Highland Border Patrol (ID `3369`).
-* **Tactical Conditions**: Repel enemy squads before they cross the river boundary.
-
----
-
-### War 12: Radat Retake Campaign (`w_dat_12`)
-* **Map Configuration**: `field_data_2` (Radat town crossing)
-* **Strategic Context**: Offensive naval/land combined operation to eliminate Highland occupiers holding the eastern shipping corridor.
-* **Allied Order of Battle**: Riou, Shu, Tai Ho, Yam Koo, Amada (marine coordination).
-* **Highland Forces**: Highland Occupation Force (ID `3369`).
-* **Tactical Conditions**: Clear the bridgeheads and liberate Radat municipal center.
-
----
-
-### War 13: Rockaxe Castle Outer Gates (`w_dat_13`)
-* **Map Configuration**: `field_data_8` (Rockaxe mountain approach)
-* **Strategic Context**: Storming the fortress of Rockaxe to depose Gorudo and sever Highland's western support.
-* **Allied Order of Battle**: Dunan Army spearheaded by Camus, Miklotov, and Humphrey.
-* **Highland & White Knight Forces**: Gorudo's remaining loyalists & Highland rear-guard.
-* **Tactical Conditions**: Breach the citadel outer walls; leads directly into the Rockaxe interior assault.
-
----
-
-### War 14: L'Renouille Frontier Assault (`w_dat_14`)
-* **Map Configuration**: `field_data_1` (Highland border plains)
+### Battle 13: Battle of L'Renouille (Leon's Trap)
+* **Map Configuration**: Highland border frontier
 * **Engine Milestone**: `Flag 0x82, Bit 0x01`
-* **Strategic Context**: The breakthrough into Highland proper. Allied forces face veteran general Han Cunningham.
-* **Allied Order of Battle**: Dunan Grand Army.
-* **Highland Imperial Order of Battle**:
-  * **General Han Cunningham** (Leader: Han `ID 149`, **ATK 11, DEF 12**, `SP_MOUNT`)
-  * **Highland Veteran Cavalry** (ID `3369`, ATK 8, DEF 5, `SP_MOUNT`)
-  * **Highland Elite Archers** (ID `3369`, ATK 7, DEF 4, `SP_AIMING`)
-* **Tactical Conditions**: Defeat General Han. Triggers Han's honorable duel with Riou and opens the road to the capital.
+* **Strategic Context**: The initial breakthrough into Highland territory. Strategist Leon Silverberg lures Allied forward divisions into a tactical pincer trap.
+* **Forces Involved**:
+  * **Allied Vanguard**: Kiba and frontline Allied divisions.
+  * **Highland Imperial Army**: General Han Cunningham (`ID 149`) and Imperial Guard units.
+* **Tactical Conditions**: Automated / story-scripted battle (player does not issue direct tactical orders). General Kiba sacrifices his position to hold off the trap, allowing the main army to regroup for the capital siege.
 
 ---
 
-### War 15: Capital Siege: L'Renouille Gates (`w_dat_15`)
-* **Map Configuration**: `field_data_1` (Capital palace exterior)
+### Battle 14: Conquest of L'Renouille (The Final Siege)
+* **Map Configuration**: Capital palace exterior boulevard
 * **Engine Milestone**: `Flag 0x84, Bit 0x02`
-* **Strategic Context**: The final tactical war battle of Suikoden II. Allied army besieges the imperial palace of Highland.
-* **Allied Order of Battle**: Dunan Alliance Grand Army (All 108 Stars assembled).
-* **Highland Imperial Elite**:
+* **Strategic Context**: The ultimate tactical army battle of Suikoden II. The Dunan Alliance Grand Army lays siege to the imperial palace of L'Renouille.
+* **Allied Order of Battle**:
+  * **Dunan Alliance Grand Army**: Full player-configured army (All 108 Stars assembled).
+* **Highland Imperial Last Stand**:
   * **General Culgan** (Leader: Culgan `ID 143`, **ATK 9, DEF 10**, `SP_MOUNT`)
   * **General Seed** (Leader: Seed `ID 144`, **ATK 7, DEF 9**, `SP_MOUNT`)
   * **Imperial Royal Guard Battalions** (ID `3369`, ATK 9, DEF 5, `SP_MOUNT`)
-* **Tactical Conditions**: Rout both Culgan and Seed to breach the palace gate and initiate the final castle infiltration.
-
----
-
-### War 16: Fallback Defense Skirmish (`w_dat_16`)
-* **Map Configuration**: `field_data_5` (HQ perimeter fallback)
-* **Strategic Context**: Emergency tactical fail-safe map in the engine, programmed for scripted defensive counter-attacks.
-* **Forces**: Scaled dynamically based on story progression flags.
+* **Tactical Conditions**: Defeat both Culgan and Seed to breach the grand gates, leading directly into the final castle infiltration.
 
 ---
 

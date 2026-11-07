@@ -5,6 +5,7 @@
 * [🏠 **Wiki Home**](Home)
 * [🚀 **Installation & Setup**](Home#-getting-started)
 * [⚙️ **Configuration Reference**](configuration_guide)
+* [🧩 **Companion Plugins Suite**](Home#-the-project-kyaro-companion-plugins-suite)
 
 ---
 
@@ -12,7 +13,7 @@
 * [📦 **00-Mods Folder Guide**](00-mods_guide)
 * [🖼️ **Custom Textures Guide**](custom_textures_guide)
 * [🎭 **NPC Portraits System**](walkthrough_npc_portraits)
-* [🏹 **Battle Ranges & Formations (S2)**](suikoden_2_character_battle_ranges)
+* [🏹 **Battle Ranges & Formations**](suikoden_2_character_battle_ranges)
 * [⚔️ **War Battle Modding (S2)**](war_battle_modding)
 * [🔊 **Sound Swapping (CriWare)**](sound_modding_guide)
 * [📝 **Placeholder Text**](place_holder_text)

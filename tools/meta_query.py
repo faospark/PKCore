@@ -17,7 +17,7 @@ import sys
 import json
 import argparse
 
-DEFAULT_DUMP_DIR = r"D:\Appz\Suisource\Il2CppDump"
+DEFAULT_DUMP_DIR = r"D:\Appz\SuikodenModding\Suisource\Il2CppDump" if os.path.exists(r"D:\Appz\SuikodenModding\Suisource\Il2CppDump") else r"D:\Appz\Suisource\Il2CppDump"
 
 def query_string_literal(dump_dir, query=None, addr=None, limit=50):
     path = os.path.join(dump_dir, "stringliteral.json")

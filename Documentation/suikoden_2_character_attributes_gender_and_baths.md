@@ -75,12 +75,13 @@ The headquarters bathhouse (managed by Tetsu) divides characters into gendered b
 * Custom dialog boxes and startled animations are triggered depending on who is on the other side (e.g., Nanami scolding Riou, Nina screaming, or unique reactions from adult female characters).
 
 ### C. Secret Bath Vignettes (`fc_event.cs` / `CheckCharaEvent00` to `04`)
-In `EventOverlayClass/fc_event.cs`, specific combinations of character IDs trigger exclusive cutscenes and illustrated snapshots:
-* **The Bickering Comrades (`CheckCharaEvent00` & `04`)**: Flik (2) and Viktor (3) with Riou (strictly asserts `G2_pamem_num(0) == 3`).
-* **The Knights of Matilda (`CheckCharaEvent01`)**: Camus (33), Miklotov (32), and Freed Y (35) with Riou (strictly asserts `G2_pamem_num(0) == 4`).
-* **The Martial Artists (`CheckCharaEvent02`)**: Wakaba (68) and L.C. Chan (69).
-* **The Ninja Squad (`CheckCharaEvent03`)**: Kasumi (41 / 73) and Mondo (63).
-* **Vignette Protection in PKCore**: Because routines like `CheckCharaEvent00` and `CheckCharaEvent01` strictly compare `G2_pamem_num(0)` against exact party counts (`eax == 3`, `eax == 4`), injecting NPC visitors would cause `eax == 8`, causing all special vignettes to fail their condition checks! PKCore implements `IsSpecialBathEventParty` to automatically detect when a special vignette composition enters the bath, instantly disabling visitor injection and `G2_pamem_num` overrides so the pure vanilla event plays uninterrupted.
+In `EventOverlayClass/fc_event.cs`, verified disassembly of `CheckCharaEvent00..04` reveals the exact native conditions:
+* **The Bickering Comrades in Marble Bath (`CheckCharaEvent00`)**: Flik (2) and Viktor (3) with Riou in the Marble Bath (`[rbx + 0x5a] == 1`). Strictly asserts `G2_pamem_num(0) == 3`.
+* **Flik, Viktor & Nina in Rock Bath (`CheckCharaEvent01`)**: Flik (2), Viktor (3), and Nina (55) with Riou in the Rock Bath (`[rbx + 0x5a] == 2`). Strictly asserts `G2_pamem_num(0) == 4`.
+* **The Octopus Urns Display (`CheckCharaEvent02`)**: Requires 6 Octopus Urns displayed (`CheckFuroItemNum(0x0C, 0x40) == 6`).
+* **The Heavyweight Muscle Men (`CheckCharaEvent03`)**: Long Chan-Chan (69), Bolgan (21), and Gantetsu (70) with Riou in the Regular Bath (`[rbx + 0x5a] == 0`). Strictly asserts `G2_pamem_num(0) == 4`.
+* **The Bickering Comrades in Jungle Bath (`CheckCharaEvent04`)**: Flik (2) and Viktor (3) with Riou in the Jungle / Cypress Bath (`[rbx + 0x5a] == 3`). Strictly asserts `G2_pamem_num(0) == 3`.
+* **Vignette Protection in PKCore**: Because routines like `CheckCharaEvent00`, `01`, `03`, and `04` strictly compare `G2_pamem_num(0)` against exact party counts (`eax == 3` or `4`), injecting NPC visitors into empty party slots would cause `eax > 4`, causing all special vignettes to fail their condition checks! PKCore implements `IsSpecialBathEventParty` to automatically detect when any special vignette composition enters the bath, instantly disabling visitor injection and `G2_pamem_num` overrides so the pure vanilla event plays uninterrupted.
 
 ### D. Native Implementation of Beasts & Monsters in the Bath
 All recruited beasts and monsters possess native bathhouse implementations with authentic sprite atlases in `hp_furo` and dedicated routing:
@@ -342,8 +343,8 @@ Restoring NPC bath sprites requires eliminating all engine traps, correctly rout
    * Completely eliminates the `System.IndexOutOfRangeException` in `CreateFuroEquipAnime`.
 3. **Gender Resolution Hook (`f_main.GetSeibetu`)**:
    * Harmony prefix on `EventOverlayClass.f_main$$GetSeibetu` using verified ground-truth GSD2 character IDs (`player_*.json`).
-   * Explicitly maps all canonical female characters (Nanami [18], Eilie [19], Rina [20], Nina [55], Tengaar [8], Millie [24], Meg [25], Karen [14], Kasumi [41/73], Valeria [12], Anita [39], Ayda [43], Sierra [42/45], Oulan [46], Tomo [57], Viki [4], Lo Wen [60], Wakaba [68], Hanna [23], Mikumiku [83], Rulodia [71], Apple [84/85], Teresa Wisemail [95/102], Barbara [96], Yuzu [98], Pilika [100/124], Emilia [102], Raura [104], Elza [172]) to `1` (Female).
-   * Strictly classifies all other characters (including **Bob [40]**, **Chaco [54]**, **Kiba [86/87]**, **Marlowe [91/120]**, **Richmond [86/93]**, **Tenkou [99]**, **Templeton [97/101]**, **Adlai [101/105]**, and **Alex [103]**) as `0` (Male).
+   * Explicitly maps all canonical female characters (Nanami [18], Eilie [19], Rina [20], Nina [55], Tengaar [8], Millie [24], Meg [25], Karen [14], Kasumi [41/73], Valeria [12], Anita [39], Ayda [43], Sierra [42/45], Oulan [46], Tomo [57], Viki [4], Lo Wen [60], Wakaba [68], Hanna [23], Mikumiku [83], Rulodia [75], Apple [84/85], Teresa Wisemail [95/102], Barbara [96], Yuzu [98], Pilika [100/124], Emilia [102], Raura [104], Elza [172]) to `1` (Female).
+   * Strictly classifies all other characters (including **Bob [40]**, **Chaco [54]**, **Hoi [71]**, **Kiba [86/87]**, **Marlowe [91/120]**, **Richmond [86/93]**, **Tenkou [99]**, **Templeton [97/101]**, **Adlai [101/105]**, and **Alex [103]**) as `0` (Male).
    * **Root Cause of Tenkou in Women's Tub**: Character ID 99 was previously labeled as "Taki" and placed in female pools. 2D image cross-correlation of `hp_furo_19_atlas` slot 3 confirmed ID 99 is Tenkou (bearded man with gold headband). Reclassified ID 99 to `MaleCastleNPCs` and `PermanentCastleMales`, ensuring he routes strictly to the men's tub.
    * **Root Cause of Teresa in Men's Tub**: Character ID 95 in `hp_furo_18_atlas` slot 4 contains the dark green haired female sprite (Teresa Wisemail), which was previously miscataloged under `MaleCastleNPCs` as Alex, while ID 91 (bare-chested young man) was miscataloged under female pools as Teresa. Reclassified ID 95 and ID 102 to `FemaleCharaIds` and `FemaleCastleNPCs`, guaranteeing Teresa routes strictly to the women's tub.
 
