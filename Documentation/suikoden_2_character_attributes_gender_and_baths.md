@@ -358,9 +358,10 @@ Restoring NPC bath sprites requires eliminating all engine traps, correctly rout
 * In vanilla, the bathhouse has empty tub spots if your combat party has fewer than 6 members, or if few women are in your party.
 * Whenever Riou enters the bath, any unoccupied spots are populated from the pool of currently recruited castle NPCs:
   * **Candidate Segregation**: Recruits are divided into `FemaleCastleNPCs` and `MaleCastleNPCs`.
-    * **Men's side**: Richmond / Hauser [86], Kiba [87], Fitcher [88], Jess [89], Gilbert [90], Marlowe / Young man [91], Marlowe [92], Richmond [93], Spiky hair man [94], Templeton / Green hat boy [97], Tenkou [99], Adlai / Kiba [101], Alex [103], Adlai [105], Sansuke [107/108], Tetsu [109], Maximillian [110], Ridley [118/121], Marlowe [120], Boris [123], Grenmeyer [125], Klaus [143].
-    * **Women's side**: Apple [84/85], Teresa Wisemail [95], Barbara [96], Yuzu [98], Pilika [100], Emilia / Teresa [102], Raura [104], Elza [172].
-  * **Guaranteed Facility Inclusion**: Core castle facility residents (**Apple, Teresa, Barbara, Pilika, Emilia** for women; **Hauser, Richmond, Tenkou** for men) are guaranteed in the candidate pool without depending on standard Star recruitment flags.
+    * **Men's side (21 verified recruits)**: Templeton [86], Kiba [87], Fitcher [88], Shu [89], Tetsu [90], Dr. Huan [92], Jess [93], Alex [95], Tenkou [97], Richmond [99], Tony [104], Adlai [105], Gordon [106], Connell [108], Lebrante [109], Tessai [110], Pico [113], Alberto [114], Ridley [117], Klaus [118], Marlowe [120].
+    * **Women's side (12 verified recruits)**: Apple [85], Leona [91], Hilda [94], Emilia [96], Barbara [98], Teresa [101], Yuzu [102], Taki [103], Raura [111], Annallee [112], Jeane [116], Pilika [123] *(static)*.
+    * **Excluded Incomplete / Missing Sprites**: Yam Koo [100], Hans [107], Jude [115], Maximillian [119] (missing idle head frames at `v=0..24`), Gilbert [121] & Boris [122] (unpainted silhouette shadows), and Gremio [125] (placeholder town NPC scrap, never drawn by Konami).
+  * **Guaranteed Facility Inclusion**: Core castle facility residents (**Apple, Leona, Barbara** for women; **Shu, Dr. Huan, Richmond** for men) are guaranteed in the candidate pool without depending on standard Star recruitment flags.
   * **Balanced Tub Distribution**: If multiple vacancies exist, the selection alternates between female and male recruits, filling both the men's tub (right) and women's tub (left) simultaneously.
   * **Zero Save-Data Footprint**: Slot substitutions occur strictly in memory during `f_main.FuroInit` and are completely restored to the player's exact party configuration upon bath exit (`f_main.FuroEnd`).
 
