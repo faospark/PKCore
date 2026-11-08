@@ -42,7 +42,8 @@ namespace PKCore.Patches
             host.hideFlags = HideFlags.HideAndDontSave;
             
             instance = host.AddComponent<S2CookOffPortraitMonitor>();
-            Logger.LogInfo("[S2CookOffPortraitMonitor] Initialized");
+            if (Plugin.Config.DetailedLogs.Value)
+                Logger.LogInfo("[S2CookOffPortraitMonitor] Initialized");
         }
 
         private void Update()

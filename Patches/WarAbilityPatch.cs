@@ -242,7 +242,8 @@ namespace PKCore.Patches
                     }
                 }
 
-                Logger.LogInfo($"[WarAbilityPatch] Synchronized custom war abilities for {butaiList.Length} Butai formation roster entries.");
+                if (Plugin.Config.DetailedLogs.Value)
+                    Logger.LogInfo($"[WarAbilityPatch] Synchronized custom war abilities for {butaiList.Length} Butai formation roster entries.");
             }
             catch (Exception ex)
             {
@@ -280,7 +281,8 @@ namespace PKCore.Patches
                     }
                 }
                 
-                Logger.LogInfo($"[WarAbilityPatch] Synchronized custom war abilities for active war battle.");
+                if (Plugin.Config.DetailedLogs.Value)
+                    Logger.LogInfo($"[WarAbilityPatch] Synchronized custom war abilities for active war battle.");
             }
             catch (Exception ex)
             {

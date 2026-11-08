@@ -300,7 +300,8 @@ public static class LanguageSelectionPatch
             ActiveLanguageName = newName;
             _hasLoggedInitialLanguage = true;
 
-            Plugin.Log.LogInfo($"[LanguageSelection] Active launcher language detected via {sourceLabel}: {ActiveLanguageName} ({ActiveLanguageCode}) [Text: \"{text}\"]");
+            if (Plugin.Config.DetailedLogs.Value)
+                Plugin.Log.LogInfo($"[LanguageSelection] Active launcher language detected via {sourceLabel}: {ActiveLanguageName} ({ActiveLanguageCode}) [Text: \"{text}\"]");
             OnLanguageDetected?.Invoke(ActiveLanguageCode, ActiveLanguageName);
         }
     }

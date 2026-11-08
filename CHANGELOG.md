@@ -4,6 +4,17 @@ All notable changes to PKCore (formerly PKextended) are documented in this file.
 
 ---
 
+## [2026.11.08]
+
+- **Startup & Runtime Log Spam Reduction**:
+  - Gated routine patch startup messages in `Plugin.cs` behind `Config.DetailedLogs.Value`, keeping startup output clean and concise (`PKCore loaded successfully!`).
+  - Gated the multi-line decorative resolution box and conflict warnings in `Patches/ResolutionPatch.cs` behind `DetailedLogs.Value`.
+  - Silenced directory scan breakdowns and per-file `.acb` redirect chatter in `Patches/SoundRedirectPatch.cs` unless `DetailedLogs` is enabled.
+  - Silenced scene-transition preload counts in `Patches/CustomTexturePersist.cs` and `Patches/WarAbilityPatch.cs`.
+  - Silenced monitor initialization messages (`CovertMissionPortraitMonitor`, `S2CookOffPortraitMonitor`, `WarRoomBGPatch`) and language detection logs unless `DetailedLogs` is active.
+
+---
+
 ## [2026.11.06]
 
 - **Fix Cook-Off Side Quest Queue Desync & Challenger Waiting Softlock (`S2CookOffLoopPatch.cs`)**:

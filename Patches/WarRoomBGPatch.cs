@@ -50,7 +50,8 @@ namespace PKCore.Patches
             instance = host.AddComponent<WarRoomBGPatch>();
             _initialized = true;
 
-            Logger.LogInfo("[WarRoomBGPatch] Initialized monitor with Overlay creation logic");
+            if (Plugin.Config.DetailedLogs.Value)
+                Logger.LogInfo("[WarRoomBGPatch] Initialized monitor with Overlay creation logic");
         }
 
         private void Update()

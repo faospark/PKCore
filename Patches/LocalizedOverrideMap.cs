@@ -179,7 +179,8 @@ public class LocalizedOverrideMap
                 }
             }
 
-            Plugin.Log.LogInfo($"[TextOverride] [{logLabel}] Loaded {entryCount} entries from {Path.GetFileName(filePath)}");
+            if (Plugin.Config.DetailedLogs.Value)
+                Plugin.Log.LogInfo($"[TextOverride] [{logLabel}] Loaded {entryCount} entries from {Path.GetFileName(filePath)}");
         }
         catch (Exception ex)
         {

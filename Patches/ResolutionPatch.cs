@@ -30,7 +30,8 @@ public class ResolutionPatch
 
             if (!_hasAppliedOnce)
             {
-                Plugin.Log.LogInfo($"✓ First SetResolution intercept: {originalWidth}x{originalHeight} -> {width}x{height}");
+                if (Plugin.Config.DetailedLogs.Value)
+                    Plugin.Log.LogInfo($"✓ First SetResolution intercept: {originalWidth}x{originalHeight} -> {width}x{height}");
                 _hasAppliedOnce = true;
             }
         }
@@ -54,7 +55,7 @@ public class ResolutionPatch
             fullscreen = true;
 
             // Log the resolution change if it's not the first time
-            if (_hasAppliedOnce)
+            if (_hasAppliedOnce && Plugin.Config.DetailedLogs.Value)
             {
                 Plugin.Log.LogInfo($"✓ Second+ SetResolution intercept: {originalWidth}x{originalHeight} -> {width}x{height}");
             }
@@ -107,16 +108,19 @@ public class ResolutionPatch
         _enabled = Plugin.Config.EnableResolutionScaling.Value;
         _resolutionScale = Plugin.Config.ResolutionScale.Value;
 
-        Plugin.Log.LogInfo($"========================================");
-        Plugin.Log.LogInfo($"Resolution Scaling Enabled");
-        Plugin.Log.LogInfo($"Scale: {_resolutionScale}x (dynamic based on window size)");
-        Plugin.Log.LogInfo($"Example: 1920x1080 at {_resolutionScale}x = {(int)(1920 * _resolutionScale)}x{(int)(1080 * _resolutionScale)}");
-        Plugin.Log.LogInfo($"========================================");
-        Plugin.Log.LogWarning("IMPORTANT: If using Suikoden Fix, set these in d3xMachina.suikoden_fix.cfg:");
-        Plugin.Log.LogWarning("  Width = -1");
-        Plugin.Log.LogWarning("  Height = -1");
-        Plugin.Log.LogWarning("  Fullscreen = -1");
-        Plugin.Log.LogWarning("This prevents conflicts between the two resolution systems!");
-        Plugin.Log.LogInfo($"========================================");
+        if (Plugin.Config.DetailedLogs.Value)
+        {
+            Plugin.Log.LogInfo($"========================================");
+            Plugin.Log.LogInfo($"Resolution Scaling Enabled");
+            Plugin.Log.LogInfo($"Scale: {_resolutionScale}x (dynamic based on window size)");
+            Plugin.Log.LogInfo($"Example: 1920x1080 at {_resolutionScale}x = {(int)(1920 * _resolutionScale)}x{(int)(1080 * _resolutionScale)}");
+            Plugin.Log.LogInfo($"========================================");
+            Plugin.Log.LogWarning("IMPORTANT: If using Suikoden Fix, set these in d3xMachina.suikoden_fix.cfg:");
+            Plugin.Log.LogWarning("  Width = -1");
+            Plugin.Log.LogWarning("  Height = -1");
+            Plugin.Log.LogWarning("  Fullscreen = -1");
+            Plugin.Log.LogWarning("This prevents conflicts between the two resolution systems!");
+            Plugin.Log.LogInfo($"========================================");
+        }
     }
 }

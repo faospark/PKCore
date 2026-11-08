@@ -51,7 +51,8 @@ namespace PKCore.Patches
             host.hideFlags = HideFlags.HideAndDontSave;
             
             instance = host.AddComponent<CovertMissionPortraitMonitor>();
-            Logger.LogInfo("[CovertMissionPortraitMonitor] Initialized");
+            if (Plugin.Config.DetailedLogs.Value)
+                Logger.LogInfo("[CovertMissionPortraitMonitor] Initialized");
         }
 
         private void Update()

@@ -84,7 +84,8 @@ public static class CustomTexturePersist
         SceneManager.sceneLoaded += (Action<Scene, LoadSceneMode>)OnSceneLoaded;
         isInitialized = true;
         
-        Plugin.Log.LogInfo("Applying CustomTexturePersist Patches ");
+        if (Plugin.Config.DetailedLogs.Value)
+            Plugin.Log.LogInfo("Applying CustomTexturePersist Patches ");
     }
     
     /// <summary>
@@ -127,7 +128,8 @@ public static class CustomTexturePersist
         int skipped = 0;
         int notFound = 0;
         
-        Plugin.Log.LogInfo($"[CustomTexturePersist] Preloading {textureNames.Length} persistent textures for {gameId}...");
+        if (Plugin.Config.DetailedLogs.Value)
+            Plugin.Log.LogInfo($"[CustomTexturePersist] Preloading {textureNames.Length} persistent textures for {gameId}...");
         
         foreach (string textureName in textureNames)
         {
@@ -196,7 +198,8 @@ public static class CustomTexturePersist
             }
         }
         
-        Plugin.Log.LogInfo($"[CustomTexturePersist] {gameId}: Loaded {loaded}, Skipped {skipped}, NotFound {notFound}");
+        if (Plugin.Config.DetailedLogs.Value)
+            Plugin.Log.LogInfo($"[CustomTexturePersist] {gameId}: Loaded {loaded}, Skipped {skipped}, NotFound {notFound}");
     }
     
     #endregion

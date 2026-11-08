@@ -69,7 +69,8 @@ public class Plugin : BasePlugin
 
             PkCoreMainLoop.Instance = component;
 
-            Log.LogInfo("Initialized PkCoreMainLoop for Update events.");
+            if (Config.DetailedLogs.Value)
+                Log.LogInfo("Initialized PkCoreMainLoop for Update events.");
         }
         catch (System.Exception ex)
         {
@@ -116,7 +117,8 @@ public class Plugin : BasePlugin
         // Initialize memory caching system for smart texture cleanup
         if (Config.EnableMemoryCaching.Value)
         {
-            Log.LogInfo("Initializing Texture Memory Caching System...");
+            if (Config.DetailedLogs.Value)
+                Log.LogInfo("Initializing Texture Memory Caching System...");
             harmony.PatchAll(typeof(TextureMemoryCachePatch));
             TextureMemoryCachePatch.Initialize();
         }
@@ -124,7 +126,8 @@ public class Plugin : BasePlugin
         // Apply Sprite Filtering patch independently
         if (Config.SpriteFilteringEnabled.Value)
         {
-            Log.LogInfo($"Applying Sprite Filtering patch (Enabled: {Config.SpriteFilteringEnabled.Value})...");
+            if (Config.DetailedLogs.Value)
+                Log.LogInfo($"Applying Sprite Filtering patch (Enabled: {Config.SpriteFilteringEnabled.Value})...");
             harmony.PatchAll(typeof(SpriteFilteringPatch));
             SpriteFilteringPatch.Initialize();
         }
@@ -139,7 +142,8 @@ public class Plugin : BasePlugin
         // Borderless Window Mode (Strips borders in windowed mode for custom compact sizes)
         if (Config.EnableBorderlessWindow.Value)
         {
-            Log.LogInfo("Applying BorderlessWindow patches...");
+            if (Config.DetailedLogs.Value)
+                Log.LogInfo("Applying BorderlessWindow patches...");
             harmony.PatchAll(typeof(BorderlessWindowPatch));
             BorderlessWindowPatch.Initialize();
         }
@@ -147,13 +151,12 @@ public class Plugin : BasePlugin
         // Custom Texture Replacement
         if (Config.EnableCustomTextures.Value || Config.LogReplaceableTextures.Value)
         {
-            if (Config.EnableCustomTextures.Value)
+            if (Config.DetailedLogs.Value)
             {
-                Log.LogInfo("Applying Custom Texture patch...");
-            }
-            else
-            {
-                Log.LogInfo("Applying Custom Texture patch (logging only)...");
+                if (Config.EnableCustomTextures.Value)
+                    Log.LogInfo("Applying Custom Texture patch...");
+                else
+                    Log.LogInfo("Applying Custom Texture patch (logging only)...");
             }
 
             harmony.PatchAll(typeof(CustomTexturePatch));
@@ -193,7 +196,8 @@ public class Plugin : BasePlugin
         // Resolution patch
         if (Config.EnableResolutionScaling.Value && Config.ResolutionScale.Value != 1.0f)
         {
-            Log.LogInfo("Applying Resolution patch...");
+            if (Config.DetailedLogs.Value)
+                Log.LogInfo("Applying Resolution patch...");
             harmony.PatchAll(typeof(ResolutionPatch));
             ResolutionPatch.Initialize();
         }
@@ -201,14 +205,16 @@ public class Plugin : BasePlugin
         // World Map Effects patch
         if (Config.DisableWorldMapClouds.Value)
         {
-            Log.LogInfo("Applying WorldMapEffects Patch (Disable Clouds)...");
+            if (Config.DetailedLogs.Value)
+                Log.LogInfo("Applying WorldMapEffects Patch (Disable Clouds)...");
             harmony.PatchAll(typeof(WorldMapEffectsPatch));
         }
 
         // Sprite Post-Processing patch
         if (Config.DisableSpritePostProcessing.Value)
         {
-            Log.LogInfo("Applying DisableSpritePostProcessing Patch");
+            if (Config.DetailedLogs.Value)
+                Log.LogInfo("Applying DisableSpritePostProcessing Patch");
             harmony.PatchAll(typeof(DisableSpritePostProcessingPatch));
             DisableSpritePostProcessingPatch.Initialize();
         }
@@ -216,7 +222,8 @@ public class Plugin : BasePlugin
         // NPC Portrait Injection
         if (Config.EnablePortraitSystem.Value)
         {
-            Log.LogInfo("Applying PortraitSystem Patch...");
+            if (Config.DetailedLogs.Value)
+                Log.LogInfo("Applying PortraitSystem Patch...");
             harmony.PatchAll(typeof(PortraitSystemPatch));
             PortraitSystemPatch.Initialize();
         }
@@ -224,7 +231,8 @@ public class Plugin : BasePlugin
         // Dialog Text ID interceptor and placeholder replacement (independent of NPC portraits)
         if (Config.EnableDialogOverrides.Value || Config.LogTextIDs.Value || Config.DumpTextDatabase.Value)
         {
-            Log.LogInfo("Applying TextDatabase patch...");
+            if (Config.DetailedLogs.Value)
+                Log.LogInfo("Applying TextDatabase patch...");
             harmony.PatchAll(typeof(TextDatabasePatch));
             TextDatabasePatch.Initialize();
 
@@ -233,7 +241,8 @@ public class Plugin : BasePlugin
                 PortraitSystemPatch.LoadDialogOverrides();
 
             // Apply SaveDataProcessor for protagonist/HQ name placeholder replacement
-            Log.LogInfo("Applying SaveDataProcessor patch...");
+            if (Config.DetailedLogs.Value)
+                Log.LogInfo("Applying SaveDataProcessor patch...");
             harmony.PatchAll(typeof(SaveDataProcessor));
         }
 
@@ -256,14 +265,16 @@ public class Plugin : BasePlugin
         // Apply Dialog Patch (Dialog Box Scaling)
         if (Config.ScaleDownDialogBox.Value)
         {
-            Log.LogInfo("Applying DialogBoxScale patch ...");
+            if (Config.DetailedLogs.Value)
+                Log.LogInfo("Applying DialogBoxScale patch ...");
             harmony.PatchAll(typeof(DialogBoxScalePatch));
         }
 
         // Apply Suikoden 1 World Map Scale Patch
         if (Config.S1ScaledDownWorldMap.Value)
         {
-            Log.LogInfo("Applying S1WorldMapScaleUI patch...");
+            if (Config.DetailedLogs.Value)
+                Log.LogInfo("Applying S1WorldMapScaleUI patch...");
             S1WorldMapScaleUIPatch.Initialize();
             harmony.PatchAll(typeof(S1WorldMapScaleUIPatch));
         }
@@ -274,25 +285,29 @@ public class Plugin : BasePlugin
         // Disable UITips (UI_Root/UI_Canvas_Root/UITips)
         if (Config.DisableUITips.Value)
         {
-            Log.LogInfo("Applying DisableUITips patch...");
+            if (Config.DetailedLogs.Value)
+                Log.LogInfo("Applying DisableUITips patch...");
             DisableUITipsPatch.Initialize(harmony);
         }
 
         // Language selection detection patch (TitlePanel)
-        Log.LogInfo("Applying LanguageSelection patch...");
+        if (Config.DetailedLogs.Value)
+            Log.LogInfo("Applying LanguageSelection patch...");
         harmony.PatchAll(typeof(LanguageSelectionPatch));
 
         // Apply Menu Scale Patch (Menu Scaling)
         if (Config.ScaledDownMenu.Value.Equals("true", System.StringComparison.OrdinalIgnoreCase))
         {
-            Log.LogInfo($"Applying MenuScale patch (mode: {Config.ScaledDownMenu.Value})...");
+            if (Config.DetailedLogs.Value)
+                Log.LogInfo($"Applying MenuScale patch (mode: {Config.ScaledDownMenu.Value})...");
             harmony.PatchAll(typeof(MenuScalePatch));
         }
 
         // Apply SMAA patches
         if (!Config.SMAAQuality.Value.Equals("Off", System.StringComparison.OrdinalIgnoreCase))
         {
-            Log.LogInfo($"Applying SMAA patch (quality: {Config.SMAAQuality.Value})...");
+            if (Config.DetailedLogs.Value)
+                Log.LogInfo($"Applying SMAA patch (quality: {Config.SMAAQuality.Value})...");
             harmony.PatchAll(typeof(SMAAPatch));
         }
 
@@ -316,14 +331,16 @@ public class Plugin : BasePlugin
         // Enable DebugMenu2 (Experimental)
         if (Config.EnableDebugMenu2.Value)
         {
-            Log.LogInfo("Initializing EnableDebugMenu2...");
+            if (Config.DetailedLogs.Value)
+                Log.LogInfo("Initializing EnableDebugMenu2...");
             EnableDebugMenu2.Initialize();
         }
 
         // Sound File Redirect
         if (Config.EnableSoundRedirect.Value)
         {
-            Log.LogInfo("Applying Sound Redirect patch...");
+            if (Config.DetailedLogs.Value)
+                Log.LogInfo("Applying Sound Redirect patch...");
             SoundRedirectPatch.Initialize();
             harmony.PatchAll(typeof(SoundRedirectPatch));
         }
@@ -355,7 +372,8 @@ public class Plugin : BasePlugin
         // Save Slot Party Portrait Patch
         if (Config.ShowSaveSlotPartyPortraits.Value)
         {
-            Log.LogInfo("Applying Save Slot Party Portrait patch...");
+            if (Config.DetailedLogs.Value)
+                Log.LogInfo("Applying Save Slot Party Portrait patch...");
             harmony.PatchAll(typeof(SaveSlotPartyPortraitPatch));
         }
 
@@ -363,7 +381,8 @@ public class Plugin : BasePlugin
         // Suikoden 1 Castle Rune Master (Quick Rune)
         if (Config.EnableS1QuickRuneMaster.Value)
         {
-            Log.LogInfo("Applying Suikoden 1 Quick Rune Master patch...");
+            if (Config.DetailedLogs.Value)
+                Log.LogInfo("Applying Suikoden 1 Quick Rune Master patch...");
             harmony.PatchAll(typeof(Patches.S1QuickRunePatch));
         }
 

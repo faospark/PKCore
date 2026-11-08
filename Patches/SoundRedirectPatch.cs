@@ -35,15 +35,19 @@ public static class SoundRedirectPatch
         _modsRoot = Path.Combine(gameRoot, "PKCore", "00-Mods");
         _streamingSoundRoot = Path.Combine(UnityEngine.Application.streamingAssetsPath, "Sound");
 
-        Plugin.Log.LogInfo($"[SoundRedirect] Base override folder: {_overrideRoot}");
-        Plugin.Log.LogInfo($"[SoundRedirect] Mods folder: {_modsRoot}");
+        if (Plugin.Config.DetailedLogs.Value)
+        {
+            Plugin.Log.LogInfo($"[SoundRedirect] Base override folder: {_overrideRoot}");
+            Plugin.Log.LogInfo($"[SoundRedirect] Mods folder: {_modsRoot}");
+        }
 
         if (!Directory.Exists(_overrideRoot))
         {
             Directory.CreateDirectory(_overrideRoot);
-            Plugin.Log.LogInfo("[SoundRedirect] Created base override folder (empty - add .acb/.awb files to override sounds).");
+            if (Plugin.Config.DetailedLogs.Value)
+                Plugin.Log.LogInfo("[SoundRedirect] Created base override folder (empty - add .acb/.awb files to override sounds).");
         }
-        else
+        else if (Plugin.Config.DetailedLogs.Value)
         {
             var files = Directory.GetFiles(_overrideRoot, "*.acb", SearchOption.AllDirectories);
             Plugin.Log.LogInfo($"[SoundRedirect] Found {files.Length} .acb override file(s) in base folder.");
@@ -60,11 +64,12 @@ public static class SoundRedirectPatch
                 {
                     var modFiles = Directory.GetFiles(modSoundDir, "*.acb", SearchOption.AllDirectories);
                     modCount += modFiles.Length;
-                    Plugin.Log.LogInfo($"[SoundRedirect] Mod '{Path.GetFileName(modDir)}': {modFiles.Length} .acb file(s).");
+                    if (Plugin.Config.DetailedLogs.Value)
+                        Plugin.Log.LogInfo($"[SoundRedirect] Mod '{Path.GetFileName(modDir)}': {modFiles.Length} .acb file(s).");
                 }
             }
         }
-        if (modCount > 0)
+        if (modCount > 0 && Plugin.Config.DetailedLogs.Value)
             Plugin.Log.LogInfo($"[SoundRedirect] Total mod .acb override(s): {modCount}");
     }
 
@@ -137,7 +142,7 @@ public static class SoundRedirectPatch
             }
         }
 
-        if (!ReferenceEquals(result, originalPath))
+        if (!ReferenceEquals(result, originalPath) && Plugin.Config.DetailedLogs.Value)
             Plugin.Log.LogInfo($"[SoundRedirect] → '{rel}' overridden");
 
         return result;
