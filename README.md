@@ -1,6 +1,6 @@
-# PKCore - Project Kyaro Core
+# P.K. - Core
 
-**By faospark**
+**By [faospark](https://github.com/faospark)**
 
 The **core DLL component** for **[Project Kyaro](https://www.nexusmods.com/suikoden1and2hdremaster/mods/6)** that provides a variety of features such as texture replacement framework, sprite smoothing, anti-aliasing, graphical and visual enhancements, and telemetry/gameplay tools for **Suikoden I & II HD Remaster**. As of 2026, PKExtended has been transformed to PKCore as the core backbone of Project Kyaro, with Special K completely removed as a dependency.
 
@@ -109,9 +109,9 @@ Replace game textures by placing custom PNG, JPG, TGA, or DDS files in `BepInEx/
 
 ## Installation
 
-1. Install **BepInEx 6.0.0-pre.2 IL2CPP**.
-2. Install **[Project Kyaro](https://www.nexusmods.com/suikoden1and2hdremaster/mods/6)** (extract `PKCore.dll` and assets to `BepInEx/plugins/PKCore/`).
-3. Launch the game once — the configuration file will automatically generate at `BepInEx\config\faospark.pkcore.cfg`.
+- **Prerequisite**: [BepInEx 6.0 (Unity IL2CPP x64)](https://github.com/BepInEx/BepInEx/releases/download/v6.0.0-pre.2/BepInEx-Unity.IL2CPP-win-x64-6.0.0-pre.2.zip) installed in your game root directory.
+- **Install**: Extract the release ZIP directly into your game's root directory (or place `PKCore.dll` and its assets into `BepInEx/plugins/PKCore/`).
+- **Verify**: Launch the game; `BepInEx/LogOutput.log` will confirm `[PKCore] loaded successfully!`.
 
 ---
 
@@ -135,24 +135,15 @@ If upgrading from **PKextended.dll** or older versions of Project Kyaro:
 
 ---
 
-## Development
-
-This mod targets .NET 6.0 using BepInEx 6 IL2CPP and Harmony for runtime patching.
-
-```bash
-dotnet build PKCore.csproj
-```
-
-The build output is automatically symlinked into your game's `BepInEx/plugins/PKCore/` directory.
-
----
-
 ## Credits & License
 
-* **Author**: faospark
-* **Mod Suite**: [Project Kyaro](https://www.nexusmods.com/suikoden1and2hdremaster/mods/6)
-* **Special Thanks**:
-  * **[d3xMachina](https://github.com/d3xMachina)**: For [Suikoden Fix](https://github.com/d3xMachina/SuikodenFix), text database research, and speaker identification architecture.
-  * **Pyriel**: For the original community Tenzan Pass encounter layout research.
+- **[d3xMachina](https://github.com/d3xMachina/Suikoden-Fix)**: Creator of [Suikoden-Fix](https://github.com/d3xMachina/Suikoden-Fix). Bootstrapped the foundational BepInEx IL2CPP implementation and provided early inspiration for Remaster modding.
+- **[asilverthorn](https://github.com/asilverthorn/suikoden_ref)**: Creator of [suikoden_ref](https://github.com/asilverthorn/suikoden_ref). Invaluable early reference tables, internal IDs, and save structure research.
+- **[faospark](https://github.com/faospark)**: Primary Author & Lead Researcher.
+- **Mod Suite**: [Project Kyaro](https://www.nexusmods.com/suikoden1and2hdremaster/mods/6)
+- **Moogles & Mods Discord Community**: For ongoing support, research, collaboration, and keeping the Suikoden modding scene thriving. Join us on the [Moogles & Mods Discord](https://discord.com/invite/bSnpVBV).
+- **Special Thanks**:
+  - **Pyriel**: For the original community Tenzan Pass encounter layout research.
+- **Framework**: [BepInEx](https://github.com/BepInEx/BepInEx) & [HarmonyX](https://github.com/BepInEx/HarmonyX).
 
 Distributed under the MIT License. See `LICENSE.txt` for details.
