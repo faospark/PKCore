@@ -16,6 +16,7 @@ The **core DLL component** for **[Project Kyaro](https://www.nexusmods.com/suiko
 * **NPC Portraits Framework**: High-resolution NPC portrait injection with comprehensive variant support (S1 & S2).
 * **Clive's Pursuit Quest Replay (S2)**: Indefinitely replay the pursuit arc from Lakewest after the Sajah finale with in-flight self-healing flags.
 * **Infinite Cook-Off Battles Loop & Cooldown Reduction (S2)**: Loop Hai Yo's cook-off battles after Jinkai with full recipe preservation, plus instant cooldown bypass.
+* **Cook-Off Live Scoring Assistant & Optimal Menu Recommendations (S2)**: Real-time scoring predictions and optimal recipe + spice recommendations on screen as you select dishes during Chef Hai Yo's cook-off battles, with full judge taste profile breakdown.
 * **Remote Castle Rune Master Access (S1)**: Press Right Stick Down or `[F7]` to open Jeane's Toran Castle rune shop from anywhere on the field with field state validation.
 * **Boosted War Battles & Formation Menu Synchronization (S2)**: Customize war stats/abilities via `S2WarAbilities.json` with live synchronization into Apple's squad formation UI.
 * **Save Slot Party Member Mini Portraits (S1 & S2)**: Display party member portraits next to save slots in the Save/Load window with high-performance caching.

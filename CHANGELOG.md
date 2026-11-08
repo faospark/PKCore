@@ -6,6 +6,13 @@ All notable changes to PKCore (formerly PKextended) are documented in this file.
 
 ## [2026.11.08]
 
+- **Cook-Off Live Scoring Assistant & Optimal Menu Helper (`CookOffScoreEngine.cs`, `S2CookOffScorePatch.cs`)**:
+  - Implemented the complete Suikoden II cook-off scoring engine modeling all 12 judge taste profiles (Plain, Sweet, Spicy, Meat, Fish, Vegetables, Japanese, Western, Chinese, Everything, Nothing, Strange) and 104 dishes (16 Appetizers, 66 Mains, 22 Desserts) across all 40 collectible recipes and 6 seasonings.
+  - **Live Selection Score Card (In-Game HUD)**: During cooking battle dish selection (`Overlay_rbattle.RbattleFunc01`), dynamically detects the 4 seated judges (`rb_work.exam_num`), calculates potential scores in real-time as the player navigates recipes and seasonings, and displays a clean on-screen rating card showing total expected points (/20) alongside individual judge breakdowns.
+  - **Optimal Course Recommendations**: Automatically evaluates all unlocked recipes in active save data (`game_data.food_resipi`) and displays the highest-scoring dish and spice for Appetizer, Main, and Dessert.
+  - **Configurable Toggle**: Configured under `ShowCookOffScoreHelper` in `ModConfiguration.cs`.
+  - **ImGui Telemetry Integration**: Hooked into `PKDev`'s `ImGuiOverlayUI.cs` under the Chef Hai Yo Cooking Side Quest Monitor, showing live judge profiles, current selection points, and optimal recommendations.
+
 - **Startup & Runtime Log Spam Reduction**:
   - Gated routine patch startup messages in `Plugin.cs` behind `Config.DetailedLogs.Value`, keeping startup output clean and concise (`PKCore loaded successfully!`).
   - Gated the multi-line decorative resolution box and conflict warnings in `Patches/ResolutionPatch.cs` behind `DetailedLogs.Value`.

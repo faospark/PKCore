@@ -54,6 +54,7 @@ public sealed class ModConfiguration
     // Suikoden 2 Cook-Off Settings
     public ConfigEntry<bool> LoopCookOffMatches { get; private set; }
     public ConfigEntry<bool> ReduceCookOffCooldown { get; private set; }
+    public ConfigEntry<bool> ShowCookOffScoreHelper { get; private set; }
 
     // Suikoden 2 Clive Quest Replay
     public ConfigEntry<bool> LoopCliveQuest { get; private set; }
@@ -303,6 +304,13 @@ public sealed class ModConfiguration
             "ReduceCookOffCooldown",
             true,
             "Removes the 30-60 minute active gameplay cooldown between cook-off matches, allowing consecutive battles with rival chefs to trigger immediately upon entering the restaurant or castle hall."
+        );
+
+        ShowCookOffScoreHelper = _config.Bind(
+            "05 Game : Suikoden 2",
+            "ShowCookOffScoreHelper",
+            true,
+            "Displays real-time scoring predictions and optimal menu recommendations on screen during Suikoden 2 cook-off minigame battles."
         );
 
         LoopCliveQuest = _config.Bind(

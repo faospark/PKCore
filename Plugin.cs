@@ -92,6 +92,7 @@ public class Plugin : BasePlugin
         Patches.MenuScalePatch.ApplyLauncherConfigScaling();
         Patches.S1QuickRunePatch.Update();
         Patches.S2CookOffLoopPatch.Update();
+        Patches.S2CookOffScorePatch.Update();
         AssetLoader.Update();
     }
 
@@ -386,8 +387,9 @@ public class Plugin : BasePlugin
             harmony.PatchAll(typeof(Patches.S1QuickRunePatch));
         }
 
-        // Suikoden 2 Cook-off battle synchronization
+        // Suikoden 2 Cook-off battle synchronization & live scoring assistant
         harmony.PatchAll(typeof(Patches.S2CookOffLoopPatch.OverlayRbattleInitPatch));
+        harmony.PatchAll(typeof(Patches.S2CookOffScorePatch));
         MACHICON_OnMapInitPatch.OnMapChangedEvent += () => Patches.S2CookOffLoopPatch.CheckAndResetCookOffs(MACHICON_OnMapInitPatch.CurrentMapId);
 
         // Real-time Event Flag Logger (Suikoden 1 & 2)
