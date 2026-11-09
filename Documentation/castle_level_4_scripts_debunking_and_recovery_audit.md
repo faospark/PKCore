@@ -211,13 +211,13 @@ These are genuine, fully implemented scenes, dialogues, and physical objects tha
 ```mermaid
 flowchart TD
     subgraph Cemetery ["VK16: Fallen Heroes Memorial (7 Cutscenes)"]
-        C1["ev[2]: Viktor & Flik Memorial Visit"]
+        C1["ev[2]: Viktor and Flik Memorial Visit"]
         C2["ev[5]: Camera Panning Setup"]
-        C3["ev[7]: Nanami, Freed Y & Tsai Assembly"]
+        C3["ev[7]: Nanami, Freed Y and Tsai Assembly"]
         C4["ev[8]: Walking Step-On Boundary"]
-        C5["ev[9]: Apple & Hoi Cutscene Dialogue"]
+        C5["ev[9]: Apple and Hoi Cutscene Dialogue"]
         C6["ev[11]: Hero Mourning Dialogue Sequence"]
-        C7["ev[14]: Final Alliance Salute & Fades"]
+        C7["ev[14]: Final Alliance Salute and Fades"]
     end
 
     subgraph Pasture ["VK03: Yuzu's Animal Sanctuary (3 Props)"]

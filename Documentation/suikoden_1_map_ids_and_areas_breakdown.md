@@ -44,8 +44,8 @@ flowchart LR
     area_g --> area_h["Area H (Scarleticia / Dragon Knights)"]
     area_h --> area_i["Area I (Moravia / Shasarazade)"]
     area_i --> area_j["Area J (Gregminster Assault Finale)"]
-    area_j -. Castle HQ .- area_k["Area K (Toran Castle HQ Tiers 1-4)"]
-    area_z["Area Z (Duels & War Battle Fields)"]
+    area_j -.-|"Castle HQ"| area_k["Area K (Toran Castle HQ Tiers 1-4)"]
+    area_z["Area Z (Duels and War Battle Fields)"]
 ```
 
 | Region Area | Decompiled Field (`G1_fdata_c`) | Major Geographic Territory | Primary Towns, Forts & Dungeons |

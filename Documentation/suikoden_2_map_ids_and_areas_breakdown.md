@@ -26,32 +26,34 @@ $v + [Region Letter] + [Map Number]
 ---
 
 ### Part 2: Region Letter (`a` through `k`) = Internal Area Archive Code
-The regional letters **`a` through `k`** represent the internal CD-ROM area archives (`010_ARA` through `110_ARK`). While they roughly track the expansion of the game world, player story progression branches across them dynamically (for example, the alliance mission to Two River **`vh`** occurs immediately following South Window **`vd`**, before Greenhill **`ve`**, Matilda **`vi`**, Banner **`vf`**, or Tinto **`vg`**):
+The regional letters **`a` through `k`** represent Konami's internal CD-ROM area archives (`010_ARA` through `110_ARK`). These codes are organized by **geographic and political territories**, NOT by linear narrative timeline. Player story progression branches across them dynamically (for example, the alliance mission to Two River **`vh`** occurs immediately following South Window **`vd`**, long before Greenhill **`ve`**, Matilda **`vi`**, Banner **`vf`**, or Tinto **`vg`**):
 
 ```mermaid
 flowchart LR
     va["va (Prologue: Highland Border / Kyaro)"] --> vb["vb (Act 1A: Mercenary Fort / Ryube)"]
     vb --> vc["vc (Act 1B: Muse / Coronet)"]
     vc --> vd["vd (Act 2A: South Window / Radat)"]
-    vd --> vh["vh (Act 2B: Two River / Kobold)"]
+    vd --> vk["vk (HQ Founded: Dunan Castle)"]
+    vk --> vh["vh (Act 2B: Two River / Kobold)"]
     vh --> ve["ve (Act 2C: Greenhill Academy)"]
-    ve --> vi["vi (Act 3A: Matilda / Rockaxe)"]
-    vi --> vf["vf (Act 3B: Banner / Toran)"]
+    ve --> vi1["vi (Act 3A: Matilda / Mt. Rakutei)"]
+    vi1 --> vf["vf (Act 3B: Banner / Toran)"]
     vf --> vg["vg (Act 3C: Tinto / Mines)"]
-    vg --> vj["vj (Act 4: Highland Finale / L'Renouille)"]
-    vj -. Castle HQ .- vk["vk (Dunan Castle HQ Tiers 1-4)"]
+    vg --> vi2["vi / vc (Act 3D: Liberation Campaigns)"]
+    vi2 --> vj["vj (Act 4: Highland Finale / L'Renouille)"]
+    vj --> va_end["va (Epilogue: Tenzan Pass)"]
 ```
 
-- `010_ARA` -> **`va`**: **Prologue** (Highland Youth Brigade -> Tenzan Pass -> North Sparrow Pass -> Kyaro Town).
-- `020_ARB` -> **`vb`**: **Act 1 (Early)** (Mercenary Fort chores -> Toto Village -> Ryube Village -> Ryube Forest / Tsai's Hut).
-- `030_ARC` -> **`vc`**: **Act 1 (Mid)** (Muse City -> White Deer Inn -> Sindar Ruins -> Coronet Port).
-- `040_ARD` -> **`vd`**: **Act 2 (South)** (South Window City -> Radat Town -> North Window Ruins -> Cave of the Wind).
-- `050_ARE` -> **`ve`**: **Act 2 (West)** (Greenhill Academy -> Forest Village -> Greenhill-Matilda Border & Forest Path).
-- `060_ARF` -> **`vf`**: **Act 3 (South-Toran)** (Banner Village -> Banner Pass -> Gregminster Capital).
-- `070_ARG` -> **`vg`**: **Act 3 (Mining & Tinto)** (Tinto City -> Tinto Mines -> Tigermouth -> Crom).
-- `080_ARH` -> **`vh`**: **Act 2 (Lakeside Republic)** (Two River Human/Wingly/Kobold districts -> Sewers -> Lakewest -> Kobold Village -> Drakemouth).
-- `090_ARI` -> **`vi`**: **Act 3 (Matilda Campaign)** (Rockaxe Castle -> Highway Village -> Mt. Rakutei dragon peak).
-- `100_ARJ` -> **`vj`**: **Act 4 (Finale - Highland)** (L'Renouille Castle keep -> Beast Rune Sanctum -> Sajah Village).
+- `010_ARA` -> **`va`**: **Highland Borderlands & Kyaro** (Highland Youth Brigade -> Tenzan Pass -> North Sparrow Pass -> Kyaro Town).
+- `020_ARB` -> **`vb`**: **East State Borderlands** (Mercenary Fort chores -> Toto Village -> Ryube Village -> Ryube Forest / Tsai's Hut -> Swallow Pass).
+- `030_ARC` -> **`vc`**: **Muse City-State & Coronet** (Muse City -> White Deer Inn -> Sindar Ruins -> Coronet Port).
+- `040_ARD` -> **`vd`**: **South Window City-State** (South Window City -> Radat Town -> Kuskus Town -> North Window Ruins -> Cave of the Wind).
+- `050_ARE` -> **`ve`**: **Greenhill City-State** (Greenhill Academy -> Forest Village -> Greenhill-Matilda Border & Forest Path).
+- `060_ARF` -> **`vf`**: **Banner & Toran Republic** (Banner Village -> Banner Pass -> Rokkaku Hamlet -> Gregminster Capital).
+- `070_ARG` -> **`vg`**: **Tinto Republic & Mountains** (Tinto City -> Tinto Mines -> Tigermouth Village & Pass -> Crom -> Mt. Senai / Tiger Cave).
+- `080_ARH` -> **`vh`**: **Two River Republic** (Two River Human/Wingly/Kobold districts -> Sewers -> Lakewest -> Kobold Village -> Drakemouth Village).
+- `090_ARI` -> **`vi`**: **Matilda Knightdom** (Rockaxe Castle & Town -> Highway Village -> Mt. Rakutei dragon peak).
+- `100_ARJ` -> **`vj`**: **Highland Kingdom Capital** (L'Renouille Castle keep -> Beast Rune Sanctum -> Sajah Village).
 - `110_ARK` -> **`vk`**: **Headquarters** (Dunan Castle / North Window Castle across all 4 upgrade stages).
 
 ---
@@ -138,7 +140,31 @@ $100100 + [Region Code (01-11)] + [Map Number (01-37)] + [Local Message Offset (
 
 ---
 
-## 4. Exhaustive Area & Submap Breakdown
+## 4. Chronological Narrative Story Progression
+
+While Konami archived assets strictly by geographic sovereignty (`va` through `vk`), the player's actual narrative campaign zig-zags across Lake Dunan based on wartime alliances, tactical retreats, and liberation campaigns.
+
+The chronological order of gameplay and regional transitions is detailed below:
+
+| Chronological Step | Story Act / Phase | Primary Region(s) | Key In-Game Locations | Major Narrative Milestones |
+| :---: | :--- | :---: | :--- | :--- |
+| **1** | **Prologue: The Highland Ambush** | **`va`** | Highland Youth Brigade Camp (`va01`), Tenzan Pass Cliff (`va03`), North Sparrow Pass (`va05`-`va07`), Kyaro Town (`va08`-`va13`) | Luca Blight's youth brigade massacre; waterfall oath; arrest and rescue in Kyaro; Nanami joins. |
+| **2** | **Act 1A: Mercenary Chores & State Border** | **`vb`** | Mercenary Fortress (`vb01`, `vb02`), Toto Village (`vb03`), Ryube Village (`vb05`), Ryube Forest & Tsai's Hermit Hut (`vb07`-`vb10`) | Viktor & Flik fortress chores with Barbara and Pohl; circus troupe encounter; Tsai's Fire Spear; Toto and Mercenary Fort destroyed by Luca. |
+| **3** | **Act 1B: Flight to Muse & Lake Dunan Cross** | **`vc`** | Muse City (`vc01`), White Deer Inn (`vc04`), Sindar Ruins (`vc06`, `vc07`), Highland Recon Camp (`vc16`), Coronet Town & Port (`vc17`, `vc18`) | Jowston Hill Council; Alex & Hilda excavation; Highland camp recon; Anabelle's death; Muse fall; Tai Ho & Yam Koo ferry escape. |
+| **4** | **Act 2A: The Southern Territories** | **`vd`** | Kuskus Town (`vd15`), South Window City (`vd01`), Radat Town (`vd02`, `vd05`), North Window Town (`vd04`), Cave of the Wind (`vd06`) | Granmeyer's mission; Star Dragon Sword retrieval in Cave of the Wind with Kahn Marley; Neclord defeated and driven from North Window. |
+| **5** | **Interlude: Founding of Dunan Castle** | **`vk`** / **`vd`** | Dunan Castle HQ Level 1 (`vk01`, `vk24`), Radat Wharf (`vd02`) | North Window restored as Headquarters; Shu recruited as Chief Strategist via coin toss in Radat; Riou appointed Allied Army Commander. |
+| **6** | **Act 2B: The Two River Republic Alliance** | **`vh`** | Lakewest Town (`vh02`), Two River Human District (`vh01`), Wingly District (`vh05`), Kobold District (`vh06`), Two River Sewers (`vh04`) | First official diplomatic mission; Chaco wallet chase; Lord Makai & Ridley cooperation; sewers Pestilence boss; Two River alliance treaty signed. |
+| **7** | **Act 2C: Infiltration of Greenhill City** | **`ve`** | Greenhill City Main Gate (`ve01`), New Leaf Academy (`ve03`, `ve06`, `ve07`), Forest Village (`ve02`), Forest Path (`ve04`) | Student disguise infiltration (Riou, Nanami, Flik); locating Mayor Teresa Wisemail; academy cellar escape; Viki recruitment on mountain path. |
+| **8** | **Act 3A: Matilda Knights & Luca Blight Ambush** | **`vi`** / **`vb`** | Highway Village (`vi11`), Rockaxe Castle (`vi01`), Mt. Rakutei (`vi08`, `vi13`), Ryube Forest outskirts | Gorudo's cowardice and treaty rejection; Humphrey & Futch dragon peak quest; 3-team night ambush against Luca Blight; Luca Blight's defeat. |
+| **9** | **Act 3B: Diplomatic Mission to Toran** | **`vf`** | Banner Village (`vf01`), Banner Pass (`vf03`), Rokkaku Hamlet, Gregminster Capital (`vf04`), Toran Palace (`vf05`) | Southern mountain trek to the Scarlet Moon / Toran Republic; President Lepant agreement; 5,000 Toran reinforcements secured; Hero 1 (McDohl) cameo. |
+| **10** | **Act 3C: The Tinto Crisis & Vampires** | **`vh`** / **`vg`** | Drakemouth Village (`vh08`), Tigermouth Village (`vg04`, `vg06`), Tinto City (`vg01`, `vg02`), Tinto Mines (`vg05`, `vg07`), Crom Village (`vg08`, `vg13`), Mt. Senai / Tiger Cave (`vg09`, `vg15`) | Neclord invades Tinto; Riou fleeing branch to Crom; Sierra Mikain recruited at Tiger Cave; Star Dragon Sword banishes Neclord permanently; Gustav joins. |
+| **11** | **Act 3D: Dunan Liberation Campaigns** | **`vi`** / **`vc`** | Rockaxe Castle (`vi01`, `vi05`), Muse City Rebuilding & Occupied Halls (`vc25`, `vc26`, `vc27`) | Gorudo defeated; Nanami archery defense scene; Muse liberated from Highland garrisons; City-State of Jowston territories unified. |
+| **12** | **Act 4: The Highland Invasion & Finale** | **`vj`** | L'Renouille Castle Gates (`vj01`), War Room (`vj05`), Throne Room (`vj16`), Beast Rune Inner Sanctum (`vj08`), Sajah Village (`vj17`) | Final military invasion; Han Cunningham duel; Seed & Culgan last stand; King Jowy confrontation; Silver Beast Rune manifestation defeated. |
+| **13** | **Epilogue: The Waterfall Oath** | **`va`** | Tenzan Pass Cliff (`va24`) | Return to the opening waterfall cliff where the 'X' was carved; final 1v1 duel against Jowy Atreides for the true 108 Stars ending. |
+
+---
+
+## 5. Exhaustive Area & Submap Breakdown
 
 ### `va` — Highland Borderlands & Kyaro Town
 
@@ -359,7 +385,7 @@ The Dunan Castle Headquarters is the largest composite map group in the game, sp
 
 ---
 
-## 5. PKCore Patch Cross-Reference
+## 6. PKCore Patch Cross-Reference
 
 | Target Map | Location | Mod / Patch Class | Mod Functionality |
 | :---: | :--- | :--- | :--- |

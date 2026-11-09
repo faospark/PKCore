@@ -66,11 +66,11 @@ When calculating physical tile distances between Sheena and all neighboring NPCs
 
 ```mermaid
 flowchart LR
-    S["Sheena (fpno: 5)"] -->|Dojo (25, 38)| Y["Yoshino (4 tiles away)"]
-    S -->|Clinic (67, 28)| E["Emilia (5 tiles away)"]
-    S -->|Vault (43, 45)| R["Raura (6 tiles away)"]
-    S -->|Sanctuary (47, 26)| K["Karen & Annallee (7 tiles away)"]
-    S -->|Balcony (22, 32)| L["Leona, Sierra, Lo Wen (6-8 tiles away)"]
+    S["Sheena (fpno: 5)"] -->|"Dojo (25, 38)"| Y["Yoshino (4 tiles away)"]
+    S -->|"Clinic (67, 28)"| E["Emilia (5 tiles away)"]
+    S -->|"Vault (43, 45)"| R["Raura (6 tiles away)"]
+    S -->|"Sanctuary (47, 26)"| K["Karen and Annallee (7 tiles away)"]
+    S -->|"Balcony (22, 32)"| L["Leona, Sierra, Lo Wen (6-8 tiles away)"]
 ```
 
 1. **Dojo (`vk18.json`, tile 25, 38)**: Positioned directly adjacent to **Yoshino** (`obj[09]`, `fpno 57`, Freed Y's wife) at `(29, 38)`, exactly 4 tiles away.
@@ -486,10 +486,10 @@ When all four components match, the engine evaluates Jude's masterpiece and awar
 
 ```mermaid
 flowchart TD
-    D["Pure Dragon (0x00)"] -->|All 00| R1["Dragon Censer (Item #28)"]
-    U["Pure Unicorn (0x55)"] -->|All 01| R2["Blue Gate Orb (Rune #17)"]
-    B["Pure Rabbit (0xAA)"] -->|All 10| R3["110,000 Potch"]
-    T["Pure Turtle (0xFF)"] -->|All 11| R4["Stone of Magic (Item #22)"]
+    D["Pure Dragon (0x00)"] -->|"All 00"| R1["Dragon Censer (Item #28)"]
+    U["Pure Unicorn (0x55)"] -->|"All 01"| R2["Blue Gate Orb (Rune #17)"]
+    B["Pure Rabbit (0xAA)"] -->|"All 10"| R3["110,000 Potch"]
+    T["Pure Turtle (0xFF)"] -->|"All 11"| R4["Stone of Magic (Item #22)"]
 ```
 
 ### 9.2 Reward Distribution Across All 256 Statues
@@ -540,9 +540,9 @@ flowchart TD
     T --> R["PointRetouch: Apply Modulo-20 Random Jitter (val % 20)"]
     R --> S["Sum Score (0 - 40 Total Points)"]
     S --> W{"Score > Opponent?"}
-    W -->|Yes| Win["EventFunc03_win (Awards Recipe)"]
-    W -->|No| Loss["EventFunc03_lost (Rematch required)"]
-    W -->|Tie| Draw["EventFunc03_draw (Draw dialogue)"]
+    W -->|"Yes"| Win["EventFunc03_win (Awards Recipe)"]
+    W -->|"No"| Loss["EventFunc03_lost (Rematch required)"]
+    W -->|"Tie"| Draw["EventFunc03_draw (Draw dialogue)"]
 ```
 
 ### 11.1 Judging Logic

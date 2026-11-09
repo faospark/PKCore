@@ -114,10 +114,10 @@ The game's design assigns a distinct functional domain to each beast's Head comp
 ```mermaid
 flowchart TD
     Head["Guardian Deity Head Component"]
-    Head -->|"Dragon (00)"| Dragon["Martial Might & Combat Gear<br/>(Armor, Helmets, Shields, Boots, Censer)"]
-    Head -->|"Unicorn (01)"| Unicorn["Arcane Sorcery & Sacred Runes<br/>(Fury Orb, Rage, Mother Earth, Thunder)"]
-    Head -->|"Rabbit (10)"| Rabbit["Fortune, Luck & Wealth<br/>(Massive Cash Payouts up to 120,000 Potch)"]
-    Head -->|"Turtle (11)"| Turtle["Vitality, Wisdom & Longevity<br/>(All 7 Permanent Stat Stones & Elixirs)"]
+    Head -->|"Dragon (00)"| Dragon["Martial Might and Combat Gear<br/>(Armor, Helmets, Shields, Boots, Censer)"]
+    Head -->|"Unicorn (01)"| Unicorn["Arcane Sorcery and Sacred Runes<br/>(Fury Orb, Rage, Mother Earth, Thunder)"]
+    Head -->|"Rabbit (10)"| Rabbit["Fortune, Luck and Wealth<br/>(Massive Cash Payouts up to 120,000 Potch)"]
+    Head -->|"Turtle (11)"| Turtle["Vitality, Wisdom and Longevity<br/>(All 7 Permanent Stat Stones and Elixirs)"]
 ```
 
 ### 1. Dragon Head (Martial Equipment)

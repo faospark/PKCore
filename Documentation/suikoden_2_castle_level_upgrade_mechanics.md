@@ -15,12 +15,12 @@ Castle progression is tracked globally in the `GAME_WORK` singleton hierarchy:
 
 ```mermaid
 graph TD
-    GW["GAME_WORK (Singleton)"] -->|offset 0x68| GD["GAME_DATA (game_data)"]
-    GD -->|offset 0x60| BLV["uint8_t base_lv (Castle Stage 0..4)"]
-    GD -->|offset 0x62| HT1["uint8_t hon_time (Castle schedule timer)"]
-    GD -->|offset 0x64| HT2["uint16_t hon_time2 (Secondary schedule timer)"]
-    GW -->|offset 0x88| EF["uint8_t[] event_flag (Story event flags)"]
-    GW -->|offset 0x78| CF["uint8_t[] chara_flag (Recruitment flags)"]
+    GW["GAME_WORK (Singleton)"] -->|"offset 0x68"| GD["GAME_DATA (game_data)"]
+    GD -->|"offset 0x60"| BLV["uint8_t base_lv (Castle Stage 0..4)"]
+    GD -->|"offset 0x62"| HT1["uint8_t hon_time (Castle schedule timer)"]
+    GD -->|"offset 0x64"| HT2["uint16_t hon_time2 (Secondary schedule timer)"]
+    GW -->|"offset 0x88"| EF["uint8_t[] event_flag (Story event flags)"]
+    GW -->|"offset 0x78"| CF["uint8_t[] chara_flag (Recruitment flags)"]
 ```
 
 ### Exact Memory Layout (`il2cpp.h` / `dump.cs`)
@@ -100,21 +100,21 @@ flowchart TD
     Start["HonchkInit Entry"] --> Count["Calculate Recruited Stars (bVar8)"]
     Count --> CheckLV{"Current base_lv"}
     
-    CheckLV -->|base_lv == 0| Up1["Set base_lv = 1 (Castle Level 1)"]
+    CheckLV -->|"base_lv == 0"| Up1["Set base_lv = 1 (Castle Level 1)"]
     
-    CheckLV -->|base_lv == 1| Check2{"bVar8 > 31 AND<br/>event_flag[182] & 0x01"}
-    Check2 -->|Yes| Up2["Set base_lv = 2 (Castle Level 2)<br/>Queue Cutscene Event 0x50, param 1"]
-    Check2 -->|No| Clock
+    CheckLV -->|"base_lv == 1"| Check2{"bVar8 > 31 AND<br/>event_flag[182] and 0x01"}
+    Check2 -->|"Yes"| Up2["Set base_lv = 2 (Castle Level 2)<br/>Queue Cutscene Event 0x50, param 1"]
+    Check2 -->|"No"| Clock
     
-    CheckLV -->|base_lv == 2| Check3{"bVar8 > 62 AND<br/>event_flag[143] & 0x02"}
-    Check3 -->|Yes| Up3["Set base_lv = 3 (Castle Level 3)<br/>Queue Cutscene Event 0x50, param 0"]
-    Check3 -->|No| Clock
+    CheckLV -->|"base_lv == 2"| Check3{"bVar8 > 62 AND<br/>event_flag[143] and 0x02"}
+    Check3 -->|"Yes"| Up3["Set base_lv = 3 (Castle Level 3)<br/>Queue Cutscene Event 0x50, param 0"]
+    Check3 -->|"No"| Clock
     
-    CheckLV -->|base_lv == 3| Check4{"bVar8 > 100 AND<br/>event_flag[187] & 0x40"}
-    Check4 -->|Yes| Up4["Set base_lv = 4 (Castle Level 4 / Grand Fortress)<br/>(Silent Upgrade)"]
-    Check4 -->|No| Clock
+    CheckLV -->|"base_lv == 3"| Check4{"bVar8 > 100 AND<br/>event_flag[187] and 0x40"}
+    Check4 -->|"Yes"| Up4["Set base_lv = 4 (Castle Level 4 / Grand Fortress)<br/>(Silent Upgrade)"]
+    Check4 -->|"No"| Clock
     
-    Up1 --> Clock["Check hon_time & Reposition NPCs"]
+    Up1 --> Clock["Check hon_time and Reposition NPCs"]
     Up2 --> Clock
     Up3 --> Clock
     Up4 --> Clock

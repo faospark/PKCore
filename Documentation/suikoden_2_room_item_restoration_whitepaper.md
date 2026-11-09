@@ -129,9 +129,9 @@ flowchart TD
         SV["Unity GSD2SaveData Serializer (Automatic JSON Save)"]
     end
 
-    subgraph Presentation ["In-Game Visuals & Dialogues"]
+    subgraph Presentation ["In-Game Visuals and Dialogues"]
         MAP["vd06 Map Event Injections (MACHICON.EventInit)"]
-        TXT["Item Inspection Dialogue & Nanami Flavor Comments"]
+        TXT["Item Inspection Dialogue and Nanami Flavor Comments"]
     end
 
     UI1 --> Core_Logic
