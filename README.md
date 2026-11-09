@@ -1,4 +1,4 @@
-# P.K. - Core
+﻿# P.K. - Core
 
 **By [faospark](https://github.com/faospark)**
 
