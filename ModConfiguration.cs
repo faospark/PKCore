@@ -30,8 +30,6 @@ public sealed class ModConfiguration
 
     // NPC Portrait & Asset Settings
     public ConfigEntry<bool> LogTextIDs { get; private set; }
-    public ConfigEntry<bool> LogEventFlagsS1 { get; private set; }
-    public ConfigEntry<bool> LogEventFlagsS2 { get; private set; }
     public ConfigEntry<bool> DumpTextDatabase { get; private set; }
     public ConfigEntry<bool> DumpJsonAssets { get; private set; }
     public ConfigEntry<bool> EnableJsonOverrides { get; private set; }
@@ -66,8 +64,6 @@ public sealed class ModConfiguration
 
     // Suikoden 1 UI Settings
     public ConfigEntry<bool> S1ScaledDownWorldMap { get; private set; }
-    public ConfigEntry<bool> EnableS1QuickRuneMaster { get; private set; }
-    public ConfigEntry<bool> S1QuickRuneMasterRequireJeane { get; private set; }
 
     // UI Settings
     public ConfigEntry<bool> ScaleDownDialogBox { get; private set; }
@@ -320,22 +316,6 @@ public sealed class ModConfiguration
             "Automatically resets Clive's pursuit quest back to Lakewest upon entering Lakewest with the Sajah Village finale completed. Allows replaying the complete questline from Lakewest to Sajah indefinitely in the late game."
         );
 
-        // Suikoden 1 Castle Rune Master (Quick Rune)
-        EnableS1QuickRuneMaster = _config.Bind(
-            "06 Game : Suikoden 1",
-            "EnableS1QuickRuneMaster",
-            true,
-            "Press Right Stick Down (or [F7] on keyboard) to open the Toran Castle Rune Master (Jeane) directly from anywhere on the field, immune to glitches and softlocks."
-        );
-
-        S1QuickRuneMasterRequireJeane = _config.Bind(
-            "06 Game : Suikoden 1",
-            "S1QuickRuneMasterRequireJeane",
-            false,
-            "When enabled, Remote Rune Master requires Jeane to be recruited in Antei before it can be accessed. Set to false to allow opening anytime without recruitment or castle restrictions."
-        );
-
-
         // Performance section - all performance related settings
         EnableTextureManifestCache = _config.Bind(
             "Performance",
@@ -388,20 +368,6 @@ public sealed class ModConfiguration
             "LogTextIDs",
             false,
             "Log all text ID lookups to the console. Enable this to find the ID of dialog lines you want to replace. WARNING: Creates a lot of log output."
-        );
-
-        LogEventFlagsS1 = _config.Bind(
-            "zz - Diagnostics",
-            "LogEventFlagsS1",
-            true,
-            "Log Suikoden 1 story and temporary event flag modifications in real time to the BepInEx console/log. Useful for mapping quest and progression flags."
-        );
-
-        LogEventFlagsS2 = _config.Bind(
-            "zz - Diagnostics",
-            "LogEventFlagsS2",
-            true,
-            "Log Suikoden 2 event flag modifications (eventFlgON / eventFlgOFF) in real time to the BepInEx console/log. Useful for mapping story, quest, and recruitment flags."
         );
 
         DumpTextDatabase = _config.Bind(

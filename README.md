@@ -17,7 +17,6 @@ The **core DLL component** for **[Project Kyaro](https://www.nexusmods.com/suiko
 * **Clive's Pursuit Quest Replay (S2)**: Indefinitely replay the pursuit arc from Lakewest after the Sajah finale with in-flight self-healing flags.
 * **Infinite Cook-Off Battles Loop & Cooldown Reduction (S2)**: Loop Hai Yo's cook-off battles after Jinkai with full recipe preservation, plus instant cooldown bypass.
 * **Cook-Off Live Scoring Assistant & Optimal Menu Recommendations (S2)**: Real-time scoring predictions and optimal recipe + spice recommendations on screen as you select dishes during Chef Hai Yo's cook-off battles, with full judge taste profile breakdown.
-* **Remote Castle Rune Master Access (S1)**: Press Right Stick Down or `[F7]` to open Jeane's Toran Castle rune shop from anywhere on the field with field state validation.
 * **Boosted War Battles & Formation Menu Synchronization (S2)**: Customize war stats/abilities via `S2WarAbilities.json` with live synchronization into Apple's squad formation UI.
 * **Save Slot Party Member Mini Portraits (S1 & S2)**: Display party member portraits next to save slots in the Save/Load window with high-performance caching.
 * **Colored Intros and Flashbacks (S2)**: Restore full color to intro and flashback sequences by disabling the monochrome custom post-effect.
@@ -50,7 +49,6 @@ The **core DLL component** for **[Project Kyaro](https://www.nexusmods.com/suiko
 
 **[Diagnostics & Developer Tools]**
 
-* **Real-Time Event Flag Logger (S1 & S2)**: Intercepts flag operations live in Suikoden 1 and Suikoden 2, logging byte offsets, bitmasks, and binary values to the BepInEx console/log (`LogEventFlagsS1`, `LogEventFlagsS2`).
 * **Text Database & JSON Asset Dumper**: Dumps runtime dialogue IDs and AssetBundle TextAssets/JSON to `PKCore/Debug/` for reverse-engineering.
 * **High-Speed Decompiled Symbol Indexer & CLI Query Tool**: Instant sub-millisecond lookup tool for C# classes, members, native IL2CPP memory addresses, and all 360 game maps (`tools/sym.bat`).
 
@@ -61,7 +59,8 @@ The **core DLL component** for **[Project Kyaro](https://www.nexusmods.com/suiko
 To keep PKCore focused as the core texture engine, asset framework, and foundation layer, several gameplay systems previously part of PKextended/early PKCore have been decoupled into dedicated, standalone companion plugins within the Project Kyaro mod suite:
 
 * **[PKBattlePatch](https://www.nexusmods.com/suikoden1and2hdremaster/mods/6)**: Combat enhancements including live Enemy Level/HP HUD bars, Party Max HP gauge, Memory Auto-Battle with persistent battle commands, Smart After-Battle Auto-Healing, customizable battle formation spacing, unlimited command runes, rune unbalance removal, and attack range overrides.
-* **[PKRuneSagePlus](https://www.nexusmods.com/suikoden1and2hdremaster/mods/6)**: Rune vendor expansions including early Sajah Village rare shop & rune sage unlock (bypassing story flag 143, S2) and S1 Castle Rune Master (Jeane) inventory expansion with a progressive crystal vendor.
+* **[PKRuneSagePlus](https://www.nexusmods.com/suikoden1and2hdremaster/mods/6)**: Rune vendor and access expansions including Remote Castle Rune Master access (Right Stick Down / `[F7]`), early Sajah Village rare shop & rune sage unlock (bypassing story flag 143, S2), and S1 Castle Rune Master (Jeane) inventory expansion with a progressive crystal vendor.
+* **[PKDev](https://github.com/faospark)**: Developer diagnostic suite featuring Dear ImGui location & camera telemetry HUD, note taking, and real-time event flag logger (`LogEventFlagsS1`, `LogEventFlagsS2`).
 * **[PKS2BathNPCPatch](https://www.nexusmods.com/suikoden1and2hdremaster/mods/6)**: Complete bathhouse overhaul restoring cut bath sprites for non-combatant recruits and convoy members, unlocking 8-character bathhouse capacity, and enforcing canonical gender-based tub separation.
 * **[PKTenzanPassPatch](https://www.nexusmods.com/suikoden1and2hdremaster/mods/6)**: Restoration of omitted Chimera monster encounters (Parties 6, 7, and 8) in Tenzan Pass (`va11`) with Pyriel's community fix layout and crash prevention bounds checks.
 * **[PKButtonPrompts](https://www.nexusmods.com/suikoden1and2hdremaster/mods/6)**: Universal controller button prompt override framework supporting Xbox, PS4, PS5, and Nintendo Switch layouts.
@@ -82,7 +81,6 @@ Replace game textures by placing custom PNG, JPG, TGA, or DDS files in `BepInEx/
 
 - **Clive's Pursuit Quest Replay (S2)**: Automatically resets Clive's questline back to Lakewest upon entering Lakewest after finishing the Sajah Village finale, allowing indefinite replay of the pursuit arc in late game with in-flight self-healing flags for Rockaxe and Radat.
 - **Infinite Cook-Off Minigame Loop & Cooldown Reduction (S2)**: Automatically restarts Hai Yo's cook-off battles from Chef Antonio (Match 1) after defeating final chef Jinkai and viewing the garden cutscene, while preserving all recipes, seasonings, and bonuses. Also provides a configurable toggle (`ReduceCookOffCooldown`) to bypass the vanilla 30–60 minute active movement cooldown between matches.
-- **Remote Castle Rune Master Access (S1)**: Open Jeane's rune shop from anywhere on the field via Right Stick Down (or keyboard `[F7]`), complete with area background load verification, loading screen immunity, and background player movement silencing.
 - **War Battle Modding & Formation Menu Synchronization (S2)**: Customize character stats, tactical abilities, and subunit bonuses in Suikoden 2 war battles via `PKCore/Config/S2WarAbilities.json`. Synchronizes custom war stats not only into active combat, but also live into Apple's squad formation roster and team change menu at Castle HQ (`w_dat_butai.chara_butai`), including proper indexing for subunit specialists (Apple, Klaus, Huan). See [War Battle Modding Guide](Documentation/war_battle_modding.md).
 - **Floating Borderless Window Mode**: Strips Win32 window chrome (`WS_CAPTION`, `WS_THICKFRAME`, `WS_SYSMENU`, `WS_MINIMIZEBOX`, `WS_MAXIMIZEBOX`) via native `SetWindowLong` and `SetWindowPos` while keeping the engine in `FullScreenMode.Windowed`. Allows players to run arbitrary custom or lower window resolutions in clean borderless windows without desktop stretching. Configurable via `EnableBorderlessWindow` under `[Utilty]` in `faospark.pkcore.cfg`.
   > **Note on Fullscreen Borderless (Desktop Resolution)**: To run fullscreen borderless at your desktop's native resolution, use Unity's native `-popupwindow` launch option in Steam (Properties → General → Launch Options) or Epic Games shortcut target.

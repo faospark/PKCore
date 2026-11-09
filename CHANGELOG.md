@@ -4,6 +4,14 @@ All notable changes to PKCore (formerly PKextended) are documented in this file.
 
 ---
 
+## [2026.11.09]
+
+- **Modularization & Companion Plugin Migration**:
+  - **Remote Castle Rune Master Access (S1)**: Migrated `S1QuickRunePatch.cs` and its config bindings (`EnableS1QuickRuneMaster`, `S1QuickRuneMasterRequireJeane`) to companion plugin **`PKRuneSagePlus`** (v1.1.0), consolidating all Suikoden 1 Rune Sage and shop features.
+  - **Real-Time Event Flag Logger (S1 & S2)**: Migrated `EventFlagLoggerPatch.cs` and its config bindings (`LogEventFlagsS1`, `LogEventFlagsS2`) to developer toolkit **`PKDev`** (v1.1.0), keeping PKCore strictly focused on core engine and asset frameworks.
+
+---
+
 ## [2026.11.08]
 
 - **Cook-Off Live Scoring Assistant & Optimal Menu Helper (`CookOffScoreEngine.cs`, `S2CookOffScorePatch.cs`)**:

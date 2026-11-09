@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace PKCore;
 
-[BepInPlugin("faospark.pkcore", "PKCore", "2026.11.08")]
+[BepInPlugin("faospark.pkcore", "PKCore", "2026.11.09")]
 [BepInDependency("d3xMachina.suikoden_fix", BepInDependency.DependencyFlags.SoftDependency)]
 [BepInDependency("faospark.SquidFam", BepInDependency.DependencyFlags.SoftDependency)]
 public class Plugin : BasePlugin
@@ -90,7 +90,6 @@ public class Plugin : BasePlugin
         if (Config.EnhancedGallery.Value)
             Patches.PSPGalleryEnhanced.Update();
         Patches.MenuScalePatch.ApplyLauncherConfigScaling();
-        Patches.S1QuickRunePatch.Update();
         Patches.S2CookOffLoopPatch.Update();
         Patches.S2CookOffScorePatch.Update();
         AssetLoader.Update();
@@ -379,24 +378,10 @@ public class Plugin : BasePlugin
         }
 
 
-        // Suikoden 1 Castle Rune Master (Quick Rune)
-        if (Config.EnableS1QuickRuneMaster.Value)
-        {
-            if (Config.DetailedLogs.Value)
-                Log.LogInfo("Applying Suikoden 1 Quick Rune Master patch...");
-            harmony.PatchAll(typeof(Patches.S1QuickRunePatch));
-        }
-
         // Suikoden 2 Cook-off battle synchronization & live scoring assistant
         harmony.PatchAll(typeof(Patches.S2CookOffLoopPatch.OverlayRbattleInitPatch));
         harmony.PatchAll(typeof(Patches.S2CookOffScorePatch));
         MACHICON_OnMapInitPatch.OnMapChangedEvent += () => Patches.S2CookOffLoopPatch.CheckAndResetCookOffs(MACHICON_OnMapInitPatch.CurrentMapId);
-
-        // Real-time Event Flag Logger (Suikoden 1 & 2)
-        if (Config.LogEventFlagsS1.Value || Config.LogEventFlagsS2.Value)
-        {
-            EventFlagLoggerPatch.Initialize(harmony);
-        }
 
 
         // PSP Launcher Patch
