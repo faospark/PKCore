@@ -45,10 +45,10 @@
 
 | Slot | Class (`otyp`) | Identity / Description | Sprite Pattern (`fpno`) | Coords (`x, y`) | Size (`w, h`) | Facing (`ano`) | State (`disp`) | Collision (`ozok`) | Speed | Wait | Priority |
 |:---:|---|---|:---:|:---:|:---:|---|---|---|:---:|:---:|:---:|
-| `obj[00]` | NPC / Actor | **Nanami** | `7` | `(48, 114)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 3 | 255 | 0 |
-| `obj[01]` | NPC / Actor | **Apple** | `8` | `(46, 104)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
-| `obj[02]` | NPC / Actor | **Actor ID 102** | `102` | `(48, 61)` | `10x5` | East (Right) | Dormant / Hidden (0) | Special (3) | 4 | 255 | 0 |
-| `obj[03]` | NPC / Actor | **Actor ID 102** | `102` | `(52, 65)` | `0x0` | East (Right) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 1 | 0 |
+| `obj[00]` | NPC / Actor | **Hix** | `7` | `(48, 114)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 3 | 255 | 0 |
+| `obj[01]` | NPC / Actor | **Tengaar** | `8` | `(46, 104)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[02]` | NPC / Actor | **Yuzu** | `102` | `(48, 61)` | `10x5` | East (Right) | Dormant / Hidden (0) | Special (3) | 4 | 255 | 0 |
+| `obj[03]` | NPC / Actor | **Yuzu** | `102` | `(52, 65)` | `0x0` | East (Right) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 1 | 0 |
 | `obj[04]` | NPC / Actor | **Actor ID 64787** | `64787` | `(50, 58)` | `3x3` | South (Down) | Dormant / Hidden (0) | Special (3) | 2 | 128 | 0 |
 | `obj[05]` | NPC / Actor | **Actor ID 64788** | `64788` | `(55, 55)` | `3x3` | South (Down) | Dormant / Hidden (0) | Special (3) | 2 | 128 | 0 |
 | `obj[06]` | NPC / Actor | **Actor ID 64789** | `64789` | `(54, 62)` | `3x3` | South (Down) | Dormant / Hidden (0) | Special (3) | 2 | 128 | 0 |
@@ -88,10 +88,10 @@
 
 #### Entity Narrative Roles, Placements & Mechanics
 
-- **`obj[00]` (Nanami)**: Positioned at tile `(48, 114)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[01]` (Apple)**: Positioned at tile `(46, 104)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[02]` (Object 102)**: Positioned at tile `(48, 61)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[03]` (Object 102)**: Positioned at tile `(52, 65)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[00]` (Hix)**: Positioned at tile `(48, 114)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[01]` (Tengaar)**: Positioned at tile `(46, 104)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[02]` (Yuzu)**: Positioned at tile `(48, 61)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[03]` (Yuzu)**: Positioned at tile `(52, 65)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[04]` (Object 64787)**: Positioned at tile `(50, 58)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[05]` (Object 64788)**: Positioned at tile `(55, 55)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[06]` (Object 64789)**: Positioned at tile `(54, 62)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
@@ -234,8 +234,8 @@
 
 | Slot | Class (`otyp`) | Identity / Description | Sprite Pattern (`fpno`) | Coords (`x, y`) | Size (`w, h`) | Facing (`ano`) | State (`disp`) | Collision (`ozok`) | Speed | Wait | Priority |
 |:---:|---|---|:---:|:---:|:---:|---|---|---|:---:|:---:|:---:|
-| `obj[00]` | NPC / Actor | **Nanami** | `7` | `(133, 203)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
-| `obj[01]` | NPC / Actor | **Apple** | `8` | `(129, 203)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[00]` | NPC / Actor | **Hix** | `7` | `(133, 203)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[01]` | NPC / Actor | **Tengaar** | `8` | `(129, 203)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[02]` | NPC / Actor | **Actor ID 65149** | `65149` | `(131, 200)` | `0x0` | South (Down) | Visible (1) | Solid (Obstacle) | 3 | 255 | 0 |
 | `obj[03]` | NPC / Actor | **Actor ID 65107** | `65107` | `(135, 194)` | `3x5` | South (Down) | Visible (1) | Special (3) | 3 | 128 | 0 |
 | `obj[04]` | NPC / Actor | **Actor ID 65148** | `65148` | `(143, 194)` | `0x0` | Up (North) | Visible (1) | Solid (Obstacle) | 3 | 255 | 0 |
@@ -249,8 +249,8 @@
 
 #### Entity Narrative Roles, Placements & Mechanics
 
-- **`obj[00]` (Nanami)**: Positioned at tile `(133, 203)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[01]` (Apple)**: Positioned at tile `(129, 203)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[00]` (Hix)**: Positioned at tile `(133, 203)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[01]` (Tengaar)**: Positioned at tile `(129, 203)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[02]` (Object 65149)**: Positioned at tile `(131, 200)`, facing South (Down). Rendered and active by default. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[03]` (Object 65107)**: Positioned at tile `(135, 194)`, facing South (Down). Rendered and active by default. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[04]` (Object 65148)**: Positioned at tile `(143, 194)`, facing Up (North). Rendered and active by default. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
@@ -712,8 +712,8 @@
 
 | Slot | Class (`otyp`) | Identity / Description | Sprite Pattern (`fpno`) | Coords (`x, y`) | Size (`w, h`) | Facing (`ano`) | State (`disp`) | Collision (`ozok`) | Speed | Wait | Priority |
 |:---:|---|---|:---:|:---:|:---:|---|---|---|:---:|:---:|:---:|
-| `obj[00]` | NPC / Actor | **Actor ID 117** | `117` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
-| `obj[01]` | NPC / Actor | **Actor ID 122** | `122` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[00]` | NPC / Actor | **Ridley** | `117` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[01]` | NPC / Actor | **Boris** | `122` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[02]` | World Device | **Mechanism (ano 28)** | `0` | `(90, 26)` | `0x0` | Frame 28 | Visible (1) | Passable (0) | 4 | 255 | 180 |
 | `obj[03]` | NPC / Actor | **Actor ID 65107** | `65107` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[04]` | NPC / Actor | **Actor ID 65107** | `65107` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
@@ -744,8 +744,8 @@
 
 #### Entity Narrative Roles, Placements & Mechanics
 
-- **`obj[00]` (Object 117)**: Positioned at tile `(0, 0)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[01]` (Object 122)**: Positioned at tile `(0, 0)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[00]` (Ridley)**: Positioned at tile `(0, 0)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[01]` (Boris)**: Positioned at tile `(0, 0)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[02]` (World Device: Invisible / Hitbox Trigger)**: Interactive mechanism at tile `(90, 26)` with state parameter `28`.
 - **`obj[03]` (Object 65107)**: Positioned at tile `(0, 0)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[04]` (Object 65107)**: Positioned at tile `(0, 0)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
@@ -812,12 +812,12 @@
 
 | Slot | Class (`otyp`) | Identity / Description | Sprite Pattern (`fpno`) | Coords (`x, y`) | Size (`w, h`) | Facing (`ano`) | State (`disp`) | Collision (`ozok`) | Speed | Wait | Priority |
 |:---:|---|---|:---:|:---:|:---:|---|---|---|:---:|:---:|:---:|
-| `obj[00]` | NPC / Actor | **Nanami** | `7` | `(38, 48)` | `0x0` | East (Right) | Visible (1) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[00]` | NPC / Actor | **Hix** | `7` | `(38, 48)` | `0x0` | East (Right) | Visible (1) | Solid (Obstacle) | 4 | 255 | 0 |
 
 
 #### Entity Narrative Roles, Placements & Mechanics
 
-- **`obj[00]` (Nanami)**: Positioned at tile `(38, 48)`, facing East (Right). Rendered and active by default. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[00]` (Hix)**: Positioned at tile `(38, 48)`, facing East (Right). Rendered and active by default. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 
 
 #### Complete Bytecode Script Catalog (5 Scripts)

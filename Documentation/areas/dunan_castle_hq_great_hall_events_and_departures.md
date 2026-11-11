@@ -45,34 +45,34 @@
 
 | Slot | Class (`otyp`) | Identity / Description | Sprite Pattern (`fpno`) | Coords (`x, y`) | Size (`w, h`) | Facing (`ano`) | State (`disp`) | Collision (`ozok`) | Speed | Wait | Priority |
 |:---:|---|---|:---:|:---:|:---:|---|---|---|:---:|:---:|:---:|
-| `obj[00]` | NPC / Actor | **Simone Verdicci** | `37` | `(57, 42)` | `5x2` | South (Down) | Dormant / Hidden (0) | Special (3) | 3 | 128 | 0 |
-| `obj[01]` | NPC / Actor | **Richmond** | `38` | `(123, 50)` | `0x0` | East (Right) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
-| `obj[02]` | NPC / Actor | **Humphrey Mintz** | `100` | `(125, 53)` | `0x0` | Up (North) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
-| `obj[03]` | NPC / Actor | **Actor ID 42** | `42` | `(32, 28)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
-| `obj[04]` | NPC / Actor | **Actor ID 41** | `41` | `(58, 28)` | `5x2` | East (Right) | Dormant / Hidden (0) | Special (3) | 3 | 128 | 0 |
-| `obj[05]` | Prop / Scenery | **Lilly** | `49` | `(108, 46)` | `0x0` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
-| `obj[06]` | Prop / Scenery | **Lilly** | `49` | `(113, 46)` | `0x0` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
+| `obj[00]` | NPC / Actor | **Amada** | `37` | `(57, 42)` | `5x2` | South (Down) | Dormant / Hidden (0) | Special (3) | 3 | 128 | 0 |
+| `obj[01]` | NPC / Actor | **Tai Ho** | `38` | `(123, 50)` | `0x0` | East (Right) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[02]` | NPC / Actor | **Yam Koo** | `100` | `(125, 53)` | `0x0` | Up (North) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[03]` | NPC / Actor | **Gadget** | `42` | `(32, 28)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[04]` | NPC / Actor | **Meg** | `41` | `(58, 28)` | `5x2` | East (Right) | Dormant / Hidden (0) | Special (3) | 3 | 128 | 0 |
+| `obj[05]` | Prop / Scenery | **Abizboah** | `49` | `(108, 46)` | `0x0` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
+| `obj[06]` | Prop / Scenery | **Abizboah** | `49` | `(113, 46)` | `0x0` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
 | `obj[07]` | Prop / Scenery | **Prop ID 53553** | `53553` | `(110, 60)` | `0x0` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
 | `obj[08]` | Trigger / Hitbox | **Hitbox Zone (7x3)** | `0` | `(110, 44)` | `6x2` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
-| `obj[09]` | Prop / Scenery | **Hoi (Impostor)** | `74` | `(113, 44)` | `0x0` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
-| `obj[10]` | Prop / Scenery | **Hoi (Impostor)** | `74` | `(118, 44)` | `0x0` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
+| `obj[09]` | Prop / Scenery | **Rulodia** | `74` | `(113, 44)` | `0x0` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
+| `obj[10]` | Prop / Scenery | **Rulodia** | `74` | `(118, 44)` | `0x0` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
 | `obj[11]` | Trigger / Hitbox | **Hitbox Zone (7x3)** | `0` | `(115, 42)` | `6x2` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
 | `obj[12]` | Prop / Scenery | **Prop ID 53578** | `53578` | `(118, 59)` | `0x0` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
-| `obj[13]` | NPC / Actor | **Actor ID 79** | `79` | `(109, 48)` | `5x1` | East (Right) | Dormant / Hidden (0) | Special (3) | 3 | 128 | 0 |
+| `obj[13]` | NPC / Actor | **Chuchura** | `79` | `(109, 48)` | `5x1` | East (Right) | Dormant / Hidden (0) | Special (3) | 3 | 128 | 0 |
 | `obj[14]` | NPC / Actor | **Actor ID 65105** | `65105` | `(61, 57)` | `0x0` | East (Right) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[15]` | Save Point | **Journeyman Save Orb** | `0` | `(34, 54)` | `0x0` | Frame 25 | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[16]` | Rest Device / Fire | **Inn Bed / Recovery Device** | `0` | `(27, 28)` | `0x0` | Frame 26 | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 480 |
-| `obj[17]` | NPC / Actor | **Jowy Atreides** | `2` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
-| `obj[18]` | NPC / Actor | **Youth Brigade Recruit** | `3` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
-| `obj[19]` | NPC / Actor | **Jowy (Camp/Prologue)** | `18` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[17]` | NPC / Actor | **Flik** | `2` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[18]` | NPC / Actor | **Viktor** | `3` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[19]` | NPC / Actor | **Nanami** | `18` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[20]` | NPC / Actor | **Eilie** | `19` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[21]` | NPC / Actor | **Rina** | `20` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[22]` | NPC / Actor | **Bolgan** | `21` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[23]` | NPC / Actor | **Pilika (Wooden Amulet)** | `124` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[24]` | NPC / Actor | **Tsai** | `52` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
-| `obj[25]` | NPC / Actor | **Rowd** | `85` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
-| `obj[26]` | NPC / Actor | **Actor ID 89** | `89` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
-| `obj[27]` | NPC / Actor | **Actor ID 79** | `79` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
+| `obj[25]` | NPC / Actor | **Apple** | `85` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[26]` | NPC / Actor | **Shu** | `89` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[27]` | NPC / Actor | **Chuchura** | `79` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
 | `obj[28]` | Trigger / Hitbox | **Hitbox Zone (3x2)** | `0` | `(109, 38)` | `2x1` | South (Down) | Visible (1) | Passable (0) | 4 | 255 | 0 |
 | `obj[29]` | Trigger / Hitbox | **Hitbox Zone (2x2)** | `0` | `(33, 27)` | `1x1` | South (Down) | Visible (1) | Passable (0) | 4 | 255 | 0 |
 | `obj[30]` | Trigger / Hitbox | **Hitbox Zone (2x2)** | `0` | `(36, 25)` | `1x1` | South (Down) | Visible (1) | Passable (0) | 4 | 255 | 0 |
@@ -105,34 +105,34 @@
 
 #### Entity Narrative Roles, Placements & Mechanics
 
-- **`obj[00]` (Simone Verdicci)**: Positioned at tile `(57, 42)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[01]` (Richmond)**: Positioned at tile `(123, 50)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[02]` (Humphrey Mintz)**: Positioned at tile `(125, 53)`, facing Up (North). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[03]` (Object 42)**: Positioned at tile `(32, 28)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[04]` (Object 41)**: Positioned at tile `(58, 28)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[05]` (Prop: Lilly)**: Environmental world dressing prop placed at tile `(108, 46)`. Solid collision is set to `32`.
-- **`obj[06]` (Prop: Lilly)**: Environmental world dressing prop placed at tile `(113, 46)`. Solid collision is set to `0`.
+- **`obj[00]` (Amada)**: Positioned at tile `(57, 42)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[01]` (Tai Ho)**: Positioned at tile `(123, 50)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[02]` (Yam Koo)**: Positioned at tile `(125, 53)`, facing Up (North). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[03]` (Gadget)**: Positioned at tile `(32, 28)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[04]` (Meg)**: Positioned at tile `(58, 28)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[05]` (Prop: Abizboah)**: Environmental world dressing prop placed at tile `(108, 46)`. Solid collision is set to `32`.
+- **`obj[06]` (Prop: Abizboah)**: Environmental world dressing prop placed at tile `(113, 46)`. Solid collision is set to `0`.
 - **`obj[07]` (Prop: Object 53553)**: Environmental world dressing prop placed at tile `(110, 60)`. Solid collision is set to `0`.
 - **`obj[08]` (Hitbox Zone)**: Bounding trigger area covering `7` tiles wide by `3` tiles high from `(110, 44)` to `(116, 46)`. Handles doorway warps, counter interactions, and room transitions.
-- **`obj[09]` (Prop: Hoi (Impostor))**: Environmental world dressing prop placed at tile `(113, 44)`. Solid collision is set to `32`.
-- **`obj[10]` (Prop: Hoi (Impostor))**: Environmental world dressing prop placed at tile `(118, 44)`. Solid collision is set to `0`.
+- **`obj[09]` (Prop: Rulodia)**: Environmental world dressing prop placed at tile `(113, 44)`. Solid collision is set to `32`.
+- **`obj[10]` (Prop: Rulodia)**: Environmental world dressing prop placed at tile `(118, 44)`. Solid collision is set to `0`.
 - **`obj[11]` (Hitbox Zone)**: Bounding trigger area covering `7` tiles wide by `3` tiles high from `(115, 42)` to `(121, 44)`. Handles doorway warps, counter interactions, and room transitions.
 - **`obj[12]` (Prop: Object 53578)**: Environmental world dressing prop placed at tile `(118, 59)`. Solid collision is set to `0`.
-- **`obj[13]` (Object 79)**: Positioned at tile `(109, 48)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[13]` (Chuchura)**: Positioned at tile `(109, 48)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[14]` (Object 65105)**: Positioned at tile `(61, 57)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[15]` (Journeyman Save Crystal)**: Floating save station orb at tile `(34, 54)`, priority `0`. Triggers `MSaveInit` save system dialog.
 - **`obj[16]` (World Device: Invisible / Hitbox Trigger)**: Interactive mechanism at tile `(27, 28)` with state parameter `26`.
-- **`obj[17]` (Jowy Atreides)**: Positioned at tile `(0, 0)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[18]` (Youth Brigade Recruit)**: Positioned at tile `(0, 0)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[19]` (Jowy (Camp/Prologue))**: Positioned at tile `(0, 0)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[17]` (Flik)**: Positioned at tile `(0, 0)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[18]` (Viktor)**: Positioned at tile `(0, 0)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[19]` (Nanami)**: Positioned at tile `(0, 0)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[20]` (Eilie)**: Positioned at tile `(0, 0)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[21]` (Rina)**: Positioned at tile `(0, 0)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[22]` (Bolgan)**: Positioned at tile `(0, 0)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[23]` (Pilika (Wooden Amulet))**: Positioned at tile `(0, 0)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[24]` (Tsai)**: Positioned at tile `(0, 0)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[25]` (Rowd)**: Positioned at tile `(0, 0)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[26]` (Object 89)**: Positioned at tile `(0, 0)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[27]` (Object 79)**: Positioned at tile `(0, 0)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[25]` (Apple)**: Positioned at tile `(0, 0)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[26]` (Shu)**: Positioned at tile `(0, 0)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[27]` (Chuchura)**: Positioned at tile `(0, 0)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[28]` (Hitbox Zone)**: Bounding trigger area covering `3` tiles wide by `2` tiles high from `(109, 38)` to `(111, 39)`. Handles doorway warps, counter interactions, and room transitions.
 - **`obj[29]` (Hitbox Zone)**: Bounding trigger area covering `2` tiles wide by `2` tiles high from `(33, 27)` to `(34, 28)`. Handles doorway warps, counter interactions, and room transitions.
 - **`obj[30]` (Hitbox Zone)**: Bounding trigger area covering `2` tiles wide by `2` tiles high from `(36, 25)` to `(37, 26)`. Handles doorway warps, counter interactions, and room transitions.

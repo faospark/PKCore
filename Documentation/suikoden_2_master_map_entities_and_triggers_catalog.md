@@ -1,8 +1,8 @@
 # Suikoden II Master Map Entities, Triggers & World Objects Catalog
 
-## Exhaustive Engine Architecture, Trigger Bytecode & 64 Distinct Geographic Area Volumes
+## Exhaustive Engine Architecture, Trigger Bytecode & 66 Distinct Geographic Area Volumes
 
-This document and its **64 dedicated geographic area volumes** in `Documentation/areas/` form the definitive, unabridged technical reference for all **4,901 NPCs**, **1,552 Dynamic Props**, **3,207 Collision Triggers**, **90 Save Orbs**, and **27 Dungeon Chest Clusters** across all 226 master map assets in **Suikoden II HD Remaster** (`GSD2`).
+This document and its **66 dedicated geographic area volumes** in `Documentation/areas/` form the definitive, unabridged technical reference for all **4,901 NPCs**, **1,552 Dynamic Props**, **3,415 Collision Triggers**, **90 Save Orbs**, and **27 Dungeon Chest Clusters** across all **236 master map assets** (226 local town/dungeon maps + 10 overworld sectors) in **Suikoden II HD Remaster** (`GSD2`).
 
 Every single area has its own dedicated file in full. Every single entity—whether a living actor, an invisible trigger dot, a decorative prop (bonsai, well rim, water bucket, tea table, chair), a treasure chest, or a Journeyman save orb—is fully itemized with exact coordinates, dimensions, facing direction, collision bitmasks, and decompiled bytecode execution scripts.
 
@@ -124,7 +124,7 @@ Every single distinct geographic location in Suikoden II is documented in full i
 
 | # | Geographic Area Title | Map IDs Included | Line Count | Full Unabridged Documentation File |
 |:---:|---|---|:---:|---|
-| 1 | **Banner Village & Fast Pier** | `vf01`, `vf02`, `vf06`, `vf07` | **1,022 lines** | [areas/banner_village.md](areas/banner_village.md) |
+| 1 | **Banner Village & Fast Pier** | `vf05` | **368 lines** | [areas/banner_village.md](areas/banner_village.md) |
 | 2 | **Cave of the Wind Caverns** | `vd06`, `vd13` | **1,138 lines** | [areas/cave_of_the_wind.md](areas/cave_of_the_wind.md) |
 | 3 | **Coronet Town & Harbor Docks** | `vc17`, `vc18`, `vc19` | **503 lines** | [areas/coronet_town_and_port.md](areas/coronet_town_and_port.md) |
 | 4 | **Crom Village & Outskirts Path** | `vg08`, `vg13`, `vg16` | **1,103 lines** | [areas/crom_village.md](areas/crom_village.md) |
@@ -154,7 +154,8 @@ Every single distinct geographic location in Suikoden II is documented in full i
 | 28 | **Forest Village Settlement** | `ve02`, `ve10`, `ve11`, `ve12` | **899 lines** | [areas/forest_village.md](areas/forest_village.md) |
 | 29 | **Greenhill Principality (City & Outskirts)** | `ve01`, `ve08`, `ve09`, `ve13`, `ve14`, `ve16` | **1,771 lines** | [areas/greenhill_city.md](areas/greenhill_city.md) |
 | 30 | **Greenhill-Matilda Forest Trail & Checkpoint** | `ve04`, `ve05`, `ve15` | **518 lines** | [areas/greenhill_matilda_path_and_border.md](areas/greenhill_matilda_path_and_border.md) |
-| 31 | **Gregminster Capital Avenues** | `vf04` | **215 lines** | [areas/gregminster_capital.md](areas/gregminster_capital.md) |
+| 31 | **Gregminster Capital Plaza & Avenues** | `vf02` | **362 lines** | [areas/gregminster_capital.md](areas/gregminster_capital.md) |
+| 31B | **Gregminster Town Interiors & Commercial District** | `vf03` | **571 lines** | [areas/gregminster_interiors.md](areas/gregminster_interiors.md) |
 | 32 | **Highland Military Recon Encampment** | `vc14`, `vc16`, `vc20`, `vc23`, `vc30` | **792 lines** | [areas/highland_recon_camp_muse.md](areas/highland_recon_camp_muse.md) |
 | 33 | **Highland Youth Brigade Camp** | `va01`, `va02` | **530 lines** | [areas/highland_youth_brigade_camp.md](areas/highland_youth_brigade_camp.md) |
 | 34 | **Highway Village Frontier Settlement** | `vi11`, `vi12`, `vi14` | **719 lines** | [areas/highway_village.md](areas/highway_village.md) |
@@ -165,7 +166,7 @@ Every single distinct geographic location in Suikoden II is documented in full i
 | 39 | **Lakewest Town & Docks** | `vh02`, `vh10` | **740 lines** | [areas/lakewest_town.md](areas/lakewest_town.md) |
 | 40 | **Viktor's Mercenary Fortress** | `vb01`, `vb02`, `vb12`, `vb13`, `vb14`, `vb15`, `vb16`, `vb19` | **1,523 lines** | [areas/mercenary_fortress.md](areas/mercenary_fortress.md) |
 | 41 | **Mt. Rakutei Dragon Cliffs & Peak** | `vi08`, `vi09`, `vi13`, `vi15` | **655 lines** | [areas/mt_rakutei.md](areas/mt_rakutei.md) |
-| 42 | **Banner Pass (Toran Mountain Trail)** | `vf03` | **949 lines** | [areas/banner_pass.md](areas/banner_pass.md) |
+| 42 | **Banner Pass (Toran Mountain Trail)** | `vf06`, `vf07` | **439 lines** | [areas/banner_pass.md](areas/banner_pass.md) |
 | 43 | **Ryube Forest & Tsai's Hermit Hut** | `vb07`, `vb09`, `vb10`, `vb11`, `vb20`, `vb21` | **1,211 lines** | [areas/ryube_forest.md](areas/ryube_forest.md) |
 | 44 | **Muse City (Plaza, City Hall & Ruins)** | `vc01`, `vc02`, `vc03`, `vc09`, `vc10`, `vc11`, `vc15`, `vc21`, `vc22`, `vc24`, `vc25`, `vc26`, `vc27`, `vc28`, `vc29`, `vc31` | **3,944 lines** | [areas/muse_city.md](areas/muse_city.md) |
 | 45 | **New Leaf Academy (Campus, Dorms & Cellar)** | `ve03`, `ve06`, `ve07` | **1,387 lines** | [areas/new_leaf_academy.md](areas/new_leaf_academy.md) |
@@ -182,12 +183,14 @@ Every single distinct geographic location in Suikoden II is documented in full i
 | 56 | **Tiger Cave & Mt. Senai Shrines** | `vg09`, `vg15` | **483 lines** | [areas/tiger_cave_mt_senai.md](areas/tiger_cave_mt_senai.md) |
 | 57 | **Tinto Mining City & Mayor Hall** | `vg01`, `vg02`, `vg03`, `vg17` | **1,368 lines** | [areas/tinto_city.md](areas/tinto_city.md) |
 | 58 | **Tinto Mines & Underground Caverns** | `vg05`, `vg07`, `vg10`, `vg11`, `vg12`, `vg14` | **891 lines** | [areas/tinto_mines.md](areas/tinto_mines.md) |
-| 59 | **Toran Castle Presidential Palace** | `vf05` | **370 lines** | [areas/toran_castle_palace.md](areas/toran_castle_palace.md) |
-| 60 | **Toto Village (Peaceful & Burned Ruins)** | `vb03`, `vb04` | **514 lines** | [areas/toto_village.md](areas/toto_village.md) |
-| 61 | **Two River City (Human, Wingly & Kobold)** | `vh01`, `vh05`, `vh06`, `vh11`, `vh12` | **2,132 lines** | [areas/two_river_city.md](areas/two_river_city.md) |
-| 62 | **Drakemouth Village & Border Road** | `vh08` | **350 lines** | [areas/drakemouth_village.md](areas/drakemouth_village.md) |
-| 63 | **Two River Subterranean Sewers** | `vh04` | **416 lines** | [areas/two_river_sewers.md](areas/two_river_sewers.md) |
-| 64 | **White Deer Country Inn** | `vc04`, `vc05` | **441 lines** | [areas/white_deer_inn.md](areas/white_deer_inn.md) |
+| 59 | **Toran Castle Presidential Palace** | `vf04` | **213 lines** | [areas/toran_castle_palace.md](areas/toran_castle_palace.md) |
+| 60 | **Rokkaku Hamlet** | `vf01` | **274 lines** | [areas/rokkaku_hamlet.md](areas/rokkaku_hamlet.md) |
+| 61 | **Toto Village (Peaceful & Burned Ruins)** | `vb03`, `vb04` | **514 lines** | [areas/toto_village.md](areas/toto_village.md) |
+| 62 | **Two River City (Human, Wingly & Kobold)** | `vh01`, `vh05`, `vh06`, `vh11`, `vh12` | **2,132 lines** | [areas/two_river_city.md](areas/two_river_city.md) |
+| 63 | **Drakemouth Village & Border Road** | `vh08` | **350 lines** | [areas/drakemouth_village.md](areas/drakemouth_village.md) |
+| 64 | **Two River Subterranean Sewers** | `vh04` | **416 lines** | [areas/two_river_sewers.md](areas/two_river_sewers.md) |
+| 65 | **White Deer Country Inn** | `vc04`, `vc05` | **441 lines** | [areas/white_deer_inn.md](areas/white_deer_inn.md) |
+| 66 | **World Map Overworld Sectors (Regions A–K)** | `wa`, `wb`, `wc`, `wd`, `we`, `wg`, `wh`, `wi`, `wj`, `wk` | **250 lines** | [areas/world_map_sectors.md](areas/world_map_sectors.md) |
 
 ---
 

@@ -45,9 +45,9 @@
 
 | Slot | Class (`otyp`) | Identity / Description | Sprite Pattern (`fpno`) | Coords (`x, y`) | Size (`w, h`) | Facing (`ano`) | State (`disp`) | Collision (`ozok`) | Speed | Wait | Priority |
 |:---:|---|---|:---:|:---:|:---:|---|---|---|:---:|:---:|:---:|
-| `obj[00]` | NPC / Actor | **Highland Patrol Soldier** | `80` | `(47, 85)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 3 | 255 | 0 |
-| `obj[01]` | NPC / Actor | **Jeane (Rune Sage)** | `145` | `(48, 92)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 3 | 255 | 0 |
-| `obj[02]` | NPC / Actor | **Jude (Sculptor)** | `140` | `(55, 74)` | `0x0` | East (Right) | Dormant / Hidden (0) | Solid (Obstacle) | 3 | 255 | 0 |
+| `obj[00]` | NPC / Actor | **Jowy Atreides** | `80` | `(47, 85)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 3 | 255 | 0 |
+| `obj[01]` | NPC / Actor | **Rowd** | `145` | `(48, 92)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 3 | 255 | 0 |
+| `obj[02]` | NPC / Actor | **Luca** | `140` | `(55, 74)` | `0x0` | East (Right) | Dormant / Hidden (0) | Solid (Obstacle) | 3 | 255 | 0 |
 | `obj[03]` | NPC / Actor | **Actor ID 65121** | `65121` | `(16, 16)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 3 | 255 | 0 |
 | `obj[04]` | NPC / Actor | **Actor ID 65121** | `65121` | `(16, 16)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 3 | 255 | 0 |
 | `obj[05]` | NPC / Actor | **Actor ID 65121** | `65121` | `(43, 94)` | `8x4` | South (Down) | Dormant / Hidden (0) | Special (3) | 3 | 255 | 0 |
@@ -101,9 +101,9 @@
 
 #### Entity Narrative Roles, Placements & Mechanics
 
-- **`obj[00]` (Highland Patrol Soldier)**: Positioned at tile `(47, 85)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[01]` (Jeane (Rune Sage))**: Positioned at tile `(48, 92)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[02]` (Jude (Sculptor))**: Positioned at tile `(55, 74)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[00]` (Jowy Atreides)**: Positioned at tile `(47, 85)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[01]` (Rowd)**: Positioned at tile `(48, 92)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[02]` (Luca)**: Positioned at tile `(55, 74)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[03]` (Object 65121)**: Positioned at tile `(16, 16)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[04]` (Object 65121)**: Positioned at tile `(16, 16)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[05]` (Object 65121)**: Positioned at tile `(43, 94)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
@@ -221,8 +221,8 @@
 
 | Slot | Class (`otyp`) | Identity / Description | Sprite Pattern (`fpno`) | Coords (`x, y`) | Size (`w, h`) | Facing (`ano`) | State (`disp`) | Collision (`ozok`) | Speed | Wait | Priority |
 |:---:|---|---|:---:|:---:|:---:|---|---|---|:---:|:---:|:---:|
-| `obj[00]` | NPC / Actor | **Highland Patrol Soldier** | `80` | `(19, 32)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
-| `obj[01]` | NPC / Actor | **Jeane (Rune Sage)** | `145` | `(20, 20)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[00]` | NPC / Actor | **Jowy Atreides** | `80` | `(19, 32)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[01]` | NPC / Actor | **Rowd** | `145` | `(20, 20)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[02]` | NPC / Actor | **Actor ID 65123** | `65123` | `(16, 16)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[03]` | NPC / Actor | **Actor ID 65123** | `65123` | `(22, 16)` | `0x0` | East (Right) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[04]` | NPC / Actor | **Actor ID 65143** | `65143` | `(53, 19)` | `1x4` | East (Right) | Dormant / Hidden (0) | Special (3) | 2 | 255 | 0 |
@@ -257,8 +257,8 @@
 
 #### Entity Narrative Roles, Placements & Mechanics
 
-- **`obj[00]` (Highland Patrol Soldier)**: Positioned at tile `(19, 32)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[01]` (Jeane (Rune Sage))**: Positioned at tile `(20, 20)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[00]` (Jowy Atreides)**: Positioned at tile `(19, 32)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[01]` (Rowd)**: Positioned at tile `(20, 20)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[02]` (Object 65123)**: Positioned at tile `(16, 16)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[03]` (Object 65123)**: Positioned at tile `(22, 16)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[04]` (Object 65143)**: Positioned at tile `(53, 19)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
@@ -484,11 +484,11 @@
 
 | Slot | Class (`otyp`) | Identity / Description | Sprite Pattern (`fpno`) | Coords (`x, y`) | Size (`w, h`) | Facing (`ano`) | State (`disp`) | Collision (`ozok`) | Speed | Wait | Priority |
 |:---:|---|---|:---:|:---:|:---:|---|---|---|:---:|:---:|:---:|
-| `obj[00]` | NPC / Actor | **Jowy (Camp/Prologue)** | `18` | `(51, 70)` | `0x0` | East (Right) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
+| `obj[00]` | NPC / Actor | **Nanami** | `18` | `(51, 70)` | `0x0` | East (Right) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
 | `obj[01]` | NPC / Actor | **Eilie** | `19` | `(51, 70)` | `0x0` | East (Right) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
-| `obj[02]` | NPC / Actor | **Pilika** | `4` | `(51, 70)` | `0x0` | East (Right) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
-| `obj[03]` | NPC / Actor | **Riou (Casual/Prologue)** | `48` | `(51, 70)` | `0x0` | East (Right) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
-| `obj[04]` | NPC / Actor | **Hai Yo (Cook)** | `77` | `(51, 70)` | `0x0` | East (Right) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
+| `obj[02]` | NPC / Actor | **Viki** | `4` | `(51, 70)` | `0x0` | East (Right) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
+| `obj[03]` | NPC / Actor | **Mukumuku** | `48` | `(51, 70)` | `0x0` | East (Right) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
+| `obj[04]` | NPC / Actor | **Mekumeku** | `77` | `(51, 70)` | `0x0` | East (Right) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
 | `obj[05]` | NPC / Actor | **Actor ID 65027** | `65027` | `(51, 70)` | `0x0` | East (Right) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[06]` | NPC / Actor | **Actor ID 65027** | `65027` | `(51, 70)` | `0x0` | East (Right) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[07]` | NPC / Actor | **Actor ID 65027** | `65027` | `(51, 70)` | `0x0` | East (Right) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
@@ -497,11 +497,11 @@
 
 #### Entity Narrative Roles, Placements & Mechanics
 
-- **`obj[00]` (Jowy (Camp/Prologue))**: Positioned at tile `(51, 70)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[00]` (Nanami)**: Positioned at tile `(51, 70)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[01]` (Eilie)**: Positioned at tile `(51, 70)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[02]` (Pilika)**: Positioned at tile `(51, 70)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[03]` (Riou (Casual/Prologue))**: Positioned at tile `(51, 70)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[04]` (Hai Yo (Cook))**: Positioned at tile `(51, 70)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[02]` (Viki)**: Positioned at tile `(51, 70)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[03]` (Mukumuku)**: Positioned at tile `(51, 70)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[04]` (Mekumeku)**: Positioned at tile `(51, 70)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[05]` (Object 65027)**: Positioned at tile `(51, 70)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[06]` (Object 65027)**: Positioned at tile `(51, 70)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[07]` (Object 65027)**: Positioned at tile `(51, 70)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.

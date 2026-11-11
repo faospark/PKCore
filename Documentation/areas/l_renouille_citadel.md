@@ -45,23 +45,23 @@
 
 | Slot | Class (`otyp`) | Identity / Description | Sprite Pattern (`fpno`) | Coords (`x, y`) | Size (`w, h`) | Facing (`ano`) | State (`disp`) | Collision (`ozok`) | Speed | Wait | Priority |
 |:---:|---|---|:---:|:---:|:---:|---|---|---|:---:|:---:|:---:|
-| `obj[00]` | NPC / Actor | **Rowd** | `85` | `(37, 85)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
-| `obj[01]` | NPC / Actor | **Youth Brigade Recruit** | `3` | `(43, 84)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
-| `obj[02]` | NPC / Actor | **Jowy Atreides** | `2` | `(42, 87)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
-| `obj[03]` | NPC / Actor | **Gorudo** | `34` | `(36, 89)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
-| `obj[04]` | NPC / Actor | **Actor ID 117** | `117` | `(37, 92)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
-| `obj[05]` | NPC / Actor | **Actor ID 122** | `122` | `(37, 92)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[00]` | NPC / Actor | **Apple** | `85` | `(37, 85)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[01]` | NPC / Actor | **Viktor** | `3` | `(43, 84)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[02]` | NPC / Actor | **Flik** | `2` | `(42, 87)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[03]` | NPC / Actor | **Hauser** | `34` | `(36, 89)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[04]` | NPC / Actor | **Ridley** | `117` | `(37, 92)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[05]` | NPC / Actor | **Boris** | `122` | `(37, 92)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[06]` | NPC / Actor | **Chaco** | `54` | `(35, 81)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
-| `obj[07]` | NPC / Actor | **Futch** | `101` | `(40, 91)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
-| `obj[08]` | NPC / Actor | **Fitcher** | `15` | `(42, 90)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
-| `obj[09]` | NPC / Actor | **Seed** | `88` | `(0, 0)` | `0x0` | West (Left) | Dormant / Hidden (0) | Passable (0) | 5 | 255 | 0 |
-| `obj[10]` | NPC / Actor | **Klaus** | `91` | `(0, 0)` | `0x0` | West (Left) | Dormant / Hidden (0) | Passable (0) | 5 | 255 | 0 |
-| `obj[11]` | NPC / Actor | **Actor ID 118** | `118` | `(0, 0)` | `0x0` | West (Left) | Dormant / Hidden (0) | Passable (0) | 5 | 255 | 0 |
+| `obj[07]` | NPC / Actor | **Teresa** | `101` | `(40, 91)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[08]` | NPC / Actor | **Shin** | `15` | `(42, 90)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[09]` | NPC / Actor | **Fitcher** | `88` | `(0, 0)` | `0x0` | West (Left) | Dormant / Hidden (0) | Passable (0) | 5 | 255 | 0 |
+| `obj[10]` | NPC / Actor | **Leona** | `91` | `(0, 0)` | `0x0` | West (Left) | Dormant / Hidden (0) | Passable (0) | 5 | 255 | 0 |
+| `obj[11]` | NPC / Actor | **Klaus** | `118` | `(0, 0)` | `0x0` | West (Left) | Dormant / Hidden (0) | Passable (0) | 5 | 255 | 0 |
 | `obj[12]` | NPC / Actor | **Tsai** | `52` | `(0, 0)` | `0x0` | West (Left) | Dormant / Hidden (0) | Passable (0) | 5 | 255 | 0 |
-| `obj[13]` | NPC / Actor | **Pilika** | `4` | `(0, 0)` | `0x0` | West (Left) | Dormant / Hidden (0) | Passable (0) | 5 | 255 | 0 |
-| `obj[14]` | NPC / Actor | **Simone Verdicci** | `37` | `(0, 0)` | `0x0` | West (Left) | Dormant / Hidden (0) | Passable (0) | 5 | 255 | 0 |
-| `obj[15]` | NPC / Actor | **Actor ID 41** | `41` | `(0, 0)` | `0x0` | West (Left) | Dormant / Hidden (0) | Passable (0) | 5 | 255 | 0 |
-| `obj[16]` | NPC / Actor | **Actor ID 42** | `42` | `(0, 0)` | `0x0` | West (Left) | Dormant / Hidden (0) | Passable (0) | 5 | 255 | 0 |
+| `obj[13]` | NPC / Actor | **Viki** | `4` | `(0, 0)` | `0x0` | West (Left) | Dormant / Hidden (0) | Passable (0) | 5 | 255 | 0 |
+| `obj[14]` | NPC / Actor | **Amada** | `37` | `(0, 0)` | `0x0` | West (Left) | Dormant / Hidden (0) | Passable (0) | 5 | 255 | 0 |
+| `obj[15]` | NPC / Actor | **Meg** | `41` | `(0, 0)` | `0x0` | West (Left) | Dormant / Hidden (0) | Passable (0) | 5 | 255 | 0 |
+| `obj[16]` | NPC / Actor | **Gadget** | `42` | `(0, 0)` | `0x0` | West (Left) | Dormant / Hidden (0) | Passable (0) | 5 | 255 | 0 |
 | `obj[17]` | NPC / Actor | **Eilie** | `19` | `(0, 0)` | `0x0` | West (Left) | Dormant / Hidden (0) | Passable (0) | 5 | 255 | 0 |
 | `obj[18]` | NPC / Actor | **Rina** | `20` | `(0, 0)` | `0x0` | West (Left) | Dormant / Hidden (0) | Passable (0) | 5 | 255 | 0 |
 | `obj[19]` | NPC / Actor | **Bolgan** | `21` | `(0, 0)` | `0x0` | West (Left) | Dormant / Hidden (0) | Passable (0) | 5 | 255 | 0 |
@@ -71,23 +71,23 @@
 
 #### Entity Narrative Roles, Placements & Mechanics
 
-- **`obj[00]` (Rowd)**: Positioned at tile `(37, 85)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[01]` (Youth Brigade Recruit)**: Positioned at tile `(43, 84)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[02]` (Jowy Atreides)**: Positioned at tile `(42, 87)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[03]` (Gorudo)**: Positioned at tile `(36, 89)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[04]` (Object 117)**: Positioned at tile `(37, 92)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[05]` (Object 122)**: Positioned at tile `(37, 92)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[00]` (Apple)**: Positioned at tile `(37, 85)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[01]` (Viktor)**: Positioned at tile `(43, 84)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[02]` (Flik)**: Positioned at tile `(42, 87)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[03]` (Hauser)**: Positioned at tile `(36, 89)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[04]` (Ridley)**: Positioned at tile `(37, 92)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[05]` (Boris)**: Positioned at tile `(37, 92)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[06]` (Chaco)**: Positioned at tile `(35, 81)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[07]` (Futch)**: Positioned at tile `(40, 91)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[08]` (Fitcher)**: Positioned at tile `(42, 90)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[09]` (Seed)**: Positioned at tile `(0, 0)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[10]` (Klaus)**: Positioned at tile `(0, 0)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[11]` (Object 118)**: Positioned at tile `(0, 0)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[07]` (Teresa)**: Positioned at tile `(40, 91)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[08]` (Shin)**: Positioned at tile `(42, 90)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[09]` (Fitcher)**: Positioned at tile `(0, 0)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[10]` (Leona)**: Positioned at tile `(0, 0)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[11]` (Klaus)**: Positioned at tile `(0, 0)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[12]` (Tsai)**: Positioned at tile `(0, 0)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[13]` (Pilika)**: Positioned at tile `(0, 0)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[14]` (Simone Verdicci)**: Positioned at tile `(0, 0)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[15]` (Object 41)**: Positioned at tile `(0, 0)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[16]` (Object 42)**: Positioned at tile `(0, 0)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[13]` (Viki)**: Positioned at tile `(0, 0)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[14]` (Amada)**: Positioned at tile `(0, 0)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[15]` (Meg)**: Positioned at tile `(0, 0)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[16]` (Gadget)**: Positioned at tile `(0, 0)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[17]` (Eilie)**: Positioned at tile `(0, 0)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[18]` (Rina)**: Positioned at tile `(0, 0)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[19]` (Bolgan)**: Positioned at tile `(0, 0)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
@@ -250,12 +250,12 @@
 
 | Slot | Class (`otyp`) | Identity / Description | Sprite Pattern (`fpno`) | Coords (`x, y`) | Size (`w, h`) | Facing (`ano`) | State (`disp`) | Collision (`ozok`) | Speed | Wait | Priority |
 |:---:|---|---|:---:|:---:|:---:|---|---|---|:---:|:---:|:---:|
-| `obj[00]` | NPC / Actor | **Actor ID 159** | `159` | `(116, 83)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[00]` | NPC / Actor | **Lucia** | `159` | `(116, 83)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[01]` | Prop / Scenery | **Prop ID 33183** | `33183` | `(116, 83)` | `0x0` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
 | `obj[02]` | Prop / Scenery | **Prop ID 33183** | `33183` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
-| `obj[03]` | NPC / Actor | **Futch** | `101` | `(116, 108)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[03]` | NPC / Actor | **Teresa** | `101` | `(116, 108)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[04]` | Prop / Scenery | **Prop ID 33183** | `33183` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
-| `obj[05]` | NPC / Actor | **Fitcher** | `15` | `(116, 111)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[05]` | NPC / Actor | **Shin** | `15` | `(116, 111)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[06]` | Trigger / Hitbox | **Hitbox Zone (3x3)** | `0` | `(105, 54)` | `2x2` | South (Down) | Visible (1) | Passable (0) | 4 | 255 | 0 |
 | `obj[07]` | Trigger / Hitbox | **Hitbox Zone (3x3)** | `0` | `(125, 54)` | `2x2` | South (Down) | Visible (1) | Passable (0) | 4 | 255 | 0 |
 | `obj[08]` | Trigger / Hitbox | **Hitbox Zone (4x3)** | `0` | `(160, 140)` | `3x2` | South (Down) | Visible (1) | Passable (0) | 4 | 255 | 0 |
@@ -287,12 +287,12 @@
 
 #### Entity Narrative Roles, Placements & Mechanics
 
-- **`obj[00]` (Object 159)**: Positioned at tile `(116, 83)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[00]` (Lucia)**: Positioned at tile `(116, 83)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[01]` (Prop: Object 33183)**: Environmental world dressing prop placed at tile `(116, 83)`. Solid collision is set to `0`.
 - **`obj[02]` (Prop: Object 33183)**: Environmental world dressing prop placed at tile `(0, 0)`. Solid collision is set to `0`.
-- **`obj[03]` (Futch)**: Positioned at tile `(116, 108)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[03]` (Teresa)**: Positioned at tile `(116, 108)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[04]` (Prop: Object 33183)**: Environmental world dressing prop placed at tile `(0, 0)`. Solid collision is set to `0`.
-- **`obj[05]` (Fitcher)**: Positioned at tile `(116, 111)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[05]` (Shin)**: Positioned at tile `(116, 111)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[06]` (Hitbox Zone)**: Bounding trigger area covering `3` tiles wide by `3` tiles high from `(105, 54)` to `(107, 56)`. Handles doorway warps, counter interactions, and room transitions.
 - **`obj[07]` (Hitbox Zone)**: Bounding trigger area covering `3` tiles wide by `3` tiles high from `(125, 54)` to `(127, 56)`. Handles doorway warps, counter interactions, and room transitions.
 - **`obj[08]` (Hitbox Zone)**: Bounding trigger area covering `4` tiles wide by `3` tiles high from `(160, 140)` to `(163, 142)`. Handles doorway warps, counter interactions, and room transitions.
@@ -544,7 +544,7 @@
 
 | Slot | Class (`otyp`) | Identity / Description | Sprite Pattern (`fpno`) | Coords (`x, y`) | Size (`w, h`) | Facing (`ano`) | State (`disp`) | Collision (`ozok`) | Speed | Wait | Priority |
 |:---:|---|---|:---:|:---:|:---:|---|---|---|:---:|:---:|:---:|
-| `obj[00]` | NPC / Actor | **Actor ID 149** | `149` | `(44, 130)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[00]` | NPC / Actor | **Han Cunningham** | `149` | `(44, 130)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[01]` | Prop / Scenery | **Prop ID 33429** | `33429` | `(44, 130)` | `0x0` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
 | `obj[02]` | Rest Device / Fire | **Inn Bed / Recovery Device** | `0` | `(185, 27)` | `0x0` | Frame 12 | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[03]` | Rest Device / Fire | **Inn Bed / Recovery Device** | `0` | `(185, 27)` | `0x0` | Frame 13 | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
@@ -575,7 +575,7 @@
 
 #### Entity Narrative Roles, Placements & Mechanics
 
-- **`obj[00]` (Object 149)**: Positioned at tile `(44, 130)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[00]` (Han Cunningham)**: Positioned at tile `(44, 130)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[01]` (Prop: Object 33429)**: Environmental world dressing prop placed at tile `(44, 130)`. Solid collision is set to `0`.
 - **`obj[02]` (World Device: Invisible / Hitbox Trigger)**: Interactive mechanism at tile `(185, 27)` with state parameter `12`.
 - **`obj[03]` (World Device: Invisible / Hitbox Trigger)**: Interactive mechanism at tile `(185, 27)` with state parameter `13`.
@@ -1398,18 +1398,18 @@
 
 | Slot | Class (`otyp`) | Identity / Description | Sprite Pattern (`fpno`) | Coords (`x, y`) | Size (`w, h`) | Facing (`ano`) | State (`disp`) | Collision (`ozok`) | Speed | Wait | Priority |
 |:---:|---|---|:---:|:---:|:---:|---|---|---|:---:|:---:|:---:|
-| `obj[00]` | NPC / Actor | **Actor ID 144** | `144` | `(18, 67)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[00]` | NPC / Actor | **Seed** | `144` | `(18, 67)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[01]` | Prop / Scenery | **Prop ID 33168** | `33168` | `(18, 67)` | `0x0` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
-| `obj[02]` | NPC / Actor | **Actor ID 143** | `143` | `(22, 67)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[02]` | NPC / Actor | **Culgan** | `143` | `(22, 67)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[03]` | Prop / Scenery | **Prop ID 33167** | `33167` | `(22, 67)` | `0x0` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
 | `obj[04]` | Trigger / Hitbox | **Hitbox Zone (3x3)** | `0` | `(5, 90)` | `2x2` | South (Down) | Visible (1) | Passable (0) | 4 | 255 | 0 |
 
 
 #### Entity Narrative Roles, Placements & Mechanics
 
-- **`obj[00]` (Object 144)**: Positioned at tile `(18, 67)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[00]` (Seed)**: Positioned at tile `(18, 67)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[01]` (Prop: Object 33168)**: Environmental world dressing prop placed at tile `(18, 67)`. Solid collision is set to `0`.
-- **`obj[02]` (Object 143)**: Positioned at tile `(22, 67)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[02]` (Culgan)**: Positioned at tile `(22, 67)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[03]` (Prop: Object 33167)**: Environmental world dressing prop placed at tile `(22, 67)`. Solid collision is set to `0`.
 - **`obj[04]` (Hitbox Zone)**: Bounding trigger area covering `3` tiles wide by `3` tiles high from `(5, 90)` to `(7, 92)`. Handles doorway warps, counter interactions, and room transitions.
 
@@ -1458,7 +1458,7 @@
 
 | Slot | Class (`otyp`) | Identity / Description | Sprite Pattern (`fpno`) | Coords (`x, y`) | Size (`w, h`) | Facing (`ano`) | State (`disp`) | Collision (`ozok`) | Speed | Wait | Priority |
 |:---:|---|---|:---:|:---:|:---:|---|---|---|:---:|:---:|:---:|
-| `obj[00]` | NPC / Actor | **Raura (Scroll Keeper)** | `148` | `(20, 18)` | `0x0` | South (Down) | Visible (1) | Passable (0) | 4 | 255 | 0 |
+| `obj[00]` | NPC / Actor | **Leon Silverberg** | `148` | `(20, 18)` | `0x0` | South (Down) | Visible (1) | Passable (0) | 4 | 255 | 0 |
 | `obj[01]` | Prop / Scenery | **Prop ID 33172** | `33172` | `(20, 18)` | `0x0` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
 | `obj[02]` | Prop / Scenery | **Prop ID 33172** | `33172` | `(20, 18)` | `0x0` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
 | `obj[03]` | World Device | **Mechanism (ano 0)** | `0` | `(12, 32)` | `0x0` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
@@ -1472,7 +1472,7 @@
 
 #### Entity Narrative Roles, Placements & Mechanics
 
-- **`obj[00]` (Raura (Scroll Keeper))**: Positioned at tile `(20, 18)`, facing South (Down). Rendered and active by default. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[00]` (Leon Silverberg)**: Positioned at tile `(20, 18)`, facing South (Down). Rendered and active by default. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[01]` (Prop: Object 33172)**: Environmental world dressing prop placed at tile `(20, 18)`. Solid collision is set to `0`.
 - **`obj[02]` (Prop: Object 33172)**: Environmental world dressing prop placed at tile `(20, 18)`. Solid collision is set to `0`.
 - **`obj[03]` (World Device: Invisible / Hitbox Trigger)**: Interactive mechanism at tile `(12, 32)` with state parameter `0`.
@@ -1515,8 +1515,8 @@
 
 | Slot | Class (`otyp`) | Identity / Description | Sprite Pattern (`fpno`) | Coords (`x, y`) | Size (`w, h`) | Facing (`ano`) | State (`disp`) | Collision (`ozok`) | Speed | Wait | Priority |
 |:---:|---|---|:---:|:---:|:---:|---|---|---|:---:|:---:|:---:|
-| `obj[00]` | NPC / Actor | **Actor ID 174** | `174` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
-| `obj[01]` | NPC / Actor | **Gordon (Trader)** | `175` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
+| `obj[00]` | NPC / Actor | **Jowy (Royal Wedding)** | `174` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
+| `obj[01]` | NPC / Actor | **Jillia (Royal Wedding)** | `175` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
 | `obj[02]` | NPC / Actor | **Actor ID 65117** | `65117` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
 | `obj[03]` | NPC / Actor | **Actor ID 65104** | `65104` | `(10, 22)` | `0x0` | East (Right) | Visible (1) | Passable (0) | 4 | 255 | 0 |
 | `obj[04]` | NPC / Actor | **Actor ID 65104** | `65104` | `(30, 22)` | `0x0` | Up (North) | Visible (1) | Passable (0) | 4 | 255 | 0 |
@@ -1566,8 +1566,8 @@
 
 #### Entity Narrative Roles, Placements & Mechanics
 
-- **`obj[00]` (Object 174)**: Positioned at tile `(0, 0)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[01]` (Gordon (Trader))**: Positioned at tile `(0, 0)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[00]` (Jowy (Royal Wedding))**: Positioned at tile `(0, 0)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[01]` (Jillia (Royal Wedding))**: Positioned at tile `(0, 0)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[02]` (Object 65117)**: Positioned at tile `(0, 0)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[03]` (Object 65104)**: Positioned at tile `(10, 22)`, facing East (Right). Rendered and active by default. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[04]` (Object 65104)**: Positioned at tile `(30, 22)`, facing Up (North). Rendered and active by default. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
@@ -1646,9 +1646,9 @@
 
 | Slot | Class (`otyp`) | Identity / Description | Sprite Pattern (`fpno`) | Coords (`x, y`) | Size (`w, h`) | Facing (`ano`) | State (`disp`) | Collision (`ozok`) | Speed | Wait | Priority |
 |:---:|---|---|:---:|:---:|:---:|---|---|---|:---:|:---:|:---:|
-| `obj[00]` | NPC / Actor | **Highland Officer** | `81` | `(26, 20)` | `0x0` | Up (North) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
-| `obj[01]` | NPC / Actor | **Lebrante (Appraiser)** | `141` | `(4, 20)` | `0x0` | East (Right) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
-| `obj[02]` | NPC / Actor | **Actor ID 176** | `176` | `(31, 20)` | `0x0` | Up (North) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
+| `obj[00]` | NPC / Actor | **Jowy Blight (King of Highland)** | `81` | `(26, 20)` | `0x0` | Up (North) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
+| `obj[01]` | NPC / Actor | **Jillia** | `141` | `(4, 20)` | `0x0` | East (Right) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
+| `obj[02]` | NPC / Actor | **Pilika (Ending)** | `176` | `(31, 20)` | `0x0` | Up (North) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
 | `obj[03]` | Prop / Scenery | **Prop ID 33200** | `33200` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
 | `obj[04]` | Prop / Scenery | **Prop ID 33200** | `33200` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
 | `obj[05]` | Prop / Scenery | **Prop ID 33200** | `33200` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
@@ -1656,9 +1656,9 @@
 
 #### Entity Narrative Roles, Placements & Mechanics
 
-- **`obj[00]` (Highland Officer)**: Positioned at tile `(26, 20)`, facing Up (North). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[01]` (Lebrante (Appraiser))**: Positioned at tile `(4, 20)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[02]` (Object 176)**: Positioned at tile `(31, 20)`, facing Up (North). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[00]` (Jowy Blight (King of Highland))**: Positioned at tile `(26, 20)`, facing Up (North). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[01]` (Jillia)**: Positioned at tile `(4, 20)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[02]` (Pilika (Ending))**: Positioned at tile `(31, 20)`, facing Up (North). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[03]` (Prop: Object 33200)**: Environmental world dressing prop placed at tile `(0, 0)`. Solid collision is set to `0`.
 - **`obj[04]` (Prop: Object 33200)**: Environmental world dressing prop placed at tile `(0, 0)`. Solid collision is set to `0`.
 - **`obj[05]` (Prop: Object 33200)**: Environmental world dressing prop placed at tile `(0, 0)`. Solid collision is set to `0`.
@@ -1698,15 +1698,15 @@
 
 | Slot | Class (`otyp`) | Identity / Description | Sprite Pattern (`fpno`) | Coords (`x, y`) | Size (`w, h`) | Facing (`ano`) | State (`disp`) | Collision (`ozok`) | Speed | Wait | Priority |
 |:---:|---|---|:---:|:---:|:---:|---|---|---|:---:|:---:|:---:|
-| `obj[00]` | NPC / Actor | **Jude (Sculptor)** | `140` | `(20, 21)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[00]` | NPC / Actor | **Luca** | `140` | `(20, 21)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[01]` | Prop / Scenery | **Prop ID 33676** | `33676` | `(20, 21)` | `0x0` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
-| `obj[02]` | NPC / Actor | **Highland Officer** | `81` | `(20, 28)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[02]` | NPC / Actor | **Jowy Blight (King of Highland)** | `81` | `(20, 28)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[03]` | Prop / Scenery | **Prop ID 33361** | `33361` | `(20, 28)` | `0x0` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
 | `obj[04]` | Prop / Scenery | **Prop ID 33361** | `33361` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
-| `obj[05]` | NPC / Actor | **Raura (Scroll Keeper)** | `148` | `(20, 50)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
-| `obj[06]` | NPC / Actor | **Actor ID 147** | `147` | `(20, 27)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[05]` | NPC / Actor | **Leon Silverberg** | `148` | `(20, 50)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[06]` | NPC / Actor | **Agares Blight** | `147` | `(20, 27)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[07]` | Prop / Scenery | **Prop ID 33171** | `33171` | `(20, 27)` | `0x0` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
-| `obj[08]` | NPC / Actor | **Lebrante (Appraiser)** | `141` | `(18, 31)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[08]` | NPC / Actor | **Jillia** | `141` | `(18, 31)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[09]` | Prop / Scenery | **Prop ID 33677** | `33677` | `(18, 31)` | `0x0` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
 | `obj[10]` | NPC / Actor | **Actor ID 65114** | `65114` | `(18, 31)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[11]` | NPC / Actor | **Actor ID 65113** | `65113` | `(18, 31)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
@@ -1715,15 +1715,15 @@
 
 #### Entity Narrative Roles, Placements & Mechanics
 
-- **`obj[00]` (Jude (Sculptor))**: Positioned at tile `(20, 21)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[00]` (Luca)**: Positioned at tile `(20, 21)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[01]` (Prop: Object 33676)**: Environmental world dressing prop placed at tile `(20, 21)`. Solid collision is set to `0`.
-- **`obj[02]` (Highland Officer)**: Positioned at tile `(20, 28)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[02]` (Jowy Blight (King of Highland))**: Positioned at tile `(20, 28)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[03]` (Prop: Object 33361)**: Environmental world dressing prop placed at tile `(20, 28)`. Solid collision is set to `0`.
 - **`obj[04]` (Prop: Object 33361)**: Environmental world dressing prop placed at tile `(0, 0)`. Solid collision is set to `32`.
-- **`obj[05]` (Raura (Scroll Keeper))**: Positioned at tile `(20, 50)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[06]` (Object 147)**: Positioned at tile `(20, 27)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[05]` (Leon Silverberg)**: Positioned at tile `(20, 50)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[06]` (Agares Blight)**: Positioned at tile `(20, 27)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[07]` (Prop: Object 33171)**: Environmental world dressing prop placed at tile `(20, 27)`. Solid collision is set to `32`.
-- **`obj[08]` (Lebrante (Appraiser))**: Positioned at tile `(18, 31)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[08]` (Jillia)**: Positioned at tile `(18, 31)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[09]` (Prop: Object 33677)**: Environmental world dressing prop placed at tile `(18, 31)`. Solid collision is set to `0`.
 - **`obj[10]` (Object 65114)**: Positioned at tile `(18, 31)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[11]` (Object 65113)**: Positioned at tile `(18, 31)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
@@ -1893,22 +1893,22 @@
 
 | Slot | Class (`otyp`) | Identity / Description | Sprite Pattern (`fpno`) | Coords (`x, y`) | Size (`w, h`) | Facing (`ano`) | State (`disp`) | Collision (`ozok`) | Speed | Wait | Priority |
 |:---:|---|---|:---:|:---:|:---:|---|---|---|:---:|:---:|:---:|
-| `obj[00]` | NPC / Actor | **Jude (Sculptor)** | `140` | `(20, 21)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[00]` | NPC / Actor | **Luca** | `140` | `(20, 21)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[01]` | Prop / Scenery | **Prop ID 33932** | `33932` | `(20, 21)` | `0x0` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
-| `obj[02]` | NPC / Actor | **Highland Officer** | `81` | `(20, 28)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
-| `obj[03]` | NPC / Actor | **Raura (Scroll Keeper)** | `148` | `(20, 50)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
-| `obj[04]` | NPC / Actor | **Actor ID 144** | `144` | `(20, 50)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
-| `obj[05]` | NPC / Actor | **Actor ID 143** | `143` | `(20, 50)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
-| `obj[06]` | NPC / Actor | **Actor ID 151** | `151` | `(20, 50)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[02]` | NPC / Actor | **Jowy Blight (King of Highland)** | `81` | `(20, 28)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[03]` | NPC / Actor | **Leon Silverberg** | `148` | `(20, 50)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[04]` | NPC / Actor | **Seed** | `144` | `(20, 50)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[05]` | NPC / Actor | **Culgan** | `143` | `(20, 50)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[06]` | NPC / Actor | **Sasarai** | `151` | `(20, 50)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[07]` | NPC / Actor | **Actor ID 65104** | `65104` | `(20, 50)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[08]` | NPC / Actor | **Actor ID 65104** | `65104` | `(20, 50)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[09]` | NPC / Actor | **Actor ID 65104** | `65104` | `(20, 50)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[10]` | NPC / Actor | **Actor ID 65104** | `65104` | `(20, 50)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
-| `obj[11]` | NPC / Actor | **Culgan** | `87` | `(20, 50)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
-| `obj[12]` | NPC / Actor | **Actor ID 118** | `118` | `(20, 50)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
-| `obj[13]` | NPC / Actor | **Actor ID 117** | `117` | `(20, 50)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
-| `obj[14]` | NPC / Actor | **Actor ID 142** | `142` | `(20, 20)` | `0x0` | West (Left) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
-| `obj[15]` | NPC / Actor | **Jeane (Rune Sage)** | `145` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
+| `obj[11]` | NPC / Actor | **Kiba** | `87` | `(20, 50)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[12]` | NPC / Actor | **Klaus** | `118` | `(20, 50)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[13]` | NPC / Actor | **Ridley** | `117` | `(20, 50)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[14]` | NPC / Actor | **Solon Jhee** | `142` | `(20, 20)` | `0x0` | West (Left) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
+| `obj[15]` | NPC / Actor | **Rowd** | `145` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
 | `obj[16]` | NPC / Actor | **Actor ID 65113** | `65113` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
 | `obj[17]` | NPC / Actor | **Actor ID 65114** | `65114` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
 | `obj[18]` | NPC / Actor | **Actor ID 65114** | `65114` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
@@ -1916,22 +1916,22 @@
 
 #### Entity Narrative Roles, Placements & Mechanics
 
-- **`obj[00]` (Jude (Sculptor))**: Positioned at tile `(20, 21)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[00]` (Luca)**: Positioned at tile `(20, 21)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[01]` (Prop: Object 33932)**: Environmental world dressing prop placed at tile `(20, 21)`. Solid collision is set to `0`.
-- **`obj[02]` (Highland Officer)**: Positioned at tile `(20, 28)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[03]` (Raura (Scroll Keeper))**: Positioned at tile `(20, 50)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[04]` (Object 144)**: Positioned at tile `(20, 50)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[05]` (Object 143)**: Positioned at tile `(20, 50)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[06]` (Object 151)**: Positioned at tile `(20, 50)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[02]` (Jowy Blight (King of Highland))**: Positioned at tile `(20, 28)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[03]` (Leon Silverberg)**: Positioned at tile `(20, 50)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[04]` (Seed)**: Positioned at tile `(20, 50)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[05]` (Culgan)**: Positioned at tile `(20, 50)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[06]` (Sasarai)**: Positioned at tile `(20, 50)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[07]` (Object 65104)**: Positioned at tile `(20, 50)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[08]` (Object 65104)**: Positioned at tile `(20, 50)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[09]` (Object 65104)**: Positioned at tile `(20, 50)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[10]` (Object 65104)**: Positioned at tile `(20, 50)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[11]` (Culgan)**: Positioned at tile `(20, 50)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[12]` (Object 118)**: Positioned at tile `(20, 50)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[13]` (Object 117)**: Positioned at tile `(20, 50)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[14]` (Object 142)**: Positioned at tile `(20, 20)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[15]` (Jeane (Rune Sage))**: Positioned at tile `(0, 0)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[11]` (Kiba)**: Positioned at tile `(20, 50)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[12]` (Klaus)**: Positioned at tile `(20, 50)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[13]` (Ridley)**: Positioned at tile `(20, 50)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[14]` (Solon Jhee)**: Positioned at tile `(20, 20)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[15]` (Rowd)**: Positioned at tile `(0, 0)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[16]` (Object 65113)**: Positioned at tile `(0, 0)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[17]` (Object 65114)**: Positioned at tile `(0, 0)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[18]` (Object 65114)**: Positioned at tile `(0, 0)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
@@ -1976,13 +1976,13 @@
 
 | Slot | Class (`otyp`) | Identity / Description | Sprite Pattern (`fpno`) | Coords (`x, y`) | Size (`w, h`) | Facing (`ano`) | State (`disp`) | Collision (`ozok`) | Speed | Wait | Priority |
 |:---:|---|---|:---:|:---:|:---:|---|---|---|:---:|:---:|:---:|
-| `obj[00]` | NPC / Actor | **Actor ID 143** | `143` | `(-3, 9)` | `0x0` | East (Right) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
-| `obj[01]` | NPC / Actor | **Actor ID 89** | `89` | `(-17, 16)` | `0x0` | East (Right) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
-| `obj[02]` | NPC / Actor | **Rowd** | `85` | `(-10, 16)` | `0x0` | East (Right) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
-| `obj[03]` | NPC / Actor | **Youth Brigade Recruit** | `3` | `(-10, 20)` | `0x0` | East (Right) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
-| `obj[04]` | NPC / Actor | **Gorudo** | `34` | `(-17, 20)` | `0x0` | East (Right) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
-| `obj[05]` | NPC / Actor | **Actor ID 144** | `144` | `(0, 0)` | `0x0` | East (Right) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
-| `obj[06]` | NPC / Actor | **Raura (Scroll Keeper)** | `148` | `(0, 0)` | `0x0` | East (Right) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
+| `obj[00]` | NPC / Actor | **Culgan** | `143` | `(-3, 9)` | `0x0` | East (Right) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
+| `obj[01]` | NPC / Actor | **Shu** | `89` | `(-17, 16)` | `0x0` | East (Right) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
+| `obj[02]` | NPC / Actor | **Apple** | `85` | `(-10, 16)` | `0x0` | East (Right) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
+| `obj[03]` | NPC / Actor | **Viktor** | `3` | `(-10, 20)` | `0x0` | East (Right) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
+| `obj[04]` | NPC / Actor | **Hauser** | `34` | `(-17, 20)` | `0x0` | East (Right) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
+| `obj[05]` | NPC / Actor | **Seed** | `144` | `(0, 0)` | `0x0` | East (Right) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
+| `obj[06]` | NPC / Actor | **Leon Silverberg** | `148` | `(0, 0)` | `0x0` | East (Right) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
 | `obj[07]` | NPC / Actor | **Actor ID 65105** | `65105` | `(-3, 18)` | `0x0` | East (Right) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
 | `obj[08]` | NPC / Actor | **Actor ID 65105** | `65105` | `(-6, 17)` | `0x0` | East (Right) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
 | `obj[09]` | NPC / Actor | **Actor ID 65105** | `65105` | `(-6, 19)` | `0x0` | East (Right) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
@@ -2014,13 +2014,13 @@
 
 #### Entity Narrative Roles, Placements & Mechanics
 
-- **`obj[00]` (Object 143)**: Positioned at tile `(-3, 9)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[01]` (Object 89)**: Positioned at tile `(-17, 16)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[02]` (Rowd)**: Positioned at tile `(-10, 16)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[03]` (Youth Brigade Recruit)**: Positioned at tile `(-10, 20)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[04]` (Gorudo)**: Positioned at tile `(-17, 20)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[05]` (Object 144)**: Positioned at tile `(0, 0)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[06]` (Raura (Scroll Keeper))**: Positioned at tile `(0, 0)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[00]` (Culgan)**: Positioned at tile `(-3, 9)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[01]` (Shu)**: Positioned at tile `(-17, 16)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[02]` (Apple)**: Positioned at tile `(-10, 16)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[03]` (Viktor)**: Positioned at tile `(-10, 20)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[04]` (Hauser)**: Positioned at tile `(-17, 20)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[05]` (Seed)**: Positioned at tile `(0, 0)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[06]` (Leon Silverberg)**: Positioned at tile `(0, 0)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[07]` (Object 65105)**: Positioned at tile `(-3, 18)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[08]` (Object 65105)**: Positioned at tile `(-6, 17)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[09]` (Object 65105)**: Positioned at tile `(-6, 19)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
@@ -2079,11 +2079,11 @@
 
 | Slot | Class (`otyp`) | Identity / Description | Sprite Pattern (`fpno`) | Coords (`x, y`) | Size (`w, h`) | Facing (`ano`) | State (`disp`) | Collision (`ozok`) | Speed | Wait | Priority |
 |:---:|---|---|:---:|:---:|:---:|---|---|---|:---:|:---:|:---:|
-| `obj[00]` | NPC / Actor | **Actor ID 89** | `89` | `(0, 0)` | `0x0` | West (Left) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
-| `obj[01]` | NPC / Actor | **Rowd** | `85` | `(0, 0)` | `0x0` | East (Right) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
-| `obj[02]` | NPC / Actor | **Youth Brigade Recruit** | `3` | `(0, 0)` | `0x0` | East (Right) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
-| `obj[03]` | NPC / Actor | **Jowy Atreides** | `2` | `(0, 0)` | `0x0` | East (Right) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
-| `obj[04]` | NPC / Actor | **Raura (Scroll Keeper)** | `148` | `(0, 0)` | `0x0` | East (Right) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
+| `obj[00]` | NPC / Actor | **Shu** | `89` | `(0, 0)` | `0x0` | West (Left) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
+| `obj[01]` | NPC / Actor | **Apple** | `85` | `(0, 0)` | `0x0` | East (Right) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
+| `obj[02]` | NPC / Actor | **Viktor** | `3` | `(0, 0)` | `0x0` | East (Right) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
+| `obj[03]` | NPC / Actor | **Flik** | `2` | `(0, 0)` | `0x0` | East (Right) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
+| `obj[04]` | NPC / Actor | **Leon Silverberg** | `148` | `(0, 0)` | `0x0` | East (Right) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
 | `obj[05]` | NPC / Actor | **Actor ID 65105** | `65105` | `(0, 0)` | `0x0` | East (Right) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
 | `obj[06]` | NPC / Actor | **Actor ID 65105** | `65105` | `(0, 0)` | `0x0` | East (Right) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
 | `obj[07]` | NPC / Actor | **Actor ID 65105** | `65105` | `(0, 0)` | `0x0` | East (Right) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
@@ -2107,11 +2107,11 @@
 
 #### Entity Narrative Roles, Placements & Mechanics
 
-- **`obj[00]` (Object 89)**: Positioned at tile `(0, 0)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[01]` (Rowd)**: Positioned at tile `(0, 0)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[02]` (Youth Brigade Recruit)**: Positioned at tile `(0, 0)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[03]` (Jowy Atreides)**: Positioned at tile `(0, 0)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[04]` (Raura (Scroll Keeper))**: Positioned at tile `(0, 0)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[00]` (Shu)**: Positioned at tile `(0, 0)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[01]` (Apple)**: Positioned at tile `(0, 0)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[02]` (Viktor)**: Positioned at tile `(0, 0)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[03]` (Flik)**: Positioned at tile `(0, 0)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[04]` (Leon Silverberg)**: Positioned at tile `(0, 0)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[05]` (Object 65105)**: Positioned at tile `(0, 0)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[06]` (Object 65105)**: Positioned at tile `(0, 0)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[07]` (Object 65105)**: Positioned at tile `(0, 0)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
@@ -2374,12 +2374,12 @@
 
 | Slot | Class (`otyp`) | Identity / Description | Sprite Pattern (`fpno`) | Coords (`x, y`) | Size (`w, h`) | Facing (`ano`) | State (`disp`) | Collision (`ozok`) | Speed | Wait | Priority |
 |:---:|---|---|:---:|:---:|:---:|---|---|---|:---:|:---:|:---:|
-| `obj[00]` | NPC / Actor | **Highland Officer** | `81` | `(120, 47)` | `0x0` | South (Down) | Visible (1) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[00]` | NPC / Actor | **Jowy Blight (King of Highland)** | `81` | `(120, 47)` | `0x0` | South (Down) | Visible (1) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[01]` | Prop / Scenery | **Prop ID 33617** | `33617` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 180 |
 | `obj[02]` | Prop / Scenery | **Prop ID 33617** | `33617` | `(120, 51)` | `0x0` | West (Left) | Visible (1) | Passable (0) | 4 | 255 | 180 |
-| `obj[03]` | NPC / Actor | **Raura (Scroll Keeper)** | `148` | `(124, 45)` | `0x0` | South (Down) | Visible (1) | Solid (Obstacle) | 4 | 255 | 0 |
-| `obj[04]` | NPC / Actor | **Actor ID 144** | `144` | `(126, 54)` | `0x0` | South (Down) | Visible (1) | Solid (Obstacle) | 4 | 255 | 0 |
-| `obj[05]` | NPC / Actor | **Actor ID 143** | `143` | `(114, 54)` | `0x0` | South (Down) | Visible (1) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[03]` | NPC / Actor | **Leon Silverberg** | `148` | `(124, 45)` | `0x0` | South (Down) | Visible (1) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[04]` | NPC / Actor | **Seed** | `144` | `(126, 54)` | `0x0` | South (Down) | Visible (1) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[05]` | NPC / Actor | **Culgan** | `143` | `(114, 54)` | `0x0` | South (Down) | Visible (1) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[06]` | NPC / Actor | **Actor ID 65232** | `65232` | `(125, 50)` | `0x0` | South (Down) | Visible (1) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[07]` | NPC / Actor | **Actor ID 65232** | `65232` | `(115, 50)` | `0x0` | South (Down) | Visible (1) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[08]` | NPC / Actor | **Actor ID 65104** | `65104` | `(108, 70)` | `0x0` | West (Left) | Visible (1) | Passable (0) | 4 | 255 | 0 |
@@ -2442,12 +2442,12 @@
 
 #### Entity Narrative Roles, Placements & Mechanics
 
-- **`obj[00]` (Highland Officer)**: Positioned at tile `(120, 47)`, facing South (Down). Rendered and active by default. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[00]` (Jowy Blight (King of Highland))**: Positioned at tile `(120, 47)`, facing South (Down). Rendered and active by default. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[01]` (Prop: Object 33617)**: Environmental world dressing prop placed at tile `(0, 0)`. Solid collision is set to `0`.
 - **`obj[02]` (Prop: Object 33617)**: Environmental world dressing prop placed at tile `(120, 51)`. Solid collision is set to `128`.
-- **`obj[03]` (Raura (Scroll Keeper))**: Positioned at tile `(124, 45)`, facing South (Down). Rendered and active by default. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[04]` (Object 144)**: Positioned at tile `(126, 54)`, facing South (Down). Rendered and active by default. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[05]` (Object 143)**: Positioned at tile `(114, 54)`, facing South (Down). Rendered and active by default. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[03]` (Leon Silverberg)**: Positioned at tile `(124, 45)`, facing South (Down). Rendered and active by default. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[04]` (Seed)**: Positioned at tile `(126, 54)`, facing South (Down). Rendered and active by default. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[05]` (Culgan)**: Positioned at tile `(114, 54)`, facing South (Down). Rendered and active by default. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[06]` (Object 65232)**: Positioned at tile `(125, 50)`, facing South (Down). Rendered and active by default. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[07]` (Object 65232)**: Positioned at tile `(115, 50)`, facing South (Down). Rendered and active by default. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[08]` (Object 65104)**: Positioned at tile `(108, 70)`, facing West (Left). Rendered and active by default. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.

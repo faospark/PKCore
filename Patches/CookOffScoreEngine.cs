@@ -107,6 +107,57 @@ public static class CookOffScoreEngine
         { "Chinese Banquet", 40 }
     };
 
+    public static readonly Dictionary<int, string> RecipeNamesByNumber = new()
+    {
+        { 1, "Rolled Omelet" },
+        { 2, "Tomato Soup" },
+        { 3, "Ohitashi" },
+        { 4, "Salad" },
+        { 5, "Gyoza" },
+        { 6, "Chowder" },
+        { 7, "BBQ Meat Bun" },
+        { 8, "Buttered Clams" },
+        { 9, "Fish Fry" },
+        { 10, "Ice Cream" },
+        { 11, "Quiche" },
+        { 12, "Sandwich" },
+        { 13, "Meat Pie" },
+        { 14, "Simmered Fish" },
+        { 15, "Fritters" },
+        { 16, "Sunomono" },
+        { 17, "Cake" },
+        { 18, "Croquettes" },
+        { 19, "Pasta" },
+        { 20, "Tempura" },
+        { 21, "Grilled Fish" },
+        { 22, "Gratin" },
+        { 23, "Rice Omelet" },
+        { 24, "Fried Rice" },
+        { 25, "Pizza" },
+        { 26, "Teriyaki" },
+        { 27, "Fried Pork Cutlets" },
+        { 28, "Curry" },
+        { 29, "Grilled Beef" },
+        { 30, "Ramen" },
+        { 31, "Hamburger" },
+        { 32, "Obento" },
+        { 33, "Sushi" },
+        { 34, "Japanese Stew" },
+        { 35, "Full Course" },
+        { 36, "Jingisukan" },
+        { 37, "Steak" },
+        { 38, "Sashimi Platter" },
+        { 39, "Special Stew" },
+        { 40, "Chinese Banquet" }
+    };
+
+    public static string GetRecipeNameByNumber(int recipeNum)
+    {
+        if (RecipeNamesByNumber.TryGetValue(recipeNum, out string? name))
+            return name;
+        return $"Recipe #{recipeNum}";
+    }
+
     public static readonly Dictionary<string, int> CharacterTastes = new(StringComparer.OrdinalIgnoreCase)
     {
         // Plain/Normal (0)
@@ -492,43 +543,78 @@ public static class CookOffScoreEngine
 
     /// <summary>
     /// Resolves the taste category index (0..11) for a judge character ID.
-    /// Uses native game table if available, with name dictionary fallback.
+    /// Uses canon CharacterTastes first with name fuzzy matching, then native game table if available.
     /// </summary>
-    public static int GetJudgeTaste(byte charaId, string? fallbackName = null)
+    public static int GetJudgeTaste(byte charaId, string? fallbackName = null, byte examIdx = 0)
     {
+        // 1. Check fallbackName against canon CharacterTastes dictionary first
+        if (!string.IsNullOrEmpty(fallbackName))
+        {
+            string trimmed = fallbackName.Trim();
+            if (CharacterTastes.TryGetValue(trimmed, out int taste))
+            {
+                return taste;
+            }
+
+            // Fuzzy match (handles "Freed·Y" vs "Freed Y", "Long Chan Chan", etc.)
+            foreach (var kvp in CharacterTastes)
+            {
+                if (trimmed.IndexOf(kvp.Key, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                    kvp.Key.IndexOf(trimmed, StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    return kvp.Value;
+                }
+            }
+        }
+
+        // 2. Try native game favorite table by charaId or examIdx
         try
         {
             var favArray = GSD2::EventOverlayClass.rb_dat.favorite;
-            if (favArray != null && charaId < favArray.Length && favArray[charaId] != null)
+            if (favArray != null)
             {
-                return favArray[charaId].table;
+                if (charaId < favArray.Length && favArray[charaId] != null)
+                    return favArray[charaId].table;
+                if (examIdx < favArray.Length && favArray[examIdx] != null)
+                    return favArray[examIdx].table;
             }
         }
         catch { }
-
-        if (!string.IsNullOrEmpty(fallbackName) && CharacterTastes.TryGetValue(fallbackName, out int taste))
-        {
-            return taste;
-        }
 
         return (int)Taste.Plain;
     }
 
     /// <summary>
-    /// Resolves the in-game display name for a judge character ID using native string tables.
+    /// Resolves the in-game display name for a judge from their exam index (0..108)
+    /// by translating via Overlay_rbattle.exam_table to their true character ID,
+    /// and looking up the localized name via G2_SYS.G2_name_get.
     /// </summary>
-    public static string GetJudgeName(byte charaId)
+    public static string GetJudgeName(byte examIdx)
     {
         try
         {
-            int textId = GSD2::w_chara.GetCharaNameString(charaId);
-            string name = GSD2::EventOverlayClass.r_action.SID_TEXT(textId);
+            byte charaId = examIdx;
+            try
+            {
+                var examTable = GSD2::EventOverlayClass.Overlay_rbattle.exam_table;
+                if (examTable != null && examIdx < examTable.Length)
+                {
+                    charaId = examTable[examIdx];
+                }
+            }
+            catch { }
+
+            string name = GSD2::G2_SYS.G2_name_get(charaId);
+            if (!string.IsNullOrWhiteSpace(name))
+                return name.Trim();
+
+            name = GSD2::G2_SYS.G2_name_get(examIdx);
             if (!string.IsNullOrWhiteSpace(name))
                 return name.Trim();
         }
         catch { }
 
-        return $"Judge #{charaId}";
+        return $"Judge #{examIdx}";
     }
 
     /// <summary>

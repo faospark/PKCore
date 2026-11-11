@@ -100,9 +100,9 @@
 | `obj[10]` | NPC / Actor | **Actor ID 65105** | `65105` | `(32, 49)` | `3x3` | Up (North) | Dormant / Hidden (0) | Special (3) | 3 | 128 | 0 |
 | `obj[11]` | NPC / Actor | **Actor ID 65085** | `65085` | `(45, 30)` | `3x3` | Up (North) | Dormant / Hidden (0) | Special (3) | 3 | 128 | 0 |
 | `obj[12]` | NPC / Actor | **Actor ID 65073** | `65073` | `(45, 100)` | `3x3` | Up (North) | Dormant / Hidden (0) | Special (3) | 3 | 128 | 0 |
-| `obj[13]` | NPC / Actor | **Actor ID 86** | `86` | `(46, 29)` | `4x10` | South (Down) | Dormant / Hidden (0) | Special (3) | 4 | 128 | 0 |
-| `obj[14]` | NPC / Actor | **Actor ID 107** | `107` | `(29, 32)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
-| `obj[15]` | NPC / Actor | **Tuta** | `71` | `(27, 41)` | `5x2` | East (Right) | Dormant / Hidden (0) | Special (3) | 3 | 128 | 0 |
+| `obj[13]` | NPC / Actor | **Templeton** | `86` | `(46, 29)` | `4x10` | South (Down) | Dormant / Hidden (0) | Special (3) | 4 | 128 | 0 |
+| `obj[14]` | NPC / Actor | **Hans** | `107` | `(29, 32)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[15]` | NPC / Actor | **Hoi** | `71` | `(27, 41)` | `5x2` | East (Right) | Dormant / Hidden (0) | Special (3) | 3 | 128 | 0 |
 | `obj[16]` | Trigger / Hitbox | **Hitbox Zone (5x2)** | `0` | `(27, 33)` | `4x1` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
 | `obj[17]` | Rest Device / Fire | **Inn Bed / Recovery Device** | `0` | `(34, 66)` | `0x0` | Frame 30 | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 180 |
 | `obj[18]` | Rest Device / Fire | **Inn Bed / Recovery Device** | `0` | `(40, 68)` | `0x0` | Frame 29 | Visible (1) | Solid (Obstacle) | 4 | 255 | 180 |
@@ -124,9 +124,9 @@
 - **`obj[10]` (Object 65105)**: Positioned at tile `(32, 49)`, facing Up (North). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[11]` (Object 65085)**: Positioned at tile `(45, 30)`, facing Up (North). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[12]` (Object 65073)**: Positioned at tile `(45, 100)`, facing Up (North). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[13]` (Object 86)**: Positioned at tile `(46, 29)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[14]` (Object 107)**: Positioned at tile `(29, 32)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[15]` (Tuta)**: Positioned at tile `(27, 41)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[13]` (Templeton)**: Positioned at tile `(46, 29)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[14]` (Hans)**: Positioned at tile `(29, 32)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[15]` (Hoi)**: Positioned at tile `(27, 41)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[16]` (Hitbox Zone)**: Bounding trigger area covering `5` tiles wide by `2` tiles high from `(27, 33)` to `(31, 34)`. Handles doorway warps, counter interactions, and room transitions.
 - **`obj[17]` (World Device: Invisible / Hitbox Trigger)**: Interactive mechanism at tile `(34, 66)` with state parameter `30`.
 - **`obj[18]` (World Device: Invisible / Hitbox Trigger)**: Interactive mechanism at tile `(40, 68)` with state parameter `29`.
@@ -225,7 +225,7 @@
 | `obj[10]` | Trigger / Hitbox | **Hitbox Zone (2x2)** | `0` | `(33, 41)` | `1x1` | South (Down) | Visible (1) | Passable (0) | 4 | 255 | 0 |
 | `obj[11]` | Trigger / Hitbox | **Hitbox Zone (5x5)** | `0` | `(26, 114)` | `4x4` | South (Down) | Visible (1) | Passable (0) | 4 | 255 | 0 |
 | `obj[12]` | Trigger / Hitbox | **Hitbox Zone (2x2)** | `0` | `(36, 22)` | `1x1` | South (Down) | Visible (1) | Passable (0) | 4 | 255 | 0 |
-| `obj[13]` | NPC / Actor | **Actor ID 86** | `86` | `(108, 29)` | `4x10` | South (Down) | Dormant / Hidden (0) | Special (3) | 4 | 128 | 0 |
+| `obj[13]` | NPC / Actor | **Templeton** | `86` | `(108, 29)` | `4x10` | South (Down) | Dormant / Hidden (0) | Special (3) | 4 | 128 | 0 |
 
 
 #### Entity Narrative Roles, Placements & Mechanics
@@ -243,7 +243,7 @@
 - **`obj[10]` (Hitbox Zone)**: Bounding trigger area covering `2` tiles wide by `2` tiles high from `(33, 41)` to `(34, 42)`. Handles doorway warps, counter interactions, and room transitions.
 - **`obj[11]` (Hitbox Zone)**: Bounding trigger area covering `5` tiles wide by `5` tiles high from `(26, 114)` to `(30, 118)`. Handles doorway warps, counter interactions, and room transitions.
 - **`obj[12]` (Hitbox Zone)**: Bounding trigger area covering `2` tiles wide by `2` tiles high from `(36, 22)` to `(37, 23)`. Handles doorway warps, counter interactions, and room transitions.
-- **`obj[13]` (Object 86)**: Positioned at tile `(108, 29)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[13]` (Templeton)**: Positioned at tile `(108, 29)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 
 
 #### Complete Bytecode Script Catalog (24 Scripts)
@@ -287,10 +287,10 @@
 
 | Slot | Class (`otyp`) | Identity / Description | Sprite Pattern (`fpno`) | Coords (`x, y`) | Size (`w, h`) | Facing (`ano`) | State (`disp`) | Collision (`ozok`) | Speed | Wait | Priority |
 |:---:|---|---|:---:|:---:|:---:|---|---|---|:---:|:---:|:---:|
-| `obj[00]` | NPC / Actor | **Actor ID 116** | `116` | `(50, 38)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[00]` | NPC / Actor | **Jeane** | `116` | `(50, 38)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[01]` | Trigger / Hitbox | **Hitbox Zone (5x2)** | `0` | `(48, 39)` | `4x1` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
-| `obj[02]` | NPC / Actor | **Actor ID 67** | `67` | `(24, 47)` | `7x2` | East (Right) | Dormant / Hidden (0) | Special (3) | 6 | 128 | 0 |
-| `obj[03]` | NPC / Actor | **Karen** | `14` | `(47, 41)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[02]` | NPC / Actor | **Stallion** | `67` | `(24, 47)` | `7x2` | East (Right) | Dormant / Hidden (0) | Special (3) | 6 | 128 | 0 |
+| `obj[03]` | NPC / Actor | **Lorelai** | `14` | `(47, 41)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[04]` | Trigger / Hitbox | **Hitbox Zone (4x3)** | `0` | `(51, 46)` | `3x2` | South (Down) | Visible (1) | Passable (0) | 4 | 255 | 0 |
 | `obj[05]` | Trigger / Hitbox | **Hitbox Zone (2x2)** | `0` | `(38, 35)` | `1x1` | South (Down) | Visible (1) | Passable (0) | 4 | 255 | 0 |
 | `obj[06]` | Trigger / Hitbox | **Hitbox Zone (4x3)** | `0` | `(30, 35)` | `3x2` | South (Down) | Visible (1) | Passable (0) | 4 | 255 | 0 |
@@ -298,10 +298,10 @@
 
 #### Entity Narrative Roles, Placements & Mechanics
 
-- **`obj[00]` (Object 116)**: Positioned at tile `(50, 38)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[00]` (Jeane)**: Positioned at tile `(50, 38)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[01]` (Hitbox Zone)**: Bounding trigger area covering `5` tiles wide by `2` tiles high from `(48, 39)` to `(52, 40)`. Handles doorway warps, counter interactions, and room transitions.
-- **`obj[02]` (Object 67)**: Positioned at tile `(24, 47)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[03]` (Karen)**: Positioned at tile `(47, 41)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[02]` (Stallion)**: Positioned at tile `(24, 47)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[03]` (Lorelai)**: Positioned at tile `(47, 41)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[04]` (Hitbox Zone)**: Bounding trigger area covering `4` tiles wide by `3` tiles high from `(51, 46)` to `(54, 48)`. Handles doorway warps, counter interactions, and room transitions.
 - **`obj[05]` (Hitbox Zone)**: Bounding trigger area covering `2` tiles wide by `2` tiles high from `(38, 35)` to `(39, 36)`. Handles doorway warps, counter interactions, and room transitions.
 - **`obj[06]` (Hitbox Zone)**: Bounding trigger area covering `4` tiles wide by `3` tiles high from `(30, 35)` to `(33, 37)`. Handles doorway warps, counter interactions, and room transitions.
@@ -363,7 +363,7 @@
 
 | Slot | Class (`otyp`) | Identity / Description | Sprite Pattern (`fpno`) | Coords (`x, y`) | Size (`w, h`) | Facing (`ano`) | State (`disp`) | Collision (`ozok`) | Speed | Wait | Priority |
 |:---:|---|---|:---:|:---:|:---:|---|---|---|:---:|:---:|:---:|
-| `obj[00]` | NPC / Actor | **Actor ID 67** | `67` | `(87, 48)` | `15x2` | East (Right) | Dormant / Hidden (0) | Special (3) | 5 | 128 | 0 |
+| `obj[00]` | NPC / Actor | **Stallion** | `67` | `(87, 48)` | `15x2` | East (Right) | Dormant / Hidden (0) | Special (3) | 5 | 128 | 0 |
 | `obj[01]` | Trigger / Hitbox | **Hitbox Zone (4x3)** | `0` | `(51, 46)` | `3x2` | South (Down) | Visible (1) | Passable (0) | 4 | 255 | 0 |
 | `obj[02]` | Trigger / Hitbox | **Hitbox Zone (2x2)** | `0` | `(38, 35)` | `1x1` | South (Down) | Visible (1) | Passable (0) | 4 | 255 | 0 |
 | `obj[03]` | Trigger / Hitbox | **Hitbox Zone (4x3)** | `0` | `(30, 35)` | `3x2` | South (Down) | Visible (1) | Passable (0) | 4 | 255 | 0 |
@@ -371,7 +371,7 @@
 
 #### Entity Narrative Roles, Placements & Mechanics
 
-- **`obj[00]` (Object 67)**: Positioned at tile `(87, 48)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[00]` (Stallion)**: Positioned at tile `(87, 48)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[01]` (Hitbox Zone)**: Bounding trigger area covering `4` tiles wide by `3` tiles high from `(51, 46)` to `(54, 48)`. Handles doorway warps, counter interactions, and room transitions.
 - **`obj[02]` (Hitbox Zone)**: Bounding trigger area covering `2` tiles wide by `2` tiles high from `(38, 35)` to `(39, 36)`. Handles doorway warps, counter interactions, and room transitions.
 - **`obj[03]` (Hitbox Zone)**: Bounding trigger area covering `4` tiles wide by `3` tiles high from `(30, 35)` to `(33, 37)`. Handles doorway warps, counter interactions, and room transitions.
@@ -412,7 +412,7 @@
 
 | Slot | Class (`otyp`) | Identity / Description | Sprite Pattern (`fpno`) | Coords (`x, y`) | Size (`w, h`) | Facing (`ano`) | State (`disp`) | Collision (`ozok`) | Speed | Wait | Priority |
 |:---:|---|---|:---:|:---:|:---:|---|---|---|:---:|:---:|:---:|
-| `obj[00]` | NPC / Actor | **Actor ID 109** | `109` | `(31, 44)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[00]` | NPC / Actor | **Lebrante** | `109` | `(31, 44)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[01]` | Trigger / Hitbox | **Hitbox Zone (5x3)** | `0` | `(29, 44)` | `4x2` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
 | `obj[02]` | Trigger / Hitbox | **Hitbox Zone (3x3)** | `0` | `(45, 51)` | `2x2` | South (Down) | Visible (1) | Passable (0) | 4 | 255 | 0 |
 | `obj[03]` | Trigger / Hitbox | **Hitbox Zone (3x2)** | `0` | `(44, 31)` | `2x1` | South (Down) | Visible (1) | Passable (0) | 4 | 255 | 0 |
@@ -427,7 +427,7 @@
 
 #### Entity Narrative Roles, Placements & Mechanics
 
-- **`obj[00]` (Object 109)**: Positioned at tile `(31, 44)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[00]` (Lebrante)**: Positioned at tile `(31, 44)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[01]` (Hitbox Zone)**: Bounding trigger area covering `5` tiles wide by `3` tiles high from `(29, 44)` to `(33, 46)`. Handles doorway warps, counter interactions, and room transitions.
 - **`obj[02]` (Hitbox Zone)**: Bounding trigger area covering `3` tiles wide by `3` tiles high from `(45, 51)` to `(47, 53)`. Handles doorway warps, counter interactions, and room transitions.
 - **`obj[03]` (Hitbox Zone)**: Bounding trigger area covering `3` tiles wide by `2` tiles high from `(44, 31)` to `(46, 32)`. Handles doorway warps, counter interactions, and room transitions.
@@ -556,7 +556,7 @@
 
 | Slot | Class (`otyp`) | Identity / Description | Sprite Pattern (`fpno`) | Coords (`x, y`) | Size (`w, h`) | Facing (`ano`) | State (`disp`) | Collision (`ozok`) | Speed | Wait | Priority |
 |:---:|---|---|:---:|:---:|:---:|---|---|---|:---:|:---:|:---:|
-| `obj[00]` | NPC / Actor | **Clive** | `110` | `(28, 25)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[00]` | NPC / Actor | **Tessai** | `110` | `(28, 25)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[01]` | Trigger / Hitbox | **Hitbox Zone (5x2)** | `0` | `(38, 20)` | `4x1` | South (Down) | Visible (1) | Passable (0) | 4 | 255 | 0 |
 | `obj[02]` | Trigger / Hitbox | **Hitbox Zone (2x2)** | `0` | `(42, 20)` | `1x1` | South (Down) | Visible (1) | Passable (0) | 4 | 255 | 0 |
 | `obj[03]` | Trigger / Hitbox | **Hitbox Zone (4x3)** | `0` | `(33, 20)` | `3x2` | South (Down) | Visible (1) | Passable (0) | 4 | 255 | 0 |
@@ -574,7 +574,7 @@
 
 #### Entity Narrative Roles, Placements & Mechanics
 
-- **`obj[00]` (Clive)**: Positioned at tile `(28, 25)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[00]` (Tessai)**: Positioned at tile `(28, 25)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[01]` (Hitbox Zone)**: Bounding trigger area covering `5` tiles wide by `2` tiles high from `(38, 20)` to `(42, 21)`. Handles doorway warps, counter interactions, and room transitions.
 - **`obj[02]` (Hitbox Zone)**: Bounding trigger area covering `2` tiles wide by `2` tiles high from `(42, 20)` to `(43, 21)`. Handles doorway warps, counter interactions, and room transitions.
 - **`obj[03]` (Hitbox Zone)**: Bounding trigger area covering `4` tiles wide by `3` tiles high from `(33, 20)` to `(36, 22)`. Handles doorway warps, counter interactions, and room transitions.
@@ -735,9 +735,9 @@
 | `obj[09]` | Trigger / Hitbox | **Hitbox Zone (3x2)** | `0` | `(25, 83)` | `2x1` | South (Down) | Visible (1) | Passable (0) | 4 | 255 | 0 |
 | `obj[10]` | Trigger / Hitbox | **Hitbox Zone (4x2)** | `0` | `(28, 83)` | `3x1` | South (Down) | Visible (1) | Passable (0) | 4 | 255 | 0 |
 | `obj[11]` | Trigger / Hitbox | **Hitbox Zone (4x4)** | `0` | `(32, 94)` | `3x3` | South (Down) | Visible (1) | Passable (0) | 4 | 255 | 0 |
-| `obj[12]` | NPC / Actor | **Elza** | `111` | `(45, 41)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[12]` | NPC / Actor | **Raura** | `111` | `(45, 41)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[13]` | Trigger / Hitbox | **Hitbox Zone (5x2)** | `0` | `(43, 43)` | `4x1` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
-| `obj[14]` | NPC / Actor | **Flik** | `5` | `(43, 45)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[14]` | NPC / Actor | **Sheena** | `5` | `(43, 45)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[15]` | NPC / Actor | **Storage Sack / Flour Bag** | `65079` | `(29, 44)` | `0x0` | East (Right) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[16]` | NPC / Actor | **Actor ID 65098** | `65098` | `(54, 48)` | `3x0` | Up (North) | Dormant / Hidden (0) | Special (3) | 1 | 128 | 0 |
 | `obj[17]` | NPC / Actor | **Actor ID 65105** | `65105` | `(31, 33)` | `0x0` | East (Right) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
@@ -758,9 +758,9 @@
 - **`obj[09]` (Hitbox Zone)**: Bounding trigger area covering `3` tiles wide by `2` tiles high from `(25, 83)` to `(27, 84)`. Handles doorway warps, counter interactions, and room transitions.
 - **`obj[10]` (Hitbox Zone)**: Bounding trigger area covering `4` tiles wide by `2` tiles high from `(28, 83)` to `(31, 84)`. Handles doorway warps, counter interactions, and room transitions.
 - **`obj[11]` (Hitbox Zone)**: Bounding trigger area covering `4` tiles wide by `4` tiles high from `(32, 94)` to `(35, 97)`. Handles doorway warps, counter interactions, and room transitions.
-- **`obj[12]` (Elza)**: Positioned at tile `(45, 41)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[12]` (Raura)**: Positioned at tile `(45, 41)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[13]` (Hitbox Zone)**: Bounding trigger area covering `5` tiles wide by `2` tiles high from `(43, 43)` to `(47, 44)`. Handles doorway warps, counter interactions, and room transitions.
-- **`obj[14]` (Flik)**: Positioned at tile `(43, 45)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[14]` (Sheena)**: Positioned at tile `(43, 45)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[15]` (Storage Sack / Flour Bag)**: Positioned at tile `(29, 44)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[16]` (Object 65098)**: Positioned at tile `(54, 48)`, facing Up (North). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[17]` (Object 65105)**: Positioned at tile `(31, 33)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
@@ -856,7 +856,7 @@
 | `obj[09]` | Trigger / Hitbox | **Hitbox Zone (3x2)** | `0` | `(25, 83)` | `2x1` | South (Down) | Visible (1) | Passable (0) | 4 | 255 | 0 |
 | `obj[10]` | Trigger / Hitbox | **Hitbox Zone (4x2)** | `0` | `(28, 83)` | `3x1` | South (Down) | Visible (1) | Passable (0) | 4 | 255 | 0 |
 | `obj[11]` | Trigger / Hitbox | **Hitbox Zone (4x4)** | `0` | `(32, 94)` | `3x3` | South (Down) | Visible (1) | Passable (0) | 4 | 255 | 0 |
-| `obj[12]` | NPC / Actor | **Flik** | `5` | `(43, 45)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[12]` | NPC / Actor | **Sheena** | `5` | `(43, 45)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[13]` | NPC / Actor | **Actor ID 65076** | `65076` | `(100, 34)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[14]` | NPC / Actor | **Actor ID 65094** | `65094` | `(98, 42)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[15]` | NPC / Actor | **Spice Stall & Jars** | `65223` | `(102, 42)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
@@ -879,7 +879,7 @@
 - **`obj[09]` (Hitbox Zone)**: Bounding trigger area covering `3` tiles wide by `2` tiles high from `(25, 83)` to `(27, 84)`. Handles doorway warps, counter interactions, and room transitions.
 - **`obj[10]` (Hitbox Zone)**: Bounding trigger area covering `4` tiles wide by `2` tiles high from `(28, 83)` to `(31, 84)`. Handles doorway warps, counter interactions, and room transitions.
 - **`obj[11]` (Hitbox Zone)**: Bounding trigger area covering `4` tiles wide by `4` tiles high from `(32, 94)` to `(35, 97)`. Handles doorway warps, counter interactions, and room transitions.
-- **`obj[12]` (Flik)**: Positioned at tile `(43, 45)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[12]` (Sheena)**: Positioned at tile `(43, 45)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[13]` (Object 65076)**: Positioned at tile `(100, 34)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[14]` (Object 65094)**: Positioned at tile `(98, 42)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[15]` (Spice Stall & Jars)**: Positioned at tile `(102, 42)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
@@ -959,7 +959,7 @@
 | `obj[01]` | Trigger / Hitbox | **Hitbox Zone (3x3)** | `0` | `(30, 32)` | `2x2` | South (Down) | Visible (1) | Passable (0) | 4 | 255 | 0 |
 | `obj[02]` | Trigger / Hitbox | **Hitbox Zone (2x2)** | `0` | `(35, 41)` | `1x1` | South (Down) | Visible (1) | Passable (0) | 4 | 255 | 0 |
 | `obj[03]` | Trigger / Hitbox | **Hitbox Zone (2x2)** | `0` | `(35, 47)` | `1x1` | South (Down) | Visible (1) | Passable (0) | 4 | 255 | 0 |
-| `obj[04]` | NPC / Actor | **Hix** | `106` | `(42, 32)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[04]` | NPC / Actor | **Gordon** | `106` | `(42, 32)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[05]` | Trigger / Hitbox | **Hitbox Zone (5x3)** | `0` | `(40, 32)` | `4x2` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
 | `obj[06]` | NPC / Actor | **Actor ID 65224** | `65224` | `(49, 39)` | `2x3` | South (Down) | Dormant / Hidden (0) | Special (3) | 3 | 128 | 0 |
 | `obj[07]` | NPC / Actor | **Actor ID 65186** | `65186` | `(25, 43)` | `3x3` | Up (North) | Dormant / Hidden (0) | Special (3) | 3 | 128 | 0 |
@@ -981,7 +981,7 @@
 - **`obj[01]` (Hitbox Zone)**: Bounding trigger area covering `3` tiles wide by `3` tiles high from `(30, 32)` to `(32, 34)`. Handles doorway warps, counter interactions, and room transitions.
 - **`obj[02]` (Hitbox Zone)**: Bounding trigger area covering `2` tiles wide by `2` tiles high from `(35, 41)` to `(36, 42)`. Handles doorway warps, counter interactions, and room transitions.
 - **`obj[03]` (Hitbox Zone)**: Bounding trigger area covering `2` tiles wide by `2` tiles high from `(35, 47)` to `(36, 48)`. Handles doorway warps, counter interactions, and room transitions.
-- **`obj[04]` (Hix)**: Positioned at tile `(42, 32)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[04]` (Gordon)**: Positioned at tile `(42, 32)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[05]` (Hitbox Zone)**: Bounding trigger area covering `5` tiles wide by `3` tiles high from `(40, 32)` to `(44, 34)`. Handles doorway warps, counter interactions, and room transitions.
 - **`obj[06]` (Object 65224)**: Positioned at tile `(49, 39)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[07]` (Object 65186)**: Positioned at tile `(25, 43)`, facing Up (North). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.

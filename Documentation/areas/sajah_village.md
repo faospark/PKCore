@@ -47,7 +47,7 @@
 |:---:|---|---|:---:|:---:|:---:|---|---|---|:---:|:---:|:---:|
 | `obj[00]` | Trigger / Hitbox | **Hitbox Zone (4x2)** | `0` | `(76, 25)` | `3x1` | South (Down) | Visible (1) | Passable (0) | 4 | 255 | 0 |
 | `obj[01]` | World Device | **Mechanism (ano 16)** | `0` | `(74, 26)` | `0x0` | Frame 16 | Visible (1) | Solid (Obstacle) | 4 | 255 | 0 |
-| `obj[02]` | NPC / Actor | **Actor ID 171** | `171` | `(99, 53)` | `0x0` | East (Right) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[02]` | NPC / Actor | **Elza** | `171` | `(99, 53)` | `0x0` | East (Right) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[03]` | Prop / Scenery | **Prop ID 33963** | `33963` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
 | `obj[04]` | Prop / Scenery | **Prop ID 34219** | `34219` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
 | `obj[05]` | Prop / Scenery | **Prop ID 34475** | `34475` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
@@ -87,7 +87,7 @@
 
 - **`obj[00]` (Hitbox Zone)**: Bounding trigger area covering `4` tiles wide by `2` tiles high from `(76, 25)` to `(79, 26)`. Handles doorway warps, counter interactions, and room transitions.
 - **`obj[01]` (World Device: Invisible / Hitbox Trigger)**: Interactive mechanism at tile `(74, 26)` with state parameter `16`.
-- **`obj[02]` (Object 171)**: Positioned at tile `(99, 53)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[02]` (Elza)**: Positioned at tile `(99, 53)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[03]` (Prop: Object 33963)**: Environmental world dressing prop placed at tile `(0, 0)`. Solid collision is set to `0`.
 - **`obj[04]` (Prop: Object 34219)**: Environmental world dressing prop placed at tile `(0, 0)`. Solid collision is set to `0`.
 - **`obj[05]` (Prop: Object 34475)**: Environmental world dressing prop placed at tile `(0, 0)`. Solid collision is set to `0`.

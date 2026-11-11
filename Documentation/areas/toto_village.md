@@ -61,7 +61,7 @@
 | `obj[13]` | NPC / Actor | **Wood-Chopping Stump & Axe** | `64839` | `(125, 125)` | `0x0` | South (Down) | Visible (1) | Passable (0) | 2 | 255 | 0 |
 | `obj[14]` | NPC / Actor | **Storage Sack / Flour Bag** | `65079` | `(120, 130)` | `10x3` | South (Down) | Visible (1) | Special (3) | 2 | 128 | 0 |
 | `obj[15]` | NPC / Actor | **Village Water Well Stone Rim** | `65202` | `(62, 97)` | `3x3` | East (Right) | Visible (1) | Special (3) | 2 | 128 | 0 |
-| `obj[16]` | NPC / Actor | **Yam Koo** | `23` | `(84, 83)` | `5x5` | South (Down) | Visible (1) | Special (3) | 2 | 128 | 0 |
+| `obj[16]` | NPC / Actor | **Hanna** | `23` | `(84, 83)` | `5x5` | South (Down) | Visible (1) | Special (3) | 2 | 128 | 0 |
 | `obj[17]` | Trigger / Hitbox | **Hitbox Zone (3x3)** | `0` | `(88, 52)` | `2x2` | South (Down) | Visible (1) | Passable (0) | 4 | 255 | 0 |
 | `obj[18]` | Trigger / Hitbox | **Hitbox Zone (3x3)** | `0` | `(58, 92)` | `2x2` | South (Down) | Visible (1) | Passable (0) | 4 | 255 | 0 |
 | `obj[19]` | Trigger / Hitbox | **Hitbox Zone (3x3)** | `0` | `(116, 86)` | `2x2` | South (Down) | Visible (1) | Passable (0) | 4 | 255 | 0 |
@@ -99,7 +99,7 @@
 - **`obj[13]` (Wood-Chopping Stump & Axe)**: Positioned at tile `(125, 125)`, facing South (Down). Rendered and active by default. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[14]` (Storage Sack / Flour Bag)**: Positioned at tile `(120, 130)`, facing South (Down). Rendered and active by default. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[15]` (Village Water Well Stone Rim)**: Positioned at tile `(62, 97)`, facing East (Right). Rendered and active by default. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[16]` (Yam Koo)**: Positioned at tile `(84, 83)`, facing South (Down). Rendered and active by default. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[16]` (Hanna)**: Positioned at tile `(84, 83)`, facing South (Down). Rendered and active by default. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[17]` (Hitbox Zone)**: Bounding trigger area covering `3` tiles wide by `3` tiles high from `(88, 52)` to `(90, 54)`. Handles doorway warps, counter interactions, and room transitions.
 - **`obj[18]` (Hitbox Zone)**: Bounding trigger area covering `3` tiles wide by `3` tiles high from `(58, 92)` to `(60, 94)`. Handles doorway warps, counter interactions, and room transitions.
 - **`obj[19]` (Hitbox Zone)**: Bounding trigger area covering `3` tiles wide by `3` tiles high from `(116, 86)` to `(118, 88)`. Handles doorway warps, counter interactions, and room transitions.
@@ -243,7 +243,7 @@
 | `obj[30]` | Trigger / Hitbox | **Hitbox Zone (3x3)** | `0` | `(126, 42)` | `2x2` | South (Down) | Visible (1) | Passable (0) | 4 | 255 | 0 |
 | `obj[31]` | NPC / Actor | **Actor ID 64567** | `64567` | `(131, 37)` | `0x0` | Up (North) | Visible (1) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[32]` | Trigger / Hitbox | **Hitbox Zone (3x3)** | `0` | `(130, 35)` | `2x2` | South (Down) | Visible (1) | Passable (0) | 4 | 255 | 0 |
-| `obj[33]` | NPC / Actor | **Kinnison** | `27` | `(133, 31)` | `0x0` | South (Down) | Visible (1) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[33]` | NPC / Actor | **Zamza** | `27` | `(133, 31)` | `0x0` | South (Down) | Visible (1) | Solid (Obstacle) | 4 | 255 | 0 |
 
 
 #### Entity Narrative Roles, Placements & Mechanics
@@ -281,7 +281,7 @@
 - **`obj[30]` (Hitbox Zone)**: Bounding trigger area covering `3` tiles wide by `3` tiles high from `(126, 42)` to `(128, 44)`. Handles doorway warps, counter interactions, and room transitions.
 - **`obj[31]` (Object 64567)**: Positioned at tile `(131, 37)`, facing Up (North). Rendered and active by default. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[32]` (Hitbox Zone)**: Bounding trigger area covering `3` tiles wide by `3` tiles high from `(130, 35)` to `(132, 37)`. Handles doorway warps, counter interactions, and room transitions.
-- **`obj[33]` (Kinnison)**: Positioned at tile `(133, 31)`, facing South (Down). Rendered and active by default. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[33]` (Zamza)**: Positioned at tile `(133, 31)`, facing South (Down). Rendered and active by default. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 
 
 #### Complete Bytecode Script Catalog (64 Scripts)
@@ -377,13 +377,13 @@
 |:---:|---|---|:---:|:---:|:---:|---|---|---|:---:|:---:|:---:|
 | `obj[00]` | NPC / Actor | **Pilika (Traumatized)** | `123` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 3 | 255 | 0 |
 | `obj[01]` | NPC / Actor | **Pilika (Wooden Amulet)** | `124` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 3 | 255 | 0 |
-| `obj[02]` | NPC / Actor | **Rowd** | `85` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 3 | 255 | 0 |
+| `obj[02]` | NPC / Actor | **Apple** | `85` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 3 | 255 | 0 |
 | `obj[03]` | NPC / Actor | **Matilda Knight Guard** | `65106` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[04]` | NPC / Actor | **Actor ID 65104** | `65104` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[05]` | Prop / Scenery | **Prop ID 37968** | `37968` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
 | `obj[06]` | Prop / Scenery | **Prop ID 37968** | `37968` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
-| `obj[07]` | NPC / Actor | **Actor ID 86** | `86` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
-| `obj[08]` | NPC / Actor | **Yam Koo** | `23` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[07]` | NPC / Actor | **Templeton** | `86` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[08]` | NPC / Actor | **Hanna** | `23` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[09]` | NPC / Actor | **Actor ID 65041** | `65041` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 3 | 255 | 0 |
 | `obj[10]` | Trigger / Hitbox | **Hitbox Zone (3x2)** | `0` | `(114, 129)` | `2x1` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[11]` | World Device | **Mechanism (ano 16)** | `0` | `(120, 130)` | `0x0` | Frame 16 | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
@@ -418,13 +418,13 @@
 
 - **`obj[00]` (Pilika (Traumatized))**: Positioned at tile `(0, 0)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[01]` (Pilika (Wooden Amulet))**: Positioned at tile `(0, 0)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[02]` (Rowd)**: Positioned at tile `(0, 0)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[02]` (Apple)**: Positioned at tile `(0, 0)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[03]` (Matilda Knight Guard)**: Positioned at tile `(0, 0)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[04]` (Object 65104)**: Positioned at tile `(0, 0)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[05]` (Prop: Object 37968)**: Environmental world dressing prop placed at tile `(0, 0)`. Solid collision is set to `0`.
 - **`obj[06]` (Prop: Object 37968)**: Environmental world dressing prop placed at tile `(0, 0)`. Solid collision is set to `0`.
-- **`obj[07]` (Object 86)**: Positioned at tile `(0, 0)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[08]` (Yam Koo)**: Positioned at tile `(0, 0)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[07]` (Templeton)**: Positioned at tile `(0, 0)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[08]` (Hanna)**: Positioned at tile `(0, 0)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[09]` (Object 65041)**: Positioned at tile `(0, 0)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[10]` (Hitbox Zone)**: Bounding trigger area covering `3` tiles wide by `2` tiles high from `(114, 129)` to `(116, 130)`. Handles doorway warps, counter interactions, and room transitions.
 - **`obj[11]` (World Device: Invisible / Hitbox Trigger)**: Interactive mechanism at tile `(120, 130)` with state parameter `16`.

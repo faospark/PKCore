@@ -51,14 +51,18 @@ S2_AREAS = [
      "Prestigious university; lecture classrooms, student dormitory rooms, campus courtyard, dining cafeteria, secret cellar tunnel."),
     ("greenhill_matilda_path_and_border", "Greenhill-Matilda Forest Trail & Checkpoint", "ve (Act 2B: Greenhill / Matilda Path)", ["ve04", "ve05", "ve15"], 
      "Dense forest trail connecting Greenhill to Matilda; guarded checkpoint gatehouse, wooden barricades, Viki's teleport landing clearing."),
-    ("banner_village", "Banner Village & Fast Pier", "vf (Act 2C: Banner / Toran)", ["vf01", "vf02", "vf06", "vf07"], 
-     "Lakeside fishing hamlet; wooden boardwalks, fast ferry dock to Dunan Castle, village trade shop, inn, mountain pass trail entrance."),
-    ("banner_pass", "Banner Pass (Toran Mountain Trail)", "vf (Act 2C: Banner / Toran)", ["vf03"], 
+    ("banner_village", "Banner Village & Fast Pier", "vf (Act 2C: Banner / Toran)", ["vf05"], 
+     "Lakeside fishing hamlet; wooden boardwalks, fast ferry dock to Dunan Castle HQ, village trade shop, inn, poisoned boy Ko questline, and Varkas border checkpoint."),
+    ("banner_pass", "Banner Pass (Toran Mountain Trail)", "vf (Act 2C: Banner / Toran)", ["vf06", "vf07"], 
      "High mountain pass connecting Banner Village to Gregminster; steep cliff ascents, suspension bridges, Giant Worm boss, and hidden mountain path to Rokkaku Hamlet (バナー峠)."),
-    ("gregminster_capital", "Gregminster Capital Avenues", "vf (Act 2C: Banner / Toran)", ["vf04"], 
-     "Imperial capital of Toran Republic; grand stone boulevards, public fountain, imperial garden avenues, high-tier armor/rune shops."),
-    ("toran_castle_palace", "Toran Castle Presidential Palace", "vf (Act 2C: Banner / Toran)", ["vf05"], 
-     "President Lepant's executive palace; marble entrance foyer, state reception hall, Cleo and Pahn's guard post, Hero 1 cameo hall."),
+    ("rokkaku_hamlet", "Rokkaku Hamlet", "vf (Act 2C: Banner / Toran)", ["vf01"], 
+     "Secret ninja sanctuary hidden deep within Banner Pass; traditional Japanese houses with irori hearths, training grounds, Lord Hanzo's residence, and recruitment grounds for Mondo and Sasuke (六角の里)."),
+    ("gregminster_capital", "Gregminster Capital Plaza & Avenues", "vf (Act 2C: Banner / Toran)", ["vf02"], 
+     "Imperial capital of the Toran Republic; grand stone boulevards, central plaza fountain, imperial garden avenues, Dr. Liukan's clinic, and Teo McDohl's former residence."),
+    ("gregminster_interiors", "Gregminster Town Interiors & Commercial District", "vf (Act 2C: Banner / Toran)", ["vf03"], 
+     "All 14 building interiors across Gregminster; McDohl Estate (Gremio's Recipe #39 stew, Cleo/Pahn diaries), Marie's Famous Inn, Gordon's Mercantile & Appraisal Post, Lady Sonya Shulen's Residence, Rune Sage Guild, and Master Armor/Item shops."),
+    ("toran_castle_palace", "Toran Castle Presidential Palace", "vf (Act 2C: Banner / Toran)", ["vf04"], 
+     "President Lepant's executive palace in Gregminster; grand audience chamber, presidential throne room, Kasumi/Valeria recruitment summit, Sheena's departure, and imperial guard posts."),
     ("tinto_city", "Tinto Mining City & Mayor Hall", "vg (Act 3A: Tinto / Mines / Vampires)", ["vg01", "vg02", "vg03", "vg17"], 
      "Terraced mountain mining capital; steep stone staircases, Mayor Gustav's city hall, Riou's temporary bedroom, town square battlements."),
     ("tigermouth_village", "Tigermouth Mountain Settlement", "vg (Act 3A: Tinto / Mines / Vampires)", ["vg04", "vg06"], 
@@ -130,7 +134,9 @@ S2_AREAS = [
     ("dunan_castle_hq_inn_and_lodging", "Castle HQ: Castle Inn & Lodging Rooms", "vk (Castle HQ)", ["vk31"], 
      "Overnight recovery lodge; traveler guest beds, nightstands, Journeyman Save station for castle guests."),
     ("dunan_castle_hq_guardian_deity_shrine", "Castle HQ: Jude's Guardian Deity Shrine", "vk (Castle HQ)", ["vk33"], 
-     "Sacred sanctum; sculptor Jude's pedestal where four-part custom guardian deity statue is assembled.")
+     "Sacred sanctum; sculptor Jude's pedestal where four-part custom guardian deity statue is assembled."),
+    ("world_map_sectors", "World Map Overworld Sectors (Regions A–K)", "wa-wk (Overworld)", ["wa", "wb", "wc", "wd", "we", "wg", "wh", "wi", "wj", "wk"], 
+     "The 10 contiguous overworld sectors governing terrestrial travel, territorial borders, location proximity banners, town entrance warps, and Lake Dunan maritime navigation.")
 ]
 
 S1_REGIONS = [

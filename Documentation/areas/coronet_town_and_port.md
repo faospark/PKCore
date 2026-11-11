@@ -439,9 +439,9 @@
 
 | Slot | Class (`otyp`) | Identity / Description | Sprite Pattern (`fpno`) | Coords (`x, y`) | Size (`w, h`) | Facing (`ano`) | State (`disp`) | Collision (`ozok`) | Speed | Wait | Priority |
 |:---:|---|---|:---:|:---:|:---:|---|---|---|:---:|:---:|:---:|
-| `obj[00]` | NPC / Actor | **Flik** | `5` | `(33, 14)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 3 | 255 | 0 |
-| `obj[01]` | NPC / Actor | **Richmond** | `38` | `(33, 14)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 3 | 255 | 0 |
-| `obj[02]` | NPC / Actor | **Humphrey Mintz** | `100` | `(33, 14)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 3 | 255 | 0 |
+| `obj[00]` | NPC / Actor | **Sheena** | `5` | `(33, 14)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 3 | 255 | 0 |
+| `obj[01]` | NPC / Actor | **Tai Ho** | `38` | `(33, 14)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 3 | 255 | 0 |
+| `obj[02]` | NPC / Actor | **Yam Koo** | `100` | `(33, 14)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 3 | 255 | 0 |
 | `obj[03]` | World Device | **Mechanism (ano 1)** | `0` | `(46, 30)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[04]` | World Device | **Mechanism (ano 23)** | `0` | `(20, 48)` | `0x0` | Frame 23 | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[05]` | World Device | **Mechanism (ano 22)** | `0` | `(20, 48)` | `0x0` | Frame 22 | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
@@ -456,9 +456,9 @@
 
 #### Entity Narrative Roles, Placements & Mechanics
 
-- **`obj[00]` (Flik)**: Positioned at tile `(33, 14)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[01]` (Richmond)**: Positioned at tile `(33, 14)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[02]` (Humphrey Mintz)**: Positioned at tile `(33, 14)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[00]` (Sheena)**: Positioned at tile `(33, 14)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[01]` (Tai Ho)**: Positioned at tile `(33, 14)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[02]` (Yam Koo)**: Positioned at tile `(33, 14)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[03]` (World Device: Invisible / Hitbox Trigger)**: Interactive mechanism at tile `(46, 30)` with state parameter `1`.
 - **`obj[04]` (World Device: Invisible / Hitbox Trigger)**: Interactive mechanism at tile `(20, 48)` with state parameter `23`.
 - **`obj[05]` (World Device: Invisible / Hitbox Trigger)**: Interactive mechanism at tile `(20, 48)` with state parameter `22`.

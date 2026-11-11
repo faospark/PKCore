@@ -45,14 +45,14 @@
 
 | Slot | Class (`otyp`) | Identity / Description | Sprite Pattern (`fpno`) | Coords (`x, y`) | Size (`w, h`) | Facing (`ano`) | State (`disp`) | Collision (`ozok`) | Speed | Wait | Priority |
 |:---:|---|---|:---:|:---:|:---:|---|---|---|:---:|:---:|:---:|
-| `obj[00]` | NPC / Actor | **Sierra (Combat)** | `45` | `(55, 30)` | `4x3` | South (Down) | Dormant / Hidden (0) | Special (3) | 3 | 128 | 0 |
+| `obj[00]` | NPC / Actor | **Sierra** | `45` | `(55, 30)` | `4x3` | South (Down) | Dormant / Hidden (0) | Special (3) | 3 | 128 | 0 |
 | `obj[01]` | Prop / Scenery | **Prop ID 53293** | `53293` | `(53, 18)` | `0x0` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 180 |
-| `obj[02]` | NPC / Actor | **Tony** | `70` | `(46, 56)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
-| `obj[03]` | NPC / Actor | **Youth Brigade Recruit** | `3` | `(80, 24)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[02]` | NPC / Actor | **Gantetsu** | `70` | `(46, 56)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[03]` | NPC / Actor | **Viktor** | `3` | `(80, 24)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[04]` | NPC / Actor | **Bonaparte** | `83` | `(34, 41)` | `4x2` | West (Left) | Dormant / Hidden (0) | Special (3) | 3 | 128 | 0 |
-| `obj[05]` | NPC / Actor | **Actor ID 67** | `67` | `(66, 36)` | `17x5` | West (Left) | Dormant / Hidden (0) | Special (3) | 6 | 128 | 0 |
-| `obj[06]` | NPC / Actor | **Tuta** | `71` | `(68, 77)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
-| `obj[07]` | NPC / Actor | **Adlai** | `56` | `(66, 56)` | `8x2` | West (Left) | Dormant / Hidden (0) | Special (3) | 2 | 128 | 0 |
+| `obj[05]` | NPC / Actor | **Stallion** | `67` | `(66, 36)` | `17x5` | West (Left) | Dormant / Hidden (0) | Special (3) | 6 | 128 | 0 |
+| `obj[06]` | NPC / Actor | **Hoi** | `71` | `(68, 77)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[07]` | NPC / Actor | **Sid** | `56` | `(66, 56)` | `8x2` | West (Left) | Dormant / Hidden (0) | Special (3) | 2 | 128 | 0 |
 | `obj[08]` | Trigger / Hitbox | **Hitbox Zone (2x1)** | `0` | `(28, 38)` | `1x0` | South (Down) | Visible (1) | Passable (0) | 4 | 255 | 0 |
 | `obj[09]` | Trigger / Hitbox | **Hitbox Zone (2x1)** | `0` | `(28, 45)` | `1x0` | South (Down) | Visible (1) | Passable (0) | 4 | 255 | 0 |
 | `obj[10]` | Trigger / Hitbox | **Hitbox Zone (2x1)** | `0` | `(28, 53)` | `1x0` | South (Down) | Visible (1) | Passable (0) | 4 | 255 | 0 |
@@ -101,14 +101,14 @@
 
 #### Entity Narrative Roles, Placements & Mechanics
 
-- **`obj[00]` (Sierra (Combat))**: Positioned at tile `(55, 30)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[00]` (Sierra)**: Positioned at tile `(55, 30)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[01]` (Prop: Object 53293)**: Environmental world dressing prop placed at tile `(53, 18)`. Solid collision is set to `0`.
-- **`obj[02]` (Tony)**: Positioned at tile `(46, 56)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[03]` (Youth Brigade Recruit)**: Positioned at tile `(80, 24)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[02]` (Gantetsu)**: Positioned at tile `(46, 56)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[03]` (Viktor)**: Positioned at tile `(80, 24)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[04]` (Bonaparte)**: Positioned at tile `(34, 41)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[05]` (Object 67)**: Positioned at tile `(66, 36)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[06]` (Tuta)**: Positioned at tile `(68, 77)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[07]` (Adlai)**: Positioned at tile `(66, 56)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[05]` (Stallion)**: Positioned at tile `(66, 36)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[06]` (Hoi)**: Positioned at tile `(68, 77)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[07]` (Sid)**: Positioned at tile `(66, 56)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[08]` (Hitbox Zone)**: Bounding trigger area covering `2` tiles wide by `1` tiles high from `(28, 38)` to `(29, 38)`. Handles doorway warps, counter interactions, and room transitions.
 - **`obj[09]` (Hitbox Zone)**: Bounding trigger area covering `2` tiles wide by `1` tiles high from `(28, 45)` to `(29, 45)`. Handles doorway warps, counter interactions, and room transitions.
 - **`obj[10]` (Hitbox Zone)**: Bounding trigger area covering `2` tiles wide by `1` tiles high from `(28, 53)` to `(29, 53)`. Handles doorway warps, counter interactions, and room transitions.

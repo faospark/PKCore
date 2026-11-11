@@ -131,7 +131,7 @@ $100100 + [Region Code (01-11)] + [Map Number (01-37)] + [Local Message Offset (
 | **`vc`** | `030_ARC` | **Muse City-State & Lake Dunan** | Muse City, White Deer Inn, Sindar Ruins, Coronet Town & Port |
 | **`vd`** | `040_ARD` | **South Window City-State** | South Window City, Radat Town, Kuskus Town, North Window Ghost Town, Cave of the Wind |
 | **`ve`** | `050_ARE` | **Greenhill City-State** | Greenhill City, New Leaf Academy, Forest Village, Greenhill-Matilda Border & Forest Path |
-| **`vf`** | `060_ARF` | **Banner & Toran Republic** | Banner Village, Banner Pass, Gregminster Capital, Toran Castle |
+| **`vf`** | `060_ARF` | **Banner & Toran Republic** | Banner Village, Banner Pass, Rokkaku Hamlet, Gregminster Capital, Toran Castle |
 | **`vg`** | `070_ARG` | **Tinto Republic & Mountains** | Tinto City, Tinto Mines, Tigermouth Village, Crom Village, Lampdragon Mountain |
 | **`vh`** | `080_ARH` | **Two River Republic** | Two River City (Human, Wingly, Kobold Districts), Two River Sewers, Lakewest, Kobold Village, Drakemouth Village |
 | **`vi`** | `090_ARI` | **Matilda Knightdom** | Rockaxe Castle, Rockaxe Town, Highway Village, Mt. Rakutei |
@@ -156,7 +156,7 @@ The chronological order of gameplay and regional transitions is detailed below:
 | **6** | **Act 2B: The Two River Republic Alliance** | **`vh`** | Lakewest Town (`vh02`), Two River Human District (`vh01`), Wingly District (`vh05`), Kobold District (`vh06`), Two River Sewers (`vh04`) | First official diplomatic mission; Chaco wallet chase; Lord Makai & Ridley cooperation; sewers Pestilence boss; Two River alliance treaty signed. |
 | **7** | **Act 2C: Infiltration of Greenhill City** | **`ve`** | Greenhill City Main Gate (`ve01`), New Leaf Academy (`ve03`, `ve06`, `ve07`), Forest Village (`ve02`), Forest Path (`ve04`) | Student disguise infiltration (Riou, Nanami, Flik); locating Mayor Teresa Wisemail; academy cellar escape; Viki recruitment on mountain path. |
 | **8** | **Act 3A: Matilda Knights & Luca Blight Ambush** | **`vi`** / **`vb`** | Highway Village (`vi11`), Rockaxe Castle (`vi01`), Mt. Rakutei (`vi08`, `vi13`), Ryube Forest outskirts | Gorudo's cowardice and treaty rejection; Humphrey & Futch dragon peak quest; 3-team night ambush against Luca Blight; Luca Blight's defeat. |
-| **9** | **Act 3B: Diplomatic Mission to Toran** | **`vf`** | Banner Village (`vf01`), Banner Pass (`vf03`), Rokkaku Hamlet, Gregminster Capital (`vf04`), Toran Palace (`vf05`) | Southern mountain trek to the Scarlet Moon / Toran Republic; President Lepant agreement; 5,000 Toran reinforcements secured; Hero 1 (McDohl) cameo. |
+| **9** | **Act 3B: Diplomatic Mission to Toran** | **`vf`** | Banner Village (`vf05`), Banner Pass (`vf06`, `vf07`), Rokkaku Hamlet (`vf01`), Gregminster Capital (`vf02`, `vf03`), Toran Palace (`vf04`) | Southern mountain trek to the Scarlet Moon / Toran Republic; President Lepant agreement; 5,000 Toran reinforcements secured; Hero 1 (McDohl) cameo. |
 | **10** | **Act 3C: The Tinto Crisis & Vampires** | **`vh`** / **`vg`** | Drakemouth Village (`vh08`), Tigermouth Village (`vg04`, `vg06`), Tinto City (`vg01`, `vg02`), Tinto Mines (`vg05`, `vg07`), Crom Village (`vg08`, `vg13`), Mt. Senai / Tiger Cave (`vg09`, `vg15`) | Neclord invades Tinto; Riou fleeing branch to Crom; Sierra Mikain recruited at Tiger Cave; Star Dragon Sword banishes Neclord permanently; Gustav joins. |
 | **11** | **Act 3D: Dunan Liberation Campaigns** | **`vi`** / **`vc`** | Rockaxe Castle (`vi01`, `vi05`), Muse City Rebuilding & Occupied Halls (`vc25`, `vc26`, `vc27`) | Gorudo defeated; Nanami archery defense scene; Muse liberated from Highland garrisons; City-State of Jowston territories unified. |
 | **12** | **Act 4: The Highland Invasion & Finale** | **`vj`** | L'Renouille Castle Gates (`vj01`), War Room (`vj05`), Throne Room (`vj16`), Beast Rune Inner Sanctum (`vj08`), Sajah Village (`vj17`) | Final military invasion; Han Cunningham duel; Seed & Culgan last stand; King Jowy confrontation; Silver Beast Rune manifestation defeated. |
@@ -269,17 +269,17 @@ The chronological order of gameplay and regional transitions is detailed below:
 
 ---
 
-### `vf` — Banner Village & Toran Republic
+### `vf` — Banner Village, Rokkaku & Toran Republic
 
 | Map ID | Location / Submap | Key NPCs, Events & Recruitment Notes |
 | :---: | :--- | :--- |
-| `vf01` | **Banner Village - Harbor & Main Village** | Harbor docks, **Anita recruitment**, trade shop, fisherman. |
-| `vf02` | **Banner Village - Mountain Pass Inn** | Poisoned boy cutscene, trail entry lodge. |
-| `vf03` | **Banner Pass (Toran Mountain Trail)** | Mountain trail connecting Dunan and Toran; Worm boss, bandit encounters, hidden path to **Rokkaku Hamlet** (**Mondo & Sasuke recruitment**). |
-| `vf04` | **Gregminster - Capital Plaza & Streets** | Scarlet Moon / Toran Republic capital avenues, fountain, rune/armor shops. |
-| `vf05` | **Toran Castle / Presidential Palace** | President Lepant, Cleo, Pahn, Varkas; McDohl (Hero 1) cameo storyline. |
-| `vf06` | **Banner Village - Fast Ferry Pier** | Direct ship route connection to Dunan Castle HQ docks. |
-
+| `vf01` | **Rokkaku Hamlet** | Secret ninja village hidden in Banner Pass; **Mondo & Sasuke recruitment**, Lord Hanzo, ninja training houses with irori hearths. |
+| `vf02` | **Gregminster - Capital Plaza & Avenues** | Scarlet Moon / Toran Republic capital exterior; central fountain plaza, Teo McDohl's estate, Lord Milich's residence, Dr. Liukan's clinic. |
+| `vf03` | **Gregminster - Town Interiors & Commercial District** | Gregminster Inn, Rune Sage shop, high-tier armor/item shops, **Gordon recruitment** & antique trade post. |
+| `vf04` | **Toran Castle / Presidential Palace** | President Lepant's executive palace; grand audience hall, presidential throne room, **Kasumi vs. Valeria recruitment selection**, **Sheena recruitment**. |
+| `vf05` | **Banner Village - Harbor & Fast Pier** | Lakeside fishing hamlet; harbor docks, **Anita recruitment**, poisoned boy Ko questline, fast ferry connection to Dunan Castle HQ docks, Varkas border checkpoint. |
+| `vf06` | **Banner Pass - Lower Mountain Trail** | Southern ascent trail from Banner Village; rocky cliffs, wooden bridges, random encounters (`batlno=1`). |
+| `vf07` | **Banner Pass - Upper Mountain Trail & Rokkaku Path** | High peak trail; Giant Worm boss arena, secret path through the trees to Rokkaku Hamlet, northern descent toward Gregminster. |
 ---
 
 ### `vg` — Tinto Republic & Mining Mountains
@@ -382,6 +382,25 @@ The Dunan Castle Headquarters is the largest composite map group in the game, sp
 | `vk29` | **Teleportation Chamber & Elevator** | **Viki** (Blinking Magic teleport), **Adlai** (Mechanical castle elevator). |
 | `vk31` | **Entrance Vault & Tavern (Alt State)** | Alternate tier layout for Castle entrance, storage vault, and tavern/inn facilities. |
 | `vk33` | **Guardian Deity Shrine** | **Jude** (Custom four-part guardian deity statue assembly). |
+
+---
+
+### `w` — World Map Overworld Sectors (`wa` through `wk`)
+
+All 10 overworld sectors are comprehensively documented in [`Documentation/areas/world_map_sectors.md`](areas/world_map_sectors.md):
+
+| Map Code | World Sector Territory | Master Maps & Regional Coverage | Primary Towns, Landmarks & Waterways |
+|:---:|---|---|---|
+| `wa` | **Highland Kingdom East / Kyaro Frontier** | `010_ARA` Overworld | Kyaro Town (`va02`), North Sparrow Pass (`vb16`), Tenzan Pass (`va10`/`va24`). |
+| `wb` | **East State Borderlands** | `020_ARB` Overworld | Mercenary Fort (`vb02`/`vb03`), Ryube Village (`vb01`/`vb09`), Toto Village (`vb04`/`vb17`), Ryube Forest & Tsai's Hut (`vb05`), Swallow Pass (`vb07`). |
+| `wc` | **Muse City-State & Shoreline** | `030_ARC` Overworld | Muse Capital Gate (`vc00`/`vc14`/`vc25`), White Deer Inn (`vc03`), Sindar Ruins (`vc05`), Coronet Port (`vc06`), Matilda Checkpoint (`vi10`), Greenhill Path (`ve04`). |
+| `wd` | **South Window Republic & Radat / Kuskus** | `040_ARD` Overworld | Dunan Castle HQ / North Window (`vk33`/`vk00`/`vd03`), South Window City (`vd00`), Radat Canal (`vd01`), Cave of the Wind (`vd06`), Kuskus Town (`vd15`). |
+| `we` | **Greenhill Principality & Forest Village** | `050_ARE` Overworld | Greenhill Academy City (`ve00`/`ve12`), Forest Village (`ve03`), Matilda Border Checkpoint (`ve04`/`ve05`), Two River Trail (`vh05`). |
+| `wg` | **Tinto Republic & Mining Mountains** | `070_ARG` Overworld | Tinto Mining Capital (`vg00`/`vg16`), Tinto Mines / Mt. Senai (`vg01`), Crom Village (`vg02`), Tigermouth Pass (`vg06`). |
+| `wh` | **Two River Republic & Lakewest** | `080_ARH` Overworld | Two River City (`vh00`/`vh01`), Lakewest Town & Pier (`vh02`), Drakemouth Village (`vg05`). |
+| `wi` | **Matilda Knightdom & Mt. Rakutei** | `090_ARI` Overworld | Rockaxe Castle (`vi00`), Highway Village (`vi11`), Mt. Rakutei Peak (`vi12`), Matilda Checkpoint (`vi10`), Forest Village Trail (`ve03`). |
+| `wj` | **Highland Empire Inland & Capital** | `100_ARJ` Overworld | L'Renouille Imperial Capital (`vj00`), Tenzan Pass North (`va10`/`va24`), Sajah Frontier Village (`vj16`), Highland Border Camp (`vc06`). |
+| `wk` | **Lake Dunan Maritime Navigation** | `110_ARK` Overworld | Castle HQ Harbor (`vk21`), Lakewest Pier (`vh01`), Kuskus Port (`vd15`), Coronet Dock (`vc17`). Safe water travel (`batlno=0`). |
 
 ---
 

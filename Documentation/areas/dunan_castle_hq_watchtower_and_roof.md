@@ -48,13 +48,13 @@
 | `obj[00]` | Prop / Scenery | **Prop ID 64769** | `64769` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) (32) | 4 | 255 | 0 |
 | `obj[01]` | Prop / Scenery | **Prop ID 64769** | `64769` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) (32) | 4 | 255 | 0 |
 | `obj[02]` | Prop / Scenery | **Prop ID 64769** | `64769` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) (32) | 4 | 255 | 0 |
-| `obj[03]` | Prop / Scenery | **Nanami (Home/Rooftop)** | `50` | `(40, 20)` | `0x0` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
+| `obj[03]` | Prop / Scenery | **Feather** | `50` | `(40, 20)` | `0x0` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
 | `obj[04]` | Trigger / Hitbox | **Hitbox Zone (5x5)** | `0` | `(44, 16)` | `4x4` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
-| `obj[05]` | NPC / Actor | **Jowy (Flashback Memory)** | `18` | `(37, 38)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
-| `obj[06]` | NPC / Actor | **Riou (Staged)** | `48` | `(22, 22)` | `0x0` | Up (North) | Dormant / Hidden (0) | Solid (Obstacle) (34) | 4 | 255 | 0 |
+| `obj[05]` | NPC / Actor | **Nanami** | `18` | `(37, 38)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[06]` | NPC / Actor | **Mukumuku** | `48` | `(22, 22)` | `0x0` | Up (North) | Dormant / Hidden (0) | Solid (Obstacle) (34) | 4 | 255 | 0 |
 | `obj[07]` | Prop / Scenery | **Prop ID 33072** | `33072` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) (32) | 4 | 255 | 0 |
-| `obj[08]` | NPC / Actor | **Jowy Atreides (Flashback)** | `2` | `(29, 30)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
-| `obj[09]` | NPC / Actor | **Emilia** | `55` | `(27, 24)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[08]` | NPC / Actor | **Flik** | `2` | `(29, 30)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[09]` | NPC / Actor | **Nina** | `55` | `(27, 24)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[10]` | Prop / Scenery | **Flag / Lookout Overlook Prop** | `64769` | `(36, 34)` | `2x3` | East (Right) | Dormant / Hidden (0) | Special (3) | 1 | 255 | 0 |
 | `obj[11]` | Prop / Scenery | **Flag / Lookout Overlook Prop** | `64769` | `(32, 27)` | `6x3` | Up (North) | Dormant / Hidden (0) | Special (3) | 1 | 255 | 0 |
 | `obj[12]` | Prop / Scenery | **Flag / Lookout Overlook Prop** | `64769` | `(41, 24)` | `6x3` | South (Down) | Dormant / Hidden (0) | Special (3) | 1 | 255 | 0 |
@@ -62,11 +62,12 @@
 #### Entity Narrative Roles, Placements & Mechanics
 
 - **`obj[00]–[02]` & `obj[07]` (Environmental Props)**: Environmental world dressing and panorama backdrop anchors placed at tile `(0, 0)`.
-- **`obj[03]` (Nanami)**: Staged at tile `(40, 20)` for the night terrace conversation.
+- **`obj[03]` (Feather)**: Positioned at tile `(40, 20)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags.
 - **`obj[04]` (Hitbox Zone)**: Bounding trigger area covering `5x5` tiles from `(44, 16)` to `(48, 20)`. Handles boundary detection and scene triggering.
-- **`obj[05]` & `obj[08]` (Jowy Atreides - Flashback / Cutscene Staging)**: Positioned at tiles `(37, 38)` and `(29, 30)` as memory/flashback sprites invoked during the late-night reflection scene when Nanami reminisces about Kyaro.
-- **`obj[06]` (Riou)**: Staged actor representation at tile `(22, 22)`.
-- **`obj[09]` (Emilia)**: Castle surveyor / records keeper staged at `(27, 24)`.
+- **`obj[05]` (Nanami)**: Staged at tile `(37, 38)` for the late-night watchtower conversation scene.
+- **`obj[06]` (Mukumuku)**: Positioned at tile `(22, 22)`, facing Up (North).
+- **`obj[08]` (Flik)**: Positioned at tile `(29, 30)`, facing South (Down).
+- **`obj[09]` (Nina)**: Positioned at tile `(27, 24)`, facing South (Down).
 - **`obj[10]–[12]` (Overlook Railings & Flagpole Fixtures)**: Large physical bounding props at `(36, 34)`, `(32, 27)`, and `(41, 24)` representing the high battlement railings and flagpole rigging overlooking Lake Toran.
 
 ---

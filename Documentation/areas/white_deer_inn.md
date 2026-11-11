@@ -45,7 +45,7 @@
 
 | Slot | Class (`otyp`) | Identity / Description | Sprite Pattern (`fpno`) | Coords (`x, y`) | Size (`w, h`) | Facing (`ano`) | State (`disp`) | Collision (`ozok`) | Speed | Wait | Priority |
 |:---:|---|---|:---:|:---:|:---:|---|---|---|:---:|:---:|:---:|
-| `obj[00]` | NPC / Actor | **Alex (Innkeeper)** | `94` | `(10, 16)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[00]` | NPC / Actor | **Hilda** | `94` | `(10, 16)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[01]` | NPC / Actor | **Village Direction Signpost** | `65009` | `(32, 8)` | `0x0` | South (Down) | Visible (1) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[02]` | NPC / Actor | **Stone Fire Pit / Hearth** | `64968` | `(30, 15)` | `5x2` | South (Down) | Visible (1) | Special (3) | 3 | 128 | 0 |
 | `obj[03]` | NPC / Actor | **Wooden Bench Seat** | `64970` | `(31, 16)` | `3x3` | South (Down) | Visible (1) | Special (3) | 3 | 128 | 0 |
@@ -61,7 +61,7 @@
 
 #### Entity Narrative Roles, Placements & Mechanics
 
-- **`obj[00]` (Alex (Innkeeper))**: Positioned at tile `(10, 16)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[00]` (Hilda)**: Positioned at tile `(10, 16)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[01]` (Village Direction Signpost)**: Positioned at tile `(32, 8)`, facing South (Down). Rendered and active by default. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[02]` (Stone Fire Pit / Hearth)**: Positioned at tile `(30, 15)`, facing South (Down). Rendered and active by default. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[03]` (Wooden Bench Seat)**: Positioned at tile `(31, 16)`, facing South (Down). Rendered and active by default. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
@@ -111,7 +111,7 @@
 
 | Slot | Class (`otyp`) | Identity / Description | Sprite Pattern (`fpno`) | Coords (`x, y`) | Size (`w, h`) | Facing (`ano`) | State (`disp`) | Collision (`ozok`) | Speed | Wait | Priority |
 |:---:|---|---|:---:|:---:|:---:|---|---|---|:---:|:---:|:---:|
-| `obj[00]` | NPC / Actor | **Alex (Innkeeper)** | `94` | `(38, 28)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[00]` | NPC / Actor | **Hilda** | `94` | `(38, 28)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[01]` | Trigger / Hitbox | **Hitbox Zone (5x2)** | `0` | `(37, 28)` | `4x1` | South (Down) | Visible (1) | Passable (0) | 4 | 255 | 0 |
 | `obj[02]` | Trigger / Hitbox | **Hitbox Zone (1x3)** | `0` | `(35, 26)` | `0x2` | South (Down) | Visible (1) | Passable (0) | 4 | 255 | 0 |
 | `obj[03]` | Trigger / Hitbox | **Hitbox Zone (5x4)** | `0` | `(48, 143)` | `4x3` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
@@ -130,9 +130,9 @@
 | `obj[16]` | World Device | **Mechanism (ano 27)** | `0` | `(34, 24)` | `0x0` | Frame 27 | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[17]` | World Device | **Mechanism (ano 27)** | `0` | `(34, 24)` | `0x0` | Frame 27 | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[18]` | World Device | **Mechanism (ano 27)** | `0` | `(34, 24)` | `0x0` | Frame 27 | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
-| `obj[19]` | NPC / Actor | **Hilda (Inn Hostess)** | `95` | `(36, 51)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 3 | 255 | 0 |
-| `obj[20]` | NPC / Actor | **Jowy (Camp/Prologue)** | `18` | `(36, 51)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 3 | 255 | 0 |
-| `obj[21]` | NPC / Actor | **Highland Patrol Soldier** | `80` | `(36, 51)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 3 | 255 | 0 |
+| `obj[19]` | NPC / Actor | **Alex** | `95` | `(36, 51)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 3 | 255 | 0 |
+| `obj[20]` | NPC / Actor | **Nanami** | `18` | `(36, 51)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 3 | 255 | 0 |
+| `obj[21]` | NPC / Actor | **Jowy Atreides** | `80` | `(36, 51)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 3 | 255 | 0 |
 | `obj[22]` | NPC / Actor | **Pilika (Wooden Amulet)** | `124` | `(24, 42)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 3 | 255 | 0 |
 | `obj[23]` | NPC / Actor | **Fireplace Chimney / Hearth** | `64815` | `(44, 149)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[24]` | NPC / Actor | **Fireplace Chimney / Hearth** | `64815` | `(44, 149)` | `6x5` | South (Down) | Visible (1) | Special (3) | 3 | 255 | 0 |
@@ -163,7 +163,7 @@
 
 #### Entity Narrative Roles, Placements & Mechanics
 
-- **`obj[00]` (Alex (Innkeeper))**: Positioned at tile `(38, 28)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[00]` (Hilda)**: Positioned at tile `(38, 28)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[01]` (Hitbox Zone)**: Bounding trigger area covering `5` tiles wide by `2` tiles high from `(37, 28)` to `(41, 29)`. Handles doorway warps, counter interactions, and room transitions.
 - **`obj[02]` (Hitbox Zone)**: Bounding trigger area covering `1` tiles wide by `3` tiles high from `(35, 26)` to `(35, 28)`. Handles doorway warps, counter interactions, and room transitions.
 - **`obj[03]` (Hitbox Zone)**: Bounding trigger area covering `5` tiles wide by `4` tiles high from `(48, 143)` to `(52, 146)`. Handles doorway warps, counter interactions, and room transitions.
@@ -182,9 +182,9 @@
 - **`obj[16]` (World Device: Invisible / Hitbox Trigger)**: Interactive mechanism at tile `(34, 24)` with state parameter `27`.
 - **`obj[17]` (World Device: Invisible / Hitbox Trigger)**: Interactive mechanism at tile `(34, 24)` with state parameter `27`.
 - **`obj[18]` (World Device: Invisible / Hitbox Trigger)**: Interactive mechanism at tile `(34, 24)` with state parameter `27`.
-- **`obj[19]` (Hilda (Inn Hostess))**: Positioned at tile `(36, 51)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[20]` (Jowy (Camp/Prologue))**: Positioned at tile `(36, 51)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[21]` (Highland Patrol Soldier)**: Positioned at tile `(36, 51)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[19]` (Alex)**: Positioned at tile `(36, 51)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[20]` (Nanami)**: Positioned at tile `(36, 51)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[21]` (Jowy Atreides)**: Positioned at tile `(36, 51)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[22]` (Pilika (Wooden Amulet))**: Positioned at tile `(24, 42)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[23]` (Fireplace Chimney / Hearth)**: Positioned at tile `(44, 149)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[24]` (Fireplace Chimney / Hearth)**: Positioned at tile `(44, 149)`, facing South (Down). Rendered and active by default. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
@@ -415,14 +415,14 @@
 
 | Slot | Class (`otyp`) | Identity / Description | Sprite Pattern (`fpno`) | Coords (`x, y`) | Size (`w, h`) | Facing (`ano`) | State (`disp`) | Collision (`ozok`) | Speed | Wait | Priority |
 |:---:|---|---|:---:|:---:|:---:|---|---|---|:---:|:---:|:---:|
-| `obj[00]` | NPC / Actor | **Jowy (Camp/Prologue)** | `18` | `(45, 20)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 3 | 0 | 0 |
+| `obj[00]` | NPC / Actor | **Nanami** | `18` | `(45, 20)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 3 | 0 | 0 |
 | `obj[01]` | Prop / Scenery | **Prop ID 33659** | `33659` | `(45, 18)` | `0x0` | South (Down) | Visible (1) | Solid (Obstacle) | 4 | 55 | 0 |
 | `obj[02]` | Prop / Scenery | **Prop ID 33659** | `33659` | `(41, 18)` | `0x0` | South (Down) | Visible (1) | Solid (Obstacle) | 4 | 55 | 0 |
 
 
 #### Entity Narrative Roles, Placements & Mechanics
 
-- **`obj[00]` (Jowy (Camp/Prologue))**: Positioned at tile `(45, 20)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[00]` (Nanami)**: Positioned at tile `(45, 20)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[01]` (Prop: Object 33659)**: Environmental world dressing prop placed at tile `(45, 18)`. Solid collision is set to `2`.
 - **`obj[02]` (Prop: Object 33659)**: Environmental world dressing prop placed at tile `(41, 18)`. Solid collision is set to `2`.
 

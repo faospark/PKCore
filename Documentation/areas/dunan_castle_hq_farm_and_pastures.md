@@ -45,18 +45,18 @@
 
 | Slot | Class (`otyp`) | Identity / Description | Sprite Pattern (`fpno`) | Coords (`x, y`) | Size (`w, h`) | Facing (`ano`) | State (`disp`) | Collision (`ozok`) | Speed | Wait | Priority |
 |:---:|---|---|:---:|:---:|:---:|---|---|---|:---:|:---:|:---:|
-| `obj[00]` | NPC / Actor | **Actor ID 102** | `102` | `(45, 44)` | `0x0` | Up (North) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[00]` | NPC / Actor | **Yuzu** | `102` | `(45, 44)` | `0x0` | Up (North) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[01]` | NPC / Actor | **Actor ID 53350** | `53350` | `(55, 44)` | `6x6` | Up (North) | Dormant / Hidden (0) | Special (3) | 3 | 128 | 0 |
-| `obj[02]` | NPC / Actor | **Actor ID 104** | `104` | `(32, 38)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[02]` | NPC / Actor | **Tony** | `104` | `(32, 38)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[03]` | Prop / Scenery | **Prop ID 53352** | `53352` | `(32, 38)` | `0x0` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
 | `obj[04]` | Trigger / Hitbox | **Hitbox Zone (3x3)** | `0` | `(31, 37)` | `2x2` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
 | `obj[05]` | NPC / Actor | **Wakaba** | `68` | `(54, 23)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[06]` | Trigger / Hitbox | **Hitbox Zone (3x2)** | `0` | `(53, 22)` | `2x1` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
-| `obj[07]` | NPC / Actor | **Actor ID 69** | `69` | `(51, 21)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[07]` | NPC / Actor | **Long Chan-Chan** | `69` | `(51, 21)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[08]` | Trigger / Hitbox | **Hitbox Zone (3x2)** | `0` | `(50, 20)` | `2x1` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
-| `obj[09]` | NPC / Actor | **Actor ID 67** | `67` | `(56, 31)` | `25x16` | East (Right) | Dormant / Hidden (0) | Special (3) | 6 | 128 | 0 |
-| `obj[10]` | NPC / Actor | **Riou (Casual/Prologue)** | `48` | `(72, 23)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
-| `obj[11]` | NPC / Actor | **Actor ID 66** | `66` | `(69, 22)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[09]` | NPC / Actor | **Stallion** | `67` | `(56, 31)` | `25x16` | East (Right) | Dormant / Hidden (0) | Special (3) | 6 | 128 | 0 |
+| `obj[10]` | NPC / Actor | **Mukumuku** | `48` | `(72, 23)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[11]` | NPC / Actor | **Hai Yo** | `66` | `(69, 22)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[12]` | Prop / Scenery | **Prop ID 53570** | `53570` | `(69, 22)` | `0x0` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
 | `obj[13]` | Prop / Scenery | **Prop ID 53570** | `53570` | `(69, 22)` | `0x0` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
 | `obj[14]` | NPC / Actor | **Actor ID 64824** | `64824` | `(43, 24)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
@@ -97,18 +97,18 @@
 
 #### Entity Narrative Roles, Placements & Mechanics
 
-- **`obj[00]` (Object 102)**: Positioned at tile `(45, 44)`, facing Up (North). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[00]` (Yuzu)**: Positioned at tile `(45, 44)`, facing Up (North). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[01]` (Object 53350)**: Positioned at tile `(55, 44)`, facing Up (North). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[02]` (Object 104)**: Positioned at tile `(32, 38)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[02]` (Tony)**: Positioned at tile `(32, 38)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[03]` (Prop: Object 53352)**: Environmental world dressing prop placed at tile `(32, 38)`. Solid collision is set to `0`.
 - **`obj[04]` (Hitbox Zone)**: Bounding trigger area covering `3` tiles wide by `3` tiles high from `(31, 37)` to `(33, 39)`. Handles doorway warps, counter interactions, and room transitions.
 - **`obj[05]` (Wakaba)**: Positioned at tile `(54, 23)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[06]` (Hitbox Zone)**: Bounding trigger area covering `3` tiles wide by `2` tiles high from `(53, 22)` to `(55, 23)`. Handles doorway warps, counter interactions, and room transitions.
-- **`obj[07]` (Object 69)**: Positioned at tile `(51, 21)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[07]` (Long Chan-Chan)**: Positioned at tile `(51, 21)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[08]` (Hitbox Zone)**: Bounding trigger area covering `3` tiles wide by `2` tiles high from `(50, 20)` to `(52, 21)`. Handles doorway warps, counter interactions, and room transitions.
-- **`obj[09]` (Object 67)**: Positioned at tile `(56, 31)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[10]` (Riou (Casual/Prologue))**: Positioned at tile `(72, 23)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[11]` (Object 66)**: Positioned at tile `(69, 22)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[09]` (Stallion)**: Positioned at tile `(56, 31)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[10]` (Mukumuku)**: Positioned at tile `(72, 23)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[11]` (Hai Yo)**: Positioned at tile `(69, 22)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[12]` (Prop: Object 53570)**: Environmental world dressing prop placed at tile `(69, 22)`. Solid collision is set to `0`.
 - **`obj[13]` (Prop: Object 53570)**: Environmental world dressing prop placed at tile `(69, 22)`. Solid collision is set to `0`.
 - **`obj[14]` (Object 64824)**: Positioned at tile `(43, 24)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.

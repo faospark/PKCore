@@ -51,9 +51,9 @@
 | `obj[03]` | NPC / Actor | **Actor ID 61520** | `61520` | `(20, 18)` | `0x0` | West (Left) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
 | `obj[04]` | NPC / Actor | **Actor ID 61441** | `61441` | `(20, 18)` | `0x0` | West (Left) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
 | `obj[05]` | NPC / Actor | **Actor ID 61697** | `61697` | `(20, 18)` | `0x0` | West (Left) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
-| `obj[06]` | NPC / Actor | **Riou (Casual/Prologue)** | `48` | `(31, 63)` | `0x0` | West (Left) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
-| `obj[07]` | NPC / Actor | **Jowy (Camp/Prologue)** | `18` | `(31, 63)` | `0x0` | West (Left) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
-| `obj[08]` | NPC / Actor | **Highland Patrol Soldier** | `80` | `(60, 39)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[06]` | NPC / Actor | **Mukumuku** | `48` | `(31, 63)` | `0x0` | West (Left) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
+| `obj[07]` | NPC / Actor | **Nanami** | `18` | `(31, 63)` | `0x0` | West (Left) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
+| `obj[08]` | NPC / Actor | **Jowy Atreides** | `80` | `(60, 39)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[09]` | Prop / Scenery | **Prop ID 37712** | `37712` | `(20, 20)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 3 | 255 | 0 |
 | `obj[10]` | NPC / Actor | **Actor ID 64814** | `64814` | `(60, 31)` | `0x0` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
 | `obj[11]` | NPC / Actor | **Actor ID 64813** | `64813` | `(62, 30)` | `0x0` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
@@ -109,9 +109,9 @@
 - **`obj[03]` (Object 61520)**: Positioned at tile `(20, 18)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[04]` (Object 61441)**: Positioned at tile `(20, 18)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[05]` (Object 61697)**: Positioned at tile `(20, 18)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[06]` (Riou (Casual/Prologue))**: Positioned at tile `(31, 63)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[07]` (Jowy (Camp/Prologue))**: Positioned at tile `(31, 63)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[08]` (Highland Patrol Soldier)**: Positioned at tile `(60, 39)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[06]` (Mukumuku)**: Positioned at tile `(31, 63)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[07]` (Nanami)**: Positioned at tile `(31, 63)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[08]` (Jowy Atreides)**: Positioned at tile `(60, 39)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[09]` (Prop: Object 37712)**: Environmental world dressing prop placed at tile `(20, 20)`. Solid collision is set to `2`.
 - **`obj[10]` (Object 64814)**: Positioned at tile `(60, 31)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[11]` (Object 64813)**: Positioned at tile `(62, 30)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
@@ -686,8 +686,8 @@
 
 | Slot | Class (`otyp`) | Identity / Description | Sprite Pattern (`fpno`) | Coords (`x, y`) | Size (`w, h`) | Facing (`ano`) | State (`disp`) | Collision (`ozok`) | Speed | Wait | Priority |
 |:---:|---|---|:---:|:---:|:---:|---|---|---|:---:|:---:|:---:|
-| `obj[00]` | NPC / Actor | **Highland Patrol Soldier** | `80` | `(34, 31)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 3 | 255 | 0 |
-| `obj[01]` | NPC / Actor | **Rowd (Camp)** | `130` | `(10, 10)` | `0x0` | South (Down) | Dormant / Hidden (0) | Passable (0) | 3 | 255 | 0 |
+| `obj[00]` | NPC / Actor | **Jowy Atreides** | `80` | `(34, 31)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 3 | 255 | 0 |
+| `obj[01]` | NPC / Actor | **Leknaat** | `130` | `(10, 10)` | `0x0` | South (Down) | Dormant / Hidden (0) | Passable (0) | 3 | 255 | 0 |
 | `obj[02]` | Prop / Scenery | **Prop ID 43521** | `43521` | `(34, 35)` | `0x0` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 55 | 0 |
 | `obj[03]` | Prop / Scenery | **Prop ID 43777** | `43777` | `(34, 31)` | `0x0` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 55 | 0 |
 | `obj[04]` | Prop / Scenery | **Prop ID 44033** | `44033` | `(34, 31)` | `0x0` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 55 | 0 |
@@ -697,8 +697,8 @@
 
 #### Entity Narrative Roles, Placements & Mechanics
 
-- **`obj[00]` (Highland Patrol Soldier)**: Positioned at tile `(34, 31)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[01]` (Rowd (Camp))**: Positioned at tile `(10, 10)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[00]` (Jowy Atreides)**: Positioned at tile `(34, 31)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[01]` (Leknaat)**: Positioned at tile `(10, 10)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[02]` (Prop: Object 43521)**: Environmental world dressing prop placed at tile `(34, 35)`. Solid collision is set to `0`.
 - **`obj[03]` (Prop: Object 43777)**: Environmental world dressing prop placed at tile `(34, 31)`. Solid collision is set to `0`.
 - **`obj[04]` (Prop: Object 44033)**: Environmental world dressing prop placed at tile `(34, 31)`. Solid collision is set to `0`.

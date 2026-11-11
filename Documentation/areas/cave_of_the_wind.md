@@ -337,7 +337,7 @@
 
 | Slot | Class (`otyp`) | Identity / Description | Sprite Pattern (`fpno`) | Coords (`x, y`) | Size (`w, h`) | Facing (`ano`) | State (`disp`) | Collision (`ozok`) | Speed | Wait | Priority |
 |:---:|---|---|:---:|:---:|:---:|---|---|---|:---:|:---:|:---:|
-| `obj[00]` | NPC / Actor | **Kahn Marley** | `36` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[00]` | NPC / Actor | **Kahn** | `36` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[01]` | World Device | **Mechanism (ano 6)** | `0` | `(21, 24)` | `0x0` | Frame 6 | Visible (1) | Solid (Obstacle) | 4 | 100 | 0 |
 | `obj[02]` | World Device | **Mechanism (ano 37)** | `0` | `(16, 8)` | `0x0` | Frame 37 | Visible (1) | Passable (0) | 4 | 255 | 0 |
 | `obj[03]` | World Device | **Mechanism (ano 38)** | `0` | `(17, 15)` | `0x0` | Frame 38 | Visible (1) | Passable (0) | 4 | 255 | 0 |
@@ -350,7 +350,7 @@
 
 #### Entity Narrative Roles, Placements & Mechanics
 
-- **`obj[00]` (Kahn Marley)**: Positioned at tile `(0, 0)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[00]` (Kahn)**: Positioned at tile `(0, 0)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[01]` (World Device: Invisible / Hitbox Trigger)**: Interactive mechanism at tile `(21, 24)` with state parameter `6`.
 - **`obj[02]` (World Device: Invisible / Hitbox Trigger)**: Interactive mechanism at tile `(16, 8)` with state parameter `37`.
 - **`obj[03]` (World Device: Invisible / Hitbox Trigger)**: Interactive mechanism at tile `(17, 15)` with state parameter `38`.
@@ -404,7 +404,7 @@
 
 | Slot | Class (`otyp`) | Identity / Description | Sprite Pattern (`fpno`) | Coords (`x, y`) | Size (`w, h`) | Facing (`ano`) | State (`disp`) | Collision (`ozok`) | Speed | Wait | Priority |
 |:---:|---|---|:---:|:---:|:---:|---|---|---|:---:|:---:|:---:|
-| `obj[00]` | NPC / Actor | **Kahn Marley** | `36` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[00]` | NPC / Actor | **Kahn** | `36` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[01]` | World Device | **Mechanism (ano 6)** | `0` | `(26, 24)` | `0x0` | Frame 6 | Visible (1) | Solid (Obstacle) | 4 | 100 | 0 |
 | `obj[02]` | World Device | **Mechanism (ano 6)** | `0` | `(26, 31)` | `0x0` | Frame 6 | Visible (1) | Solid (Obstacle) | 4 | 100 | 0 |
 | `obj[03]` | World Device | **Mechanism (ano 37)** | `0` | `(16, 8)` | `0x0` | Frame 37 | Visible (1) | Passable (0) | 4 | 255 | 0 |
@@ -421,7 +421,7 @@
 
 #### Entity Narrative Roles, Placements & Mechanics
 
-- **`obj[00]` (Kahn Marley)**: Positioned at tile `(0, 0)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[00]` (Kahn)**: Positioned at tile `(0, 0)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[01]` (World Device: Invisible / Hitbox Trigger)**: Interactive mechanism at tile `(26, 24)` with state parameter `6`.
 - **`obj[02]` (World Device: Invisible / Hitbox Trigger)**: Interactive mechanism at tile `(26, 31)` with state parameter `6`.
 - **`obj[03]` (World Device: Invisible / Hitbox Trigger)**: Interactive mechanism at tile `(16, 8)` with state parameter `37`.
@@ -485,7 +485,7 @@
 
 | Slot | Class (`otyp`) | Identity / Description | Sprite Pattern (`fpno`) | Coords (`x, y`) | Size (`w, h`) | Facing (`ano`) | State (`disp`) | Collision (`ozok`) | Speed | Wait | Priority |
 |:---:|---|---|:---:|:---:|:---:|---|---|---|:---:|:---:|:---:|
-| `obj[00]` | NPC / Actor | **Kahn Marley** | `36` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[00]` | NPC / Actor | **Kahn** | `36` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[01]` | World Device | **Mechanism (ano 6)** | `0` | `(72, 23)` | `0x0` | Frame 6 | Visible (1) | Solid (Obstacle) | 4 | 100 | 0 |
 | `obj[02]` | World Device | **Mechanism (ano 6)** | `0` | `(76, 27)` | `0x0` | Frame 6 | Visible (1) | Solid (Obstacle) | 4 | 100 | 0 |
 | `obj[03]` | World Device | **Mechanism (ano 6)** | `0` | `(68, 27)` | `0x0` | Frame 6 | Visible (1) | Solid (Obstacle) | 4 | 100 | 0 |
@@ -511,7 +511,7 @@
 
 #### Entity Narrative Roles, Placements & Mechanics
 
-- **`obj[00]` (Kahn Marley)**: Positioned at tile `(0, 0)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[00]` (Kahn)**: Positioned at tile `(0, 0)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[01]` (World Device: Invisible / Hitbox Trigger)**: Interactive mechanism at tile `(72, 23)` with state parameter `6`.
 - **`obj[02]` (World Device: Invisible / Hitbox Trigger)**: Interactive mechanism at tile `(76, 27)` with state parameter `6`.
 - **`obj[03]` (World Device: Invisible / Hitbox Trigger)**: Interactive mechanism at tile `(68, 27)` with state parameter `6`.
@@ -681,12 +681,12 @@
 
 | Slot | Class (`otyp`) | Identity / Description | Sprite Pattern (`fpno`) | Coords (`x, y`) | Size (`w, h`) | Facing (`ano`) | State (`disp`) | Collision (`ozok`) | Speed | Wait | Priority |
 |:---:|---|---|:---:|:---:|:---:|---|---|---|:---:|:---:|:---:|
-| `obj[00]` | NPC / Actor | **Kahn Marley** | `36` | `(45, 47)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[00]` | NPC / Actor | **Kahn** | `36` | `(45, 47)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 
 
 #### Entity Narrative Roles, Placements & Mechanics
 
-- **`obj[00]` (Kahn Marley)**: Positioned at tile `(45, 47)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[00]` (Kahn)**: Positioned at tile `(45, 47)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 
 
 #### Complete Bytecode Script Catalog (7 Scripts)
@@ -759,16 +759,16 @@
 
 | Slot | Class (`otyp`) | Identity / Description | Sprite Pattern (`fpno`) | Coords (`x, y`) | Size (`w, h`) | Facing (`ano`) | State (`disp`) | Collision (`ozok`) | Speed | Wait | Priority |
 |:---:|---|---|:---:|:---:|:---:|---|---|---|:---:|:---:|:---:|
-| `obj[00]` | Prop / Scenery | **Prop ID 157** | `157` | `(30, 24)` | `0x0` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
+| `obj[00]` | Prop / Scenery | **Celestial Sword** | `157` | `(30, 24)` | `0x0` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
 | `obj[01]` | World Device | **Mechanism (ano 32)** | `0` | `(28, 25)` | `0x0` | Frame 32 | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
-| `obj[02]` | NPC / Actor | **Nina** | `13` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
+| `obj[02]` | NPC / Actor | **Pesmerga** | `13` | `(0, 0)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 
 
 #### Entity Narrative Roles, Placements & Mechanics
 
-- **`obj[00]` (Prop: Object 157)**: Environmental world dressing prop placed at tile `(30, 24)`. Solid collision is set to `34`.
+- **`obj[00]` (Prop: Celestial Sword)**: Environmental world dressing prop placed at tile `(30, 24)`. Solid collision is set to `34`.
 - **`obj[01]` (World Device: Invisible / Hitbox Trigger)**: Interactive mechanism at tile `(28, 25)` with state parameter `32`.
-- **`obj[02]` (Nina)**: Positioned at tile `(0, 0)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[02]` (Pesmerga)**: Positioned at tile `(0, 0)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 
 
 #### Complete Bytecode Script Catalog (16 Scripts)

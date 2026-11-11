@@ -45,7 +45,7 @@
 
 | Slot | Class (`otyp`) | Identity / Description | Sprite Pattern (`fpno`) | Coords (`x, y`) | Size (`w, h`) | Facing (`ano`) | State (`disp`) | Collision (`ozok`) | Speed | Wait | Priority |
 |:---:|---|---|:---:|:---:|:---:|---|---|---|:---:|:---:|:---:|
-| `obj[00]` | NPC / Actor | **Leona** | `16` | `(33, 14)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 3 | 255 | 0 |
+| `obj[00]` | NPC / Actor | **Rikimaru** | `16` | `(33, 14)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 3 | 255 | 0 |
 | `obj[01]` | Prop / Scenery | **Prop ID 33040** | `33040` | `(32, 22)` | `0x0` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
 | `obj[02]` | Trigger / Hitbox | **Hitbox Zone (3x4)** | `0` | `(31, 21)` | `2x3` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
 | `obj[03]` | Trigger / Hitbox | **Hitbox Zone (2x2)** | `0` | `(60, 88)` | `1x1` | South (Down) | Visible (1) | Passable (0) | 4 | 255 | 0 |
@@ -78,7 +78,7 @@
 
 #### Entity Narrative Roles, Placements & Mechanics
 
-- **`obj[00]` (Leona)**: Positioned at tile `(33, 14)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[00]` (Rikimaru)**: Positioned at tile `(33, 14)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[01]` (Prop: Object 33040)**: Environmental world dressing prop placed at tile `(32, 22)`. Solid collision is set to `0`.
 - **`obj[02]` (Hitbox Zone)**: Bounding trigger area covering `3` tiles wide by `4` tiles high from `(31, 21)` to `(33, 24)`. Handles doorway warps, counter interactions, and room transitions.
 - **`obj[03]` (Hitbox Zone)**: Bounding trigger area covering `2` tiles wide by `2` tiles high from `(60, 88)` to `(61, 89)`. Handles doorway warps, counter interactions, and room transitions.
@@ -233,7 +233,7 @@
 | `obj[04]` | NPC / Actor | **Actor ID 53524** | `53524` | `(164, 112)` | `0x0` | East (Right) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[05]` | Trigger / Hitbox | **Hitbox Zone (3x2)** | `0` | `(163, 109)` | `2x1` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 0 |
 | `obj[06]` | NPC / Actor | **Bolgan** | `21` | `(33, 14)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
-| `obj[07]` | NPC / Actor | **Leona** | `16` | `(33, 14)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 3 | 255 | 0 |
+| `obj[07]` | NPC / Actor | **Rikimaru** | `16` | `(33, 14)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 3 | 255 | 0 |
 | `obj[08]` | Prop / Scenery | **Prop ID 33040** | `33040` | `(32, 22)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[09]` | NPC / Actor | **Actor ID 65228** | `65228` | `(92, 46)` | `0x0` | South (Down) | Visible (1) | Solid (Obstacle) | 4 | 255 | 0 |
 | `obj[10]` | Trigger / Hitbox | **Hitbox Zone (3x2)** | `0` | `(91, 47)` | `2x1` | South (Down) | Visible (1) | Passable (0) | 4 | 255 | 0 |
@@ -323,7 +323,7 @@
 - **`obj[04]` (Object 53524)**: Positioned at tile `(164, 112)`, facing East (Right). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[05]` (Hitbox Zone)**: Bounding trigger area covering `3` tiles wide by `2` tiles high from `(163, 109)` to `(165, 110)`. Handles doorway warps, counter interactions, and room transitions.
 - **`obj[06]` (Bolgan)**: Positioned at tile `(33, 14)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[07]` (Leona)**: Positioned at tile `(33, 14)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[07]` (Rikimaru)**: Positioned at tile `(33, 14)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[08]` (Prop: Object 33040)**: Environmental world dressing prop placed at tile `(32, 22)`. Solid collision is set to `2`.
 - **`obj[09]` (Object 65228)**: Positioned at tile `(92, 46)`, facing South (Down). Rendered and active by default. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[10]` (Hitbox Zone)**: Bounding trigger area covering `3` tiles wide by `2` tiles high from `(91, 47)` to `(93, 48)`. Handles doorway warps, counter interactions, and room transitions.
@@ -855,10 +855,10 @@
 | Slot | Class (`otyp`) | Identity / Description | Sprite Pattern (`fpno`) | Coords (`x, y`) | Size (`w, h`) | Facing (`ano`) | State (`disp`) | Collision (`ozok`) | Speed | Wait | Priority |
 |:---:|---|---|:---:|:---:|:---:|---|---|---|:---:|:---:|:---:|
 | `obj[00]` | NPC / Actor | **Actor ID 34384** | `34384` | `(16, 16)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 3 | 255 | 0 |
-| `obj[01]` | NPC / Actor | **Lebrante (Appraiser)** | `141` | `(16, 16)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 3 | 255 | 0 |
+| `obj[01]` | NPC / Actor | **Jillia** | `141` | `(16, 16)` | `0x0` | South (Down) | Dormant / Hidden (0) | Solid (Obstacle) | 3 | 255 | 0 |
 | `obj[02]` | Prop / Scenery | **Prop ID 53389** | `53389` | `(127, 30)` | `0x0` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 55 | 180 |
 | `obj[03]` | Prop / Scenery | **Prop ID 53389** | `53389` | `(53, 32)` | `0x0` | South (Down) | Dormant / Hidden (0) | Passable (0) | 4 | 55 | 180 |
-| `obj[04]` | NPC / Actor | **Jeane (Rune Sage)** | `145` | `(48, 92)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 3 | 255 | 0 |
+| `obj[04]` | NPC / Actor | **Rowd** | `145` | `(48, 92)` | `0x0` | West (Left) | Dormant / Hidden (0) | Solid (Obstacle) | 3 | 255 | 0 |
 | `obj[05]` | World Device | **Mechanism (ano 10)** | `0` | `(29, 33)` | `0x0` | Frame 10 | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 180 |
 | `obj[06]` | World Device | **Mechanism (ano 10)** | `0` | `(31, 33)` | `0x0` | Frame 10 | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 180 |
 | `obj[07]` | World Device | **Mechanism (ano 27)** | `0` | `(29, 27)` | `0x0` | Frame 27 | Dormant / Hidden (0) | Passable (0) | 4 | 255 | 180 |
@@ -867,10 +867,10 @@
 #### Entity Narrative Roles, Placements & Mechanics
 
 - **`obj[00]` (Object 34384)**: Positioned at tile `(16, 16)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
-- **`obj[01]` (Lebrante (Appraiser))**: Positioned at tile `(16, 16)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[01]` (Jillia)**: Positioned at tile `(16, 16)`, facing South (Down). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[02]` (Prop: Object 53389)**: Environmental world dressing prop placed at tile `(127, 30)`. Solid collision is set to `0`.
 - **`obj[03]` (Prop: Object 53389)**: Environmental world dressing prop placed at tile `(53, 32)`. Solid collision is set to `0`.
-- **`obj[04]` (Jeane (Rune Sage))**: Positioned at tile `(48, 92)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
+- **`obj[04]` (Rowd)**: Positioned at tile `(48, 92)`, facing West (Left). Dormant/hidden initially; made visible dynamically by event flags. Features solid obstacle physics (`ozok: 2`), requiring the player to interact from an adjacent tile.
 - **`obj[05]` (World Device: Invisible / Hitbox Trigger)**: Interactive mechanism at tile `(29, 33)` with state parameter `10`.
 - **`obj[06]` (World Device: Invisible / Hitbox Trigger)**: Interactive mechanism at tile `(31, 33)` with state parameter `10`.
 - **`obj[07]` (World Device: Invisible / Hitbox Trigger)**: Interactive mechanism at tile `(29, 27)` with state parameter `27`.
