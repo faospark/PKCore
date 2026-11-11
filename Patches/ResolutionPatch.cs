@@ -105,8 +105,8 @@ public class ResolutionPatch
 
     public static void Initialize()
     {
-        _enabled = Plugin.Config.EnableResolutionScaling.Value;
         _resolutionScale = Plugin.Config.ResolutionScale.Value;
+        _enabled = !Mathf.Approximately(_resolutionScale, 1.0f);
 
         if (Plugin.Config.DetailedLogs.Value)
         {

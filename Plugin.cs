@@ -194,7 +194,7 @@ public class Plugin : BasePlugin
         }
 
         // Resolution patch
-        if (Config.EnableResolutionScaling.Value && Config.ResolutionScale.Value != 1.0f)
+        if (Config.ResolutionScale.Value != 1.0f)
         {
             if (Config.DetailedLogs.Value)
                 Log.LogInfo("Applying Resolution patch...");

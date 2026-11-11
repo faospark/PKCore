@@ -93,8 +93,7 @@ This document outlines all available configuration options for **PKCore** locate
 | :--- | :---: | :---: | :--- |
 | **EnableTextureManifestCache** | `bool` | `false` | Caches the texture index in `PKCore/Cache/texture_manifest.xml` to skip re-scanning folders on startup. Disable when adding/modifying textures. |
 | **EnableMemoryCaching** | `bool` | `true` | Intelligent texture memory management. Clears non-persistent textures during scene transitions to free RAM while keeping persistent UI in memory. **Recommended: Keep Enabled.** |
-| **EnableResolutionScaling** | `bool` | `false` | Enable internal resolution scaling system. Renders at `ResolutionScale` multiplier and stretches to fill the window. |
-| **ResolutionScale** | `float` | `1.0` | Resolution multiplier (`0.5` to `2.0`). `0.5` = half resolution for performance, `1.0` = native, `1.5`–`2.0` = super-sampling. Only applies when `EnableResolutionScaling = true`. |
+| **ResolutionScale** | `float` | `1.0` | Resolution multiplier (`0.5` to `2.0`). `1.0` = off / native, `0.5` = half resolution for performance, `1.5`–`2.0` = super-sampling. |
 
 ---
 

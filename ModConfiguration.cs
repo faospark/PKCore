@@ -10,7 +10,6 @@ public sealed class ModConfiguration
     public ConfigEntry<bool> SpriteFilteringEnabled { get; private set; }
 
     // Display Settings
-    public ConfigEntry<bool> EnableResolutionScaling { get; private set; }
     public ConfigEntry<float> ResolutionScale { get; private set; }
 
     // Visual Settings
@@ -331,19 +330,12 @@ public sealed class ModConfiguration
             "Enable intelligent texture memory caching. Automatically clears textures from memory when transitioning between areas to free up RAM. Textures are rebuilt when you enter new scenes. Keeps persistent UI textures in memory. Recommended for performance optimization on lower-end systems. Never turn this off"
         );
 
-        EnableResolutionScaling = _config.Bind(
-            "Performance",
-            "EnableResolutionScaling",
-            false,
-            "Enable resolution scaling. When true, the game will render at ResolutionScale multiplier and stretch to fill the window. Must Be on for the ResolutionScale setting to take effect. Gives a performance boost by rendering at a lower resolution and stretching to fill the window."
-        );
-
         ResolutionScale = _config.Bind(
             "Performance",
             "ResolutionScale",
             1.0f,
             new ConfigDescription(
-                "Resolution scale multiplier (0.5 to 2.0). 0.5 = half resolution for performance, 1.0 = native, 1.5-2.0 = super-sampling for quality. Only applies when EnableResolutionScaling is enabled. Do not use if you are using the resolution changer from Suikoden Fix",
+                "Resolution scale multiplier (0.5 to 2.0). 1.0 = off / native resolution, 0.5 = half resolution for performance, 1.5-2.0 = super-sampling for quality. Do not use if you are using the resolution changer from Suikoden Fix",
                 new AcceptableValueRange<float>(0.5f, 2.0f)
             )
         );
