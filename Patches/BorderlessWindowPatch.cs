@@ -102,40 +102,80 @@ public class BorderlessWindowPatch
         }
     }
 
-    // Intercept SetResolution with FullScreenMode enum to enforce Windowed mode + Borderless style
+    private static void ScheduleStyleApply()
+    {
+        if (PkCoreMainLoop.Instance != null)
+        {
+            PkCoreMainLoop.Instance.Invoke(nameof(PkCoreMainLoop.ApplyBorderlessStyle), 0.1f);
+        }
+    }
+
+    // Intercept SetResolution overloads to enforce Windowed mode + Borderless style
     [HarmonyPatch(typeof(Screen), nameof(Screen.SetResolution), new[] { typeof(int), typeof(int), typeof(FullScreenMode) })]
     [HarmonyPrefix]
     [HarmonyPriority(Priority.Last)]
     static void SetResolution(ref int width, ref int height, ref FullScreenMode fullscreenMode)
     {
-        if (_enabled)
-        {
-            fullscreenMode = FullScreenMode.Windowed;
+        if (!_enabled) return;
 
-            if (PkCoreMainLoop.Instance != null)
-            {
-                PkCoreMainLoop.Instance.Invoke(nameof(PkCoreMainLoop.ApplyBorderlessStyle), 0.1f);
-            }
-        }
+        fullscreenMode = FullScreenMode.Windowed;
+        ScheduleStyleApply();
     }
 
-    // Intercept boolean overload of SetResolution
+    [HarmonyPatch(typeof(Screen), nameof(Screen.SetResolution), new[] { typeof(int), typeof(int), typeof(FullScreenMode), typeof(RefreshRate) })]
+    [HarmonyPrefix]
+    [HarmonyPriority(Priority.Last)]
+    static void SetResolutionWithRefreshRate(ref int width, ref int height, ref FullScreenMode fullscreenMode)
+    {
+        if (!_enabled) return;
+
+        fullscreenMode = FullScreenMode.Windowed;
+        ScheduleStyleApply();
+    }
+
     [HarmonyPatch(typeof(Screen), nameof(Screen.SetResolution), new[] { typeof(int), typeof(int), typeof(bool) })]
     [HarmonyPrefix]
     [HarmonyPriority(Priority.Last)]
-    static bool SetResolution(int width, int height, bool fullscreen)
+    static bool SetResolutionBool(int width, int height, bool fullscreen)
     {
-        if (_enabled)
-        {
-            Screen.SetResolution(width, height, FullScreenMode.Windowed);
+        if (!_enabled) return true;
 
-            if (PkCoreMainLoop.Instance != null)
-            {
-                PkCoreMainLoop.Instance.Invoke(nameof(PkCoreMainLoop.ApplyBorderlessStyle), 0.1f);
-            }
+        Screen.SetResolution(width, height, FullScreenMode.Windowed);
+        ScheduleStyleApply();
+        return false;
+    }
 
-            return false;
-        }
-        return true;
+    [HarmonyPatch(typeof(Screen), nameof(Screen.SetResolution), new[] { typeof(int), typeof(int), typeof(bool), typeof(int) })]
+    [HarmonyPrefix]
+    [HarmonyPriority(Priority.Last)]
+    static bool SetResolutionBoolWithRefreshRate(int width, int height, bool fullscreen, int preferredRefreshRate)
+    {
+        if (!_enabled) return true;
+
+        Screen.SetResolution(width, height, FullScreenMode.Windowed);
+        ScheduleStyleApply();
+        return false;
+    }
+
+    [HarmonyPatch(typeof(Screen), nameof(Screen.fullScreenMode), MethodType.Setter)]
+    [HarmonyPrefix]
+    [HarmonyPriority(Priority.Last)]
+    static void SetFullScreenMode(ref FullScreenMode value)
+    {
+        if (!_enabled) return;
+
+        value = FullScreenMode.Windowed;
+        ScheduleStyleApply();
+    }
+
+    [HarmonyPatch(typeof(Screen), nameof(Screen.fullScreen), MethodType.Setter)]
+    [HarmonyPrefix]
+    [HarmonyPriority(Priority.Last)]
+    static void SetFullScreen(ref bool value)
+    {
+        if (!_enabled) return;
+
+        value = false;
+        ScheduleStyleApply();
     }
 }

@@ -56,6 +56,10 @@ public sealed class ModConfiguration
     // Suikoden 2 Clive Quest Replay
     public ConfigEntry<bool> LoopCliveQuest { get; private set; }
 
+    // Suikoden 2 War Battle Replay Sidequest
+    public ConfigEntry<bool> EnableWarReplaySidequest { get; private set; }
+    public ConfigEntry<bool> UnlockAllWarReplays { get; private set; }
+
 
     // World Map Settings
     public ConfigEntry<bool> DisableWorldMapClouds { get; private set; }
@@ -313,6 +317,20 @@ public sealed class ModConfiguration
             "LoopCliveQuest",
             true,
             "Automatically resets Clive's pursuit quest back to Lakewest upon entering Lakewest with the Sajah Village finale completed. Allows replaying the complete questline from Lakewest to Sajah indefinitely in the late game."
+        );
+
+        EnableWarReplaySidequest = _config.Bind(
+            "05 Game : Suikoden 2",
+            "EnableWarReplaySidequest",
+            true,
+            "Adds a War Battle Replay / Tactical Simulation option when speaking to Apple in Dunan Castle's War Room. Safely snapshots and restores all characters, story flags, and unit formations."
+        );
+
+        UnlockAllWarReplays = _config.Bind(
+            "05 Game : Suikoden 2",
+            "UnlockAllWarReplays",
+            false,
+            "When true, makes all 16 War Battles selectable in Apple's War Replay menu regardless of story progress (Note: War 14 is an instant-end cutscene battle)."
         );
 
         // Performance section - all performance related settings

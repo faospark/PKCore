@@ -4,6 +4,14 @@ All notable changes to PKCore (formerly PKextended) are documented in this file.
 
 ---
 
+## [2026.11.12]
+
+- **Fix `OverlayClassBase.OnEnd` IL2CPP ICF Collision (`S2WarReplayPatch.cs`)**:
+  - Removed `[HarmonyPatch(typeof(OverlayClassBase), nameof(OverlayClassBase.OnEnd))]` (which resolves to the ICF-folded empty stub `0x1803B2D60` shared by thousands of unrelated IL2CPP methods and triggered `InvalidOperationException` / `NullReferenceException` errors at startup and every frame).
+  - Moved the overlay-close cleanup (`S2WarReplayMenu.Close()` / pending snapshot restore / `_phase` reset) into `MACHICON_MachiMain_Postfix` when `__instance.ol_func == null`.
+
+---
+
 ## [2026.11.09]
 
 - **Modularization & Companion Plugin Migration**:
