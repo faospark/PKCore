@@ -60,6 +60,7 @@ public sealed class ModConfiguration
     public ConfigEntry<bool> LoopFinalBossGauntlet { get; private set; }
     public ConfigEntry<bool> ResetGauntletOnNextEntry { get; private set; }
     public ConfigEntry<bool> EnableLeonaPostFinalBoss { get; private set; }
+    public ConfigEntry<bool> EnableCastleMinigamesPostFinalBoss { get; private set; }
 
     // Suikoden 2 War Battle Replay Sidequest
     public ConfigEntry<bool> EnableWarReplaySidequest { get; private set; }
@@ -344,6 +345,13 @@ public sealed class ModConfiguration
             "EnableLeonaPostFinalBoss",
             true,
             "Restores Leona at Dunan Castle Tavern (vk08) after the final boss battle (or whenever party changing is locked by the epilogue), replacing the substitute maid ('Leona went to restock on spirits') and fully re-enabling the party change menu."
+        );
+
+        EnableCastleMinigamesPostFinalBoss = _config.Bind(
+            "05 Game : Suikoden 2",
+            "EnableCastleMinigamesPostFinalBoss",
+            true,
+            "Restores Dunan Castle minigames (such as vk18 Laundry & Gardens) during the post-final-boss epilogue by temporarily clearing epilogue lockout flags while on the map."
         );
 
         EnableWarReplaySidequest = _config.Bind(

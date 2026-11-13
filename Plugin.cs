@@ -371,6 +371,10 @@ public class Plugin : BasePlugin
         harmony.PatchAll(typeof(S2LeonaOnMapInitPrefixPatch));
         harmony.PatchAll(typeof(S2LeonaSaveMenuInitPrefixPatch));
 
+        // Epilogue Castle Minigame Restoration (Pure memory byte patch on vk18 entry/exit)
+        harmony.PatchAll(typeof(S2MinigameOnMapInitPrefixPatch));
+        harmony.PatchAll(typeof(S2MinigameSaveMenuInitPrefixPatch));
+
         // Dunan Castle Tavern (vk08) Forensic Diagnostics Tracker (dormant unless enabled in config)
         if (Config.EnableTavernDiagnostics.Value)
         {
