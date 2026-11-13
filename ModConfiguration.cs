@@ -56,6 +56,11 @@ public sealed class ModConfiguration
     // Suikoden 2 Clive Quest Replay
     public ConfigEntry<bool> LoopCliveQuest { get; private set; }
 
+    // Suikoden 2 Final Boss Gauntlet Replay
+    public ConfigEntry<bool> LoopFinalBossGauntlet { get; private set; }
+    public ConfigEntry<bool> ResetGauntletOnNextEntry { get; private set; }
+    public ConfigEntry<bool> EnableLeonaPostFinalBoss { get; private set; }
+
     // Suikoden 2 War Battle Replay Sidequest
     public ConfigEntry<bool> EnableWarReplaySidequest { get; private set; }
     public ConfigEntry<bool> UnlockAllWarReplays { get; private set; }
@@ -101,6 +106,7 @@ public sealed class ModConfiguration
     public HiddenConfigEntry<bool> EnableDialogOverrides { get; private set; }
     public HiddenConfigEntry<float> SpriteMipmapBias { get; private set; }
     public ConfigEntry<bool> LogReplaceableTextures { get; private set; }
+    public ConfigEntry<bool> EnableTavernDiagnostics { get; private set; }
 
 
     public ModConfiguration(ConfigFile config)
@@ -319,6 +325,27 @@ public sealed class ModConfiguration
             "Automatically resets Clive's pursuit quest back to Lakewest upon entering Lakewest with the Sajah Village finale completed. Allows replaying the complete questline from Lakewest to Sajah indefinitely in the late game."
         );
 
+        LoopFinalBossGauntlet = _config.Bind(
+            "05 Game : Suikoden 2",
+            "LoopFinalBossGauntlet",
+            true,
+            "Automatically resets the entire L'Renouille final battle gauntlet (General Han Cunningham duel, Lucia & Karaya vanguard battle, Generals Seed & Culgan battle, and Silver Beast Rune final boss) upon entering L'Renouille outer gates (vj01) when the final boss has been defeated. Allows challenging the complete final sequence indefinitely."
+        );
+
+        ResetGauntletOnNextEntry = _config.Bind(
+            "05 Game : Suikoden 2",
+            "ResetGauntletOnNextEntry",
+            false,
+            "When true, forces a complete reset of the L'Renouille final battle gauntlet (Lucia, Han, Seed & Culgan, Beast Rune) the next time any L'Renouille map is entered, even if the final boss has not yet been defeated. Automatically resets back to false after performing the reset."
+        );
+
+        EnableLeonaPostFinalBoss = _config.Bind(
+            "05 Game : Suikoden 2",
+            "EnableLeonaPostFinalBoss",
+            true,
+            "Restores Leona at Dunan Castle Tavern (vk08) after the final boss battle (or whenever party changing is locked by the epilogue), replacing the substitute maid ('Leona went to restock on spirits') and fully re-enabling the party change menu."
+        );
+
         EnableWarReplaySidequest = _config.Bind(
             "05 Game : Suikoden 2",
             "EnableWarReplaySidequest",
@@ -413,6 +440,13 @@ public sealed class ModConfiguration
             "LogReplaceableTextures",
             false,
             "Log all replaceable texture names discovered during gameplay. Useful for identifying texture names to create custom replacements. Independent of DetailedLogs setting."
+        );
+
+        EnableTavernDiagnostics = _config.Bind(
+            "zz - Diagnostics",
+            "EnableTavernDiagnostics",
+            false,
+            "Enable forensic diagnostic logging for Dunan Castle Tavern (vk08) event flags, flag checks, dialogue, and party-change triggers."
         );
 
         // ========================================

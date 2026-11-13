@@ -93,6 +93,7 @@ public class Plugin : BasePlugin
         Patches.S2CookOffLoopPatch.Update();
         Patches.S2CookOffScorePatch.Update();
         Patches.S2WarReplayMenu.Update();
+        // Patches.s2EpilogueLeona.Update();
         AssetLoader.Update();
     }
 
@@ -365,6 +366,23 @@ public class Plugin : BasePlugin
         // Map ID Tracking (shared by Map Object & S2 patches)
         harmony.PatchAll(typeof(MACHICON_OnMapInitPatch));
         harmony.PatchAll(typeof(MachiLoader_Load_Patch));
+
+        // Epilogue Leona Restoration (Pure memory byte patch on vk08 entry/exit)
+        harmony.PatchAll(typeof(S2LeonaOnMapInitPrefixPatch));
+        harmony.PatchAll(typeof(S2LeonaSaveMenuInitPrefixPatch));
+
+        // Dunan Castle Tavern (vk08) Forensic Diagnostics Tracker (dormant unless enabled in config)
+        if (Config.EnableTavernDiagnostics.Value)
+        {
+            harmony.PatchAll(typeof(S2TavernMapInitTracker));
+            harmony.PatchAll(typeof(S2TavernEventInitTracker));
+            harmony.PatchAll(typeof(S2TavernEventFlgCHKTracker));
+            harmony.PatchAll(typeof(S2TavernEventFlgCHK2Tracker));
+            harmony.PatchAll(typeof(S2TavernMessageWindowTracker));
+            harmony.PatchAll(typeof(S2TavernSelectTSREntryTracker));
+            harmony.PatchAll(typeof(S2TavernSelectTsrSerifuTracker));
+            harmony.PatchAll(typeof(S2TavernPartyInTracker));
+        }
 
 
         // Reaction Monitor (MapChara/r_action trigger)
