@@ -62,9 +62,9 @@ public sealed class ModConfiguration
     public ConfigEntry<bool> EnableLeonaPostFinalBoss { get; private set; }
     public ConfigEntry<bool> EnableCastleMinigamesPostFinalBoss { get; private set; }
 
-    // Suikoden 2 War Battle Replay Sidequest
-    public ConfigEntry<bool> EnableWarReplaySidequest { get; private set; }
-    public ConfigEntry<bool> UnlockAllWarReplays { get; private set; }
+    // Suikoden 2 War Battle Replay Sidequest (Archived in forlater/WarBattleReplay)
+    // public ConfigEntry<bool> EnableWarReplaySidequest { get; private set; }
+    // public ConfigEntry<bool> UnlockAllWarReplays { get; private set; }
 
 
     // World Map Settings
@@ -354,19 +354,20 @@ public sealed class ModConfiguration
             "Restores Dunan Castle minigames (such as vk18 Laundry & Gardens) during the post-final-boss epilogue by temporarily clearing epilogue lockout flags while on the map."
         );
 
-        EnableWarReplaySidequest = _config.Bind(
-            "05 Game : Suikoden 2",
-            "EnableWarReplaySidequest",
-            true,
-            "Adds a War Battle Replay / Tactical Simulation option when speaking to Apple in Dunan Castle's War Room. Safely snapshots and restores all characters, story flags, and unit formations."
-        );
-
-        UnlockAllWarReplays = _config.Bind(
-            "05 Game : Suikoden 2",
-            "UnlockAllWarReplays",
-            false,
-            "When true, makes all 16 War Battles selectable in Apple's War Replay menu regardless of story progress (Note: War 14 is an instant-end cutscene battle)."
-        );
+        // Archived in forlater/WarBattleReplay
+        // EnableWarReplaySidequest = _config.Bind(
+        //     "05 Game : Suikoden 2",
+        //     "EnableWarReplaySidequest",
+        //     true,
+        //     "Adds a War Battle Replay / Tactical Simulation option when speaking to Klaus in Dunan Castle's War Room. Safely snapshots and restores all characters, story flags, and unit formations."
+        // );
+        //
+        // UnlockAllWarReplays = _config.Bind(
+        //     "05 Game : Suikoden 2",
+        //     "UnlockAllWarReplays",
+        //     false,
+        //     "When true, makes all 16 War Battles selectable in Klaus's War Replay menu regardless of story progress (Note: War 14 is an instant-end cutscene battle)."
+        // );
 
         // Performance section - all performance related settings
         EnableTextureManifestCache = _config.Bind(

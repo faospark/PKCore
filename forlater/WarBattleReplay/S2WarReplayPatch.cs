@@ -4,11 +4,13 @@ extern alias GSD2;
 using System;
 using HarmonyLib;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
+using Share.UI.Window;
+using UnityEngine;
 
 namespace PKCore.Patches;
 
 /// <summary>
-/// Intercepts Apple's War Strategy Room (vk07 evmno:3) team organization overlay to offer a
+/// Hooks speaking to Klaus in Dunan Castle's War Strategy Room (vk07) to offer a
 /// sandboxed War Battle Replay ("Tactical Simulation") sidequest across all 16 battles while
 /// keeping story flags, army rosters, and unit life/death state intact.
 /// </summary>
@@ -17,9 +19,7 @@ public static class S2WarReplayPatch
     private enum ReplayHubPhase
     {
         Inactive,
-        WaitingForMenuReady,
-        InCustomMenu,
-        PassthroughOrganize
+        InCustomMenu
     }
 
     private sealed class GameWorkSnapshot
@@ -96,15 +96,20 @@ public static class S2WarReplayPatch
     private static GameWorkSnapshot? _replaySnapshot;
     private static bool _isReplayActive;
     private static int _pendingLaunchWarNo;
+    private static bool _pendingKlausReplay;
+    private static UIMessageWindow? _klausMessageWindow;
 
     private static bool IsEnabled => Plugin.Config?.EnableWarReplaySidequest?.Value == true;
 
-    private static bool IsAppleWarRoomContext(GSD2::MACHICON? mcon)
+    private static bool IsKlausWarRoomContext(GSD2::MACHICON? mcon)
     {
-        if (mcon == null) return false;
-        string name = mcon.GetMapName() ?? "";
-        return name.Contains("vk07", StringComparison.OrdinalIgnoreCase)
-               && name.Contains("evmno:3", StringComparison.OrdinalIgnoreCase);
+        var activeMcon = mcon ?? MACHICON_OnMapInitPatch.CurrentMachicon;
+        string name = activeMcon?.GetMapName() ?? "";
+        if (!string.IsNullOrEmpty(name))
+        {
+            return name.Contains("vk07", StringComparison.OrdinalIgnoreCase);
+        }
+        return MACHICON_OnMapInitPatch.CurrentMapId.StartsWith("vk07", StringComparison.OrdinalIgnoreCase);
     }
 
     private static void LogDebug(string msg)
@@ -113,13 +118,11 @@ public static class S2WarReplayPatch
             Plugin.Log?.LogInfo($"[S2WarReplay] {msg}");
     }
 
-    private static void ArmReplayLaunch(GSD2::Overlay_teamchg overlay, int warNo)
+    private static void ArmKlausReplayLaunch(int warNo)
     {
         var gw = GSD2::OldSrcBase.game_work;
         if (_pendingSnapshot != null)
         {
-            // Undo ActSetDefaultTeam() side-effects made during teamchg_init before snapshotting/launching
-            _pendingSnapshot.Restore(gw);
             _replaySnapshot = _pendingSnapshot;
             _pendingSnapshot = null;
         }
@@ -132,13 +135,10 @@ public static class S2WarReplayPatch
         _pendingLaunchWarNo = warNo;
         _phase = ReplayHubPhase.Inactive;
 
-        if (overlay.dw != null)
-            overlay.dw.step = 4;
-
-        LogDebug($"Armed simulation launch for war_no={warNo}.");
+        Plugin.Log?.LogInfo($"[S2WarReplay] Armed simulation launch for war_no={warNo} from Klaus.");
     }
 
-    private static void CancelFromCustomMenu(GSD2::Overlay_teamchg overlay)
+    private static void CancelFromKlausMenu()
     {
         if (_pendingSnapshot != null)
         {
@@ -147,10 +147,7 @@ public static class S2WarReplayPatch
         }
 
         _phase = ReplayHubPhase.Inactive;
-        if (overlay.dw != null)
-            overlay.dw.step = 4;
-
-        LogDebug("Cancelled War Room menu and restored pre-entry state.");
+        LogDebug("Cancelled Klaus War Replay menu and restored pre-entry state.");
     }
 
     private static void CompleteReplayCleanup(bool showToast, bool wasDefeat)
@@ -185,75 +182,64 @@ public static class S2WarReplayPatch
         LogDebug($"Replay ended (wasDefeat={wasDefeat}); GAME_WORK restored.");
     }
 
-    [HarmonyPatch(typeof(GSD2::Overlay_teamchg), "Entry")]
-    [HarmonyPrefix]
-    private static void OverlayTeamChg_Entry_Prefix(GSD2::Overlay_teamchg __instance)
+    [HarmonyPatch(typeof(UIMessageWindow), nameof(UIMessageWindow.OpenMessageWindow))]
+    [HarmonyPatch(new[] { typeof(Sprite), typeof(string), typeof(string), typeof(Vector3), typeof(bool) })]
+    [HarmonyPostfix]
+    private static void OpenMessageWindow_Postfix(UIMessageWindow __instance, string name)
     {
-        _phase = ReplayHubPhase.Inactive;
-        _pendingSnapshot = null;
+        if (!IsEnabled || _isReplayActive || S2WarReplayMenu.IsOpen)
+            return;
 
-        if (!IsEnabled || _isReplayActive) return;
-        if (!IsAppleWarRoomContext(__instance.mcon)) return;
+        if (!IsKlausWarRoomContext(null))
+            return;
 
-        // Capture GAME_WORK before teamchg_init() invokes Defc_set.ActSetDefaultTeam()
-        _pendingSnapshot = GameWorkSnapshot.Capture(GSD2::OldSrcBase.game_work);
-        _phase = ReplayHubPhase.WaitingForMenuReady;
-        LogDebug($"Intercepted Apple War Room overlay ({__instance.mcon?.GetMapName()}).");
+        if (!string.Equals(name?.Trim(), "Klaus", StringComparison.OrdinalIgnoreCase))
+            return;
+
+        if (!_pendingKlausReplay)
+            Plugin.Log?.LogInfo("[S2WarReplay] Detected Klaus dialogue in vk07; queuing War Battle Replay menu.");
+
+        _pendingKlausReplay = true;
+        _klausMessageWindow = __instance;
     }
 
-    [HarmonyPatch(typeof(GSD2::Overlay_teamchg), "TeamChgMain")]
+    [HarmonyPatch(typeof(GSD2::MACHICON), nameof(GSD2::MACHICON.MachiMain))]
     [HarmonyPrefix]
-    private static bool OverlayTeamChg_TeamChgMain_Prefix(GSD2::Overlay_teamchg __instance, ref int __result)
+    private static bool MACHICON_MachiMain_Prefix(GSD2::MACHICON __instance)
     {
-        if (_phase == ReplayHubPhase.Inactive || _phase == ReplayHubPhase.PassthroughOrganize)
-            return true;
-
-        var dw = __instance.dw;
-        if (dw == null)
-        {
-            _phase = ReplayHubPhase.Inactive;
-            return true;
-        }
-
-        if (_phase == ReplayHubPhase.WaitingForMenuReady)
-        {
-            // step 0 loads Tc_main resources and advances to step 1 prior to FilterBlackIn fade
-            if (dw.step == 0)
-                return true;
-
-            if (dw.step != 1)
-            {
-                _phase = ReplayHubPhase.Inactive;
-                _pendingSnapshot = null;
-                return true;
-            }
-
-            _phase = ReplayHubPhase.InCustomMenu;
-            S2WarReplayMenu.OpenHub(
-                onOrganize: () =>
-                {
-                    _pendingSnapshot = null;
-                    _phase = ReplayHubPhase.PassthroughOrganize;
-                    LogDebug("Passing through to native Army Organize screen.");
-                },
-                onReplayBattle: warNo => ArmReplayLaunch(__instance, warNo),
-                onCancel: () => CancelFromCustomMenu(__instance)
-            );
-
-            __result = 0;
-            return false;
-        }
-
         if (_phase == ReplayHubPhase.InCustomMenu)
         {
             if (!S2WarReplayMenu.IsOpen)
             {
-                CancelFromCustomMenu(__instance);
+                if (_pendingSnapshot != null)
+                    _pendingSnapshot.Restore(GSD2::OldSrcBase.game_work);
+                _pendingSnapshot = null;
+                _phase = ReplayHubPhase.Inactive;
                 return true;
             }
 
-            __result = 0;
             return false;
+        }
+
+        if (_pendingKlausReplay && __instance.ol_func == null)
+        {
+            bool dialogStillOpen = _klausMessageWindow != null && _klausMessageWindow.IsOpen;
+            if (!dialogStillOpen)
+            {
+                _pendingKlausReplay = false;
+                _klausMessageWindow = null;
+
+                if (IsEnabled && !_isReplayActive && IsKlausWarRoomContext(__instance))
+                {
+                    _pendingSnapshot = GameWorkSnapshot.Capture(GSD2::OldSrcBase.game_work);
+                    _phase = ReplayHubPhase.InCustomMenu;
+                    S2WarReplayMenu.OpenSelectorDirect(
+                        onReplayBattle: ArmKlausReplayLaunch,
+                        onCancel: CancelFromKlausMenu
+                    );
+                    return false;
+                }
+            }
         }
 
         return true;
@@ -291,7 +277,7 @@ public static class S2WarReplayPatch
                 return;
             }
 
-            // Preserve Apple War Room coordinates; fallback only if unset
+            // Preserve Klaus War Room coordinates; fallback only if unset
             if (__instance.px <= 0 && __instance.py <= 0)
             {
                 __instance.px = 60 << 3;

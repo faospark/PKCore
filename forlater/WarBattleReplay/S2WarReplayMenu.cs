@@ -12,7 +12,7 @@ using TMPro;
 namespace PKCore.Patches;
 
 /// <summary>
-/// Unity Canvas UI and input controller for Apple's War Room menu, War Battle Replay selector,
+/// Unity Canvas UI and input controller for Klaus's War Room menu, War Battle Replay selector,
 /// and post-simulation return banner in Suikoden II.
 /// </summary>
 public static class S2WarReplayMenu
@@ -30,6 +30,7 @@ public static class S2WarReplayMenu
     private static Action? _onChooseOrganize;
     private static Action<int>? _onChooseReplayBattle;
     private static Action? _onCancel;
+    private static bool _directSelectorMode;
 
     private static GameObject? _canvasRoot;
     private static GameObject? _hubPanel;
@@ -82,6 +83,7 @@ public static class S2WarReplayMenu
 
     public static void OpenHub(Action onOrganize, Action<int> onReplayBattle, Action onCancel)
     {
+        _directSelectorMode = false;
         _onChooseOrganize = onOrganize;
         _onChooseReplayBattle = onReplayBattle;
         _onCancel = onCancel;
@@ -99,6 +101,21 @@ public static class S2WarReplayMenu
         if (_selectorPanel != null) _selectorPanel.SetActive(false);
 
         RefreshHubVisuals();
+    }
+
+    public static void OpenSelectorDirect(Action<int> onReplayBattle, Action onCancel)
+    {
+        _directSelectorMode = true;
+        _onChooseOrganize = null;
+        _onChooseReplayBattle = onReplayBattle;
+        _onCancel = onCancel;
+
+        EnsureCanvas();
+        if (_canvasRoot == null) return;
+
+        SyncPrevInputs();
+        _canvasRoot.SetActive(true);
+        SwitchToBattleSelector();
     }
 
     public static void Close()
@@ -135,7 +152,7 @@ public static class S2WarReplayMenu
 
         if (!IsOpen) return;
 
-        // Ignore the first frame press left over from confirming Apple's dialogue
+        // Ignore the first frame press left over from confirming Klaus's dialogue
         if (Time.unscaledTime - _openedAt < 0.16f)
         {
             SyncPrevInputs();
@@ -204,7 +221,7 @@ public static class S2WarReplayMenu
             }
             else if (cancel)
             {
-                SwitchToHub();
+                HandleSelectorBack();
             }
             else if (decide)
             {
@@ -229,6 +246,18 @@ public static class S2WarReplayMenu
             Close();
             _onCancel?.Invoke();
         }
+    }
+
+    private static void HandleSelectorBack()
+    {
+        if (_directSelectorMode)
+        {
+            Close();
+            _onCancel?.Invoke();
+            return;
+        }
+
+        SwitchToHub();
     }
 
     private static void SwitchToHub()
@@ -386,7 +415,7 @@ public static class S2WarReplayMenu
 
         if (_detailSandbox != null)
         {
-            _detailSandbox.text = "Simulation Safeguards Active: Character mortality is disabled; story flags, character flags, and unit assignments are restored upon return to Apple.";
+            _detailSandbox.text = "Simulation Safeguards Active: Character mortality is disabled; story flags, character flags, and unit assignments are restored upon return to Klaus.";
         }
 
         if (_launchBtnImg != null)
@@ -493,7 +522,7 @@ public static class S2WarReplayMenu
         _hubPanel = CreateBox(_canvasRoot.transform, "HubOverlay", Vector2.zero, new Vector2(1920f, 1080f), ColBackdrop, raycast: true);
         var card = CreateBorderedBox(_hubPanel.transform, "HubCard", new Vector2(0f, 0f), new Vector2(680f, 390f), ColPanelBg, ColGoldBorder);
 
-        CreateLabel(card.transform, "Header", "APPLE  —  WAR ROOM", new Vector2(0f, 145f), new Vector2(620f, 44f), 28, ColTextGold, TextAlignmentOptions.Left, FontStyles.Bold);
+        CreateLabel(card.transform, "Header", "KLAUS  —  WAR ROOM", new Vector2(0f, 145f), new Vector2(620f, 44f), 28, ColTextGold, TextAlignmentOptions.Left, FontStyles.Bold);
         CreateLabel(card.transform, "Prompt", "\"Do you want to adjust our battle units, or run a tactical simulation of a past engagement?\"", new Vector2(0f, 82f), new Vector2(620f, 64f), 21, ColTextMain, TextAlignmentOptions.TopLeft);
 
         string[] labels =
@@ -521,7 +550,7 @@ public static class S2WarReplayMenu
         _selectorPanel = CreateBox(_canvasRoot.transform, "SelectorOverlay", Vector2.zero, new Vector2(1920f, 1080f), ColBackdrop, raycast: true);
         var board = CreateBorderedBox(_selectorPanel.transform, "SelectorBoard", Vector2.zero, new Vector2(1240f, 700f), ColPanelBg, ColGoldBorder);
 
-        CreateLabel(board.transform, "Title", "APPLE'S TACTICAL ARCHIVE  —  WAR BATTLE REPLAY", new Vector2(0f, 312f), new Vector2(1180f, 42f), 28, ColTextGold, TextAlignmentOptions.Left, FontStyles.Bold);
+        CreateLabel(board.transform, "Title", "KLAUS'S TACTICAL ARCHIVE  —  WAR BATTLE REPLAY", new Vector2(0f, 312f), new Vector2(1180f, 42f), 28, ColTextGold, TextAlignmentOptions.Left, FontStyles.Bold);
 
         // Left pane: Battle list
         var leftPane = CreateBorderedBox(board.transform, "LeftPane", new Vector2(-300f, -6f), new Vector2(580f, 540f), ColSubPanelBg, ColGoldBorder);
@@ -561,7 +590,7 @@ public static class S2WarReplayMenu
         _detailSandbox = CreateLabel(rightPane.transform, "DetailSandbox", "", new Vector2(0f, -138f), new Vector2(536f, 68f), 17, ColTextMuted, TextAlignmentOptions.TopLeft);
 
         CreateButtonRow(rightPane.transform, "LaunchBtn", new Vector2(-120f, -220f), new Vector2(260f, 48f), ColBtnLaunch, "Launch Simulation", 21, out _launchBtnImg, out _launchBtnText, TryLaunchSelectedBattle);
-        CreateButtonRow(rightPane.transform, "BackBtn", new Vector2(150f, -220f), new Vector2(200f, 48f), ColRowIdle, "Back", 21, out _, out _, SwitchToHub);
+        CreateButtonRow(rightPane.transform, "BackBtn", new Vector2(150f, -220f), new Vector2(200f, 48f), ColRowIdle, "Back", 21, out _, out _, HandleSelectorBack);
 
         CreateLabel(board.transform, "FooterHint", "Up/Down: Browse   Left/Right: Page   Enter/Click: Launch   Esc: Back", new Vector2(0f, -314f), new Vector2(1180f, 28f), 18, ColTextMuted, TextAlignmentOptions.Center);
     }

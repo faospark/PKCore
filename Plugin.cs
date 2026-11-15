@@ -92,7 +92,7 @@ public class Plugin : BasePlugin
         Patches.MenuScalePatch.ApplyLauncherConfigScaling();
         Patches.S2CookOffLoopPatch.Update();
         Patches.S2CookOffScorePatch.Update();
-        Patches.S2WarReplayMenu.Update();
+        // Patches.S2WarReplayMenu.Update();
         // Patches.s2EpilogueLeona.Update();
         AssetLoader.Update();
     }
@@ -414,8 +414,8 @@ public class Plugin : BasePlugin
         harmony.PatchAll(typeof(Patches.S2CookOffScorePatch));
         MACHICON_OnMapInitPatch.OnMapChangedEvent += () => Patches.S2CookOffLoopPatch.CheckAndResetCookOffs(MACHICON_OnMapInitPatch.CurrentMapId);
 
-        // Suikoden 2 Apple War Room Tactical Simulation (War Battle Replay sidequest)
-        harmony.PatchAll(typeof(Patches.S2WarReplayPatch));
+        // Suikoden 2 War Battle Replay Sidequest (Archived in forlater/WarBattleReplay)
+        // harmony.PatchAll(typeof(Patches.S2WarReplayPatch));
 
 
         // PSP Launcher Patch
