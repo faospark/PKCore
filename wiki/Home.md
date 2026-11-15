@@ -5,9 +5,9 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 [![Nexus Mods](https://img.shields.io/badge/Download-Nexus_Mods-DA6A00.svg)](https://www.nexusmods.com/suikoden1and2hdremaster/mods/6)
 
-> **PKCore (Project Kyaro Core)** is the next-generation foundational engine and modding framework for **Suikoden I & II HD Remaster**. It provides zero-compromise runtime texture injection, high-performance GPU DDS decoding (BC1/BC3/BC7), CriWare sound swapping (ACB/AWB redirection), dynamic dialogue and NPC portrait frameworks (with variant expressions across both games), save slot party member mini portraits, data-driven Suikoden II war battle rebalancing, story quest replay loops, remote castle services, floating borderless window modes, real-time event telemetry, and deep graphical customization.
+> **PKCore (Project Kyaro Core)** is the core DLL component and foundational modding framework for **[Project Kyaro](https://www.nexusmods.com/suikoden1and2hdremaster/mods/6)** on **Suikoden I & II HD Remaster**. It provides custom texture injection (`PNG`, `JPG`, `TGA`, `DDS` BC1/BC3/BC7), CriWare sound swapping (`ACB`/`AWB` redirection), dynamic dialogue and NPC portrait frameworks (with expression variants across both games), save slot party member mini portraits, PSP-inspired launcher & UI presets, data-driven Suikoden II war battle rebalancing, Cook-Off loop/cooldown/live score helper, floating borderless window mode, and reverse-engineering utilities.
 >
-> Specialized gameplay overhauls (such as combat HUDs, battle formation spacing, attack range overrides, vendor expansions, bathhouse overhauls, and controller button prompt overrides) are modularized into dedicated companion plugins within the **Project Kyaro Suite**.
+> Specialized gameplay overhauls (such as quest/boss replays, combat HUDs, battle formation spacing, attack range overrides, early recruitments, vendor expansions, bathhouse overhauls, and controller button prompt overrides) are modularized into dedicated companion plugins within the **Project Kyaro Suite**.
 
 ---
 
@@ -25,7 +25,7 @@
 
 | 📦 [00-Mods Guide](00-mods_guide) | 🖼️ [Save Slot Party Portraits](#-save-slot-party-member-portraits) | 🧩 [Companion Plugins Suite](#-the-project-kyaro-companion-plugins-suite) |
 | :--- | :--- | :--- |
-| • Mod Packaging<br>• Isolated Folders<br>• Conflict Resolution | • In-Memory Portrait Cache<br>• S1 & S2 Save/Load UI<br>• Zero-Lag Lookups | • PKBattlePatch<br>• PKRuneSagePlus<br>• PKS2BathNPCPatch / PKButtonPrompts |
+| • Mod Packaging<br>• Isolated Folders<br>• Conflict Resolution | • In-Memory Portrait Cache<br>• S1 & S2 Save/Load UI<br>• Zero-Lag Lookups | • PKReplayPlus / PKBattlePatch<br>• PKRuneSagePlus / PKRecruitmentPatch<br>• PKButtonPrompts / PKDev & more |
 
 </div>
 
@@ -42,49 +42,39 @@
          ▼                         ▼                            ▼                         ▼
 ┌──────────────────┐     ┌──────────────────┐         ┌──────────────────┐      ┌──────────────────┐
 │  High-Perf DDS   │     │  00-Mods Layer   │         │  NPC Portraits   │      │ War Battle &     │
-│  & Texture Engine│     │ Overrides & Audio│         │ & Save Portraits │      │ Gameplay Systems │
-│ (BC1 / BC3 / BC7)│     │ (Top-Priority)   │         │ (S1 & S2 Support)│      │ (Quests & Runes) │
+│  & Texture Engine│     │ Overrides & Audio│         │ & Save Portraits │      │ Cook-Off Systems │
+│ (BC1 / BC3 / BC7)│     │ (Top-Priority)   │         │ (S1 & S2 Support)│      │ (S2 Gameplay)    │
 └──────────────────┘     └──────────────────┘         └──────────────────┘      └──────────────────┘
 ```
 
 * **⚡ Zero-Lag Manifest Caching**: Scans thousands of texture replacements and caches indices in XML (`texture_manifest.xml`) — boot times drop from seconds to milliseconds.
-* **🚀 Native GPU DDS Acceleration**: Direct in-place memory replacement using BC1, BC3, and high-fidelity BC7 textures (with DX10 header support).
+* **🚀 Native GPU DDS Acceleration**: Direct in-place memory replacement using `BC1`, `BC3`, and high-fidelity `BC7` textures (with DX10 header support).
 * **🖼️ Save Slot Party Member Portraits**: Automatically renders high-resolution mini party portraits in save/load slots for both Suikoden I and II with instant 0ms cached lookups.
-* **🎭 Dynamic NPC & Dialogue Portrait Framework**: Inject high-res dialogue portraits for any NPC or character with multi-language, emotion variant (`smile`, `angry`, `sad`, `shock`, `hurt`), and cutscene fallback support across both games.
-* **🛡️ Data-Driven War Battles**: Deep rebalancing of Suikoden II Tactical War Battles via intuitive `S2WarAbilities.json`, synchronized live into Apple's squad formation menu at Castle HQ.
-* **🔁 Clive's Pursuit Quest Replay (S2)**: Automatically resets Clive's questline back to Lakewest upon entering Lakewest after finishing the Sajah Village finale, allowing indefinite replay of the pursuit arc in late game with in-flight self-healing flags.
-* **🍲 Infinite Cook-Off Minigame Loop & Cooldown Reduction (S2)**: Automatically restarts Hai Yo's cook-off battles from Chef Antonio (Match 1) after defeating final chef Jinkai, while preserving all recipes, seasonings, and bonuses. Also provides an instant cooldown bypass.
-* **✨ Remote Castle Rune Master Access (S1)**: Open Jeane's rune shop from anywhere on the field by pressing Right Stick Down, with area background load verification, loading screen immunity, and background player movement silencing.
-* **🗿 Repeatable Guardian Deity Statue Rewards (S2)**: Re-arms reward triggers on Jude's workshop exits, preserving the custom 3D statue model across transitions and refreshing party reactions for every newly sculpted combination.
-* **🔊 CriWare Sound Swapping**: Drop-in `.acb`/`.awb` sound and music redirection without modifying game archives.
-* **🎮 UI & Immersion Customization**: Customizable Save Point Crystal colors (12 presets + randomizer), washed-out glow removal, compact 80% dialogue boxes and menus, Enhanced Gallery backgrounds, and classic PSX save windows.
+* **🎭 Dynamic NPC & Dialogue Portrait Framework**: Inject high-res dialogue portraits for any NPC or character with multi-language, emotion variant (`smile`, `angry`, `sad`, `shock`, `hurt`), and cutscene fallback support across both games, plus automatic protagonist/HQ text placeholder replacement.
+* **🛡️ Data-Driven War Battles**: Deep rebalancing of Suikoden II Tactical War Battles via `S2WarAbilities.json`, synchronized live into Apple's squad formation menu at Castle HQ.
+* **🍲 Cook-Off Suite (S2)**: Infinite Cook-Off loop (`LoopCookOffMatches`) restarting from Chef Antonio after defeating Jinkai while preserving all recipes/seasonings, instant cooldown bypass (`ReduceCookOffCooldown`), and an on-screen **Live Cook-Off Score Helper** (`ShowCookOffScoreHelper`) with real-time judge taste scoring and optimal course recommendations.
+* **🔊 CriWare Sound Swapping**: Drop-in `.acb`/`.awb` sound and music redirection without modifying game archives, including `BetterLauncherBGM`.
+* **🎮 Visuals, UI & Immersion Customization**: Toggleable Project Kyaro HD sprites vs. original pixel sprites, bilinear + 2x anisotropic filtering, selectable SMAA (`Off`, `Low`, `Medium`, `High`), `ResolutionScale` (`0.5x`–`2.0x`), PSP-inspired Alternative Launcher with auto language detection, compact 80% dialogue/menu scaling, S1 scaled world map, customizable Save Point Crystal colors, colored S2 intros/flashbacks, Mercenary Fortress fence variants, Enhanced Gallery backgrounds, and classic PSX save windows.
 * **🖥️ Floating Borderless Window Mode**: Strips Win32 title bars and borders while remaining in windowed mode, enabling custom smaller resolutions in clean borderless windows without desktop stretching.
-* **📊 Diagnostic & Telemetry Suite**: Real-Time Event Flag Logger (S1 & S2) and Save/Load Performance Profiler benchmarking disk reads and JSON parsing down to sub-millisecond stopwatch accuracy.
+* **📊 Diagnostics & Reverse-Engineering Utilities**: Clean `Alt+F4` exit, runtime text/JSON asset dumpers (`PKCore/Debug/`), JSON TextAsset overrides (`PKCore/JsonOverrides/`), and high-speed decompiled symbol/map indexer (`tools/sym.bat`).
 
 ---
 
 ## 🧩 The Project Kyaro Companion Plugins Suite
 
-To keep PKCore focused as the foundational core engine, specialized combat and world systems are modularized into dedicated companion plugins:
+To keep PKCore focused as the foundational core engine, specialized gameplay and developer systems are modularized into dedicated companion plugins:
 
-* **[PKBattlePatch](https://www.nexusmods.com/suikoden1and2hdremaster/mods/6)**:
-  * **Combat Telemetry**: Live Enemy Level and HP HUD bars above monsters, plus Party Max HP display.
-  * **Memory Auto-Battle**: Preserves individual party member commands across turns during auto-battle rather than forcing standard attacks.
-  * **Smart Auto-Healing**: Automatically heals wounded party members with available medicine or magic immediately after victory.
-  * **Battle Formation Spacing**: Adjusts 6-character party formation spacing (`wide`, `widest`) so back-row members never obstruct front-row heroes.
-  * **Weapon Range Overrides**: Custom weapon/attack range modification (e.g. Kasumi, Luc, Mazus, Viki, Gantetsu, Badeaux, Sierra from Short to Medium), removing formation warnings and allowing back-row physical attacks.
-  * **Rune Enhancements**: Unlimited command rune uses (Falcon, Titan, Viper) and unbalance status penalty removal.
-* **[PKRuneSagePlus](https://www.nexusmods.com/suikoden1and2hdremaster/mods/6)**:
-  * **Sajah Village Rare Shop (S2)**: Unlocks the hidden late-game rare item/rune vendor and counter trigger in Sajah Village (`vj17`) early by bypassing story flag 143.
-  * **Castle Rune Master Expansion (S1)**: Expands Jeane's rune inventory at Toran Castle with a progressive multi-tier crystal catalog.
-* **[PKS2BathNPCPatch](https://www.nexusmods.com/suikoden1and2hdremaster/mods/6)**:
-  * **Bathhouse Overhaul**: Restores cut bath sprites for non-combatant recruits and convoy members in Suikoden II.
-  * **Expanded Capacity**: Unlocks full 8-character bathhouse capacity (+2 convoy/visitor slots).
-  * **Canonical Gender Routing**: Enforces canonical gender-based tub separation (Tenkou, Richmond, Boris to men; Teresa, Emilia, Barbara, Leona, Pilika to women).
-* **[PKTenzanPassPatch](https://www.nexusmods.com/suikoden1and2hdremaster/mods/6)**:
-  * **Chimera Restoration**: Restores omitted Chimera monster encounters (Parties 6, 7, 8) in Tenzan Pass (`va11`) with Pyriel's community fix layout, configurable Cyclone Rune drops, and crash prevention bounds checks.
-* **[PKButtonPrompts](https://www.nexusmods.com/suikoden1and2hdremaster/mods/6)**:
-  * **Universal Controller Prompts**: Force specific controller prompt button glyphs (Xbox, PS4, PS5, Switch) regardless of the detected physical input device.
+* **PKReplayPlus**: Final Boss Gauntlet replay, Epilogue Leona & minigames restoration, Clive's Pursuit Quest replay, and Guardian Deity repeatable rewards.
+* **PKBattlePatch**: Enemy Level/HP HUD, Party Max HP bar, Memory Auto-Battle, after-battle auto-heal, formation spacing (`wide`, `widest`), unlimited command runes, rune unbalance removal, and attack range overrides.
+* **PKRuneSagePlus**: Remote Castle Rune Master (`Right Stick Down` / `F7`), early Sajah Village rare shop & rune sage (S2), and S1 Castle Rune Master shop expansion.
+* **PKRecruitmentPatch**: Early Stars of Destiny recruitments, HQ clones, and story-independent Castle HQ upgrades (S2).
+* **PKOpenPaths**: Cave of the Wind auto-solved boulders, Tinto Mines shortcuts, and early Forest Village Armor Shop door (S2).
+* **PKS1CastleStorageAnywhere**: Remote Toran Castle Vault access (`Right Stick Up` / `R3` / `F6`) (S1).
+* **PKMatildaGlitchRestoration**: Restores the Muse–Matilda border gate push glitch (or opens the border) with HD sprite sync (S2).
+* **PKS2BathNPCPatch**: Cut bath sprite restorations, 8-character capacity, and canonical gender-based tub separation (S2).
+* **PKTenzanPassPatch**: Restores omitted Tenzan Pass Chimera encounters & Cyclone Rune drops with crash-prevention bounds checks (S2).
+* **PKButtonPrompts**: Global PlayStation / DualSense / Xbox / Switch / Custom button prompt overrides.
+* **PKDev**: Dear ImGui telemetry HUD, live event-flag logger (`LogEventFlagsS1` / `LogEventFlagsS2`), Battle Lab, and crash diagnostics (requires `PKCore`).
 
 ---
 
@@ -92,15 +82,15 @@ To keep PKCore focused as the foundational core engine, specialized combat and w
 
 ### Requirements
 * **Game**: Suikoden I & II HD Remaster (Steam or Epic Games, Unity 2022.3.28f1)
-* **Mod Loader**: [BepInEx 6.0.0-pre.2 (IL2CPP 64-bit)](https://github.com/BepInEx/BepInEx/releases)
+* **Mod Loader**: [BepInEx 6.0.0-pre.2 (IL2CPP 64-bit)](https://github.com/BepInEx/BepInEx/releases/download/v6.0.0-pre.2/BepInEx-Unity.IL2CPP-win-x64-6.0.0-pre.2.zip)
 * **Recommended Companion**: [Suikoden Fix](https://github.com/d3xMachina/SuikodenFix) by d3xMachina
 
 ### Quick Installation
 
 1. Install **BepInEx 6.0.0-pre.2 IL2CPP** into your game root folder.
 2. Download the latest **[Project Kyaro / PKCore](https://www.nexusmods.com/suikoden1and2hdremaster/mods/6)** release.
-3. Place `PKCore.dll` in `BepInEx/plugins/PKCore/` and any mod assets in `PKCore/Textures/`, `PKCore/Sound/`, or `PKCore/00-Mods/`.
-4. Install companion plugins (such as `PKBattlePatch.dll`, `PKButtonPrompts.dll`) into `BepInEx/plugins/`.
+3. Place `PKCore.dll` and its assets in `BepInEx/plugins/PKCore/`, and place any mod overrides in `PKCore/Textures/`, `PKCore/Sound/`, or `PKCore/00-Mods/`.
+4. Install any desired companion plugins (such as `PKReplayPlus.dll`, `PKBattlePatch.dll`, `PKButtonPrompts.dll`) into `BepInEx/plugins/`.
 5. Launch the game once to auto-generate configuration files at `BepInEx/config/`.
 
 ### Directory Layout
@@ -115,7 +105,7 @@ To keep PKCore focused as the foundational core engine, specialized combat and w
 │   └── plugins/
 │       ├── PKCore/
 │       │   └── PKCore.dll              <-- Core engine plugin
-│       └── PKBattlePatch/              <-- Companion combat plugin
+│       └── PKBattlePatch/              <-- Companion combat plugin (optional)
 │           └── PKBattlePatch.dll
 └── PKCore/
     ├── Cache/
@@ -178,34 +168,38 @@ PKCore implements a multi-tier override system ensuring modularity and conflict 
 
 ## ⚙️ Configuration Overview
 
-All options for PKCore are configurable in `BepInEx/config/faospark.pkcore.cfg`:
+All options for PKCore are configurable in `BepInEx/config/faospark.pkcore.cfg` (see the full [Configuration Reference](configuration_guide)):
 
 ### 🎨 Visual & Sprites
 * `EnableProjectKyaroSprites` (`true`/`false`): Toggle Project Kyaro HD upscaled sprites.
 * `DisableSpritePostProcessing` (`true`/`false`): Strips bloom/vignette from sprites to eliminate bright border seams.
-* `SpriteFilteringEnabled` (`true`/`false`): Bilinear + Anisotropic filtering for smooth rendering.
-* `SMAAQuality` (`Off`, `Low`, `Medium`, `High`): Anti-aliasing quality level.
+* `SpriteFilteringEnabled` (`true`/`false`): Bilinear + 2x Anisotropic filtering for smooth rendering.
+* `SMAAQuality` (`Off`, `Low`, `Medium`, `High`): Anti-aliasing quality level for sprites.
+* `ResolutionScale` (`0.5`–`2.0`): Resolution scale multiplier (`1.0` = native).
 
 ### 🖥️ User Interface & Presentation
+* `MinimalUI` (`true`/`false`): Enable minimal UI texture variants.
 * `ScaleDownDialogBox` (`true`/`false`): Compact dialogue box (80% size) for improved scene visibility.
-* `ScaledDownMenu` (`true`/`false`): Scaled-down main pause/status menu.
-* `ClassicSaveWindow` (`true`/`false`): Restores the classic PSX-style save slot interface in Suikoden II.
-* `ShowSaveSlotPartyPortraits` (`true`/`false`): Displays mini party member portraits next to character level (`Txt_Lv`) in save/load slots.
+* `ScaledDownMenu` (`"true"`/`"false"`): Scaled-down main pause/status menu.
+* `ClassicSaveWindow` (`true`/`false`): Restores the classic PSX-style save slot interface in both games.
+* `ShowSaveSlotPartyPortraits` (`true`/`false`): Displays mini party member portraits in save/load slots.
 * `DisablePortraitDialogMask` (`true`/`false`): Removes the dark vignette gradient overlay from dialogue portraits.
 * `DisableUITips` (`true`/`false`): Disables the bottom-screen controller tip overlay bar.
 * `EnhancedGallery` (`true`/`false`): Replaces Movies, Events, and Sounds gallery backgrounds with custom textures inspired by the PSP release.
 * `PSPLauncher` (`true`/`false`): Enable the PSP-inspired launcher interface.
+* `S1ScaledDownWorldMap` (`true`/`false`): Scales down the Suikoden 1 world map UI to 80%.
 
 ### 🌟 Aesthetics & Gameplay Toggles
 * `SavePointColor` (`default`, `blue`, `green`, `red`, `purple`, `yellow`, `cyan`, `random`, etc.): Customizes the crystal save orb.
 * `DisableSavePointGlow` (`true`/`false`): Removes the washed-out white glare from save points.
 * `DisableWorldMapClouds` / `DisableWorldMapSunrays` (`true`/`false`): Cleans up the world map visuals.
-* `ColoredIntroAndFlashbacks` (`true`/`false`): Restores vibrant colors to flashback sequences.
+* `TirRunTexture` (`default`, `alt`, `pixel`): Texture variant for Tir's running animation (S1).
+* `MercFortFence` (`default`, `bamboo`, etc.): Mercenary Fortress fence texture variant (S2).
+* `ColoredIntroAndFlashbacks` (`true`/`false`): Restores vibrant colors to S2 intro/flashback sequences.
 * `BetterLauncherBGM` (`true`/`false`): Replaces launcher ambient music with Suikoden 2's adventure start theme.
-* `LoopCliveQuest` (`true`/`false`): Indefinitely replay Clive's pursuit quest from Lakewest after the finale.
 * `LoopCookOffMatches` (`true`/`false`): Restarts cook-off battles from Antonio after defeating Jinkai with all recipes preserved.
-* `ReduceCookOffCooldown` (`true`/`false`): Bypasses the 30-60 minute wait between cook-off matches.
-* `EnableS1QuickRuneMaster` (`true`/`false`): Quick-access Jeane's Toran Castle rune shop on the field via Right Stick Down.
+* `ReduceCookOffCooldown` (`true`/`false`): Bypasses the 30–60 minute wait between cook-off matches.
+* `ShowCookOffScoreHelper` (`true`/`false`): Displays live judge taste scoring and optimal course recommendations during Cook-Off battles.
 * `EnableWarAbilityMod` (`true`/`false`): Tactical war battle ability customization via `S2WarAbilities.json`.
 
 ---
@@ -234,6 +228,7 @@ Explore in-depth documentation pages for every system:
 | 🔊 [**Sound Swapping Guide**](sound_modding_guide) | CriWare ACB/AWB audio swapping and custom BGM/SFX redirection. |
 | ⚡ [**Caching & Performance**](caching_mechanism) | Deep dive into the XML manifest cache, scene unloader, and smart memory. |
 | 📝 [**Placeholder Text System**](place_holder_text) | Dynamic replacement of protagonist and castle names in dialogue. |
+| 🗺️ [**Map IDs & Areas Reference**](suikoden_2_map_ids_and_areas_breakdown) | Exhaustive breakdown of Suikoden II map IDs (`va01`–`vk37`), story chapters, and areas. |
 | ⚙️ [**Configuration Reference**](configuration_guide) | Full variable list and default value reference table. |
 
 ---
@@ -258,9 +253,13 @@ Explore in-depth documentation pages for every system:
 </details>
 
 <details>
-<summary><b>Q: Where did battle formations and weapon ranges go?</b></summary>
+<summary><b>Q: Where did battle formations, Clive's quest replay, remote Rune Master, or event flag logging go?</b></summary>
 
-Battle formations, range overrides, and enemy/party HP bars have been modularized into the dedicated **`PKBattlePatch`** plugin for optimal performance and decoupled updates.
+Those systems were modularized out of `PKCore` into dedicated companion plugins so `PKCore` stays focused on the core engine and asset frameworks:
+* **Battle formations, range overrides & HP bars** → `PKBattlePatch`
+* **Clive's Quest replay, Final Boss replay, Epilogue Leona & Guardian Deity** → `PKReplayPlus`
+* **Remote Castle Rune Master (S1) & Sajah Village rare shop (S2)** → `PKRuneSagePlus`
+* **Live Event Flag Logger & ImGui Telemetry HUD** → `PKDev`
 </details>
 
 ---
@@ -269,4 +268,4 @@ Battle formations, range overrides, and enemy/party HP bars have been modularize
 
 * **Author**: [faospark](https://github.com/faospark)
 * **Texture Pack**: [Project Kyaro HD Remaster Mod](https://www.nexusmods.com/suikoden1and2hdremaster/mods/6)
-* **Special Thanks**: [d3xMachina](https://github.com/d3xMachina) for [Suikoden Fix](https://github.com/d3xMachina/SuikodenFix) and speaker identification research.
+* **Special Thanks**: [d3xMachina](https://github.com/d3xMachina) for [Suikoden Fix](https://github.com/d3xMachina/SuikodenFix) and speaker identification research, and [asilverthorn](https://github.com/asilverthorn/suikoden_ref) for reference tables and internal IDs.
