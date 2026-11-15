@@ -53,12 +53,6 @@ public static class MACHICON_OnMapInitPatch
         UpdateCurrentMapId(parsedMapId);
 
         Plugin.Log.LogInfo($"[Map Tracking] MACHICON MapID resolved to: {parsedMapId ?? "null"} (Raw: {machiName})");
-
-        if (!string.IsNullOrEmpty(CurrentMapId))
-        {
-            S2FinalBossReplayPatch.CheckAndResetFinalBoss(CurrentMapId, PreviousMapId);
-            // s2EpilogueLeona.OnMapInit(CurrentMapId, __instance.mdat);
-        }
     }
 
     public static int PlayerX => CurrentMachicon != null ? CurrentMachicon.px : 0;
@@ -142,11 +136,7 @@ public static class MachiLoader_Load_Patch
         try
         {
             string machiName = __instance.GetMapName();
-            string mapId = MACHICON_OnMapInitPatch.ParseMapIdFromMachiName(machiName) ?? machiName;
-            S2CliveQuestReplayPatch.CheckAndResetCliveQuest(mapId);
-            S2FinalBossReplayPatch.CheckAndResetFinalBoss(mapId, MACHICON_OnMapInitPatch.CurrentMapId);
-            s2EpilogueLeona.ApplyForMap(mapId);
-            s2EpilogueMinigame.ApplyForMap(mapId);
+            _ = MACHICON_OnMapInitPatch.ParseMapIdFromMachiName(machiName) ?? machiName;
         }
         catch (Exception ex)
         {
@@ -176,8 +166,6 @@ public static class MachiLoader_Load_Patch
         {
             LastLoadedEventcon = __result;
             LastLoadedMachiDat = __result.mdat;
-            string effectiveMapId = mapId ?? MACHICON_OnMapInitPatch.CurrentMapId;
-            // s2EpilogueLeona.OnMapInit(effectiveMapId, __result.mdat);
         }
         MACHICON_OnMapInitPatch.TriggerMapChanged();
     }

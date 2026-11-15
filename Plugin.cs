@@ -93,7 +93,6 @@ public class Plugin : BasePlugin
         Patches.S2CookOffLoopPatch.Update();
         Patches.S2CookOffScorePatch.Update();
         // Patches.S2WarReplayMenu.Update();
-        // Patches.s2EpilogueLeona.Update();
         AssetLoader.Update();
     }
 
@@ -366,14 +365,6 @@ public class Plugin : BasePlugin
         // Map ID Tracking (shared by Map Object & S2 patches)
         harmony.PatchAll(typeof(MACHICON_OnMapInitPatch));
         harmony.PatchAll(typeof(MachiLoader_Load_Patch));
-
-        // Epilogue Leona Restoration (Pure memory byte patch on vk08 entry/exit)
-        harmony.PatchAll(typeof(S2LeonaOnMapInitPrefixPatch));
-        harmony.PatchAll(typeof(S2LeonaSaveMenuInitPrefixPatch));
-
-        // Epilogue Castle Minigame Restoration (Pure memory byte patch on vk18 entry/exit)
-        harmony.PatchAll(typeof(S2MinigameOnMapInitPrefixPatch));
-        harmony.PatchAll(typeof(S2MinigameSaveMenuInitPrefixPatch));
 
         // Dunan Castle Tavern (vk08) Forensic Diagnostics Tracker (dormant unless enabled in config)
         if (Config.EnableTavernDiagnostics.Value)
