@@ -1,155 +1,66 @@
-using System;
-using UnityEngine;
-using UnityEngine.UI;
+extern alias GSD2;
+
 using BepInEx.Logging;
 using HarmonyLib;
+using UnityEngine;
 
 namespace PKCore.Patches
 {
     /// <summary>
-    /// Monitors the War Room/Message Window state to replace the background (EventBG)
-    /// when a specific character (fp_085) is speaking/active.
+    /// Hooks GSD2's Tc_main (Apple's War Room / Team Formation menu) to replace OldSrcMap.eventBG's
+    /// sprite with hp_classicmap_02 once Tc_main.Load() finishes, leaving Connell's hsound untouched.
     /// </summary>
-    /// <summary>
-    /// Monitors the War Room/Message Window state to replace the background (EventBG)
-    /// when message:1059 is called.
-    /// </summary>
-    /// <summary>
-    /// Monitors the War Room/Message Window state to replace the background (EventBG)
-    /// when AppRoot/Map/face has the tc_face_draw component.
-    /// </summary>
-    public class WarRoomBGPatch : MonoBehaviour
+    [HarmonyPatch]
+    public static class WarRoomBGPatch
     {
-        private static WarRoomBGPatch instance;
-        private static bool _initialized = false;
         private static ManualLogSource Logger => Plugin.Log;
 
-        // Configuration
-        private const string FACE_OBJECT_PATH = "AppRoot/Map/face";
-        private const string COMPONENT_NAME = "tc_face_draw";
-
-        private const string BG_OBJECT_NAME = "EventBG";
-        private const string OVERLAY_NAME = "WarRoomBG_Overlay";
         private const string NEW_BG_TEXTURE = "hp_classicmap_02";
+        private static Sprite cachedBGSprite;
 
-        // State
-        private float checkInterval = 0.5f;
-        private float timer = 0f;
-
-        // Cache
-        private Sprite cachedBGSprite;
-
-        public static void Initialize()
+        [HarmonyPatch(typeof(GSD2::Tc_main._Load_d__19), nameof(GSD2::Tc_main._Load_d__19.MoveNext))]
+        [HarmonyPostfix]
+        public static void Postfix_LoadMoveNext(GSD2::Tc_main._Load_d__19 __instance, bool __result)
         {
-            if (_initialized) return;
+            if (__result) return;
+            if (__instance?.__4__this == null || !__instance.__4__this.isLoaded) return;
 
-            GameObject host = new GameObject("PKCore_WarRoomBGPatch");
-            DontDestroyOnLoad(host);
-            host.hideFlags = HideFlags.HideAndDontSave;
-
-            instance = host.AddComponent<WarRoomBGPatch>();
-            _initialized = true;
-
-            if (Plugin.Config.DetailedLogs.Value)
-                Logger.LogInfo("[WarRoomBGPatch] Initialized monitor with Overlay creation logic");
-        }
-
-        private void Update()
-        {
-            timer += Time.unscaledDeltaTime;
-            if (timer < checkInterval) return;
-            timer = 0f;
-
-            CheckAndCreateOverlay();
-        }
-
-        private void CheckAndCreateOverlay()
-        {
-            // 1. Find the Face object
-            GameObject faceObj = GameObject.Find(FACE_OBJECT_PATH);
-            if (faceObj == null || !faceObj.activeInHierarchy)
-                return;
-
-            // 2. Check for the specific component by name
-            // We use GetComponent(string) if it's a MonoBehaviour, or verify via list
-            // Since we don't know the exact type/namespace, we iterate components
-            bool hasComponent = false;
-            foreach (var comp in faceObj.GetComponents<Component>())
+            SpriteRenderer sr = GSD2::OldSrcMap.eventBG;
+            if (sr == null)
             {
-                // Unhollower/Il2CppInterop types might have specific naming, usually the type name matches
-                if (comp.GetIl2CppType().Name.Contains(COMPONENT_NAME) || comp.GetType().Name.Contains(COMPONENT_NAME))
-                {
-                    hasComponent = true;
-                    break;
-                }
+                if (Plugin.Config.DetailedLogs.Value)
+                    Logger.LogWarning("[WarRoomBGPatch] Tc_main.Load finished but OldSrcMap.eventBG is null.");
+                return;
             }
 
-            if (!hasComponent) return;
-
-            CreateOverlay();
+            EnsureCachedSprite(sr.sprite);
+            if (cachedBGSprite != null && sr.sprite != cachedBGSprite)
+            {
+                sr.sprite = cachedBGSprite;
+                if (Plugin.Config.DetailedLogs.Value)
+                    Logger.LogInfo($"[WarRoomBGPatch] Replaced OldSrcMap.eventBG sprite with {NEW_BG_TEXTURE}");
+            }
         }
 
-        private void CreateOverlay()
+        private static void EnsureCachedSprite(Sprite templateSprite)
         {
-            // 1. Find EventBG
-            GameObject eventBG = GameObject.Find(BG_OBJECT_NAME);
-            if (eventBG == null) return;
+            if (cachedBGSprite != null) return;
 
-            // 2. Check if overlay already exists
-            Transform existingOverlay = eventBG.transform.Find(OVERLAY_NAME);
-            if (existingOverlay != null) return;
+            cachedBGSprite = CustomTexturePatch.LoadCustomSprite(NEW_BG_TEXTURE, templateSprite);
 
-            SpriteRenderer parentRenderer = eventBG.GetComponent<SpriteRenderer>();
-            Sprite templateSprite = parentRenderer != null ? parentRenderer.sprite : null;
-
-            // 3. Load replacement sprite
             if (cachedBGSprite == null)
             {
-                // Use CustomTexturePatch to load, using parent sprite as template for PPU/Pivot
-                cachedBGSprite = CustomTexturePatch.LoadCustomSprite(NEW_BG_TEXTURE, templateSprite);
-
-                if (cachedBGSprite == null)
+                Texture2D tex = CustomTexturePatch.LoadCustomTexture(NEW_BG_TEXTURE);
+                if (tex != null)
                 {
-                    // Fallback
-                    Texture2D tex = CustomTexturePatch.LoadCustomTexture(NEW_BG_TEXTURE);
-                    if (tex != null)
-                    {
-                        cachedBGSprite = Sprite.Create(
-                             tex,
-                             new Rect(0, 0, tex.width, tex.height),
-                             new Vector2(0.5f, 0.5f),
-                             100f
-                        );
-                        cachedBGSprite.name = NEW_BG_TEXTURE + "_Custom";
-                        DontDestroyOnLoad(cachedBGSprite);
-                    }
-                }
-            }
-
-            if (cachedBGSprite != null)
-            {
-                Logger.LogInfo($"[WarRoomBGPatch] Creating {OVERLAY_NAME} on {BG_OBJECT_NAME} (Triggered by {COMPONENT_NAME})");
-
-                // Create new object
-                GameObject overlay = new GameObject(OVERLAY_NAME);
-                overlay.transform.SetParent(eventBG.transform, false);
-                overlay.transform.localPosition = Vector3.zero;
-                overlay.transform.localScale = Vector3.one;
-                overlay.transform.localRotation = Quaternion.identity;
-
-                // Add SpriteRenderer
-                SpriteRenderer sr = overlay.AddComponent<SpriteRenderer>();
-                sr.sprite = cachedBGSprite;
-
-                // Set sorting order higher than parent
-                if (parentRenderer != null)
-                {
-                    sr.sortingLayerID = parentRenderer.sortingLayerID;
-                    sr.sortingOrder = parentRenderer.sortingOrder + 1;
-                }
-                else
-                {
-                    sr.sortingOrder = 10; // Default high value
+                    cachedBGSprite = Sprite.Create(
+                        tex,
+                        new Rect(0, 0, tex.width, tex.height),
+                        new Vector2(0.5f, 0.5f),
+                        100f
+                    );
+                    cachedBGSprite.name = NEW_BG_TEXTURE + "_Custom";
+                    Object.DontDestroyOnLoad(cachedBGSprite);
                 }
             }
         }
