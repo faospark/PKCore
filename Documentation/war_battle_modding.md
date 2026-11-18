@@ -559,27 +559,27 @@ Reads w_dat_butai.chara_butai          Reads w_chara.chara(i)
 
 #### 1. Playable Squad Leaders (Commanding Officers)
 
-| Character ID | Name | Base ATK | Base DEF | Default Abilities | Strategic Classification & Role |
-| :---: | :--- | :---: | :---: | :--- | :--- |
-| **`3347`** | Riou | 8 | 9 | `SP_SHINING_SHIELD` | Supreme Commander; 2-tile radius area heal anchor. |
-| **`4`** | Viktor | 8 | 7 | None | Heavy infantry offensive frontline commander. |
-| **`3`** | Flik | 7 | 7 | `SP_MOUNT` | Fast cavalry spearhead commander. |
-| **`118`** | Ridley | 10 | 7 | `SP_CRITICAL` | High-damage critical shock striker (Kobold Corps). |
-| **`13`** | Valeria | 8 | 8 | `SP_MOUNT` | High-mobility shock cavalry vanguard. |
-| **`88`** | Kiba | 7 | 12 | `SP_HP_PLUS`, `SP_MOUNT` | Super-heavy **3 Max HP** cavalry fortress. |
-| **`35`** | Hauser | 9 | 7 | `SP_MOUNT` | Heavy armored cavalry general. |
-| **`12`** | Georg | 11 | 8 | `SP_CRITICAL` | Elite critical combat champion. |
-| **`120`** | Maximillian | 6 | 7 | `SP_MOUNT` | Veteran knight frontline commander. |
-| **`122`** | Gilbert | 7 | 8 | None | Defected Highland heavy infantry officer. |
-| **`102`** | Teresa | 5 | 6 | `SP_AIMING` | 5-tile sniper archer squad. |
-| **`44`** | Ayda | 6 | 5 | `SP_MEDICAL1`, `SP_FOREST_WALK` | Forest woodland scout & field medic. |
-| **`74`** | Kasumi | 6 | 6 | `SP_SCOUT` | Ninja scout; reveals enemy ambushes. |
-| **`123`** | Boris | 9 | 8 | `SP_SEE_THROUGH` | Ridley's successor; tactical defense specialist. |
-| **`54`** | Luc | 10 | 4 | `SP_MAGIC_WIND1` | High-damage 3-tile wind magic bombardier. |
-| **`62`** | Mazus | 9 | 6 | `SP_MAGIC_FIRE1` | High-damage 3-tile explosive fire mage. |
-| **`34`** | Camus | 9 | 8 | `SP_MOUNT` | Matilda Knight leader; balanced cavalry officer. |
-| **`33`** | Miklotov | 11 | 6 | `SP_MOUNT` | Matilda Knight leader; offensive spearhead commander. |
-| **`3348`** | Freed Y | 6 | 7 | None | Radat municipal infantry commander. |
+| Character ID | Name        | Base ATK | Base DEF | Default Abilities               | Strategic Classification & Role                       |
+| :----------: | :---------- | :------: | :------: | :------------------------------ | :---------------------------------------------------- |
+|  **`3347`**  | Riou        |    8     |    9     | `SP_SHINING_SHIELD`             | Supreme Commander; 2-tile radius area heal anchor.    |
+|   **`4`**    | Viktor      |    8     |    7     | None                            | Heavy infantry offensive frontline commander.         |
+|   **`3`**    | Flik        |    7     |    7     | `SP_MOUNT`                      | Fast cavalry spearhead commander.                     |
+|  **`118`**   | Ridley      |    10    |    7     | `SP_CRITICAL`                   | High-damage critical shock striker (Kobold Corps).    |
+|   **`13`**   | Valeria     |    8     |    8     | `SP_MOUNT`                      | High-mobility shock cavalry vanguard.                 |
+|   **`88`**   | Kiba        |    7     |    12    | `SP_HP_PLUS`, `SP_MOUNT`        | Super-heavy **3 Max HP** cavalry fortress.            |
+|   **`35`**   | Hauser      |    9     |    7     | `SP_MOUNT`                      | Heavy armored cavalry general.                        |
+|   **`12`**   | Georg       |    11    |    8     | `SP_CRITICAL`                   | Elite critical combat champion.                       |
+|  **`120`**   | Maximillian |    6     |    7     | `SP_MOUNT`                      | Veteran knight frontline commander.                   |
+|  **`122`**   | Gilbert     |    7     |    8     | None                            | Defected Highland heavy infantry officer.             |
+|  **`102`**   | Teresa      |    5     |    6     | `SP_AIMING`                     | 5-tile sniper archer squad.                           |
+|   **`44`**   | Ayda        |    6     |    5     | `SP_MEDICAL1`, `SP_FOREST_WALK` | Forest woodland scout & field medic.                  |
+|   **`74`**   | Kasumi      |    6     |    6     | `SP_SCOUT`                      | Ninja scout; reveals enemy ambushes.                  |
+|  **`123`**   | Boris       |    9     |    8     | `SP_SEE_THROUGH`                | Ridley's successor; tactical defense specialist.      |
+|   **`54`**   | Luc         |    10    |    4     | `SP_MAGIC_WIND1`                | High-damage 3-tile wind magic bombardier.             |
+|   **`62`**   | Mazus       |    9     |    6     | `SP_MAGIC_FIRE1`                | High-damage 3-tile explosive fire mage.               |
+|   **`34`**   | Camus       |    9     |    8     | `SP_MOUNT`                      | Matilda Knight leader; balanced cavalry officer.      |
+|   **`33`**   | Miklotov    |    11    |    6     | `SP_MOUNT`                      | Matilda Knight leader; offensive spearhead commander. |
+|  **`3348`**  | Freed Y     |    6     |    7     | None                            | Radat municipal infantry commander.                   |
 
 ---
 
