@@ -404,6 +404,9 @@ public class Plugin : BasePlugin
         harmony.PatchAll(typeof(Patches.S2CookOffScorePatch));
         MACHICON_OnMapInitPatch.OnMapChangedEvent += () => Patches.S2CookOffLoopPatch.CheckAndResetCookOffs(MACHICON_OnMapInitPatch.CurrentMapId);
 
+        // Suikoden 2 Soft Reset Battle PreRelease NullRef Guard
+        harmony.PatchAll(typeof(Patches.S2SoftResetBattleFixPatch));
+
         // Suikoden 2 War Battle Replay Sidequest (Archived in forlater/WarBattleReplay)
         // harmony.PatchAll(typeof(Patches.S2WarReplayPatch));
 
