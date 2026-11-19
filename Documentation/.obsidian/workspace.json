@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "war_battle_modding.md",
+                "file": "suikoden_2_castle_level_upgrade_mechanics.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "war_battle_modding"
+              "title": "suikoden_2_castle_level_upgrade_mechanics"
             }
           }
         ]
@@ -190,6 +190,7 @@
   },
   "active": "5862954f9df0509d",
   "lastOpenFiles": [
+    "war_battle_modding.md",
     "suikoden_2_castle_level_upgrade_mechanics.md",
     "text_add_system_guide.md",
     "symbol_indexer_guide.md",
