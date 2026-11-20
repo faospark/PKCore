@@ -4,6 +4,17 @@ All notable changes to PKCore (formerly PKextended) are documented in this file.
 
 ---
 
+## [Unreleased]
+
+- **Reabsorbed `PKBattlePatch`, `PKButtonPrompts`, and `PKReplayPlus` into `PKCore`**:
+  - **Battle HUD, QoL & Balance (`[06 Battle & Combat]`)**: Merged all 10 patches from `PKBattlePatch` (`BattleEnemyLevelPatch`, `BattlePartyHPPatch`, `BattleUnitWindowDiagnostics`, `BattlePositionPatch`, `BattleCameraZoomPatch`, `MemoryAutoBattlePatch`, `SmartHealingPatch`, `CharacterRangePatch`, `RuneUnbalancePatch`, `CommandRuneUnlimitedPatch`) into `PKCore`.
+  - **Controller Button Prompts (`[02 User Interface]`)**: Merged `GlobalControllerPromptPatch` (`EnableButtonPrompts`, `ControllerPromptType`) from `PKButtonPrompts` into `PKCore`.
+  - **Replay, Epilogue & Guardian Blessing (`[05 Game : Suikoden 2]`)**: Merged `S2CliveQuestReplayPatch`, `S2FinalBossReplayPatch`, `S2EpilogueLeonaPatch`, `S2EpilogueMinigamePatch`, and `GuardianDeityRepeatRewardsPatch` from `PKReplayPlus` into `PKCore`, integrated directly with `MapTrackingPatch.cs` and `GameDetection.cs`.
+  - **Diagnostics (`[zz - Diagnostics]`)**: Added `LogBattlePositions`, `LogBattleUnitWindow`, and `EnableGuardianDeityDiagnostics`.
+  - **Legacy Standalone Conflict Guard**: Added startup detection in `Plugin.cs` for `faospark.pkbattlepatch`, `faospark.pkbuttonprompts`, and `faospark.pkreplayplus`; if any legacy standalone DLL is still installed, `PKCore` logs a removal warning and skips duplicate patch registration.
+
+---
+
 ## [2026.11.12]
 
 - **Fix `OverlayClassBase.OnEnd` IL2CPP ICF Collision (`S2WarReplayPatch.cs`)**:

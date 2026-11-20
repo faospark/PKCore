@@ -53,6 +53,37 @@ public sealed class ModConfiguration
     public ConfigEntry<bool> ReduceCookOffCooldown { get; private set; }
     public ConfigEntry<bool> ShowCookOffScoreHelper { get; private set; }
 
+    // Suikoden 2 Replay, Post-Game & Guardian Blessing (reabsorbed from PKReplayPlus)
+    public ConfigEntry<bool> LoopCliveQuest { get; private set; }
+    public ConfigEntry<bool> LoopFinalBossGauntlet { get; private set; }
+    public ConfigEntry<bool> ResetGauntletOnNextEntry { get; private set; }
+    public ConfigEntry<bool> ReplayHighlandGuards { get; private set; }
+    public ConfigEntry<bool> ReplayHanCunningham { get; private set; }
+    public ConfigEntry<bool> ReplayLucia { get; private set; }
+    public ConfigEntry<bool> ReplaySeedAndCulgan { get; private set; }
+    public ConfigEntry<bool> ReplayBeastRune { get; private set; }
+    public ConfigEntry<bool> EnableLeonaPostFinalBoss { get; private set; }
+    public ConfigEntry<bool> EnableCastleMinigamesPostFinalBoss { get; private set; }
+    public ConfigEntry<bool> EnableRepeatStatueRewards { get; private set; }
+    public ConfigEntry<bool> AlwaysKeepStatueAssembled { get; private set; }
+
+    // Battle HUD, QoL & Balance (reabsorbed from PKBattlePatch)
+    public ConfigEntry<bool> ShowBattleMaxHP { get; private set; }
+    public ConfigEntry<bool> ShowEnemyLevelInBattle { get; private set; }
+    public ConfigEntry<bool> ShowEnemyHpInBattle { get; private set; }
+    public ConfigEntry<bool> EnableMemoryAutoBattle { get; private set; }
+    public ConfigEntry<bool> EnableSmartHealing { get; private set; }
+    public ConfigEntry<bool> EnableBattlePositionAdjustments { get; private set; }
+    public ConfigEntry<string> S2BattlePositionPreset { get; private set; }
+    public ConfigEntry<bool> EnableBattleCameraZoom { get; private set; }
+    public ConfigEntry<float> S1BattleCameraFovPercent { get; private set; }
+    public ConfigEntry<float> S2BattleCameraFovPercent { get; private set; }
+    public ConfigEntry<bool> EnableUnlimitedCommandRunes { get; private set; }
+    public ConfigEntry<bool> AlwaysAvailableAngryDragon { get; private set; }
+    public ConfigEntry<bool> EnableRuneUnbalanceRemoval { get; private set; }
+    public ConfigEntry<bool> EnableCharacterRangeOverrides { get; private set; }
+    public ConfigEntry<string> S2CharacterRangeOverrides { get; private set; }
+
     // Suikoden 2 War Battle Replay Sidequest (Archived in forlater/WarBattleReplay)
     // public ConfigEntry<bool> EnableWarReplaySidequest { get; private set; }
     // public ConfigEntry<bool> UnlockAllWarReplays { get; private set; }
@@ -72,6 +103,8 @@ public sealed class ModConfiguration
     public ConfigEntry<bool> PSPLauncher { get; private set; }
     public ConfigEntry<bool> EnhancedGallery { get; private set; }
     public ConfigEntry<bool> DisableUITips { get; private set; }
+    public ConfigEntry<bool> EnableButtonPrompts { get; private set; }
+    public ConfigEntry<string> ControllerPromptType { get; private set; }
 
     // Sound Settings
     public HiddenConfigEntry<bool> EnableSoundRedirect { get; private set; }
@@ -99,6 +132,9 @@ public sealed class ModConfiguration
     public HiddenConfigEntry<float> SpriteMipmapBias { get; private set; }
     public ConfigEntry<bool> LogReplaceableTextures { get; private set; }
     public ConfigEntry<bool> EnableTavernDiagnostics { get; private set; }
+    public ConfigEntry<bool> LogBattlePositions { get; private set; }
+    public ConfigEntry<bool> LogBattleUnitWindow { get; private set; }
+    public ConfigEntry<bool> EnableGuardianDeityDiagnostics { get; private set; }
 
 
     public ModConfiguration(ConfigFile config)
@@ -210,6 +246,29 @@ public sealed class ModConfiguration
             "Disable the UITips UI element (control/button tips overlay at UI_Root/UI_Canvas_Root/UITips/)."
         );
 
+        EnableButtonPrompts = _config.Bind(
+            "02 User Interface",
+            "EnableButtonPrompts",
+            true,
+            "Enable controller button prompt overrides across the game."
+        );
+
+        ControllerPromptType = _config.Bind(
+            "02 User Interface",
+            "ControllerPromptType",
+            "PlayStation",
+            new ConfigDescription(
+                "Override controller button prompts across the game. Options:\n" +
+                "- 'PlayStation': DualShock 4 prompts (_01)\n" +
+                "- 'PlayStation 5': DualSense prompts (_02)\n" +
+                "- 'Xbox': Xbox 360/One prompts (_03)\n" +
+                "- 'Switch': Nintendo Switch prompts (_04)\n" +
+                "- 'Custom': Custom button prompts (_05)\n" +
+                "- 'Generic': Default Xbox/PC prompts (_00)",
+                new AcceptableValueList<string>("PlayStation", "PlayStation 5", "Xbox", "Switch", "Custom", "Generic")
+            )
+        );
+
         SavePointColor = _config.Bind(
             "03 General",
             "SavePointColor",
@@ -308,6 +367,197 @@ public sealed class ModConfiguration
             "ShowCookOffScoreHelper",
             true,
             "Displays real-time scoring predictions and optimal menu recommendations on screen during Suikoden 2 cook-off minigame battles."
+        );
+
+        // Suikoden 2 Replay, Post-Game & Guardian Blessing
+        LoopCliveQuest = _config.Bind(
+            "05 Game : Suikoden 2",
+            "LoopCliveQuest",
+            true,
+            "Automatically resets Clive's pursuit quest back to Lakewest upon entering Lakewest with the Sajah Village finale completed. Allows replaying the complete questline from Lakewest to Sajah indefinitely in the late game."
+        );
+
+        LoopFinalBossGauntlet = _config.Bind(
+            "05 Game : Suikoden 2",
+            "LoopFinalBossGauntlet",
+            true,
+            "Automatically resets enabled L'Renouille encounters upon entering L'Renouille outer gates (vj01) when the final boss has been defeated. Use the individual Replay* toggles below to choose which encounters reset."
+        );
+
+        ResetGauntletOnNextEntry = _config.Bind(
+            "05 Game : Suikoden 2",
+            "ResetGauntletOnNextEntry",
+            false,
+            "When true, forces a reset of all enabled L'Renouille encounters the next time any L'Renouille map is entered, even if the final boss has not yet been defeated. Automatically resets back to false after performing the reset."
+        );
+
+        ReplayHighlandGuards = _config.Bind(
+            "05 Game : Suikoden 2",
+            "ReplayHighlandGuards",
+            false,
+            "Include the castle-wide Highland Soldier guard ambushes and outer gate assault segments when resetting L'Renouille."
+        );
+
+        ReplayHanCunningham = _config.Bind(
+            "05 Game : Suikoden 2",
+            "ReplayHanCunningham",
+            true,
+            "Include the General Han Cunningham 1v1 duel at the Outer Fortress Gates (vj01) when resetting L'Renouille."
+        );
+
+        ReplayLucia = _config.Bind(
+            "05 Game : Suikoden 2",
+            "ReplayLucia",
+            true,
+            "Include the Lucia 6v6 boss battle in the 2F Keep (vj02) when resetting L'Renouille."
+        );
+
+        ReplaySeedAndCulgan = _config.Bind(
+            "05 Game : Suikoden 2",
+            "ReplaySeedAndCulgan",
+            true,
+            "Include the Generals Seed & Culgan 6v2 boss battle in the Sanctum Hallway (vj07) when resetting L'Renouille."
+        );
+
+        ReplayBeastRune = _config.Bind(
+            "05 Game : Suikoden 2",
+            "ReplayBeastRune",
+            true,
+            "Include the Silver Beast Rune final boss battle in the Inner Sanctum (vj08) when resetting L'Renouille."
+        );
+
+        EnableLeonaPostFinalBoss = _config.Bind(
+            "05 Game : Suikoden 2",
+            "EnableLeonaPostFinalBoss",
+            true,
+            "Restores Leona at Dunan Castle Tavern (vk08) after the final boss battle (or whenever party changing is locked by the epilogue), replacing the substitute maid ('Leona went to restock on spirits') and fully re-enabling the party change menu."
+        );
+
+        EnableCastleMinigamesPostFinalBoss = _config.Bind(
+            "05 Game : Suikoden 2",
+            "EnableCastleMinigamesPostFinalBoss",
+            true,
+            "Restores Dunan Castle minigames (such as vk18 Laundry & Gardens) during the post-final-boss epilogue by temporarily clearing epilogue lockout flags while on the map."
+        );
+
+        EnableRepeatStatueRewards = _config.Bind(
+            "05 Game : Suikoden 2",
+            "EnableRepeatStatueRewards",
+            true,
+            "When enabled, re-arms the Guardian Deity blessing reward whenever the statue design is rebuilt or altered at Jude's workshop."
+        );
+
+        AlwaysKeepStatueAssembled = _config.Bind(
+            "05 Game : Suikoden 2",
+            "AlwaysKeepStatueAssembled",
+            true,
+            "Ensures the Guardian Deity statue maintains its assembled 3D model (parts_no[3] = 1) instead of reverting to plain stone."
+        );
+
+        // 06 Battle & Combat (HUD, QoL & Balance)
+        ShowBattleMaxHP = _config.Bind(
+            "06 Battle & Combat",
+            "ShowBattleMaxHP",
+            true,
+            "Displays both current and maximum HP (e.g. 587/587) in the battle party window for Suikoden 1 & 2."
+        );
+
+        ShowEnemyLevelInBattle = _config.Bind(
+            "06 Battle & Combat",
+            "ShowEnemyLevelInBattle",
+            true,
+            "Displays enemy level in battle target selection window for Suikoden 1 & 2 (e.g. 'Bonapart Lv.25')."
+        );
+
+        ShowEnemyHpInBattle = _config.Bind(
+            "06 Battle & Combat",
+            "ShowEnemyHpInBattle",
+            true,
+            "Displays enemy current and maximum HP on a new line in the battle target selection window for Suikoden 1 & 2 (e.g. 'HP 120/120')."
+        );
+
+        EnableMemoryAutoBattle = _config.Bind(
+            "06 Battle & Combat",
+            "EnableMemoryAutoBattle",
+            true,
+            "Remember the last manually chosen action (Attack vs Rune/Magic) and replay it during Auto-Battle (Omakase). Persists across battles. Falls back to Attack if MP is depleted or character is silenced."
+        );
+
+        EnableSmartHealing = _config.Bind(
+            "06 Battle & Combat",
+            "EnableSmartHealing",
+            true,
+            "Master toggle for after-battle automatic party recovery. Automatically revives fallen allies with Sacrificial Jizo, cures Poison with Antitoxin, and heals wounds using Medicine, Mega Medicine, and Healing Wind scrolls."
+        );
+
+        EnableBattlePositionAdjustments = _config.Bind(
+            "06 Battle & Combat",
+            "EnableBattlePositionAdjustments",
+            true,
+            "Adjust the 6 character battle positions in Suikoden 2 so back row characters do not block front row characters."
+        );
+
+        S2BattlePositionPreset = _config.Bind(
+            "06 Battle & Combat",
+            "S2BattlePositionPreset",
+            "wide",
+            "Battle position preset for Suikoden 2. Options: 'default' (vanilla), 'wide' (moderate spacing, front row shifted left), 'widest' (large spacing, high visibility)."
+        );
+
+        EnableBattleCameraZoom = _config.Bind(
+            "06 Battle & Combat",
+            "EnableBattleCameraZoom",
+            true,
+            "Zoom out the battle camera in Suikoden 1 & 2 for a wider field of view during combat."
+        );
+
+        S1BattleCameraFovPercent = _config.Bind(
+            "06 Battle & Combat",
+            "S1BattleCameraFovPercent",
+            125f,
+            "Battle camera FOV / zoom-out percentage in Suikoden 1 (100 = vanilla -1100.0 distance, 125 = 125% zoomed out at -1375.0 distance)."
+        );
+
+        S2BattleCameraFovPercent = _config.Bind(
+            "06 Battle & Combat",
+            "S2BattleCameraFovPercent",
+            125f,
+            "Battle camera FOV / zoom-out percentage in Suikoden 2 (100 = vanilla 15.0 FOV / 1.2 OrthoSize, 125 = 125% zoomed out at 18.75 FOV / 1.5 OrthoSize)."
+        );
+
+        EnableUnlimitedCommandRunes = _config.Bind(
+            "06 Battle & Combat",
+            "EnableUnlimitedCommandRunes",
+            true,
+            "Enable reusable command runes in battle without 1-use-per-battle lockouts in Suikoden 2 (Meg Trick Rune, Millie Groundhog Rune, Shin Spider Slay Rune, Oulan Angry Dragon)."
+        );
+
+        AlwaysAvailableAngryDragon = _config.Bind(
+            "06 Battle & Combat",
+            "AlwaysAvailableAngryDragon",
+            true,
+            "Allow Oulan Angry Dragon Rune to always be available/usable in battle without requiring initial damage or losing Fury."
+        );
+
+        EnableRuneUnbalanceRemoval = _config.Bind(
+            "06 Battle & Combat",
+            "EnableRuneUnbalanceRemoval",
+            true,
+            "Disable self-unbalance status penalty when executing physical ability command runes in Suikoden 2 (Swallow, Fire Breath, Mayfly, White Tiger, Blue Drop, Twin Ring, Gozu, Trick)."
+        );
+
+        EnableCharacterRangeOverrides = _config.Bind(
+            "06 Battle & Combat",
+            "EnableCharacterRangeOverrides",
+            true,
+            "Enable custom character battle range overrides for Suikoden 2 (e.g. Medium range Kasumi, Luc, Mazus, Viki, Gantetsu, Badeaux, Sierra, Freed Y, Chuchara)."
+        );
+
+        S2CharacterRangeOverrides = _config.Bind(
+            "06 Battle & Combat",
+            "S2CharacterRangeOverrides",
+            "Kasumi:M, Luc:M, Mazus:M, Viki:M, Gantetsu:M, Badeaux:M, Sierra:M, Freed Y:M, Chuchara:M",
+            "Comma-separated list of character range overrides for Suikoden 2 in 'Character:Range' format (e.g. 'Kasumi:M, Luc:M, Mazus:M, Viki:M, Gantetsu:M, Badeaux:M, Sierra:M, Freed Y:M, Chuchara:M'). Range values: S (Short), M (Medium), L (Long)."
         );
 
         // Archived in forlater/WarBattleReplay
@@ -412,6 +662,27 @@ public sealed class ModConfiguration
             "EnableTavernDiagnostics",
             false,
             "Enable forensic diagnostic logging for Dunan Castle Tavern (vk08) event flags, flag checks, dialogue, and party-change triggers."
+        );
+
+        LogBattlePositions = _config.Bind(
+            "zz - Diagnostics",
+            "LogBattlePositions",
+            false,
+            "Log party member coordinates and battle position adjustments to the console on battle start. Useful for diagnosing formation spacing."
+        );
+
+        LogBattleUnitWindow = _config.Bind(
+            "zz - Diagnostics",
+            "LogBattleUnitWindow",
+            false,
+            "Log the battle party window layout (HP/MP text elements, max HP visibility, slot hierarchy) once per slot per battle. Works for both games."
+        );
+
+        EnableGuardianDeityDiagnostics = _config.Bind(
+            "zz - Diagnostics",
+            "EnableGuardianDeityDiagnostics",
+            false,
+            "Enable detailed diagnostics logging for Guardian Deity state transitions and event triggers."
         );
 
         // ========================================

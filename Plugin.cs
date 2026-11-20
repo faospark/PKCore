@@ -17,6 +17,9 @@ public class Plugin : BasePlugin
     public static new ModConfiguration Config;
     public static int MainThreadId { get; private set; }
     public static bool IsMainThread => System.Threading.Thread.CurrentThread.ManagedThreadId == MainThreadId;
+    public static bool HasExternalBattlePatch { get; private set; }
+    public static bool HasExternalButtonPrompts { get; private set; }
+    public static bool HasExternalReplayPlus { get; private set; }
 
     public override void Load()
     {
@@ -28,6 +31,8 @@ public class Plugin : BasePlugin
 
         Config = new ModConfiguration(base.Config);
         Config.Init();
+
+        DetectLegacyStandalonePlugins();
 
         AssetLoader.Initialize();
         GameDetection.Initialize();
@@ -92,7 +97,47 @@ public class Plugin : BasePlugin
         Patches.S2CookOffLoopPatch.Update();
         Patches.S2CookOffScorePatch.Update();
         // Patches.S2WarReplayMenu.Update();
+        if (!HasExternalBattlePatch)
+        {
+            if (Config.EnableCharacterRangeOverrides.Value)
+                Patches.CharacterRangePatch.Update();
+            if (Config.EnableRuneUnbalanceRemoval.Value)
+                Patches.RuneUnbalancePatch.Update();
+            if (Config.EnableUnlimitedCommandRunes.Value)
+                Patches.CommandRuneUnlimitedPatch.Update();
+        }
         AssetLoader.Update();
+    }
+
+    private void DetectLegacyStandalonePlugins()
+    {
+        try
+        {
+            var plugins = IL2CPPChainloader.Instance?.Plugins;
+            if (plugins == null) return;
+
+            if (plugins.ContainsKey("faospark.pkbattlepatch"))
+            {
+                HasExternalBattlePatch = true;
+                Log.LogWarning("[PKCore] Detected legacy standalone 'PKBattlePatch.dll'. PKBattlePatch is now built into PKCore — skipping built-in battle patches to avoid duplicates. Please remove PKBattlePatch.dll from BepInEx/plugins/.");
+            }
+
+            if (plugins.ContainsKey("faospark.pkbuttonprompts"))
+            {
+                HasExternalButtonPrompts = true;
+                Log.LogWarning("[PKCore] Detected legacy standalone 'PKButtonPrompts.dll'. PKButtonPrompts is now built into PKCore — skipping built-in button prompt patch to avoid duplicates. Please remove PKButtonPrompts.dll from BepInEx/plugins/.");
+            }
+
+            if (plugins.ContainsKey("faospark.pkreplayplus"))
+            {
+                HasExternalReplayPlus = true;
+                Log.LogWarning("[PKCore] Detected legacy standalone 'PKReplayPlus.dll'. PKReplayPlus is now built into PKCore — skipping built-in replay/epilogue patches to avoid duplicates. Please remove PKReplayPlus.dll from BepInEx/plugins/.");
+            }
+        }
+        catch (System.Exception ex)
+        {
+            Log.LogWarning($"[PKCore] Could not check for legacy standalone plugins: {ex.Message}");
+        }
     }
 
     public void LateUpdate()
@@ -406,6 +451,98 @@ public class Plugin : BasePlugin
 
         // Suikoden 2 Soft Reset Battle PreRelease NullRef Guard
         harmony.PatchAll(typeof(Patches.S2SoftResetBattleFixPatch));
+
+        // Controller Button Prompt Overrides (reabsorbed from PKButtonPrompts)
+        if (!HasExternalButtonPrompts && Config.EnableButtonPrompts.Value)
+        {
+            if (Config.DetailedLogs.Value)
+                Log.LogInfo($"Applying Controller Prompt patch (type: {Config.ControllerPromptType.Value})...");
+            harmony.PatchAll(typeof(GlobalControllerPromptPatch));
+        }
+
+        // Suikoden 2 Replay, Epilogue & Guardian Blessing Patches (reabsorbed from PKReplayPlus)
+        if (!HasExternalReplayPlus)
+        {
+            harmony.PatchAll(typeof(S2LeonaOnMapInitPrefixPatch));
+            harmony.PatchAll(typeof(S2LeonaSaveMenuInitPrefixPatch));
+            harmony.PatchAll(typeof(S2MinigameOnMapInitPrefixPatch));
+            harmony.PatchAll(typeof(S2MinigameSaveMenuInitPrefixPatch));
+            harmony.PatchAll(typeof(GuardianDeityRepeatRewardsPatch));
+        }
+
+        // Combat, Battle HUD & Balance Patches (reabsorbed from PKBattlePatch)
+        if (!HasExternalBattlePatch)
+        {
+            if (Config.ShowEnemyLevelInBattle.Value || Config.ShowEnemyHpInBattle.Value)
+            {
+                if (Config.DetailedLogs.Value)
+                    Log.LogInfo("Applying Battle Enemy Level & HP patch...");
+                harmony.PatchAll(typeof(BattleEnemyLevelPatch));
+            }
+
+            if (Config.ShowBattleMaxHP.Value)
+            {
+                if (Config.DetailedLogs.Value)
+                    Log.LogInfo("Applying Battle Party Max HP patch...");
+                harmony.PatchAll(typeof(BattlePartyHPPatch));
+            }
+
+            if (Config.LogBattleUnitWindow.Value)
+            {
+                if (Config.DetailedLogs.Value)
+                    Log.LogInfo("Applying Battle Unit Window diagnostics...");
+                harmony.PatchAll(typeof(BattleUnitWindowDiagnostics));
+            }
+
+            if (Config.EnableBattlePositionAdjustments.Value || Config.LogBattlePositions.Value)
+            {
+                if (Config.DetailedLogs.Value)
+                    Log.LogInfo("Applying Battle Position Adjustment patch...");
+                BattlePositionPatch.Initialize(harmony);
+            }
+
+            if (Config.EnableBattleCameraZoom.Value)
+            {
+                if (Config.DetailedLogs.Value)
+                    Log.LogInfo("Applying Battle Camera Zoom patch...");
+                BattleCameraZoomPatch.Initialize(harmony);
+            }
+
+            if (Config.EnableMemoryAutoBattle.Value)
+            {
+                if (Config.DetailedLogs.Value)
+                    Log.LogInfo("Applying Memory Auto-Battle patch...");
+                MemoryAutoBattlePatch.Initialize(harmony);
+            }
+
+            if (Config.EnableSmartHealing.Value)
+            {
+                if (Config.DetailedLogs.Value)
+                    Log.LogInfo("Applying Smart After-Battle Healing patch...");
+                SmartHealingPatch.Initialize(harmony);
+            }
+
+            if (Config.EnableCharacterRangeOverrides.Value)
+            {
+                if (Config.DetailedLogs.Value)
+                    Log.LogInfo("Applying Character Range Override patch...");
+                CharacterRangePatch.Initialize(harmony);
+            }
+
+            if (Config.EnableRuneUnbalanceRemoval.Value)
+            {
+                if (Config.DetailedLogs.Value)
+                    Log.LogInfo("Applying Rune Unbalance Removal patch...");
+                RuneUnbalancePatch.Initialize(harmony);
+            }
+
+            if (Config.EnableUnlimitedCommandRunes.Value)
+            {
+                if (Config.DetailedLogs.Value)
+                    Log.LogInfo("Applying Unlimited Command Runes patch...");
+                CommandRuneUnlimitedPatch.Initialize(harmony);
+            }
+        }
 
         // Suikoden 2 War Battle Replay Sidequest (Archived in forlater/WarBattleReplay)
         // harmony.PatchAll(typeof(Patches.S2WarReplayPatch));

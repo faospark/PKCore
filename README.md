@@ -10,14 +10,13 @@ The **core DLL component** for **[Project Kyaro](https://www.nexusmods.com/suiko
 
 - **Re-Texture & Portrait Framework**: Custom texture injection (`PNG`, `JPG`, `TGA`, `DDS` BC1/BC3/BC7) with manifest/memory caching, high-resolution NPC portraits (S1 & S2), and automatic protagonist/HQ text placeholder replacement.
 - **Visuals & Anti-Aliasing**: Toggleable Project Kyaro HD sprites vs. original pixel sprites, bilinear + 2x anisotropic filtering, selectable SMAA (`Off`, `Low`, `Medium`, `High`), resolution scaling (`0.5x`–`2.0x`), and sprite post-processing removal.
-- **UI & Launcher Enhancements**: PSP-inspired Alternative Launcher with auto language detection and custom BGM, compact 80% dialogue/menu scaling, S1 scaled world map, save-slot party mini portraits, floating borderless window mode, customizable save point crystals, and toggles for world map clouds/sunrays, dialogue masks, `UITips`, and Tir's run animation.
-- **Gameplay & Asset Restorations (S1 & S2)**: Infinite Cook-Off loop, cooldown bypass, and live Cook-Off scoring helper (S2); customizable War Battle stats/abilities via `S2WarAbilities.json` with Apple's formation menu sync (S2); colored intros/flashbacks (S2); Mercenary Fortress bamboo fence (S2); and visual fixes for HQ signage, DOF backgrounds, telescope, and inn doors.
+- **UI & Launcher Enhancements**: PSP-inspired Alternative Launcher with auto language detection and custom BGM, global controller button prompt overrides (`PlayStation`, `DualSense`, `Xbox`, `Switch`, `Custom`, `Generic`), compact 80% dialogue/menu scaling, S1 scaled world map, save-slot party mini portraits, floating borderless window mode, customizable save point crystals, and toggles for world map clouds/sunrays, dialogue masks, `UITips`, and Tir's run animation.
+- **Battle HUD, Combat QoL & Balance (S1 & S2)**: Party Max HP display, enemy level & HP HUD, battle camera FOV zoom-out (S1 & S2), Memory Auto-Battle (S2), Smart After-Battle Healing (S2), battle formation spacing (`default`, `wide`, `widest`, S2), unlimited command runes (S2), rune unbalance removal (S2), and customizable character attack range overrides (S2).
+- **Gameplay, Post-Game & Asset Restorations (S1 & S2)**: Infinite Cook-Off loop, cooldown bypass, and live Cook-Off scoring helper (S2); Final Boss Gauntlet replay with per-boss toggles, Epilogue Leona & Castle Minigames restoration, Clive's Pursuit Quest replay, and Guardian Deity repeatable rewards (S2); customizable War Battle stats/abilities via `S2WarAbilities.json` with Apple's formation menu sync (S2); colored intros/flashbacks (S2); Mercenary Fortress bamboo fence (S2); and visual fixes for HQ signage, DOF backgrounds, telescope, and inn doors.
 - **Diagnostics & Dev Utilities**: Clean `Alt+F4` exit, runtime text/JSON asset dumper (`PKCore/Debug/`), and decompiled symbol/map indexer (`tools/sym.bat`).
 
 ## Companion Plugins (Modularized from PKCore)
 
-- **PKReplayPlus**: Final Boss Gauntlet replay, Epilogue Leona & minigames restoration, Clive's Pursuit Quest replay, and Guardian Deity repeatable rewards.
-- **PKBattlePatch**: Enemy Level/HP HUD, Party Max HP bar, Memory Auto-Battle, after-battle auto-heal, formation spacing, unlimited command runes, rune unbalance removal, and attack range overrides.
 - **PKRuneSagePlus**: Remote Castle Rune Master (`Right Stick Down` / `F7`), early Sajah Village rare shop & rune sage (S2), and S1 Castle Rune Master shop expansion.
 - **PKRecruitmentPatch**: Early Stars of Destiny recruitments, HQ clones, and story-independent Castle HQ upgrades (S2).
 - **PKOpenPaths**: Cave of the Wind auto-solved boulders, Tinto Mines shortcuts, and early Forest Village Armor Shop door (S2).
@@ -25,7 +24,6 @@ The **core DLL component** for **[Project Kyaro](https://www.nexusmods.com/suiko
 - **PKMatildaGlitchRestoration**: Restores the Muse–Matilda border gate push glitch (or opens the border) with HD sprite sync (S2).
 - **PKS2BathNPCPatch**: Cut bath sprite restorations, 8-character capacity, and gender-based tub separation (S2).
 - **PKTenzanPassPatch**: Restores Tenzan Pass Chimera encounters & Cyclone Rune drops (S2).
-- **PKButtonPrompts**: Global PlayStation / DualSense / Xbox / Switch / Custom button prompt overrides.
 - **PKDev**: Dear ImGui telemetry HUD, live event-flag logger, Battle Lab, and crash diagnostics (requires `PKCore`).
 
 > For custom texture setup, `-popupwindow` borderless notes, `PKextended` migration steps, and the full `Documentation/` index, see [TECHNICAL.md](TECHNICAL.md).

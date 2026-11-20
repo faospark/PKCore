@@ -1,8 +1,5 @@
 # Suikoden II Character Battle Ranges Reference & Modding Guide
 
-> [!NOTE]
-> This document provides the master combat range reference and roster breakdown for Suikoden II. In the Project Kyaro modding suite, live weapon/attack range modification (e.g. converting `Kasumi:M, Luc:M, Mazus:M, Viki:M` to Medium range) and party formation spacing adjustments (`wide`, `widest`) are actively powered by the dedicated companion plugin **`PKBattlePatch`** (`faospark.pkbattlepatch.cfg`).
-
 In **Suikoden II**, every combat-capable character usable in regular 6-person party battles is assigned an attack range based on their weapon and combat style. This determines their positioning requirements and valid target rows during combat.
 
 ---
@@ -146,10 +143,10 @@ The following characters are Stars of Destiny or allies who **cannot** be placed
 
 ## ⚙️ PKCore Character Battle Ranges Patch
 
-PKCore includes a dedicated feature for customizing and modifying any character's battle range in **Suikoden II (HD Remaster)** via `PKCore.Patches.CharacterRangePatch`.
+PKBattlePatch includes a dedicated feature for customizing and modifying any character's battle range in **Suikoden II (HD Remaster)** via `PKBattlePatch.Patches.CharacterRangePatch`.
 
 ### 🎯 Default Range Enhancements
-By default, the patch changes 7 key magic and agile combatants from **Short Range (S)** to **Medium Range (M)** so they can attack directly from the back row:
+By default, the patch changes 9 key combatants, mages, and monsters from **Short Range (S)** to **Medium Range (M)** so they can attack directly from the back row:
 * **Kasumi** (`S` ➔ `M`) — Fast ninja wielder who can now strike from the back row without penalty.
 * **Luc** (`S` ➔ `M`) — True Wind Rune mage now able to execute physical staff attacks from the rear row.
 * **Mazus** (`S` ➔ `M`) — High-tier archmage equipped with medium-range staff reach.
@@ -157,12 +154,14 @@ By default, the patch changes 7 key magic and agile combatants from **Short Rang
 * **Gantetsu (Gentetsu)** (`S` ➔ `M`) — Iron prayer beads spiritual monk able to fight from either row.
 * **Badeaux** (`S` ➔ `M`) — Beast whip fighter able to strike and command monsters from the back row.
 * **Sierra Mikain** (`S` ➔ `M`) — Progenitor vampire caster able to attack with darkness energy claws from the rear row.
+* **Freed Y** (`S` ➔ `M`) — South Window officer who can now strike with his broadsword from the rear row alongside his wife Yoshino (M).
+* **Chuchara** (`S` ➔ `M`) — Baby Kraken monster who can now attack from the back row alongside Abizboah and Rulodia.
 
-### 📝 Configuration (`BepInEx/config/faospark.pkcore.cfg`)
-Ranges can be customized at any time directly in your BepInEx config file under `[05 Game : Suikoden 2]` or via BepInEx Configuration Manager:
+### 📝 Configuration (`BepInEx/config/faospark.pkbattlepatch.cfg`)
+Ranges can be customized at any time directly in your BepInEx config file under `[03 Battle Balance]` or via BepInEx Configuration Manager:
 
 ```ini
-[05 Game : Suikoden 2]
+[03 Battle Balance]
 
 ## Enable custom character battle range overrides for Suikoden 2.
 # Setting type: Boolean
@@ -171,8 +170,8 @@ EnableCharacterRangeOverrides = true
 
 ## Comma-separated list of character range overrides in 'Character:Range' format.
 # Setting type: String
-# Default value: Kasumi:M, Luc:M, Mazus:M, Viki:M, Gantetsu:M, Badeaux:M, Sierra:M
-S2CharacterRangeOverrides = Kasumi:M, Luc:M, Mazus:M, Viki:M, Gantetsu:M, Badeaux:M, Sierra:M
+# Default value: Kasumi:M, Luc:M, Mazus:M, Viki:M, Gantetsu:M, Badeaux:M, Sierra:M, Freed Y:M, Chuchara:M
+S2CharacterRangeOverrides = Kasumi:M, Luc:M, Mazus:M, Viki:M, Gantetsu:M, Badeaux:M, Sierra:M, Freed Y:M, Chuchara:M
 ```
 
 * **Valid Range Values**: `S` (Short), `M` (Medium), `L` (Long).
@@ -186,7 +185,7 @@ The patch synchronizes across both engine code and native memory structures:
    * Updates `s_phase.arms_range` (Tablet of Stars / Status menus).
    * Injects into `BootProgram.arms_data`, `G2_SYS.G2_arms_data`, and `game_work.arms_data`.
    * Hooks `UIStatusWindow.UpdateStatusData` to display `"M"` in the character status screen.
-3. **Dual ID Mapping**: Maps both catalog master IDs and active party/battle IDs (e.g. Kasumi: `72/73`, Luc: `53/139`, Mazus: `50/61`, Viki: `4/55`) ensuring consistency across all game states.
+3. **Dual ID Mapping**: Maps both catalog master IDs and active party/battle IDs (e.g. Kasumi: `72/73`, Luc: `53/139`, Mazus: `50/61`, Viki: `4/55`, Freed Y: `35`) ensuring consistency across all game states.
 
 ---
 
@@ -194,11 +193,11 @@ The patch synchronizes across both engine code and native memory structures:
 
 In vanilla Suikoden II, party members in the back row can sometimes visually overlap or obstruct front-row characters due to tight vertical and horizontal coordinate offsets.
 
-PKCore includes `BattlePositionPatch` to adjust character placement:
+PKBattlePatch includes `BattlePositionPatch` to adjust character placement:
 
 ### ⚙️ Configuration
 ```ini
-[05 Game : Suikoden 2]
+[02 Combat QoL]
 
 ## Adjust the 6 character battle positions in Suikoden 2 so back row characters do not block front row characters.
 # Setting type: Boolean

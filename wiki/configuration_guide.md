@@ -33,9 +33,8 @@ This document outlines all available configuration options for **PKCore** locate
 | **PSPLauncher** | `bool` | `false` | Enable the PSP-inspired alternative launcher interface with auto language detection. |
 | **EnhancedGallery** | `bool` | `true` | Replaces Movies, Events, and Sounds gallery backgrounds with custom textures inspired by the PSP release. |
 | **DisableUITips** | `bool` | `false` | Disables the `UITips` bottom-screen controller prompt and UI tip overlay bar. |
-
-> [!NOTE]
-> Controller button prompt glyph overrides (`PlayStation`, `DualSense`, `Xbox`, `Switch`, `Custom`) are managed by the dedicated companion plugin **`PKButtonPrompts`** (`BepInEx/config/faospark.pkbuttonprompts.cfg`).
+| **EnableButtonPrompts** | `bool` | `true` | Enable controller button prompt overrides across the game (reabsorbed from `PKButtonPrompts`). |
+| **ControllerPromptType** | `string` | `PlayStation` | Override controller button prompts across the game (`PlayStation`, `PlayStation 5`, `Xbox`, `Switch`, `Custom`, `Generic`). |
 
 ---
 
@@ -80,17 +79,51 @@ This document outlines all available configuration options for **PKCore** locate
 | **LoopCookOffMatches** | `bool` | `true` | Automatically restart Hai Yo's cook-off battles from Match 1 (Chef Antonio) after defeating Chef Jinkai and viewing the garden celebration, retaining all learned recipes and seasonings. |
 | **ReduceCookOffCooldown** | `bool` | `true` | Bypasses the vanilla 30–60 minute active movement timer between cook-off challenges. |
 | **ShowCookOffScoreHelper** | `bool` | `true` | Displays real-time scoring predictions and optimal menu recommendations on screen during Suikoden 2 cook-off minigame battles. |
+| **LoopCliveQuest** | `bool` | `true` | Automatically resets Clive's pursuit quest back to Lakewest upon entering Lakewest after completing the Sajah Village finale. |
+| **LoopFinalBossGauntlet** | `bool` | `true` | Automatically resets enabled L'Renouille encounters upon entering `vj01` after defeating the final boss. |
+| **ResetGauntletOnNextEntry** | `bool` | `false` | Forces a one-time reset of enabled L'Renouille encounters on next L'Renouille map entry (auto-resets to `false`). |
+| **ReplayHighlandGuards** | `bool` | `false` | Include Highland Soldier guard ambushes and outer gate assault segments when resetting L'Renouille. |
+| **ReplayHanCunningham** | `bool` | `true` | Include the General Han Cunningham 1v1 duel (`vj01`) when resetting L'Renouille. |
+| **ReplayLucia** | `bool` | `true` | Include the Lucia 6v6 boss battle (`vj02`) when resetting L'Renouille. |
+| **ReplaySeedAndCulgan** | `bool` | `true` | Include the Generals Seed & Culgan 6v2 boss battle (`vj07`) when resetting L'Renouille. |
+| **ReplayBeastRune** | `bool` | `true` | Include the Silver Beast Rune final boss battle (`vj08`) when resetting L'Renouille. |
+| **EnableLeonaPostFinalBoss** | `bool` | `true` | Restores Leona and party changing at Dunan Castle Tavern (`vk08`) during the post-final-boss epilogue. |
+| **EnableCastleMinigamesPostFinalBoss** | `bool` | `true` | Restores Dunan Castle minigames (`vk18` Laundry & Gardens) during the post-final-boss epilogue. |
+| **EnableRepeatStatueRewards** | `bool` | `true` | Re-arms the Guardian Deity blessing reward whenever the statue design is rebuilt or altered at Jude's workshop. |
+| **AlwaysKeepStatueAssembled** | `bool` | `true` | Ensures the Guardian Deity statue maintains its assembled 3D model (`parts_no[3] = 1`). |
 
 > [!NOTE]
 > Other Suikoden II gameplay systems are modularized into companion plugins:
-> - **`PKReplayPlus`**: Final Boss Gauntlet replay, Epilogue Leona & minigames restoration, Clive's Pursuit Quest replay, and Guardian Deity repeatable rewards.
-> - **`PKBattlePatch`**: Enemy Level/HP HUD, Party Max HP bar, Memory Auto-Battle, post-battle smart healing, formation spacing (`wide`, `widest`), weapon range overrides, and rune enhancements.
 > - **`PKRuneSagePlus`**: Early Sajah Village rare shop & rune sage.
 > - **`PKRecruitmentPatch`**: Early Stars of Destiny recruitments, HQ clones, and story-independent Castle HQ upgrades.
 > - **`PKOpenPaths`**: Cave of the Wind auto-solved boulders, Tinto Mines shortcuts, and early Forest Village Armor Shop door.
 > - **`PKMatildaGlitchRestoration`**: Restores the Muse–Matilda border gate push glitch (or opens the border) with HD sprite sync.
 > - **`PKS2BathNPCPatch`**: Cut bath sprite restorations, 8-character capacity, and gender-based tub separation.
 > - **`PKTenzanPassPatch`**: Restores Tenzan Pass Chimera encounters & Cyclone Rune drops.
+
+---
+
+## [06 Battle & Combat]
+
+**Battle HUD, Combat QoL & Balance (Reabsorbed from `PKBattlePatch`)**
+
+| Setting | Type | Default | Description |
+| :--- | :---: | :---: | :--- |
+| **ShowBattleMaxHP** | `bool` | `true` | Displays both current and maximum HP (e.g., `587/587`) in the battle party window (S1 & S2). |
+| **ShowEnemyLevelInBattle** | `bool` | `true` | Displays enemy level in the battle target selection window (S1 & S2). |
+| **ShowEnemyHpInBattle** | `bool` | `true` | Displays enemy current and maximum HP on a new line in the battle target selection window (S1 & S2). |
+| **EnableMemoryAutoBattle** | `bool` | `true` | Remembers each character's last manually chosen action (Attack vs. Rune/Magic) and replays it during Auto-Battle (S2). |
+| **EnableSmartHealing** | `bool` | `true` | Automatically revives fallen allies, cures Poison, and heals party wounds after battle using healing items/scrolls (S2). |
+| **EnableBattlePositionAdjustments** | `bool` | `true` | Adjusts the 6 character battle positions so back-row sprites do not obscure front-row characters (S2). |
+| **S2BattlePositionPreset** | `string` | `wide` | Battle formation spacing preset for Suikoden 2 (`default`, `wide`, `widest`). |
+| **EnableBattleCameraZoom** | `bool` | `true` | Zooms out the battle camera for a wider field of view during combat (S1 & S2). |
+| **S1BattleCameraFovPercent** | `float` | `125` | Battle camera zoom-out percentage in Suikoden 1 (`100` = vanilla `-1100.0` distance). |
+| **S2BattleCameraFovPercent** | `float` | `125` | Battle camera zoom-out percentage in Suikoden 2 (`100` = vanilla `15.0` FOV / `1.2` OrthoSize). |
+| **EnableUnlimitedCommandRunes** | `bool` | `true` | Removes 1-use-per-battle lockouts on character command runes (Trick, Groundhog, Spider Slay, Angry Dragon) (S2). |
+| **AlwaysAvailableAngryDragon** | `bool` | `true` | Allows Oulan's Angry Dragon Rune to always be usable without requiring initial damage or losing Fury (S2). |
+| **EnableRuneUnbalanceRemoval** | `bool` | `true` | Disables self-unbalance penalties on physical ability command runes (S2). |
+| **EnableCharacterRangeOverrides** | `bool` | `true` | Enables custom character battle attack range overrides (S2). |
+| **S2CharacterRangeOverrides** | `string` | `Kasumi:M, ...` | Comma-separated `Character:Range` (`S`/`M`/`L`) overrides for Suikoden 2 (includes `Chuchara:M`). |
 
 ---
 
@@ -132,6 +165,9 @@ This document outlines all available configuration options for **PKCore** locate
 | **DetailedLogs** | `bool` | `false` | Enable verbose logging for texture replacements and patch lifecycle events. |
 | **LogReplaceableTextures** | `bool` | `false` | Log all replaceable texture names discovered during gameplay. Independent of `DetailedLogs`. |
 | **EnableTavernDiagnostics** | `bool` | `false` | Enable forensic diagnostic logging for Dunan Castle Tavern (`vk08`) event flags, flag checks, dialogue, and party-change triggers. |
+| **LogBattlePositions** | `bool` | `false` | Log party member coordinates and battle position adjustments on battle start. |
+| **LogBattleUnitWindow** | `bool` | `false` | Log the battle party window layout (HP/MP text elements, max HP visibility, slot hierarchy) once per slot per battle. |
+| **EnableGuardianDeityDiagnostics** | `bool` | `false` | Enable detailed diagnostics logging for Guardian Deity state transitions and event triggers. |
 
 > [!NOTE]
 > Live event-flag telemetry (`LogEventFlagsS1` / `LogEventFlagsS2`), Dear ImGui telemetry HUD, Battle Lab, and crash diagnostics are provided by **`PKDev`** (requires `PKCore`).

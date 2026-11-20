@@ -25,7 +25,7 @@
 
 | 📦 [00-Mods Guide](00-mods_guide) | 🖼️ [Save Slot Party Portraits](#-save-slot-party-member-portraits) | 🧩 [Companion Plugins Suite](#-the-project-kyaro-companion-plugins-suite) |
 | :--- | :--- | :--- |
-| • Mod Packaging<br>• Isolated Folders<br>• Conflict Resolution | • In-Memory Portrait Cache<br>• S1 & S2 Save/Load UI<br>• Zero-Lag Lookups | • PKReplayPlus / PKBattlePatch<br>• PKRuneSagePlus / PKRecruitmentPatch<br>• PKButtonPrompts / PKDev & more |
+| • Mod Packaging<br>• Isolated Folders<br>• Conflict Resolution | • In-Memory Portrait Cache<br>• S1 & S2 Save/Load UI<br>• Zero-Lag Lookups | • PKRuneSagePlus / PKRecruitmentPatch<br>• PKOpenPaths / PKS2BathNPCPatch<br>• PKDev & more |
 
 </div>
 
@@ -62,10 +62,8 @@
 
 ## 🧩 The Project Kyaro Companion Plugins Suite
 
-To keep PKCore focused as the foundational core engine, specialized gameplay and developer systems are modularized into dedicated companion plugins:
+To keep PKCore focused as the foundational core engine, specialized gameplay and developer systems are modularized into dedicated companion plugins *(Note: `PKBattlePatch`, `PKButtonPrompts`, and `PKReplayPlus` have been reabsorbed directly into `PKCore`)*:
 
-* **PKReplayPlus**: Final Boss Gauntlet replay, Epilogue Leona & minigames restoration, Clive's Pursuit Quest replay, and Guardian Deity repeatable rewards.
-* **PKBattlePatch**: Enemy Level/HP HUD, Party Max HP bar, Memory Auto-Battle, after-battle auto-heal, formation spacing (`wide`, `widest`), unlimited command runes, rune unbalance removal, and attack range overrides.
 * **PKRuneSagePlus**: Remote Castle Rune Master (`Right Stick Down` / `F7`), early Sajah Village rare shop & rune sage (S2), and S1 Castle Rune Master shop expansion.
 * **PKRecruitmentPatch**: Early Stars of Destiny recruitments, HQ clones, and story-independent Castle HQ upgrades (S2).
 * **PKOpenPaths**: Cave of the Wind auto-solved boulders, Tinto Mines shortcuts, and early Forest Village Armor Shop door (S2).
@@ -73,7 +71,6 @@ To keep PKCore focused as the foundational core engine, specialized gameplay and
 * **PKMatildaGlitchRestoration**: Restores the Muse–Matilda border gate push glitch (or opens the border) with HD sprite sync (S2).
 * **PKS2BathNPCPatch**: Cut bath sprite restorations, 8-character capacity, and canonical gender-based tub separation (S2).
 * **PKTenzanPassPatch**: Restores omitted Tenzan Pass Chimera encounters & Cyclone Rune drops with crash-prevention bounds checks (S2).
-* **PKButtonPrompts**: Global PlayStation / DualSense / Xbox / Switch / Custom button prompt overrides.
 * **PKDev**: Dear ImGui telemetry HUD, live event-flag logger (`LogEventFlagsS1` / `LogEventFlagsS2`), Battle Lab, and crash diagnostics (requires `PKCore`).
 
 ---
@@ -223,7 +220,7 @@ Explore in-depth documentation pages for every system:
 | 📖 [**00-Mods Guide**](00-mods_guide) | How to build, package, and structure plug-and-play mods. |
 | 🖼️ [**Custom Textures Guide**](custom_textures_guide) | Dumping textures, DDS BC7 compression, naming syntax, and hash bypasses. |
 | 🎭 [**NPC Portrait Walkthrough**](walkthrough_npc_portraits) | Adding portraits to faceless NPCs, variant expressions, DDS BC7 support, and speaker IDs. |
-| 🏹 [**Character Battle Ranges & Formations**](suikoden_2_character_battle_ranges) | Modifying character weapon ranges (S/M/L) and adjusting battle formation spacing (powered by `PKBattlePatch`). |
+| 🏹 [**Character Battle Ranges & Formations**](suikoden_2_character_battle_ranges) | Modifying character weapon ranges (S/M/L) and adjusting battle formation spacing (built into `PKCore`). |
 | ⚔️ [**War Battle Modding Guide**](war_battle_modding) | Customizing Suikoden II tactical units, leader bonuses, special skills, and 14 canonical battles. |
 | 🔊 [**Sound Swapping Guide**](sound_modding_guide) | CriWare ACB/AWB audio swapping and custom BGM/SFX redirection. |
 | ⚡ [**Caching & Performance**](caching_mechanism) | Deep dive into the XML manifest cache, scene unloader, and smart memory. |
@@ -253,11 +250,9 @@ Explore in-depth documentation pages for every system:
 </details>
 
 <details>
-<summary><b>Q: Where did battle formations, Clive's quest replay, remote Rune Master, or event flag logging go?</b></summary>
+<summary><b>Q: Where did remote Rune Master or event flag logging go?</b></summary>
 
-Those systems were modularized out of `PKCore` into dedicated companion plugins so `PKCore` stays focused on the core engine and asset frameworks:
-* **Battle formations, range overrides & HP bars** → `PKBattlePatch`
-* **Clive's Quest replay, Final Boss replay, Epilogue Leona & Guardian Deity** → `PKReplayPlus`
+Some specialized systems remain modularized into dedicated companion plugins *(while `PKBattlePatch`, `PKButtonPrompts`, and `PKReplayPlus` have been reabsorbed directly into `PKCore`)*:
 * **Remote Castle Rune Master (S1) & Sajah Village rare shop (S2)** → `PKRuneSagePlus`
 * **Live Event Flag Logger & ImGui Telemetry HUD** → `PKDev`
 </details>
