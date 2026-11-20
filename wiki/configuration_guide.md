@@ -119,9 +119,9 @@ This document outlines all available configuration options for **PKCore** locate
 | **EnableBattleCameraZoom** | `bool` | `true` | Zooms out the battle camera for a wider field of view during combat (S1 & S2). |
 | **S1BattleCameraFovPercent** | `float` | `125` | Battle camera zoom-out percentage in Suikoden 1 (`100` = vanilla `-1100.0` distance). |
 | **S2BattleCameraFovPercent** | `float` | `125` | Battle camera zoom-out percentage in Suikoden 2 (`100` = vanilla `15.0` FOV / `1.2` OrthoSize). |
-| **EnableUnlimitedCommandRunes** | `bool` | `true` | Removes 1-use-per-battle lockouts on character command runes (Trick, Groundhog, Spider Slay, Angry Dragon) (S2). |
+| **RemoveCommandRuneUseLimit** | `bool` | `true` | Removes the 1-time-per-battle use limit on certain command runes (Trick, Groundhog, Spider Slay, Angry Dragon) (S2). |
 | **AlwaysAvailableAngryDragon** | `bool` | `true` | Allows Oulan's Angry Dragon Rune to always be usable without requiring initial damage or losing Fury (S2). |
-| **EnableRuneUnbalanceRemoval** | `bool` | `true` | Disables self-unbalance penalties on physical ability command runes (S2). |
+| **RemoveCommandRuneSelfUnbalance** | `bool` | `true` | Removes the mandatory self-unbalance penalty on certain physical ability command runes (Swallow, Fire Breath, Mayfly, White Tiger, Blue Drop, Twin Ring, Gozu, Trick) while preserving enemy & Unite attack unbalance (S2). |
 | **EnableCharacterRangeOverrides** | `bool` | `true` | Enables custom character battle attack range overrides (S2). |
 | **S2CharacterRangeOverrides** | `string` | `Kasumi:M, ...` | Comma-separated `Character:Range` (`S`/`M`/`L`) overrides for Suikoden 2 (includes `Chuchara:M`). |
 

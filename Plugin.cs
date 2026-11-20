@@ -101,10 +101,10 @@ public class Plugin : BasePlugin
         {
             if (Config.EnableCharacterRangeOverrides.Value)
                 Patches.CharacterRangePatch.Update();
-            if (Config.EnableRuneUnbalanceRemoval.Value)
-                Patches.RuneUnbalancePatch.Update();
-            if (Config.EnableUnlimitedCommandRunes.Value)
-                Patches.CommandRuneUnlimitedPatch.Update();
+            if (Config.RemoveCommandRuneSelfUnbalance.Value)
+                Patches.CommandRuneSelfUnbalancePatch.Update();
+            if (Config.RemoveCommandRuneUseLimit.Value)
+                Patches.CommandRuneReusePatch.Update();
         }
         AssetLoader.Update();
     }
@@ -162,8 +162,7 @@ public class Plugin : BasePlugin
         // Initialize memory caching system for smart texture cleanup
         if (Config.EnableMemoryCaching.Value)
         {
-            if (Config.DetailedLogs.Value)
-                Log.LogInfo("Initializing Texture Memory Caching System...");
+            Log.LogInfo("Patching TextureMemoryCachePatch...");
             harmony.PatchAll(typeof(TextureMemoryCachePatch));
             TextureMemoryCachePatch.Initialize();
         }
@@ -171,8 +170,7 @@ public class Plugin : BasePlugin
         // Apply Sprite Filtering patch independently
         if (Config.SpriteFilteringEnabled.Value)
         {
-            if (Config.DetailedLogs.Value)
-                Log.LogInfo($"Applying Sprite Filtering patch (Enabled: {Config.SpriteFilteringEnabled.Value})...");
+            Log.LogInfo("Patching SpriteFilteringPatch...");
             harmony.PatchAll(typeof(SpriteFilteringPatch));
             SpriteFilteringPatch.Initialize();
         }
@@ -180,6 +178,7 @@ public class Plugin : BasePlugin
         // Mouse Cursor Visibility (for debugging)
         if (Config.ShowMouseCursor.Value)
         {
+            Log.LogInfo("Patching MouseCursorPatch...");
             MouseCursorPatch.Initialize(true);
             harmony.PatchAll(typeof(MouseCursorPatch));
         }
@@ -187,8 +186,7 @@ public class Plugin : BasePlugin
         // Borderless Window Mode (Strips borders in windowed mode for custom compact sizes)
         if (Config.EnableBorderlessWindow.Value)
         {
-            if (Config.DetailedLogs.Value)
-                Log.LogInfo("Applying BorderlessWindow patches...");
+            Log.LogInfo("Patching BorderlessWindowPatch...");
             harmony.PatchAll(typeof(BorderlessWindowPatch));
             BorderlessWindowPatch.Initialize();
         }
@@ -196,13 +194,9 @@ public class Plugin : BasePlugin
         // Custom Texture Replacement
         if (Config.EnableCustomTextures.Value || Config.LogReplaceableTextures.Value)
         {
-            if (Config.DetailedLogs.Value)
-            {
-                if (Config.EnableCustomTextures.Value)
-                    Log.LogInfo("Applying Custom Texture patch...");
-                else
-                    Log.LogInfo("Applying Custom Texture patch (logging only)...");
-            }
+            Log.LogInfo(Config.EnableCustomTextures.Value
+                ? "Patching CustomTexturePatch..."
+                : "Patching CustomTexturePatch (logging only)...");
 
             harmony.PatchAll(typeof(CustomTexturePatch));
 
@@ -227,10 +221,7 @@ public class Plugin : BasePlugin
             // Log.LogInfo("Applying BGManagerHD.Load patch ...");
             // CustomTexturePatch.BGManagerHD_Load_Patch.Initialize(harmony);
 
-            if (Config.DetailedLogs.Value)
-            {
-                Log.LogInfo("Applying Native Map Texture patch...");
-            }
+            Log.LogInfo("Patching MapTexturePatch...");
             harmony.PatchAll(typeof(MapTexturePatch));
 
 
@@ -241,8 +232,7 @@ public class Plugin : BasePlugin
         // Resolution patch
         if (Config.ResolutionScale.Value != 1.0f)
         {
-            if (Config.DetailedLogs.Value)
-                Log.LogInfo("Applying Resolution patch...");
+            Log.LogInfo($"Patching ResolutionPatch (scale: {Config.ResolutionScale.Value})...");
             harmony.PatchAll(typeof(ResolutionPatch));
             ResolutionPatch.Initialize();
         }
@@ -250,24 +240,21 @@ public class Plugin : BasePlugin
         // Sync Settings UI with PKCore display mode / resolution overrides
         if (Config.ResolutionScale.Value != 1.0f || Config.EnableBorderlessWindow.Value)
         {
-            if (Config.DetailedLogs.Value)
-                Log.LogInfo("Applying DisplaySettingsUi patches...");
+            Log.LogInfo("Patching DisplaySettingsUiPatch...");
             harmony.PatchAll(typeof(Patches.DisplaySettingsUiPatch));
         }
 
         // World Map Effects patch
         if (Config.DisableWorldMapClouds.Value)
         {
-            if (Config.DetailedLogs.Value)
-                Log.LogInfo("Applying WorldMapEffects Patch (Disable Clouds)...");
+            Log.LogInfo("Patching WorldMapEffectsPatch...");
             harmony.PatchAll(typeof(WorldMapEffectsPatch));
         }
 
         // Sprite Post-Processing patch
         if (Config.DisableSpritePostProcessing.Value)
         {
-            if (Config.DetailedLogs.Value)
-                Log.LogInfo("Applying DisableSpritePostProcessing Patch");
+            Log.LogInfo("Patching DisableSpritePostProcessingPatch...");
             harmony.PatchAll(typeof(DisableSpritePostProcessingPatch));
             DisableSpritePostProcessingPatch.Initialize();
         }
@@ -275,8 +262,7 @@ public class Plugin : BasePlugin
         // NPC Portrait Injection
         if (Config.EnablePortraitSystem.Value)
         {
-            if (Config.DetailedLogs.Value)
-                Log.LogInfo("Applying PortraitSystem Patch...");
+            Log.LogInfo("Patching PortraitSystemPatch...");
             harmony.PatchAll(typeof(PortraitSystemPatch));
             PortraitSystemPatch.Initialize();
         }
@@ -284,8 +270,7 @@ public class Plugin : BasePlugin
         // Dialog Text ID interceptor and placeholder replacement (independent of NPC portraits)
         if (Config.EnableDialogOverrides.Value || Config.LogTextIDs.Value || Config.DumpTextDatabase.Value)
         {
-            if (Config.DetailedLogs.Value)
-                Log.LogInfo("Applying TextDatabase patch...");
+            Log.LogInfo("Patching TextDatabasePatch & SaveDataProcessor...");
             harmony.PatchAll(typeof(TextDatabasePatch));
             TextDatabasePatch.Initialize();
 
@@ -294,40 +279,34 @@ public class Plugin : BasePlugin
                 PortraitSystemPatch.LoadDialogOverrides();
 
             // Apply SaveDataProcessor for protagonist/HQ name placeholder replacement
-            if (Config.DetailedLogs.Value)
-                Log.LogInfo("Applying SaveDataProcessor patch...");
             harmony.PatchAll(typeof(SaveDataProcessor));
         }
 
 
         if (Config.EnableCustomTextures.Value)
         {
-            if (Config.DetailedLogs.Value)
-            {
-                Log.LogInfo("Applying Animated Texture patch...");
-            }
+            Log.LogInfo("Patching AnimatedTexturePatch...");
             AnimatedTexturePatch.Initialize();
         }
 
         // Disable CustomPostEffect for colored intro/flashbacks (Suikoden 2)
         if (Config.ColoredIntroAndFlashbacks.Value)
         {
+            Log.LogInfo("Patching ColoredIntroAndFlashbacksPatch...");
             DisableCustomPostEffectPatch.Initialize(harmony);
         }
 
         // Apply Dialog Patch (Dialog Box Scaling)
         if (Config.ScaleDownDialogBox.Value)
         {
-            if (Config.DetailedLogs.Value)
-                Log.LogInfo("Applying DialogBoxScale patch ...");
+            Log.LogInfo("Patching DialogBoxScalePatch...");
             harmony.PatchAll(typeof(DialogBoxScalePatch));
         }
 
         // Apply Suikoden 1 World Map Scale Patch
         if (Config.S1ScaledDownWorldMap.Value)
         {
-            if (Config.DetailedLogs.Value)
-                Log.LogInfo("Applying S1WorldMapScaleUI patch...");
+            Log.LogInfo("Patching S1WorldMapScaleUIPatch...");
             S1WorldMapScaleUIPatch.Initialize();
             harmony.PatchAll(typeof(S1WorldMapScaleUIPatch));
         }
@@ -338,29 +317,25 @@ public class Plugin : BasePlugin
         // Disable UITips (UI_Root/UI_Canvas_Root/UITips)
         if (Config.DisableUITips.Value)
         {
-            if (Config.DetailedLogs.Value)
-                Log.LogInfo("Applying DisableUITips patch...");
+            Log.LogInfo("Patching DisableUITipsPatch...");
             DisableUITipsPatch.Initialize(harmony);
         }
 
         // Language selection detection patch (TitlePanel)
-        if (Config.DetailedLogs.Value)
-            Log.LogInfo("Applying LanguageSelection patch...");
+        Log.LogInfo("Patching LanguageSelectionPatch...");
         harmony.PatchAll(typeof(LanguageSelectionPatch));
 
         // Apply Menu Scale Patch (Menu Scaling)
         if (Config.ScaledDownMenu.Value.Equals("true", System.StringComparison.OrdinalIgnoreCase))
         {
-            if (Config.DetailedLogs.Value)
-                Log.LogInfo($"Applying MenuScale patch (mode: {Config.ScaledDownMenu.Value})...");
+            Log.LogInfo("Patching MenuScalePatch...");
             harmony.PatchAll(typeof(MenuScalePatch));
         }
 
         // Apply SMAA patches
         if (!Config.SMAAQuality.Value.Equals("Off", System.StringComparison.OrdinalIgnoreCase))
         {
-            if (Config.DetailedLogs.Value)
-                Log.LogInfo($"Applying SMAA patch (quality: {Config.SMAAQuality.Value})...");
+            Log.LogInfo($"Patching SMAAPatch (quality: {Config.SMAAQuality.Value})...");
             harmony.PatchAll(typeof(SMAAPatch));
         }
 
@@ -375,25 +350,20 @@ public class Plugin : BasePlugin
             excludedMasks.Add("Face_Mask_01");
         }
 
-        if (Config.DetailedLogs.Value)
-        {
-            Log.LogInfo("Applying Mask Replacement System...");
-        }
+        Log.LogInfo("Patching DisablePortraitDialogMask...");
         DisablePortraitDialogMask.Initialize(excludedMasks);
         harmony.PatchAll(typeof(DisablePortraitDialogMask));
         // Enable DebugMenu2 (Experimental)
         if (Config.EnableDebugMenu2.Value)
         {
-            if (Config.DetailedLogs.Value)
-                Log.LogInfo("Initializing EnableDebugMenu2...");
+            Log.LogInfo("Patching EnableDebugMenu2...");
             EnableDebugMenu2.Initialize();
         }
 
         // Sound File Redirect
         if (Config.EnableSoundRedirect.Value)
         {
-            if (Config.DetailedLogs.Value)
-                Log.LogInfo("Applying Sound Redirect patch...");
+            Log.LogInfo("Patching SoundRedirectPatch...");
             SoundRedirectPatch.Initialize();
             harmony.PatchAll(typeof(SoundRedirectPatch));
         }
@@ -401,8 +371,7 @@ public class Plugin : BasePlugin
         // War Ability Modification (Experimental)
         if (Config.EnableWarAbilityMod.Value)
         {
-            if (Config.DetailedLogs.Value)
-                Log.LogInfo("Initializing War Ability Modification...");
+            Log.LogInfo("Patching WarAbilityPatch...");
             WarAbilityPatch.Initialize(Log);
         }
 
@@ -413,6 +382,7 @@ public class Plugin : BasePlugin
         // Dunan Castle Tavern (vk08) Forensic Diagnostics Tracker (dormant unless enabled in config)
         if (Config.EnableTavernDiagnostics.Value)
         {
+            Log.LogInfo("Patching S2TavernDiagnosticTracker...");
             harmony.PatchAll(typeof(S2TavernMapInitTracker));
             harmony.PatchAll(typeof(S2TavernEventInitTracker));
             harmony.PatchAll(typeof(S2TavernEventFlgCHKTracker));
@@ -432,37 +402,49 @@ public class Plugin : BasePlugin
         CovertMissionPortraitMonitor.Initialize();
 
         // War Room BG Patch
+        Log.LogInfo("Patching WarRoomBGPatch...");
         harmony.PatchAll(typeof(WarRoomBGPatch));
 
 
         // Save Slot Party Portrait Patch
         if (Config.ShowSaveSlotPartyPortraits.Value)
         {
-            if (Config.DetailedLogs.Value)
-                Log.LogInfo("Applying Save Slot Party Portrait patch...");
+            Log.LogInfo("Patching SaveSlotPartyPortraitPatch...");
             harmony.PatchAll(typeof(SaveSlotPartyPortraitPatch));
         }
 
 
         // Suikoden 2 Cook-off battle synchronization & live scoring assistant
+        Log.LogInfo("Patching S2CookOffLoopPatch & S2CookOffScorePatch...");
         harmony.PatchAll(typeof(Patches.S2CookOffLoopPatch.OverlayRbattleInitPatch));
         harmony.PatchAll(typeof(Patches.S2CookOffScorePatch));
         MACHICON_OnMapInitPatch.OnMapChangedEvent += () => Patches.S2CookOffLoopPatch.CheckAndResetCookOffs(MACHICON_OnMapInitPatch.CurrentMapId);
 
         // Suikoden 2 Soft Reset Battle PreRelease NullRef Guard
+        Log.LogInfo("Patching S2SoftResetBattleFixPatch...");
         harmony.PatchAll(typeof(Patches.S2SoftResetBattleFixPatch));
 
         // Controller Button Prompt Overrides (reabsorbed from PKButtonPrompts)
         if (!HasExternalButtonPrompts && Config.EnableButtonPrompts.Value)
         {
-            if (Config.DetailedLogs.Value)
-                Log.LogInfo($"Applying Controller Prompt patch (type: {Config.ControllerPromptType.Value})...");
+            Log.LogInfo($"Patching GlobalControllerPromptPatch (type: {Config.ControllerPromptType.Value})...");
             harmony.PatchAll(typeof(GlobalControllerPromptPatch));
         }
 
         // Suikoden 2 Replay, Epilogue & Guardian Blessing Patches (reabsorbed from PKReplayPlus)
         if (!HasExternalReplayPlus)
         {
+            if (Config.LoopCliveQuest.Value)
+                Log.LogInfo("Patching S2CliveQuestReplayPatch...");
+            if (Config.LoopFinalBossGauntlet.Value || Config.ResetGauntletOnNextEntry.Value)
+                Log.LogInfo("Patching S2FinalBossReplayPatch...");
+            if (Config.EnableLeonaPostFinalBoss.Value)
+                Log.LogInfo("Patching S2EpilogueLeonaPatch...");
+            if (Config.EnableCastleMinigamesPostFinalBoss.Value)
+                Log.LogInfo("Patching S2EpilogueMinigamePatch...");
+            if (Config.EnableRepeatStatueRewards.Value || Config.AlwaysKeepStatueAssembled.Value)
+                Log.LogInfo("Patching GuardianDeityRepeatRewardsPatch...");
+
             harmony.PatchAll(typeof(S2LeonaOnMapInitPrefixPatch));
             harmony.PatchAll(typeof(S2LeonaSaveMenuInitPrefixPatch));
             harmony.PatchAll(typeof(S2MinigameOnMapInitPrefixPatch));
@@ -475,74 +457,71 @@ public class Plugin : BasePlugin
         {
             if (Config.ShowEnemyLevelInBattle.Value || Config.ShowEnemyHpInBattle.Value)
             {
-                if (Config.DetailedLogs.Value)
-                    Log.LogInfo("Applying Battle Enemy Level & HP patch...");
+                Log.LogInfo("Patching BattleEnemyLevelPatch...");
                 harmony.PatchAll(typeof(BattleEnemyLevelPatch));
             }
 
             if (Config.ShowBattleMaxHP.Value)
             {
-                if (Config.DetailedLogs.Value)
-                    Log.LogInfo("Applying Battle Party Max HP patch...");
+                Log.LogInfo("Patching BattlePartyHPPatch...");
                 harmony.PatchAll(typeof(BattlePartyHPPatch));
             }
 
             if (Config.LogBattleUnitWindow.Value)
             {
-                if (Config.DetailedLogs.Value)
-                    Log.LogInfo("Applying Battle Unit Window diagnostics...");
+                Log.LogInfo("Patching BattleUnitWindowDiagnostics...");
                 harmony.PatchAll(typeof(BattleUnitWindowDiagnostics));
             }
 
             if (Config.EnableBattlePositionAdjustments.Value || Config.LogBattlePositions.Value)
             {
-                if (Config.DetailedLogs.Value)
-                    Log.LogInfo("Applying Battle Position Adjustment patch...");
+                Log.LogInfo($"Patching BattlePositionPatch (preset: {Config.S2BattlePositionPreset.Value})...");
                 BattlePositionPatch.Initialize(harmony);
             }
 
             if (Config.EnableBattleCameraZoom.Value)
             {
-                if (Config.DetailedLogs.Value)
-                    Log.LogInfo("Applying Battle Camera Zoom patch...");
+                Log.LogInfo($"Patching BattleCameraZoomPatch (S1: {Config.S1BattleCameraFovPercent.Value}%, S2: {Config.S2BattleCameraFovPercent.Value}%)...");
                 BattleCameraZoomPatch.Initialize(harmony);
             }
 
             if (Config.EnableMemoryAutoBattle.Value)
             {
-                if (Config.DetailedLogs.Value)
-                    Log.LogInfo("Applying Memory Auto-Battle patch...");
+                Log.LogInfo("Patching MemoryAutoBattlePatch...");
                 MemoryAutoBattlePatch.Initialize(harmony);
             }
 
             if (Config.EnableSmartHealing.Value)
             {
-                if (Config.DetailedLogs.Value)
-                    Log.LogInfo("Applying Smart After-Battle Healing patch...");
+                Log.LogInfo("Patching SmartHealingPatch...");
                 SmartHealingPatch.Initialize(harmony);
             }
 
             if (Config.EnableCharacterRangeOverrides.Value)
             {
-                if (Config.DetailedLogs.Value)
-                    Log.LogInfo("Applying Character Range Override patch...");
+                Log.LogInfo("Patching CharacterRangePatch...");
                 CharacterRangePatch.Initialize(harmony);
             }
 
-            if (Config.EnableRuneUnbalanceRemoval.Value)
+            if (Config.RemoveCommandRuneSelfUnbalance.Value)
             {
-                if (Config.DetailedLogs.Value)
-                    Log.LogInfo("Applying Rune Unbalance Removal patch...");
-                RuneUnbalancePatch.Initialize(harmony);
+                Log.LogInfo("Patching CommandRuneSelfUnbalancePatch...");
+                CommandRuneSelfUnbalancePatch.Initialize(harmony);
             }
 
-            if (Config.EnableUnlimitedCommandRunes.Value)
+            if (Config.RemoveCommandRuneUseLimit.Value)
             {
-                if (Config.DetailedLogs.Value)
-                    Log.LogInfo("Applying Unlimited Command Runes patch...");
-                CommandRuneUnlimitedPatch.Initialize(harmony);
+                Log.LogInfo("Patching CommandRuneReusePatch...");
+                CommandRuneReusePatch.Initialize(harmony);
             }
         }
+
+        if (Config.PSPLauncher.Value)
+            Log.LogInfo("Patching PSPLauncherPatch...");
+        if (Config.EnhancedGallery.Value)
+            Log.LogInfo("Patching PSPGalleryEnhanced...");
+
+        Log.LogInfo("Patches applied!");
 
         // Suikoden 2 War Battle Replay Sidequest (Archived in forlater/WarBattleReplay)
         // harmony.PatchAll(typeof(Patches.S2WarReplayPatch));

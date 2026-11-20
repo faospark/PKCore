@@ -78,9 +78,9 @@ public sealed class ModConfiguration
     public ConfigEntry<bool> EnableBattleCameraZoom { get; private set; }
     public ConfigEntry<float> S1BattleCameraFovPercent { get; private set; }
     public ConfigEntry<float> S2BattleCameraFovPercent { get; private set; }
-    public ConfigEntry<bool> EnableUnlimitedCommandRunes { get; private set; }
+    public ConfigEntry<bool> RemoveCommandRuneUseLimit { get; private set; }
     public ConfigEntry<bool> AlwaysAvailableAngryDragon { get; private set; }
-    public ConfigEntry<bool> EnableRuneUnbalanceRemoval { get; private set; }
+    public ConfigEntry<bool> RemoveCommandRuneSelfUnbalance { get; private set; }
     public ConfigEntry<bool> EnableCharacterRangeOverrides { get; private set; }
     public ConfigEntry<string> S2CharacterRangeOverrides { get; private set; }
 
@@ -525,11 +525,11 @@ public sealed class ModConfiguration
             "Battle camera FOV / zoom-out percentage in Suikoden 2 (100 = vanilla 15.0 FOV / 1.2 OrthoSize, 125 = 125% zoomed out at 18.75 FOV / 1.5 OrthoSize)."
         );
 
-        EnableUnlimitedCommandRunes = _config.Bind(
+        RemoveCommandRuneUseLimit = _config.Bind(
             "06 Battle & Combat",
-            "EnableUnlimitedCommandRunes",
+            "RemoveCommandRuneUseLimit",
             true,
-            "Enable reusable command runes in battle without 1-use-per-battle lockouts in Suikoden 2 (Meg Trick Rune, Millie Groundhog Rune, Shin Spider Slay Rune, Oulan Angry Dragon)."
+            "Removes the 1-time-per-battle use limit on certain command runes in Suikoden 2 (Meg Trick Rune, Millie Groundhog Rune, Shin Spider Slay Rune, Oulan Angry Dragon)."
         );
 
         AlwaysAvailableAngryDragon = _config.Bind(
@@ -539,11 +539,11 @@ public sealed class ModConfiguration
             "Allow Oulan Angry Dragon Rune to always be available/usable in battle without requiring initial damage or losing Fury."
         );
 
-        EnableRuneUnbalanceRemoval = _config.Bind(
+        RemoveCommandRuneSelfUnbalance = _config.Bind(
             "06 Battle & Combat",
-            "EnableRuneUnbalanceRemoval",
+            "RemoveCommandRuneSelfUnbalance",
             true,
-            "Disable self-unbalance status penalty when executing physical ability command runes in Suikoden 2 (Swallow, Fire Breath, Mayfly, White Tiger, Blue Drop, Twin Ring, Gozu, Trick)."
+            "Removes the mandatory self-unbalance penalty when using certain physical ability command runes in Suikoden 2 (Swallow, Fire Breath, Mayfly, White Tiger, Blue Drop, Twin Ring, Gozu, Trick), while preserving enemy and Unite attack unbalance."
         );
 
         EnableCharacterRangeOverrides = _config.Bind(

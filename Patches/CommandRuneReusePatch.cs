@@ -10,14 +10,14 @@ using UnityEngine.SceneManagement;
 namespace PKCore.Patches;
 
 /// <summary>
-/// Enables unlimited / reusable command runes in battle for Suikoden 2 (GSD2):
+/// Removes the 1-time-per-battle use limit on certain command runes in battle for Suikoden 2 (GSD2):
 /// - Meg / Gadget: Trick Rune / Gadget Rune (からくりの紋章)
 /// - Millie / Bonaparte: Groundhog Rune (モグラの紋章)
 /// - Shin: Spider Slay Rune (八房の紋章 / 蜘蛛斬り)
 /// - Oulan: Angry Dragon Rune (怒竜の紋章 / 狂竜 / 激怒)
 /// Fully configurable via BepInEx config (faospark.pkcore.cfg).
 /// </summary>
-public static class CommandRuneUnlimitedPatch
+public static class CommandRuneReusePatch
 {
     public static bool IsLoaded { get; private set; }
     private static float _lastSyncTime = 0f;
@@ -31,18 +31,18 @@ public static class CommandRuneUnlimitedPatch
         try
         {
             if (Plugin.Config.DetailedLogs.Value)
-                Plugin.Log.LogInfo("[CommandRuneUnlimitedPatch] Initializing reusable command runes patch for Suikoden 2...");
-            harmony.PatchAll(typeof(CommandRuneUnlimitedPatch));
+                Plugin.Log.LogInfo("[CommandRuneReusePatch] Initializing reusable command runes patch for Suikoden 2...");
+            harmony.PatchAll(typeof(CommandRuneReusePatch));
             SceneManager.sceneLoaded += (UnityEngine.Events.UnityAction<Scene, LoadSceneMode>)OnSceneLoaded;
             IsLoaded = true;
             if (Plugin.Config.DetailedLogs.Value)
-                Plugin.Log.LogInfo("[CommandRuneUnlimitedPatch] Initialized reusable command runes patch successfully.");
+                Plugin.Log.LogInfo("[CommandRuneReusePatch] Initialized reusable command runes patch successfully.");
 
             DumpAndIdentifyRunes();
         }
         catch (Exception ex)
         {
-            Plugin.Log.LogError($"[CommandRuneUnlimitedPatch] Failed to initialize: {ex}");
+            Plugin.Log.LogError($"[CommandRuneReusePatch] Failed to initialize: {ex}");
         }
     }
 
@@ -59,7 +59,7 @@ public static class CommandRuneUnlimitedPatch
 
     public static void Update()
     {
-        if (Plugin.Config != null && !Plugin.Config.EnableUnlimitedCommandRunes.Value)
+        if (Plugin.Config != null && !Plugin.Config.RemoveCommandRuneUseLimit.Value)
             return;
 
         var ovit = GSD2::G2_SYS.Get_ovit_data();
@@ -93,7 +93,7 @@ public static class CommandRuneUnlimitedPatch
 
             CommandRuneIndices.Clear();
             var sb = new StringBuilder();
-            sb.AppendLine("[CommandRuneUnlimitedPatch] === SUIKODEN 2 RUNE DATABASE DUMP ===");
+            sb.AppendLine("[CommandRuneReusePatch] === SUIKODEN 2 RUNE DATABASE DUMP ===");
 
             int count = ovit.embl_data.Length;
             for (int i = 0; i < count; i++)
@@ -147,12 +147,12 @@ public static class CommandRuneUnlimitedPatch
             {
                 _loggedRuneDump = true;
                 if (Plugin.Config.DetailedLogs.Value)
-                    Plugin.Log.LogInfo($"[CommandRuneUnlimitedPatch] Identified {CommandRuneIndices.Count} reusable command rune(s) in Suikoden 2 database.");
+                    Plugin.Log.LogInfo($"[CommandRuneReusePatch] Identified {CommandRuneIndices.Count} reusable command rune(s) in Suikoden 2 database.");
             }
         }
         catch (Exception ex)
         {
-            Plugin.Log.LogWarning($"[CommandRuneUnlimitedPatch] Error dumping runes: {ex.Message}");
+            Plugin.Log.LogWarning($"[CommandRuneReusePatch] Error dumping runes: {ex.Message}");
         }
     }
 
@@ -179,7 +179,7 @@ public static class CommandRuneUnlimitedPatch
                     if (kaisuArray[i] == 0)
                     {
                         kaisuArray[i] = maxCount;
-                        Plugin.Log.LogDebug($"[CommandRuneUnlimitedPatch] Replenished tokusyu_sel_kaisu[{i}] -> {maxCount}");
+                        Plugin.Log.LogDebug($"[CommandRuneReusePatch] Replenished tokusyu_sel_kaisu[{i}] -> {maxCount}");
                     }
                 }
             }
@@ -191,7 +191,7 @@ public static class CommandRuneUnlimitedPatch
                     if (flagArray[i] == 0)
                     {
                         flagArray[i] = 1;
-                        Plugin.Log.LogDebug($"[CommandRuneUnlimitedPatch] Enabled tokusyu_sel_flag[{i}] -> 1");
+                        Plugin.Log.LogDebug($"[CommandRuneReusePatch] Enabled tokusyu_sel_flag[{i}] -> 1");
                     }
                 }
             }
@@ -223,7 +223,7 @@ public static class CommandRuneUnlimitedPatch
                             if (varia.mp[m] == 0)
                             {
                                 varia.mp[m] = 1;
-                                Plugin.Log.LogDebug($"[CommandRuneUnlimitedPatch] Replenished varia.mp[{m}] for character #{c}");
+                                Plugin.Log.LogDebug($"[CommandRuneReusePatch] Replenished varia.mp[{m}] for character #{c}");
                             }
                         }
                     }
@@ -249,15 +249,15 @@ public static class CommandRuneUnlimitedPatch
     public static void BattleManager_GetEmblMagicNum_Postfix(GSD2::BattleManager __instance, int player_no, byte embl_no, ref int __result)
     {
 
-        if (Plugin.Config == null || !Plugin.Config.EnableUnlimitedCommandRunes.Value)
+        if (Plugin.Config == null || !Plugin.Config.RemoveCommandRuneUseLimit.Value)
             return;
 
-        Plugin.Log.LogDebug($"[CommandRuneUnlimitedPatch] GetEmblMagicNum(player:{player_no}, embl:{embl_no}) original result: {__result}");
+        Plugin.Log.LogDebug($"[CommandRuneReusePatch] GetEmblMagicNum(player:{player_no}, embl:{embl_no}) original result: {__result}");
 
         if (__result == 0)
         {
             __result = 1;
-            Plugin.Log.LogDebug($"[CommandRuneUnlimitedPatch] Overrode GetEmblMagicNum(player:{player_no}, embl:{embl_no}) -> 1");
+            Plugin.Log.LogDebug($"[CommandRuneReusePatch] Overrode GetEmblMagicNum(player:{player_no}, embl:{embl_no}) -> 1");
         }
     }
 
@@ -269,7 +269,7 @@ public static class CommandRuneUnlimitedPatch
     public static void BattleManager_make_embl_window_Prefix(GSD2::BattleManager __instance, int player_no)
     {
 
-        Plugin.Log.LogDebug($"[CommandRuneUnlimitedPatch] make_embl_window Prefix - PlayerNo: {player_no}");
+        Plugin.Log.LogDebug($"[CommandRuneReusePatch] make_embl_window Prefix - PlayerNo: {player_no}");
         RefreshCommandRunes();
     }
 
@@ -278,7 +278,7 @@ public static class CommandRuneUnlimitedPatch
     public static void BattleManager_make_embl_window_Postfix(GSD2::BattleManager __instance, int player_no)
     {
 
-        Plugin.Log.LogDebug($"[CommandRuneUnlimitedPatch] make_embl_window Postfix - PlayerNo: {player_no}");
+        Plugin.Log.LogDebug($"[CommandRuneReusePatch] make_embl_window Postfix - PlayerNo: {player_no}");
         RefreshCommandRunes();
     }
 
@@ -290,7 +290,7 @@ public static class CommandRuneUnlimitedPatch
     public static void BattleManager_make_magic_window_Prefix(GSD2::BattleManager __instance, int player_no)
     {
 
-        Plugin.Log.LogDebug($"[CommandRuneUnlimitedPatch] make_magic_window Prefix - PlayerNo: {player_no}");
+        Plugin.Log.LogDebug($"[CommandRuneReusePatch] make_magic_window Prefix - PlayerNo: {player_no}");
         RefreshCommandRunes();
     }
 
@@ -299,7 +299,7 @@ public static class CommandRuneUnlimitedPatch
     public static void BattleManager_make_magic_window_Postfix(GSD2::BattleManager __instance, int player_no)
     {
 
-        Plugin.Log.LogDebug($"[CommandRuneUnlimitedPatch] make_magic_window Postfix - PlayerNo: {player_no}");
+        Plugin.Log.LogDebug($"[CommandRuneReusePatch] make_magic_window Postfix - PlayerNo: {player_no}");
         RefreshCommandRunes();
     }
 
@@ -311,7 +311,7 @@ public static class CommandRuneUnlimitedPatch
     public static void w_battle_SetSelectTokusyuStepInit_Postfix()
     {
 
-        Plugin.Log.LogDebug("[CommandRuneUnlimitedPatch] w_battle.SetSelectTokusyuStepInit Postfix fired.");
+        Plugin.Log.LogDebug("[CommandRuneReusePatch] w_battle.SetSelectTokusyuStepInit Postfix fired.");
         RefreshCommandRunes();
     }
 
@@ -323,7 +323,7 @@ public static class CommandRuneUnlimitedPatch
     public static void w_battle_SelectTokusyuStepInit_Postfix()
     {
 
-        Plugin.Log.LogDebug("[CommandRuneUnlimitedPatch] w_battle.SelectTokusyuStepInit Postfix fired.");
+        Plugin.Log.LogDebug("[CommandRuneReusePatch] w_battle.SelectTokusyuStepInit Postfix fired.");
         RefreshCommandRunes();
     }
 
@@ -335,9 +335,9 @@ public static class CommandRuneUnlimitedPatch
     public static void PM_DATA_SpecialCanCheck_Postfix(GSD2::PM_DATA __instance, ref bool __result)
     {
 
-        if (Plugin.Config != null && Plugin.Config.EnableUnlimitedCommandRunes.Value)
+        if (Plugin.Config != null && Plugin.Config.RemoveCommandRuneUseLimit.Value)
         {
-            Plugin.Log.LogDebug($"[CommandRuneUnlimitedPatch] PM_DATA.SpecialCanCheck for chara_no {__instance?.chara_no} (Original: {__result}) -> forcing True.");
+            Plugin.Log.LogDebug($"[CommandRuneReusePatch] PM_DATA.SpecialCanCheck for chara_no {__instance?.chara_no} (Original: {__result}) -> forcing True.");
             __result = true;
         }
     }
@@ -358,7 +358,7 @@ public static class CommandRuneUnlimitedPatch
         {
             if (__instance.chara_no == 22 || __instance.chara_no == 47)
             {
-                Plugin.Log.LogDebug($"[CommandRuneUnlimitedPatch] PM_DATA.StatusCheck for Oulan Fury (0x20) (Original: {__result}) -> forcing 1.");
+                Plugin.Log.LogDebug($"[CommandRuneReusePatch] PM_DATA.StatusCheck for Oulan Fury (0x20) (Original: {__result}) -> forcing 1.");
                 __result = 1;
             }
         }
@@ -379,7 +379,7 @@ public static class CommandRuneUnlimitedPatch
         {
             if (__instance != null)
             {
-                Plugin.Log.LogDebug("[CommandRuneUnlimitedPatch] BattlePlayerCharacter.CalcIkariEnd: Restoring IkariVal to 100.");
+                Plugin.Log.LogDebug("[CommandRuneReusePatch] BattlePlayerCharacter.CalcIkariEnd: Restoring IkariVal to 100.");
                 __instance.SetIkariVal(100);
             }
         }
@@ -403,7 +403,7 @@ public static class CommandRuneUnlimitedPatch
         // If trying to clear Fury (0x20), strip it out so Fury is retained
         if ((status & 0x20) != 0)
         {
-            Plugin.Log.LogDebug("[CommandRuneUnlimitedPatch] Prevented clearing Fury status bit (0x20) in PlayerStatusClear.");
+            Plugin.Log.LogDebug("[CommandRuneReusePatch] Prevented clearing Fury status bit (0x20) in PlayerStatusClear.");
             status = (ushort)(status & ~0x20);
             if (status == 0)
                 return false;

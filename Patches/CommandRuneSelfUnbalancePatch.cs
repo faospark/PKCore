@@ -13,7 +13,7 @@ namespace PKCore.Patches;
 /// Target runes include: Swallow, Fire Breath, Mayfly, White Tiger, Blue Drop, Twin Ring, Gozu, Trick.
 /// Fully configurable via BepInEx config (faospark.pkbattlepatch.cfg).
 /// </summary>
-public static class RuneUnbalancePatch
+public static class CommandRuneSelfUnbalancePatch
 {
     private static readonly Dictionary<int, ushort> OriginalBotchValues = new();
     private static readonly HashSet<string> TargetRuneKeywords = new(StringComparer.OrdinalIgnoreCase);
@@ -69,25 +69,25 @@ public static class RuneUnbalancePatch
 
             if (Plugin.Config != null)
             {
-                Plugin.Config.EnableRuneUnbalanceRemoval.SettingChanged += (_, _) =>
+                Plugin.Config.RemoveCommandRuneSelfUnbalance.SettingChanged += (_, _) =>
                 {
                     LoadConfiguration();
                     ApplyRuneOverrides();
                 };
             }
 
-            harmony.PatchAll(typeof(RuneUnbalancePatch));
+            harmony.PatchAll(typeof(CommandRuneSelfUnbalancePatch));
 
             SceneManager.sceneLoaded += (UnityEngine.Events.UnityAction<Scene, LoadSceneMode>)OnSceneLoaded;
 
             ApplyRuneOverrides();
 
             if (Plugin.Config.DetailedLogs.Value)
-                Plugin.Log.LogInfo("[RuneUnbalancePatch] Initialized rune unbalance removal system successfully with all runtime hooks.");
+                Plugin.Log.LogInfo("[CommandRuneSelfUnbalancePatch] Initialized rune unbalance removal system successfully with all runtime hooks.");
         }
         catch (Exception ex)
         {
-            Plugin.Log.LogError($"[RuneUnbalancePatch] Failed to initialize: {ex}");
+            Plugin.Log.LogError($"[CommandRuneSelfUnbalancePatch] Failed to initialize: {ex}");
         }
     }
 
@@ -102,7 +102,7 @@ public static class RuneUnbalancePatch
 
     public static void Update()
     {
-        if (Plugin.Config != null && !Plugin.Config.EnableRuneUnbalanceRemoval.Value)
+        if (Plugin.Config != null && !Plugin.Config.RemoveCommandRuneSelfUnbalance.Value)
             return;
 
         var ovit = GSD2::G2_SYS.Get_ovit_data();
@@ -134,17 +134,17 @@ public static class RuneUnbalancePatch
 
             IsLoaded = true;
             if (Plugin.Config.DetailedLogs.Value)
-                Plugin.Log.LogInfo($"[RuneUnbalancePatch] Loaded {TargetRuneIds.Count} target rune IDs and {TargetRuneKeywords.Count} keyword aliases.");
+                Plugin.Log.LogInfo($"[CommandRuneSelfUnbalancePatch] Loaded {TargetRuneIds.Count} target rune IDs and {TargetRuneKeywords.Count} keyword aliases.");
         }
         catch (Exception ex)
         {
-            Plugin.Log.LogError($"[RuneUnbalancePatch] Error loading configuration: {ex}");
+            Plugin.Log.LogError($"[CommandRuneSelfUnbalancePatch] Error loading configuration: {ex}");
         }
     }
 
     public static void ApplyRuneOverrides()
     {
-        bool isEnabled = Plugin.Config == null || Plugin.Config.EnableRuneUnbalanceRemoval.Value;
+        bool isEnabled = Plugin.Config == null || Plugin.Config.RemoveCommandRuneSelfUnbalance.Value;
 
         try
         {
@@ -240,12 +240,12 @@ public static class RuneUnbalancePatch
             {
                 _loggedInitialPatch = true;
                 if (Plugin.Config.DetailedLogs.Value)
-                    Plugin.Log.LogInfo($"[RuneUnbalancePatch] Successfully patched {patchedCount} ability runes to remove unbalance.");
+                    Plugin.Log.LogInfo($"[CommandRuneSelfUnbalancePatch] Successfully patched {patchedCount} ability runes to remove unbalance.");
             }
         }
         catch (Exception ex)
         {
-            Plugin.Log.LogWarning($"[RuneUnbalancePatch] Error during rune unbalance override sync: {ex.Message}");
+            Plugin.Log.LogWarning($"[CommandRuneSelfUnbalancePatch] Error during rune unbalance override sync: {ex.Message}");
         }
     }
 
@@ -315,7 +315,7 @@ public static class RuneUnbalancePatch
         }
         catch (Exception ex)
         {
-            Plugin.Log.LogWarning($"[RuneUnbalancePatch] Error evaluating rune unbalance check: {ex.Message}");
+            Plugin.Log.LogWarning($"[CommandRuneSelfUnbalancePatch] Error evaluating rune unbalance check: {ex.Message}");
         }
 
         return false;
@@ -325,7 +325,7 @@ public static class RuneUnbalancePatch
     [HarmonyPrefix]
     public static bool PM_DATA_StatusSet_Prefix(GSD2::PM_DATA __instance, int status_id)
     {
-        if (Plugin.Config != null && !Plugin.Config.EnableRuneUnbalanceRemoval.Value)
+        if (Plugin.Config != null && !Plugin.Config.RemoveCommandRuneSelfUnbalance.Value)
             return true;
 
         if (status_id == 2 || status_id == GSD2::battle_h.SC_UNVALA)
@@ -340,7 +340,7 @@ public static class RuneUnbalancePatch
                 }
 
                 if (Plugin.Config.DetailedLogs.Value)
-                    Plugin.Log.LogInfo($"[RuneUnbalancePatch] Blocked Unbalance penalty for character #{__instance?.chara_no} (whitelisted rune action).");
+                    Plugin.Log.LogInfo($"[CommandRuneSelfUnbalancePatch] Blocked Unbalance penalty for character #{__instance?.chara_no} (whitelisted rune action).");
                 return false;
             }
         }
@@ -352,7 +352,7 @@ public static class RuneUnbalancePatch
     [HarmonyPrefix]
     public static bool BattlePlayerCharacter_PlayerStatusSet_Prefix(GSD2::BattlePlayerCharacter __instance, ref ushort status)
     {
-        if (Plugin.Config != null && !Plugin.Config.EnableRuneUnbalanceRemoval.Value)
+        if (Plugin.Config != null && !Plugin.Config.RemoveCommandRuneSelfUnbalance.Value)
             return true;
 
         if ((status & 0x02) != 0)
@@ -361,7 +361,7 @@ public static class RuneUnbalancePatch
             {
                 status = (ushort)(status & ~0x02);
                 if (Plugin.Config.DetailedLogs.Value)
-                    Plugin.Log.LogInfo($"[RuneUnbalancePatch] Stripped Unbalance bit (0x02) for player character #{__instance?.chara_no} (whitelisted rune action).");
+                    Plugin.Log.LogInfo($"[CommandRuneSelfUnbalancePatch] Stripped Unbalance bit (0x02) for player character #{__instance?.chara_no} (whitelisted rune action).");
 
                 if (status == 0)
                 {

@@ -8,12 +8,96 @@ The **core DLL component** for **[Project Kyaro](https://www.nexusmods.com/suiko
 
 ## Features
 
-- **Re-Texture & Portrait Framework**: Custom texture injection (`PNG`, `JPG`, `TGA`, `DDS` BC1/BC3/BC7) with manifest/memory caching, high-resolution NPC portraits (S1 & S2), and automatic protagonist/HQ text placeholder replacement.
-- **Visuals & Anti-Aliasing**: Toggleable Project Kyaro HD sprites vs. original pixel sprites, bilinear + 2x anisotropic filtering, selectable SMAA (`Off`, `Low`, `Medium`, `High`), resolution scaling (`0.5x`–`2.0x`), and sprite post-processing removal.
-- **UI & Launcher Enhancements**: PSP-inspired Alternative Launcher with auto language detection and custom BGM, global controller button prompt overrides (`PlayStation`, `DualSense`, `Xbox`, `Switch`, `Custom`, `Generic`), compact 80% dialogue/menu scaling, S1 scaled world map, save-slot party mini portraits, floating borderless window mode, customizable save point crystals, and toggles for world map clouds/sunrays, dialogue masks, `UITips`, and Tir's run animation.
-- **Battle HUD, Combat QoL & Balance (S1 & S2)**: Party Max HP display, enemy level & HP HUD, battle camera FOV zoom-out (S1 & S2), Memory Auto-Battle (S2), Smart After-Battle Healing (S2), battle formation spacing (`default`, `wide`, `widest`, S2), unlimited command runes (S2), rune unbalance removal (S2), and customizable character attack range overrides (S2).
-- **Gameplay, Post-Game & Asset Restorations (S1 & S2)**: Infinite Cook-Off loop, cooldown bypass, and live Cook-Off scoring helper (S2); Final Boss Gauntlet replay with per-boss toggles, Epilogue Leona & Castle Minigames restoration, Clive's Pursuit Quest replay, and Guardian Deity repeatable rewards (S2); customizable War Battle stats/abilities via `S2WarAbilities.json` with Apple's formation menu sync (S2); colored intros/flashbacks (S2); Mercenary Fortress bamboo fence (S2); and visual fixes for HQ signage, DOF backgrounds, telescope, and inn doors.
-- **Diagnostics & Dev Utilities**: Clean `Alt+F4` exit, runtime text/JSON asset dumper (`PKCore/Debug/`), and decompiled symbol/map indexer (`tools/sym.bat`).
+```text
+Features General
+- Retexture Framework (PNG, JPG, TGA, and compressed DDS with BC1/BC3/BC7 support)
+- Comprehensive Portraits Framework
+- Texture Variant Support
+- YOU can create mods on top of this mod as base
+- Sound Swap Feature
+- SpriteAtlas Loose File Interception Framework
+
+Toggleable Options (Change them via "{gameroot}\BepInEx\config\faospark.pkcore.cfg")
+- Upscaled Smooth Sprites AKA Project Kyaro Sprites (can be toggled off)
+- Disable Sprite Post-Processing (Prevents white outlines and sprite seams)
+- Save Slot Party Member Portraits (Suikoden I & II)
+- Show Battle Party Max HP (Suikoden I & II) [New]
+- Show Enemy Level & HP in Battle (Suikoden I & II) [New]
+- Battle Camera FOV / Zoom-Out (Suikoden I & II) [New]
+- Battle Position Adjustments (Suikoden II)
+- Character Battle Range Overrides (Suikoden II)
+- Memory Auto-Battle (Suikoden II) [New]
+- Smart After-Battle Healing (Suikoden II) [New]
+- Remove 1-Time Use Limit on Certain Command Runes (Trick, Groundhog, Spider Slay, Angry Dragon) (Suikoden II) [New]
+- Remove Mandatory Self-Unbalance on Certain Command Runes (Swallow, Fire Breath, Mayfly, White Tiger, Blue Drop, Twin Ring, Gozu, Trick) (Suikoden II) [New]
+- Infinite Cook-Off Match Loop & Cooldown Bypass (Suikoden II) [New]
+- Live Cook-Off Score Helper & Optimal Menu Recommendations (Suikoden II) [New]
+- Clive's Pursuit Quest Replay Loop (Suikoden II) [New]
+- Final Boss Gauntlet Replay with Per-Boss Toggles (Suikoden II) [New]
+- Epilogue Leona & Castle Minigames Restoration (Suikoden II) [New]
+- Guardian Deity Repeatable Rewards & Assembled 3D Statue Fix (Suikoden II) [New]
+- Live Configuration Hot-Reloading
+- Colored Intros and Flashbacks
+- Boosted War Battles with Apple Formation Menu Sync (Suikoden II)
+- Button Controller Prompt Support (now uses native PS4, PS5, Generic, Switch, Xbox, and Custom controllers)
+- Alternative Launcher (based on unused/Beta in-game assets)
+- PSP Launcher (Based on PSP version title screen)
+- Better Launcher BGM
+- Minimal UI
+- Enhanced Gallery UI
+- Classic-style Save Menu UI
+- Disable Dialog Portrait Mask
+- Disable UITips Control Overlay [New]
+- Scaled-Down Menus and Dialog Box
+- Customizable Save Point Crystal Color
+- Disable White Save Point Glow (reduces washed-out look of the crystal)
+- Disable World Map Clouds and Map Sun Rays
+- Scaled-Down Mini-World Map (Suikoden I)
+- Alternative Run Animation for Tir (Project Kyaro Sprites)
+- Restore Bamboo Fence at Mercenary Fortress
+- Anti-Aliasing (SMAA)
+- Sprite Filtering
+
+Performance Features
+- Smart Texture Memory Caching (Keeps RAM usage low)
+- Resolution Scaling (Use when you are playing in lower end machines)
+- Texture Manifest Cache (Only use when you are experiencing slow game boot up)
+- Native DDS Texture Compression (BC1 / BC3 / BC7 for lower VRAM and fast loading)
+
+Baked-In Enhancements
+- Automatic Text Placeholder Replacement (Protagonist & HQ names auto-synced from save files)
+- Active Launcher Language Detection (Auto-detects and tracks in-game language)
+- Retranslated/Reworded Menus
+- Additional NPC Portraits for Both Games (80+ characters now)
+- Additional Dialogs especially on Flashbacks
+- Soft Reset Battle Crash Fix (Suikoden II BATTLE_WORK.PreRelease NullReferenceException guard) [New]
+- Revamped foliage on Magician's Island (Suikoden I)
+- Removed unnecessary Mask on the Last Area on Dragon's Den (Suikoden I)
+- Fixed/Closed open Windows on Baths for Both Games (with custom background support)
+- Added Headquarters signages (Suikoden I)
+- Fixed Backgrounds with poor baked-in Depth of Field effect (Suikoden II)
+- Removed the Harmonian Flag on Matilda Castle
+- Fixed Inconsistent Telescope Graphic at HQ (Suikoden II)
+- Added HQ Signages and Decorations (Suikoden II)
+- Replaced Low-Quality Upscaled Doors in the Inn Area (Suikoden II)
+- War Room Custom Background Support (Suikoden II) [New]
+- Added Portrait for [Cook-Off] Announcer Chen & Covert Mission Portraits (Suikoden II)
+- Calligraphic Font Used for [Cook-Off] Results
+- Suikoden II Summon Effect Texture System
+- Additional fixes and enhancements
+
+Utility
+- Floating Borderless Window Mode (EnableBorderlessWindow) & Fullscreen Borderless via Unity's -popupwindow launch option [Updated]
+- Show Mouse Cursor
+- Clean Exit on ALT+F4
+- Modder & Developer Diagnostics (Text ID logging, TextDB dumping, JSON asset overrides, Battle/Tavern/Guardian Deity diagnostics) [Updated]
+- Static Scene Object Insertion Framework (fixed_objects.json)
+- DebugMenu2 Toggle (Experimental)
+
+Extras (from Nexus Bundle)
+- Restored the Dash in the Letter "Z" via custom font, Must be activated via suikoden fix
+- Alternate CRC Bypass for version 1.0.4
+```
 
 ## Companion Plugins (Modularized from PKCore)
 
