@@ -143,7 +143,7 @@ The following characters are Stars of Destiny or allies who **cannot** be placed
 
 ## ⚙️ PKCore Character Battle Ranges Patch
 
-PKBattlePatch includes a dedicated feature for customizing and modifying any character's battle range in **Suikoden II (HD Remaster)** via `PKBattlePatch.Patches.CharacterRangePatch`.
+PKCore includes a built-in feature for customizing and modifying any character's battle range in **Suikoden II (HD Remaster)** via `PKCore.Patches.CharacterRangePatch`.
 
 ### 🎯 Default Range Enhancements
 By default, the patch changes 9 key combatants, mages, and monsters from **Short Range (S)** to **Medium Range (M)** so they can attack directly from the back row:
@@ -157,11 +157,11 @@ By default, the patch changes 9 key combatants, mages, and monsters from **Short
 * **Freed Y** (`S` ➔ `M`) — South Window officer who can now strike with his broadsword from the rear row alongside his wife Yoshino (M).
 * **Chuchara** (`S` ➔ `M`) — Baby Kraken monster who can now attack from the back row alongside Abizboah and Rulodia.
 
-### 📝 Configuration (`BepInEx/config/faospark.pkbattlepatch.cfg`)
-Ranges can be customized at any time directly in your BepInEx config file under `[03 Battle Balance]` or via BepInEx Configuration Manager:
+### 📝 Configuration (`BepInEx/config/faospark.pkcore.cfg`)
+Ranges can be customized at any time directly in your BepInEx config file under `[06 Battle & Combat]` or live via BepInEx Configuration Manager (supports hot-reloading without restarting):
 
 ```ini
-[03 Battle Balance]
+[06 Battle & Combat]
 
 ## Enable custom character battle range overrides for Suikoden 2.
 # Setting type: Boolean
@@ -193,11 +193,11 @@ The patch synchronizes across both engine code and native memory structures:
 
 In vanilla Suikoden II, party members in the back row can sometimes visually overlap or obstruct front-row characters due to tight vertical and horizontal coordinate offsets.
 
-PKBattlePatch includes `BattlePositionPatch` to adjust character placement:
+PKCore includes `BattlePositionPatch` to adjust character placement:
 
 ### ⚙️ Configuration
 ```ini
-[02 Combat QoL]
+[06 Battle & Combat]
 
 ## Adjust the 6 character battle positions in Suikoden 2 so back row characters do not block front row characters.
 # Setting type: Boolean

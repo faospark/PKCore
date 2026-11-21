@@ -26,7 +26,7 @@ This document outlines all available configuration options for **PKCore** locate
 | **LoadLauncherUITextures** | `bool` | `true` | Load custom launcher UI textures based on unused game assets in `Textures/launcher/`. |
 | **MinimalUI** | `bool` | `true` | Enable minimal UI texture variants. When `false`, custom textures with `minimal` in their path are skipped. |
 | **ClassicSaveWindow** | `bool` | `true` | Restores classic PSX-style Save/Load window layout for a nostalgic presentation in both games. |
-| **ShowSaveSlotPartyPortraits** | `bool` | `true` | Displays mini party member portraits next to character levels (`Txt_Lv`) in save/load slots for both Suikoden I and Suikoden II with 0ms in-memory caching. |
+| **ShowSaveSlotPartyPortraits** | `bool` | `true` | Displays mini party member portraits next to character levels (`Txt_Lv`) in save/load slots for both Suikoden I and Suikoden II, with persistent disk thumbnail caching (`thumb_{portraitId}.dds`/`.png`) and stutter-free scrolling. |
 | **DisablePortraitDialogMask** | `bool` | `false` | Disable the `Face_Mask_01` texture overlay on character portraits in dialog windows. Supports custom DDS/PNG masks. |
 | **ScaleDownDialogBox** | `bool` | `true` | Compact dialog box (`80%` size with adjusted positioning for improved scene visibility). |
 | **ScaledDownMenu** | `string` | `true` | Scaled-down main pause/status menu (`80%` size with adjusted positioning). |
@@ -123,7 +123,7 @@ This document outlines all available configuration options for **PKCore** locate
 | **AlwaysAvailableAngryDragon** | `bool` | `true` | Allows Oulan's Angry Dragon Rune to always be usable without requiring initial damage or losing Fury (S2). |
 | **RemoveCommandRuneSelfUnbalance** | `bool` | `true` | Removes the mandatory self-unbalance penalty on certain physical ability command runes (Swallow, Fire Breath, Mayfly, White Tiger, Blue Drop, Twin Ring, Gozu, Trick) while preserving enemy & Unite attack unbalance (S2). |
 | **EnableCharacterRangeOverrides** | `bool` | `true` | Enables custom character battle attack range overrides (S2). |
-| **S2CharacterRangeOverrides** | `string` | `Kasumi:M, ...` | Comma-separated `Character:Range` (`S`/`M`/`L`) overrides for Suikoden 2 (includes `Chuchara:M`). |
+| **S2CharacterRangeOverrides** | `string` | `Kasumi:M, ...` | Comma-separated `Character:Range` (`S`/`M`/`L`) overrides for Suikoden 2. Default: `Kasumi:M, Luc:M, Mazus:M, Viki:M, Gantetsu:M, Badeaux:M, Sierra:M, Freed Y:M, Chuchara:M`. Supports live hot-reloading. |
 
 ---
 
@@ -145,7 +145,7 @@ This document outlines all available configuration options for **PKCore** locate
 
 | Setting | Type | Default | Description |
 | :--- | :---: | :---: | :--- |
-| **ShowMouseCursor** | `bool` | `false` | Show mouse cursor when hovering over the game window. Useful for debugging with Unity Explorer or accessing overlays. |
+| **ShowMouseCursor** | `bool` | `false` | Show mouse cursor when hovering over the game window (supports live runtime toggling without restart). Useful for debugging with Unity Explorer or accessing overlays. |
 | **EnableBorderlessWindow** | `bool` | `false` | Floating borderless window mode. Strips OS title bars and window frames while remaining windowed, allowing custom smaller resolutions without stretching across the desktop. |
 
 > **Fullscreen Desktop Borderless**: Set Unity's native `-popupwindow` launch parameter in Steam Properties → Launch Options.
