@@ -154,7 +154,9 @@ public static class S2CookOffScorePatch
         BestDessert = CookOffScoreEngine.FindBestDish(CookOffScoreEngine.Course.Dessert, ActiveJudgeTastes, isUnlocked);
 
         // 3. Resolve Current Course & Selected Recipe
-        CurrentCourse = rb_work.ychoice;
+        // rb_work.menu_step tracks the active course (0 = Appetizer, 1 = Main Course, 2 = Dessert).
+        // (rb_work.ychoice is the Yes/No confirmation cursor, not the course index.)
+        CurrentCourse = rb_work.menu_step;
         int courseIdx = Math.Clamp((int)CurrentCourse, 0, 2);
         CookOffScoreEngine.Course activeCourse = (CookOffScoreEngine.Course)courseIdx;
 
