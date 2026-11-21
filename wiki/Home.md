@@ -31,40 +31,21 @@
 
 ---
 
-## ⚡ Key Highlights & Architecture
+## ✨ What PKCore Improves
 
-```
-                                  ┌───────────────────────────────┐
-                                  │      PKCore Architecture      │
-                                  └───────────────┬───────────────┘
-                                                  │
-         ┌─────────────────────────┬──────────────┴─────────────┬─────────────────────────┐
-         ▼                         ▼                            ▼                         ▼
-┌──────────────────┐     ┌──────────────────┐         ┌──────────────────┐      ┌──────────────────┐
-│  High-Perf DDS   │     │  00-Mods Layer   │         │  NPC Portraits   │      │ Battle, Replay & │
-│  & Texture Engine│     │ Overrides & Audio│         │ & Save Portraits │      │ Cook-Off Systems │
-│ (BC1 / BC3 / BC7)│     │ (Top-Priority)   │         │ (S1 & S2 Support)│      │ (S1 & S2 Suite)  │
-└──────────────────┘     └──────────────────┘         └──────────────────┘      └──────────────────┘
-```
-
-* **⚡ Zero-Lag Manifest & Memory Caching**: Scans thousands of texture replacements and caches indices in XML (`texture_manifest.xml`), paired with smart scene-transition memory caching to keep RAM usage low.
-* **🚀 Native GPU DDS Acceleration & SpriteAtlas Interception**: Direct in-place memory replacement using `BC1`, `BC3`, and `BC7` textures (with DX10 header support), plus runtime loose-file interception for packed Unity `SpriteAtlas` assets.
-* **⚔️ Battle & Combat Suite (S1 & S2)**:
-  * **Battle HUD**: Live Party Current/Max HP (`ShowBattleMaxHP`), Enemy Levels (`ShowEnemyLevelInBattle`), and Enemy Current/Max HP (`ShowEnemyHpInBattle`) in target selection across both games.
-  * **Camera & Formations**: Configurable Battle Camera FOV / Zoom-Out (`EnableBattleCameraZoom`, `S1BattleCameraFovPercent`, `S2BattleCameraFovPercent`), S2 6-character formation spacing (`wide` / `widest`), and live-reloadable S2 Character Battle Range Overrides (`S2CharacterRangeOverrides`, including `Freed Y:M` and `Chuchara:M`).
-  * **Combat QoL & Balance (S2)**: **Memory Auto-Battle** (`EnableMemoryAutoBattle`), **Smart After-Battle Auto-Healing** (`EnableSmartHealing`), reusable 1-time Command Runes (`RemoveCommandRuneUseLimit` / `AlwaysAvailableAngryDragon` for Trick, Groundhog, Spider Slay, Angry Dragon), and mandatory self-unbalance removal (`RemoveCommandRuneSelfUnbalance` for Swallow, Fire Breath, Mayfly, White Tiger, Blue Drop, Twin Ring, Gozu, Trick).
-* **🍲 Cook-Off Suite (S2)**: Infinite Cook-Off loop (`LoopCookOffMatches`) restarting from Chef Antonio after defeating Jinkai while preserving all recipes/seasonings (with queue self-healing), instant cooldown bypass (`ReduceCookOffCooldown`), and an on-screen **Live Cook-Off Score Helper** (`ShowCookOffScoreHelper`) modeling all 12 judge taste profiles and 104 dishes with real-time `/20` scoring and optimal course recommendations.
-* **🔁 Replay, Post-Game & Guardian Deity Suite (S2)**:
-  * **Clive's Pursuit Quest Replay** (`LoopCliveQuest`): Automatically resets Clive's questline back to Lakewest after completing the Sajah Village finale.
-  * **Final Boss Gauntlet Replay** (`LoopFinalBossGauntlet`, `ResetGauntletOnNextEntry`): Configurable L'Renouille replay with per-boss toggles (`ReplayHighlandGuards`, `ReplayHanCunningham`, `ReplayLucia`, `ReplaySeedAndCulgan`, `ReplayBeastRune`).
-  * **Epilogue Restorations**: Restores Leona at Dunan Castle Tavern (`EnableLeonaPostFinalBoss`) and Dunan Castle minigames (`EnableCastleMinigamesPostFinalBoss`) during the post-final-boss epilogue.
-  * **Guardian Deity Enhancements**: Re-arms blessing rewards when rebuilding the statue (`EnableRepeatStatueRewards`) and preserves the assembled 3D statue model (`AlwaysKeepStatueAssembled`).
-* **🛡️ Data-Driven War Battles & War Room BG (S2)**: Deep rebalancing of Suikoden II Tactical War Battles via `S2WarAbilities.json`, synchronized live into Apple's Unit Formation & Team Change menu, plus custom War Room background support.
-* **🖼️ Save Slot Party Member Portraits (S1 & S2)**: Renders mini party portraits in save/load slots with persistent disk thumbnail caching (`thumb_{portraitId}.dds`/`.png`), negative lookup caching, and stutter-free menu scrolling.
-* **🎭 Dynamic NPC & Dialogue Portrait Framework**: Inject high-res dialogue portraits for 80+ NPCs and characters with multi-language support, emotion variants (`smile`, `angry`, `sad`, `shock`, `hurt`), cutscene fallbacks, and automatic protagonist/HQ text placeholder replacement.
-* **🎮 Controller Prompts, Visuals & UI Customization**: Built-in controller button prompt overrides (`PlayStation`, `PlayStation 5`, `Xbox`, `Switch`, `Custom`, `Generic`), toggleable Project Kyaro HD sprites vs. original pixel sprites, bilinear + 2x anisotropic filtering, selectable SMAA (`Off`, `Low`, `Medium`, `High`), `ResolutionScale` (`0.5x`–`2.0x`), PSP-inspired Alternative Launcher with auto language detection, compact 80% dialogue/menu scaling, `DisableUITips`, S1 scaled world map, customizable Save Point Crystal colors, colored S2 intros/flashbacks, Mercenary Fortress fence variants, Enhanced Gallery backgrounds, and classic PSX save windows.
-* **🔊 CriWare Sound Swapping**: Drop-in `.acb`/`.awb` sound and music redirection without modifying game archives, including `BetterLauncherBGM`.
-* **🖥️ Stability, Windowing & Diagnostics**: S2 Soft Reset Battle Crash Fix (`BATTLE_WORK.PreRelease` guard), multi-tier zero-latency `GameDetection`, Floating Borderless Window Mode (`EnableBorderlessWindow`), live OS mouse cursor toggle (`ShowMouseCursor`), clean `Alt+F4` exit, static scene object insertion (`fixed_objects.json`), runtime text/JSON asset dumpers (`PKCore/Debug/`), JSON TextAsset overrides (`PKCore/JsonOverrides/`), and clean default logging gated behind `DetailedLogs`.
+* **🎨 Cleaner Visuals & Classic UI Feel**:
+  * Use smooth Project Kyaro HD sprites without white outline seams, or toggle them off anytime to keep vanilla pixel art.
+  * Compact dialog boxes and menus, classic PSX-style save screens with **party member portraits** so you can tell saves apart at a glance, colored Suikoden II intros/flashbacks, cleaner world maps (no distracting clouds or sunrays), custom Save Point crystal colors, and native **PlayStation, Xbox, Switch, or Custom** button prompts.
+* **⚔️ Better, Less Tedious Battles**:
+  * See your party's **Current/Max HP** and **enemy levels & HP** right in battle, zoom the battle camera out for a wider view, and space out Suikoden II formations so back-row characters aren't hidden behind the front row.
+  * Let select short-range characters (such as Kasumi, Luc, Mazus, Viki, Sierra, Freed Y, and Chuchara) attack from the back row, keep your last manual commands during **Auto-Battle**, automatically heal/revive your party after fights, and remove frustrating 1-use limits and mandatory self-unbalance penalties on Command Runes.
+* **🔁 Replayable Quests, Cook-Off & Post-Game (Suikoden II)**:
+  * Keep playing **Hai Yo's Cook-Off** indefinitely without the 30–60 minute cooldown, with an optional on-screen **Score Helper** showing which dishes the current judges prefer.
+  * Replay **Clive's Pursuit Quest** and the **L'Renouille Final Boss Gauntlet** (with per-boss toggles), keep **Leona** and **Dunan Castle minigames** usable during the epilogue, and earn repeatable **Guardian Deity** rewards while keeping the assembled statue visible.
+* **🎭 Extra Polish & Stability**:
+  * **80+ additional NPC portraits** with expressions across both games, boosted **War Battles** synced into Apple's formation menu, custom War Room and bathhouse backgrounds, optional PSP-inspired launcher & gallery visuals, and a fix for the Suikoden II soft-reset battle crash.
+* **📦 Fast Loading & Easy Modding**:
+  * Compressed DDS textures and smart caching keep load times fast and RAM usage low, with floating borderless window support and drop-in `00-Mods/` folders for swapping textures, portraits, dialogue, and music without modifying base game files.
 
 ---
 
