@@ -30,6 +30,7 @@ Toggleable Options (Change them via "{gameroot}\BepInEx\config\faospark.pkcore.c
 - Smart After-Battle Healing (Suikoden II) [New]
 - Remove 1-Time Use Limit on Certain Command Runes (Trick, Groundhog, Spider Slay, Angry Dragon) (Suikoden II) [New]
 - Remove Mandatory Self-Unbalance on Certain Command Runes (Swallow, Fire Breath, Mayfly, White Tiger, Blue Drop, Twin Ring, Gozu, Trick) (Suikoden II) [New]
+- Bright Shield Rune Enhancement (Great Blessing Clay Guardian DEF buff, Shining Light recruit-count bonus damage, Battle Oath Anger + Awakened) (Suikoden II) [New]
 - Infinite Cook-Off Match Loop & Cooldown Bypass (Suikoden II) [New]
 - Live Cook-Off Score Helper & Optimal Menu Recommendations (Suikoden II) [New]
 - Clive's Pursuit Quest Replay Loop (Suikoden II) [New]

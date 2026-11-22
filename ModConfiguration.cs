@@ -83,6 +83,7 @@ public sealed class ModConfiguration
     public ConfigEntry<bool> RemoveCommandRuneSelfUnbalance { get; private set; }
     public ConfigEntry<bool> EnableCharacterRangeOverrides { get; private set; }
     public ConfigEntry<string> S2CharacterRangeOverrides { get; private set; }
+    public ConfigEntry<bool> EnhanceBrightShieldRune { get; private set; }
 
     // Suikoden 2 War Battle Replay Sidequest (Archived in forlater/WarBattleReplay)
     // public ConfigEntry<bool> EnableWarReplaySidequest { get; private set; }
@@ -558,6 +559,13 @@ public sealed class ModConfiguration
             "S2CharacterRangeOverrides",
             "Kasumi:M, Luc:M, Mazus:M, Viki:M, Gantetsu:M, Badeaux:M, Sierra:M, Freed Y:M, Chuchara:M",
             "Comma-separated list of character range overrides for Suikoden 2 in 'Character:Range' format (e.g. 'Kasumi:M, Luc:M, Mazus:M, Viki:M, Gantetsu:M, Badeaux:M, Sierra:M, Freed Y:M, Chuchara:M'). Range values: S (Short), M (Medium), L (Long)."
+        );
+
+        EnhanceBrightShieldRune = _config.Bind(
+            "06 Battle & Combat",
+            "EnhanceBrightShieldRune",
+            true,
+            "Enhances the Suikoden 2 Bright Shield Rune: Great Blessing also applies Clay Guardian (1.5x DEF), Shining Light adds your current recruit count to its damage, and Battle Oath also has a 50% chance to apply Awakened (Magic Boost) alongside Anger."
         );
 
         // Archived in forlater/WarBattleReplay

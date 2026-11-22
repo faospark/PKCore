@@ -28,6 +28,10 @@ All notable changes to PKCore (formerly PKextended) are documented in this file.
   - Streamlined reusable command runes under `RemoveCommandRuneUseLimit` (Trick, Groundhog, Spider Slay, Angry Dragon) and `AlwaysAvailableAngryDragon`.
   - Refined `RemoveCommandRuneSelfUnbalance` to remove mandatory self-unbalance penalties on physical command runes (Swallow, Fire Breath, Mayfly, White Tiger, Blue Drop, Twin Ring, Gozu, Trick) while preserving enemy and Unite attack unbalance.
 - **Character Range Overrides (S2)**: Expanded default Medium-range (`M`) roster to include **Freed Y** and **Chuchara** alongside Kasumi, Luc, Mazus, Viki, Gantetsu, Badeaux, and Sierra (`S2CharacterRangeOverrides`).
+- **Bright Shield Rune Enhancement (S2)**: Added [S2BrightShieldEnhancementPatch.cs](Patches/S2BrightShieldEnhancementPatch.cs) (`EnhanceBrightShieldRune`, enabled by default):
+  - **Great Blessing (Lv1)**: Also applies Clay Guardian (`MS_EARTH_PROTECT_FLG`, 1.5x DEF) to all healed allies.
+  - **Shining Light (Lv2)**: Adds the player's current recruit count directly to computed magic damage.
+  - **Battle Oath (Lv3)**: Adds an independent 50% chance per ally to apply Awakened (`SC_AWAKE`, 3 turns) alongside vanilla's 50% Anger (`SC_ANGRY`) roll, allowing both buffs to coexist.
 
 ### UI, Display & Performance
 - **Save Slot Party Portraits Overhaul & Stutter Elimination (S1 & S2)**:

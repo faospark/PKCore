@@ -514,6 +514,12 @@ public class Plugin : BasePlugin
                 Log.LogInfo("Patching CommandRuneReusePatch...");
                 CommandRuneReusePatch.Initialize(harmony);
             }
+
+            if (Config.EnhanceBrightShieldRune.Value)
+            {
+                Log.LogInfo("Patching S2BrightShieldEnhancementPatch...");
+                S2BrightShieldEnhancementPatch.Initialize(harmony);
+            }
         }
 
         if (Config.PSPLauncher.Value)
