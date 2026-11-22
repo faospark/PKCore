@@ -49,6 +49,7 @@ public static class MACHICON_OnMapInitPatch
             MachiLoader_Load_Patch.LastLoadedEventcon = __instance.econ;
         }
         string machiName = __instance.GetMapName();
+        CurrentSubmapIndex = ParseSubmapIndexFromMachiName(machiName);
         string parsedMapId = ParseMapIdFromMachiName(machiName);
         UpdateCurrentMapId(parsedMapId);
 
@@ -74,29 +75,20 @@ public static class MACHICON_OnMapInitPatch
         }
     }
 
-    public static int CurrentSubmapIndex
+    public static int CurrentSubmapIndex { get; private set; } = 0;
+
+    private static int ParseSubmapIndexFromMachiName(string machiName)
     {
-        get
+        if (!string.IsNullOrEmpty(machiName))
         {
-            if (CurrentMachicon != null)
+            var parts = machiName.Split(' ');
+            foreach (var part in parts)
             {
-                try
-                {
-                    string machiName = CurrentMachicon.GetMapName();
-                    if (!string.IsNullOrEmpty(machiName))
-                    {
-                        var parts = machiName.Split(' ');
-                        foreach (var part in parts)
-                        {
-                            if (part.StartsWith("mno:") && int.TryParse(part.Substring(4), out int mno))
-                                return mno;
-                        }
-                    }
-                }
-                catch { }
+                if (part.StartsWith("mno:") && int.TryParse(part.Substring(4), out int mno))
+                    return mno;
             }
-            return 0;
         }
+        return 0;
     }
 
     public static string ParseMapIdFromMachiName(string machiName)
