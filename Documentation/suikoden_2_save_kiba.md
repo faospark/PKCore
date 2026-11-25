@@ -54,27 +54,22 @@ In vanilla `vb10` (Mercenary Fortress Ruins), Submap 0 `Ev [17]` runs when `even
 - `09 AB 40` — Sets `event_flag[171] |= 0x40` (scene completed).
 - `54 57 21` — `EVENTCON.ECCharaStatus(chara=87, mode=33)`, which calls `G2_SYS.G2_cha_flag(33, 87)` to set Kiba's dead bit (tested by `G2_cha_flag(7, 87)`).
 
-`S2SaveKibaPatch` applies two layers of protection:
+`S2SaveKibaPatch` leaves `vb10` `Ev [17]` `eventCom` bytecode completely untouched (preserving exact `COMMAND_LINE` framing and the post-cutscene warp back to Rockaxe) and intercepts Kiba's death natively:
 
-- **`MACHICON.EventInit` Postfix (`vb10`)**: Scans `mapeventdat[0].eventdat[17].eventCom` and replaces `[0x54, 0x57, 0x21]` in-place with `[0x00, 0x00, 0x00]` (preserving 100% exact bytecode length to avoid parser desync).
-- **`G2_SYS.G2_cha_flag` Prefix**: Blocks any call with `mode == 33 && chano == 87` while the 108-Star condition is active.
+- **`G2_SYS.G2_cha_flag` Prefix (`ChaFlagGuardPatch`)**: Blocks any call with `mode == 33 && chano == 87` while the 108-Star condition is active, returning `0` without setting Kiba's dead bit.
 
 Because Kiba's dead bit is never set, `EventOverlayClass.s_main` (Tablet of Stars), `ending_c.CheckNakama(87)`, `w_unit.war_CheckNakama`, Cook-Off judge selection (`Text ID 3004000178`), and Richmond investigations automatically treat Kiba as alive.
 
-### 2. Restoring Kiba to Dunan Castle HQ (`vk07`, `vk06`, `vk13`)
-
-In vanilla HQ maps, Kiba's spawn scripts check both his dead bit (`18 57 07`) and two story flags:
-
-- `event_flag[47] (0x2F)` bit `0x10` — Set by `vk07` Sub 3 `Ev [38]` when Kiba departs for the Mercenary Fortress.
-- `event_flag[20] (0x14)` bit `0x20` — Checked in `eventForm` as `[23 14 20]` (`vk07`, `vk06`) or `[22 14 20]` (`vk13`).
+### 2. Resting in Dunan Castle HQ Left Bed (`vk07_01` / Submap 3)
 
 Once `event_flag[171] & 0x40` is set (the `vb10` scene has finished) and Kiba is alive with 108 Stars:
 
-- **`MACHICON.OnMapInit` Prefix (`vk*`)**: Clears `event_flag[47] &= ~0x10`.
-- **`MACHICON.EventInit` Postfix**: NOPs the 3-byte post-Matilda hide check in:
-  - `vk07` Sub 3 `Ev [5]` (War Room): `[23 14 20]` -> `[00 00 00]`
-  - `vk06` Sub 1 `Ev [27]` (Residence/Corridor): `[23 14 20]` -> `[00 00 00]`
-  - `vk13` Sub 0 `Ev [6]` & Sub 2 `Ev [1]` (Bathhouse/Terrace): `[22 14 20]` -> `[00 00 00]`
+- **`MACHICON.OnMapInit` Prefix (`vk*`)**: Clears `event_flag[47] &= ~0x10` (Kiba's Matilda departure hide flag).
+- **`MACHICON.EventInit` Postfix (`vk07`, Submap 3)**:
+  - Moves Kiba (`eventobj[8]`, `fpno = 87`) from the War Room `(42, 46)` onto the left bedroom bed at `(20, 33)` (`ano = 0`, `disp = 1`, `pri = 0`), tucked cleanly beneath the native white blanket overlay (`eventobj[19]`, `pri = 480`).
+  - Hides the original sleeping head prop (`eventobj[18]`, `disp = 0`) and flips `Ev [12]` `eventCom` `[0x00, 0x1A]` (`DispOn`) -> `[0x01, 0x1A]` (`DispOff`) so the old head stays hidden while the blanket (`0x1B`) stays visible.
+  - NOPs the post-Matilda hide check `[23 14 20]` -> `[00 00 00]` in `Ev [5]` `eventForm`.
+  - Kiba remains resting in this bed for the remainder of HQ visits (while still deploying as a standalone general unit in War Battle 16).
 
 ### 3. Multi-Language Dialogue & Epilogue Overrides
 

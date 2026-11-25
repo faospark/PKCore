@@ -296,6 +296,13 @@ public class Plugin : BasePlugin
             DisableCustomPostEffectPatch.Initialize(harmony);
         }
 
+        // Suikoden 2 Custom Object Insertion
+        if (Config.EnableS2CustomObjectInsertion.Value)
+        {
+            Log.LogInfo("Patching S2CustomObjectInsertionPatch...");
+            S2CustomObjectInsertionPatch.Initialize(Config.EnableS2CustomObjectInsertion.Value, harmony);
+        }
+
         // Apply Dialog Patch (Dialog Box Scaling)
         if (Config.ScaleDownDialogBox.Value)
         {

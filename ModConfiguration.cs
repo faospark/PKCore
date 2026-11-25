@@ -67,6 +67,7 @@ public sealed class ModConfiguration
     public ConfigEntry<bool> EnableRepeatStatueRewards { get; private set; }
     public ConfigEntry<bool> AlwaysKeepStatueAssembled { get; private set; }
     public ConfigEntry<bool> EnableSaveKiba { get; private set; }
+    public ConfigEntry<bool> EnableS2CustomObjectInsertion { get; private set; }
 
     // Battle HUD, QoL & Balance (reabsorbed from PKBattlePatch)
     public ConfigEntry<bool> ShowBattleMaxHP { get; private set; }
@@ -461,6 +462,13 @@ public sealed class ModConfiguration
             "EnableSaveKiba",
             true,
             "Allows General Kiba to survive the Mercenary Fortress battle in Suikoden 2 when all 108 Stars of Destiny are recruited (Forgiver Sign unlocked), restoring him to Dunan Castle HQ, updating his epilogue card, and deploying him as a standalone general unit in the Conquest of L'Renouille war battle."
+        );
+
+        EnableS2CustomObjectInsertion = _config.Bind(
+            "05 Game : Suikoden 2",
+            "EnableS2CustomObjectInsertion",
+            false,
+            "Enables Suikoden 2 custom graphical object insertion from PKCore/Config/CustomObjectTexture.json."
         );
 
         // 06 Battle & Combat (HUD, QoL & Balance)
