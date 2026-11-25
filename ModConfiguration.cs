@@ -66,6 +66,7 @@ public sealed class ModConfiguration
     public ConfigEntry<bool> EnableCastleMinigamesPostFinalBoss { get; private set; }
     public ConfigEntry<bool> EnableRepeatStatueRewards { get; private set; }
     public ConfigEntry<bool> AlwaysKeepStatueAssembled { get; private set; }
+    public ConfigEntry<bool> EnableSaveKiba { get; private set; }
 
     // Battle HUD, QoL & Balance (reabsorbed from PKBattlePatch)
     public ConfigEntry<bool> ShowBattleMaxHP { get; private set; }
@@ -455,6 +456,13 @@ public sealed class ModConfiguration
             "Ensures the Guardian Deity statue maintains its assembled 3D model (parts_no[3] = 1) instead of reverting to plain stone."
         );
 
+        EnableSaveKiba = _config.Bind(
+            "05 Game : Suikoden 2",
+            "EnableSaveKiba",
+            true,
+            "Allows General Kiba to survive the Mercenary Fortress battle in Suikoden 2 when all 108 Stars of Destiny are recruited (Forgiver Sign unlocked), restoring him to Dunan Castle HQ, updating his epilogue card, and deploying him as a standalone general unit in the Conquest of L'Renouille war battle."
+        );
+
         // 06 Battle & Combat (HUD, QoL & Balance)
         ShowBattleMaxHP = _config.Bind(
             "06 Battle & Combat",
@@ -565,7 +573,7 @@ public sealed class ModConfiguration
             "06 Battle & Combat",
             "EnhanceBrightShieldRune",
             true,
-            "Enhances the Suikoden 2 Bright Shield Rune: Great Blessing also applies Clay Guardian (1.5x DEF), Shining Light adds your current recruit count to its damage, and Battle Oath also has a 50% chance to apply Awakened (Magic Boost) alongside Anger."
+            "Enhances the Suikoden 2 Bright Shield Rune: Great Blessing also applies Clay Guardian (1.5x DEF), Shining Light adds 2x your current recruit count to its damage, and Battle Oath also has a 50% chance to apply Awakened (Magic Boost) alongside Anger."
         );
 
         // Archived in forlater/WarBattleReplay

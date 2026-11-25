@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace PKCore;
 
-[BepInPlugin("faospark.pkcore", "PKCore", "2026.11.09")]
+[BepInPlugin("faospark.pkcore", "PKCore", "2026.11.20")]
 [BepInDependency("d3xMachina.suikoden_fix", BepInDependency.DependencyFlags.SoftDependency)]
 [BepInDependency("faospark.SquidFam", BepInDependency.DependencyFlags.SoftDependency)]
 public class Plugin : BasePlugin
@@ -520,6 +520,12 @@ public class Plugin : BasePlugin
                 Log.LogInfo("Patching S2BrightShieldEnhancementPatch...");
                 S2BrightShieldEnhancementPatch.Initialize(harmony);
             }
+        }
+
+        if (Config.EnableSaveKiba.Value)
+        {
+            Log.LogInfo("Patching S2SaveKibaPatch...");
+            S2SaveKibaPatch.Initialize(harmony);
         }
 
         if (Config.PSPLauncher.Value)

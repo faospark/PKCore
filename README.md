@@ -20,7 +20,7 @@ Features General
 Toggleable Options (Change them via "{gameroot}\BepInEx\config\faospark.pkcore.cfg")
 - Upscaled Smooth Sprites AKA Project Kyaro Sprites (can be toggled off)
 - Disable Sprite Post-Processing (Prevents white outlines and sprite seams)
-- Save Slot Party Member Portraits (Suikoden I & II)
+- Save Slot Party Member Portraits with Disk Thumbnail Caching (Suikoden I & II) [Updated]
 - Show Battle Party Max HP (Suikoden I & II) [New]
 - Show Enemy Level & HP in Battle (Suikoden I & II) [New]
 - Battle Camera FOV / Zoom-Out (Suikoden I & II) [New]
@@ -30,13 +30,14 @@ Toggleable Options (Change them via "{gameroot}\BepInEx\config\faospark.pkcore.c
 - Smart After-Battle Healing (Suikoden II) [New]
 - Remove 1-Time Use Limit on Certain Command Runes (Trick, Groundhog, Spider Slay, Angry Dragon) (Suikoden II) [New]
 - Remove Mandatory Self-Unbalance on Certain Command Runes (Swallow, Fire Breath, Mayfly, White Tiger, Blue Drop, Twin Ring, Gozu, Trick) (Suikoden II) [New]
-- Bright Shield Rune Enhancement (Great Blessing Clay Guardian DEF buff, Shining Light recruit-count bonus damage, Battle Oath Anger + Awakened) (Suikoden II) [New]
+- Bright Shield Rune Enhancement (Great Blessing Clay Guardian DEF buff, Shining Light 2x recruit-count bonus damage, Battle Oath Anger + Awakened) (Suikoden II) [New]
 - Infinite Cook-Off Match Loop & Cooldown Bypass (Suikoden II) [New]
 - Live Cook-Off Score Helper & Optimal Menu Recommendations (Suikoden II) [New]
 - Clive's Pursuit Quest Replay Loop (Suikoden II) [New]
 - Final Boss Gauntlet Replay with Per-Boss Toggles (Suikoden II) [New]
 - Epilogue Leona & Castle Minigames Restoration (Suikoden II) [New]
 - Guardian Deity Repeatable Rewards & Assembled 3D Statue Fix (Suikoden II) [New]
+- Save General Kiba (108 Stars / Forgiver Sign) with HQ Restoration, Custom Epilogue & L'Renouille Standalone War Unit (Suikoden II) [New]
 - Live Configuration Hot-Reloading
 - Colored Intros and Flashbacks
 - Boosted War Battles with Apple Formation Menu Sync (Suikoden II)
@@ -88,11 +89,10 @@ Baked-In Enhancements
 - Additional fixes and enhancements
 
 Utility
-- Floating Borderless Window Mode (EnableBorderlessWindow) & Fullscreen Borderless via Unity's -popupwindow launch option [Updated]
-- Show Mouse Cursor
+- Floating Borderless Window Mode (EnableBorderlessWindow) with In-Game Display Settings UI Sync & Fullscreen Borderless via Unity's -popupwindow launch option [Updated]
+- Show Mouse Cursor (Live Runtime Toggle) [Updated]
 - Clean Exit on ALT+F4
 - Modder & Developer Diagnostics (Text ID logging, TextDB dumping, JSON asset overrides, Battle/Tavern/Guardian Deity diagnostics) [Updated]
-- Static Scene Object Insertion Framework (fixed_objects.json)
 - DebugMenu2 Toggle (Experimental)
 
 Extras (from Nexus Bundle)

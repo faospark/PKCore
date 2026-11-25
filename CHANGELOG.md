@@ -7,7 +7,7 @@ All notable changes to PKCore (formerly PKextended) are documented in this file.
 ## [2026.11.20]
 
 ### Suikoden II Side Quests, Replay & Post-Game (`[05 Game : Suikoden 2]`)
-- **Cook-Off Live Scoring Assistant**: Added a full cook-off scoring engine modeling all 12 judge taste profiles and 104 dishes, displaying a live on-screen rating card (`/20`) and optimal unlocked-recipe recommendations per course during dish selection (`ShowCookOffScoreHelper`).
+- **Cook-Off Live Scoring Assistant**: Added a full cook-off scoring engine modeling all 12 judge taste profiles and 104 dishes, displaying a live on-screen rating card (`/20`) and optimal unlocked-recipe recommendations per course during dish selection (`ShowCookOffScoreHelper`), with accurate course tracking via `menu_step`.
 - **Infinite Cook-Off Loop & Cooldown Removal**:
   - Automatically restarts the 12-chef cook-off circuit after defeating Jinkai while preserving all recipes and seasonings, with automatic queue self-healing to prevent opponent desyncs (`LoopCookOffMatches`).
   - Removes the 30-60 minute active gameplay cooldown between cook-off matches (`ReduceCookOffCooldown`).
@@ -18,19 +18,20 @@ All notable changes to PKCore (formerly PKextended) are documented in this file.
   - Re-enables Dunan Castle minigames (such as Laundry & Gardens) during the epilogue (`EnableCastleMinigamesPostFinalBoss`).
 - **Repeatable Guardian Deity Statue Rewards**: Re-arms the Guardian Deity blessing reward whenever the statue design is rebuilt or altered at Jude's workshop (`EnableRepeatStatueRewards`) and keeps the assembled 3D statue model visible instead of reverting to plain stone (`AlwaysKeepStatueAssembled`).
 - **War Battle Formation Menu Sync**: Synchronized custom `S2WarAbilities.json` character stats and subunit bonuses (`bonusAttack`/`bonusDefense`) directly into Apple's Unit Formation & Team Change menu.
+- **Save General Kiba & L'Renouille War Unit (S2)**: Added [S2SaveKibaPatch.cs](Patches/S2SaveKibaPatch.cs) (`EnableSaveKiba`, enabled by default) — when all 108 Stars of Destiny are recruited (`G2_SYS.Mem108Chk(1) >= 108`, Forgiver Sign unlocked), prevents Kiba's scripted death in Mercenary Fortress Ruins (`vb10` Sub 0 `Ev [17]`, NOPing `[0x54, 0x57, 0x21]` and guarding `G2_cha_flag(33, 87)`), restores him to Dunan Castle HQ (`vk07`, `vk06`, `vk13`), updates his epilogue card (`3001000213`) and post-Rockaxe dialogue (`1009010114`, `1011050014`), and deploys him as a standalone general unit in War Battle 16 (The Conquest of L'Renouille).
 
 ### Battle & Combat (`[06 Battle & Combat]`)
-- **Battle Enemy HP Display (S1 & S2)**: Added live current/max enemy HP beneath enemy names and levels in the battle target selection window (`ShowEnemyHpInBattle`).
-- **Battle Camera Zoom (S1 & S2)**: Added configurable combat camera zoom-out for a wider battlefield view (`EnableBattleCameraZoom`, `S1BattleCameraFovPercent`, `S2BattleCameraFovPercent`).
-- **Memory Auto-Battle (S2)**: Remembers each character's last manually chosen command (Attack vs. Rune/Magic) across battles and replays it during Auto-Battle, automatically falling back to Attack if MP is depleted or the character is silenced (`EnableMemoryAutoBattle`).
-- **Smart After-Battle Auto-Healing (S2)**: Automated post-battle recovery pipeline that revives fallen allies with Sacrificial Jizo, cures Poison with Antitoxin, and heals HP deficits using Medicine, Mega Medicine, and Healing Wind while guarding against overheal waste and protecting permanent stat-boosting stones (`EnableSmartHealing`).
+- **Battle Enemy HP Display & Typography (S1 & S2)**: Added live current/max enemy HP beneath enemy names and levels in the battle target selection window (`ShowEnemyHpInBattle`), and aligned S2 enemy name typography to native `25f` font sizing.
+- **Battle Camera Zoom (S1 & S2)**: Added configurable combat camera zoom-out for a wider battlefield view (`EnableBattleCameraZoom`, `S1BattleCameraFovPercent`, `S2BattleCameraFovPercent`, defaulting to `125%`) with synchronized S2 `GroundCamera`/`FieldFrontCamera` alignment for front-layer status effects.
+- **Memory Auto-Battle (S2)**: Remembers each character's last manually chosen command (Attack, Defend, or Rune/Magic — including Riou, ID `0`) across battles and replays it during Auto-Battle, automatically falling back to Attack if MP is depleted or the character is silenced (`EnableMemoryAutoBattle`).
+- **Smart After-Battle Auto-Healing (S2)**: Automated post-battle recovery pipeline (`EnableSmartHealing`) that revives fallen allies with Sacrificial Jizo, cures Poison with Antitoxin, and heals HP deficits using all 5 healing items (Medicine, Mega Medicine, Kindness Drops, Kindness Rain, Healing Wind) with party-wide group healing priority, strict Party Bag scoping (preserving characters' personal equipped items), bit-masked charge decrementing, and stat-stone protection.
 - **Command Rune Enhancements (S2)**:
   - Streamlined reusable command runes under `RemoveCommandRuneUseLimit` (Trick, Groundhog, Spider Slay, Angry Dragon) and `AlwaysAvailableAngryDragon`.
-  - Refined `RemoveCommandRuneSelfUnbalance` to remove mandatory self-unbalance penalties on physical command runes (Swallow, Fire Breath, Mayfly, White Tiger, Blue Drop, Twin Ring, Gozu, Trick) while preserving enemy and Unite attack unbalance.
+  - Refined `RemoveCommandRuneSelfUnbalance` into a language-independent boolean toggle covering all 8 authentic self-unbalancing physical command runes (Swallow, Fire Breath, Mayfly, White Tiger, Blue Drop, Twin Ring, Gozu, Trick) while preserving enemy and Unite attack unbalance.
 - **Character Range Overrides (S2)**: Expanded default Medium-range (`M`) roster to include **Freed Y** and **Chuchara** alongside Kasumi, Luc, Mazus, Viki, Gantetsu, Badeaux, and Sierra (`S2CharacterRangeOverrides`).
 - **Bright Shield Rune Enhancement (S2)**: Added [S2BrightShieldEnhancementPatch.cs](Patches/S2BrightShieldEnhancementPatch.cs) (`EnhanceBrightShieldRune`, enabled by default):
   - **Great Blessing (Lv1)**: Also applies Clay Guardian (`MS_EARTH_PROTECT_FLG`, 1.5x DEF) to all healed allies.
-  - **Shining Light (Lv2)**: Adds the player's current recruit count directly to computed magic damage.
+  - **Shining Light (Lv2)**: Adds `2x` the player's current recruit count directly to computed magic damage.
   - **Battle Oath (Lv3)**: Adds an independent 50% chance per ally to apply Awakened (`SC_AWAKE`, 3 turns) alongside vanilla's 50% Anger (`SC_ANGRY`) roll, allowing both buffs to coexist.
 
 ### UI, Display & Performance
@@ -38,14 +39,23 @@ All notable changes to PKCore (formerly PKextended) are documented in this file.
   - Added pre-generated persistent disk thumbnail caching (`thumb_{portraitId}.dds`/`.png`) and RAM preservation for instant menu scrolling.
   - Added negative lookup caching for missing portraits and bypassed redundant save-directory scans inside the Save/Load menu, eliminating menu stutter.
   - Fixed blank white-square portraits appearing after soft-resetting or returning to the title screen.
-- **Floating Borderless Window Mode**: Restored true Win32 borderless windowed mode at arbitrary custom resolutions (`EnableBorderlessWindow`).
+- **Disable UI Tips**: Added `DisableUITips` (`DisableUITipsPatch`) to hide `UI_Root/UI_Canvas_Root/UITips` overlay prompts.
+- **Floating Borderless Window Mode & Display Settings UI Sync**: Restored true Win32 borderless windowed mode at arbitrary custom resolutions (`EnableBorderlessWindow`) and added `DisplaySettingsUiPatch` to keep the in-game display settings UI synchronized with borderless/resolution overrides.
 - **Resolution Scaling Simplification**: Removed the redundant `EnableResolutionScaling` toggle; `ResolutionScale` now controls scaling directly (`1.0` = native).
 - **Runtime Mouse Cursor Toggle**: Added live OS cursor visibility toggling without requiring a restart.
 
 ### Stability & Core Engine
 - **Soft Reset Battle Fix (S2)**: Fixed a `NullReferenceException` when soft-resetting during battle.
+- **Submap Index Tracking**: Added `CurrentSubmapIndex` (`mno:`) parsing in `MACHICON_OnMapInitPatch` ([MapTrackingPatch.cs](Patches/MapTrackingPatch.cs)).
 - **Multi-Tier Game Context Detection**: Upgraded `GameDetection` to a 4-tier zero-latency architecture (active scene match, `SceneManager.sceneLoaded` dispatch, native memory validation, and on-demand resolution) to eliminate startup and scene-transition race conditions.
-- **Log Spam Reduction**: Gated routine startup, resolution, sound redirect, texture preload, and monitor logs behind `DetailedLogs` for clean default output.
+- **Log Spam Reduction**: Gated routine startup, battle, resolution, sound redirect, texture preload, and monitor logs behind `DetailedLogs` for clean default output.
+
+### Plugin Consolidation & Companion Migrations
+- **Plugin Realignment Called Off (Re-absorbed Standalone Plugins)**: The planned split into separate standalone plugins has been called off — `PKBattlePatch`, `PKButtonPrompts`, and `PKReplayPlus` have been folded back into `PKCore` for a simpler single-DLL installation. Added automatic legacy plugin detection (`DetectLegacyStandalonePlugins`) that skips built-in patches and logs a warning if any of the old standalone DLLs are still present in `BepInEx/plugins/`.
+- **Controller Button Prompt Overrides (`GlobalControllerPromptPatch`)**: Restored built-in PlayStation/Xbox/Generic button prompt override support (`EnableButtonPrompts`, `ControllerPromptType`).
+- **Removals & Migrations**:
+  - Removed `EncounterNonePatch` (delegated to `Suikoden_Fix`).
+  - Migrated `S1QuickRunePatch` to `PKRuneSagePlus` and `EventFlagLogger` to `PKDev`.
 
 ---
 
