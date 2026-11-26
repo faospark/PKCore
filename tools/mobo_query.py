@@ -19,7 +19,7 @@ import glob
 import argparse
 import fnmatch
 
-DEFAULT_MOBO_DIR = r"D:\Modding\suikodum\Mobobehaviour"
+DEFAULT_MOBO_DIR = r"D:\Modding\suikodum\Mobobehaviour\Suikoden2"
 DEFAULT_TEXT_FILE = r"D:\Modding\suikodum\TextAsset\text_gsd2_en"
 
 # Common EventControll (eventCom) opcode names

@@ -9,8 +9,8 @@ namespace PKCore.Patches;
 /// Enhances the Suikoden II Bright Shield Rune (RUNE #13) spells:
 /// - Lv1 Great Blessing (magi_no = 0x22): Also applies Clay Guardian (MS_EARTH_PROTECT_FLG,
 ///   1.5x DEF — the same buff granted by Meringue Pie) to all healed allies.
-/// - Lv2 Shining Light (magi_no = 0x23): Adds 2x the player's current recruit count directly
-///   to the computed magic damage.
+/// - Lv2 Shining Light (magi_no = 0x23): Multiplies the computed base magic damage by 2,
+///   then adds 2x the player's current recruit count.
 /// - Lv3 Battle Oath (magi_no = 0x24): Independently rolls a 50% chance per ally to also
 ///   apply Awakened / Magic Boost (SC_AWAKE, 3 turns) alongside vanilla's 50% Anger (SC_ANGRY)
 ///   roll, allowing both buffs to coexist on the same character.
@@ -190,14 +190,11 @@ public static class S2BrightShieldEnhancementPatch
                     return;
 
                 int recruits = GetRecruitCount();
-                if (recruits <= 0)
-                    return;
-
                 int original = __result;
                 int bonus = recruits * 2;
-                __result += bonus;
+                __result = (original * 2) + bonus;
 
-                Plugin.Log.LogInfo($"[S2BrightShield] Shining Light (target {mokuhyo}): {original} + ({recruits} recruits * 2 = {bonus}) = {__result}");
+                Plugin.Log.LogInfo($"[S2BrightShield] Shining Light (target {mokuhyo}): ({original} * 2) + ({recruits} recruits * 2 = {bonus}) = {__result}");
             }
             catch (Exception ex)
             {

@@ -581,7 +581,7 @@ public sealed class ModConfiguration
             "06 Battle & Combat",
             "EnhanceBrightShieldRune",
             true,
-            "Enhances the Suikoden 2 Bright Shield Rune: Great Blessing also applies Clay Guardian (1.5x DEF), Shining Light adds 2x your current recruit count to its damage, and Battle Oath also has a 50% chance to apply Awakened (Magic Boost) alongside Anger."
+            "Enhances the Suikoden 2 Bright Shield Rune: Great Blessing also applies Clay Guardian (1.5x DEF), Shining Light doubles base damage and adds 2x your current recruit count, and Battle Oath also has a 50% chance to apply Awakened (Magic Boost) alongside Anger."
         );
 
         // Archived in forlater/WarBattleReplay

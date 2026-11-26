@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using HarmonyLib;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace PKCore.Patches;
 
@@ -340,14 +341,19 @@ public static class S2SaveKibaPatch
                             Plugin.Log.LogInfo("[S2SaveKiba] Reactivated vanilla Kiba in vk07 Submap 3 (4F War Room).");
                     }
                 }
-                else if (mapId.StartsWith("vk06", StringComparison.OrdinalIgnoreCase) && submaps.Count > 1 && submaps[1]?.eventdat != null)
+                else if (mapId.StartsWith("vk06", StringComparison.OrdinalIgnoreCase) && submaps.Count > 1 && submaps[1] != null)
                 {
                     var sub1 = submaps[1];
-                    if (sub1.eventdat.Count > 27 && sub1.eventdat[27]?.eventForm != null)
+                    if (sub1.eventobj != null && sub1.eventobj.Count > 4 && sub1.eventobj[4] != null && sub1.eventobj[4].fpno == KibaCharaId)
                     {
-                        if (ReplaceSequenceInPlace(sub1.eventdat[27].eventForm, 0x23, 0x14, 0x20, 0x00, 0x00, 0x00))
-                            Plugin.Log.LogInfo("[S2SaveKiba] Reactivated vanilla Kiba in vk06 Submap 1 (3F HQ).");
+                        sub1.eventobj[4].disp = 1;
                     }
+                    if (sub1.eventdat != null && sub1.eventdat.Count > 27 && sub1.eventdat[27]?.eventForm != null)
+                    {
+                        ReplaceSequenceInPlace(sub1.eventdat[27].eventForm, 0x23, 0x14, 0x20, 0x00, 0x00, 0x00);
+                        ReplaceSequenceInPlace(sub1.eventdat[27].eventForm, 0x21, 0x00, 0x01, 0x00, 0x00, 0x00);
+                    }
+                    Plugin.Log.LogInfo("[S2SaveKiba] Reactivated Kiba (obj[04] at 98,25) in vk06_01 (3F HQ).");
                 }
             }
             catch (Exception ex)
@@ -694,29 +700,26 @@ public static class S2SaveKibaPatch
 
     // =========================================================================
     // 6. Warm Golden Forgiver Sign Glow on Kiba during vb10_00
-    //    Uses a Quad MeshRenderer + the game's OPDSprite.MaterialType.Add shader
-    //    matching Kiba's GRSpriteRenderer layer, sortingLayer, sortingOrder, and world bounds.
+    //    Projects Kiba's live GRSpriteRenderer world bounds onto a lightweight
+    //    ScreenSpaceOverlay Canvas with dual concentric radial RawImage layers.
     // =========================================================================
     private static bool _isInVb10;
     private static float _vb10GlowStartTime = -1f;
     private static Texture2D _radialGlowTex;
-    private static Mesh _quadMesh;
-    private static GameObject _kibaGlowGo;
-    private static Material _kibaGlowMat;
+    private static GameObject _kibaGlowCanvasGo;
+    private static RawImage _kibaOuterGlow;
+    private static RawImage _kibaInnerGlow;
     private static GRSpriteRenderer _kibaBaseGr;
 
     private static void CleanupVb10Glow()
     {
-        if (_kibaGlowGo != null)
+        if (_kibaGlowCanvasGo != null)
         {
-            UnityEngine.Object.Destroy(_kibaGlowGo);
-            _kibaGlowGo = null;
+            UnityEngine.Object.Destroy(_kibaGlowCanvasGo);
+            _kibaGlowCanvasGo = null;
         }
-        if (_kibaGlowMat != null)
-        {
-            UnityEngine.Object.Destroy(_kibaGlowMat);
-            _kibaGlowMat = null;
-        }
+        _kibaOuterGlow = null;
+        _kibaInnerGlow = null;
         _kibaBaseGr = null;
         _vb10GlowStartTime = -1f;
     }
@@ -740,12 +743,12 @@ public static class S2SaveKibaPatch
                 float dy = (y - half) / half;
                 float dist = Mathf.Sqrt(dx * dx + dy * dy);
                 float falloff = Mathf.Clamp01(1f - dist);
-                // Smooth radiant core + wide soft golden halo
-                float intensity = falloff * falloff * (0.45f + 0.55f * falloff);
-                float r = 1.0f * intensity;
-                float g = Mathf.Lerp(0.75f, 0.96f, falloff) * intensity;
-                float b = Mathf.Lerp(0.20f, 0.72f, falloff * falloff) * intensity;
-                pixels[y * size + x] = new Color(r, g, b, intensity);
+                // Smooth radiant core + soft wide golden halo
+                float alpha = falloff * falloff * (0.35f + 0.65f * falloff);
+                float r = 1.0f;
+                float g = Mathf.Lerp(0.76f, 0.97f, falloff);
+                float b = Mathf.Lerp(0.22f, 0.78f, falloff * falloff);
+                pixels[y * size + x] = new Color(r, g, b, alpha);
             }
         }
 
@@ -756,71 +759,39 @@ public static class S2SaveKibaPatch
         return _radialGlowTex;
     }
 
-    private static Mesh GetOrCreateUnitQuadMesh()
+    private static Camera FindCameraForLayer(int layer)
     {
-        if (_quadMesh != null) return _quadMesh;
+        int mask = 1 << layer;
+        var main = Camera.main;
+        if (main != null && main.isActiveAndEnabled && (main.cullingMask & mask) != 0)
+            return main;
 
-        var mesh = new Mesh();
-        mesh.name = "S2SaveKibaGlowQuad";
-        mesh.vertices = new[]
+        var cams = Camera.allCameras;
+        if (cams != null)
         {
-            new Vector3(-0.5f, -0.5f, 0f),
-            new Vector3( 0.5f, -0.5f, 0f),
-            new Vector3(-0.5f,  0.5f, 0f),
-            new Vector3( 0.5f,  0.5f, 0f)
-        };
-        mesh.uv = new[]
-        {
-            new Vector2(0f, 0f),
-            new Vector2(1f, 0f),
-            new Vector2(0f, 1f),
-            new Vector2(1f, 1f)
-        };
-        mesh.colors = new[]
-        {
-            Color.white,
-            Color.white,
-            Color.white,
-            Color.white
-        };
-        mesh.triangles = new[] { 0, 2, 1, 2, 3, 1 };
-        mesh.RecalculateBounds();
-        mesh.hideFlags = HideFlags.HideAndDontSave;
-        _quadMesh = mesh;
-        return _quadMesh;
-    }
-
-    private static Material CreateGlowMaterial(MeshRenderer fallbackMr)
-    {
-        Material template = null;
-        try
-        {
-            if (OPDSprite.materialList != null)
+            for (int i = 0; i < cams.Length; i++)
             {
-                if (OPDSprite.materialList.ContainsKey(OPDSprite.MaterialType.Add))
-                    template = OPDSprite.materialList[OPDSprite.MaterialType.Add];
-                else if (OPDSprite.materialList.ContainsKey(OPDSprite.MaterialType.HalfAdd))
-                    template = OPDSprite.materialList[OPDSprite.MaterialType.HalfAdd];
+                var c = cams[i];
+                if (c != null && c.isActiveAndEnabled && (c.cullingMask & mask) != 0)
+                    return c;
             }
         }
-        catch { }
+        return main;
+    }
 
-        if (template == null && fallbackMr != null)
-            template = fallbackMr.sharedMaterial;
-
-        if (template == null)
-        {
-            var sh = Shader.Find("Universal Render Pipeline/Unlit") ?? Shader.Find("Sprites/Default");
-            if (sh == null) return null;
-            template = new Material(sh);
-        }
-
-        var mat = new Material(template);
-        var tex = GetOrCreateRadialGlowTexture();
-        if (mat.HasProperty("_MainTex")) mat.SetTexture("_MainTex", tex);
-        if (mat.HasProperty("_BaseMap")) mat.SetTexture("_BaseMap", tex);
-        mat.mainTexture = tex;
-        return mat;
+    private static RawImage CreateGlowRawImage(Transform parent, string name)
+    {
+        var go = new GameObject(name);
+        go.transform.SetParent(parent, false);
+        var img = go.AddComponent<RawImage>();
+        img.texture = GetOrCreateRadialGlowTexture();
+        img.raycastTarget = false;
+        img.color = new Color(1f, 0.92f, 0.55f, 0f);
+        var rt = img.rectTransform;
+        rt.anchorMin = Vector2.zero;
+        rt.anchorMax = Vector2.zero;
+        rt.pivot = new Vector2(0.5f, 0.5f);
+        return img;
     }
 
     [HarmonyPatch(typeof(GSD2::EVENTCON), nameof(GSD2::EVENTCON.EventMain))]
@@ -829,11 +800,15 @@ public static class S2SaveKibaPatch
         [HarmonyPostfix]
         public static void Postfix(GSD2::EVENTCON __instance)
         {
-            if (!_isInVb10 || __instance == null || !IsKibaSavedAndAlive()) return;
+            if (!_isInVb10 || __instance == null || !IsKibaSavedAndAlive())
+            {
+                if (_kibaGlowCanvasGo != null) CleanupVb10Glow();
+                return;
+            }
 
             try
             {
-                if (_kibaGlowGo == null || _kibaBaseGr == null)
+                if (_kibaGlowCanvasGo == null || _kibaBaseGr == null)
                 {
                     var humans = __instance.ehuman;
                     if (humans == null) return;
@@ -869,54 +844,54 @@ public static class S2SaveKibaPatch
                         baseGr = opd.GetComponentInChildren<GRSpriteRenderer>();
                     if (baseGr == null || baseGr._meshRenderer == null) return;
 
-                    var baseMr = baseGr._meshRenderer;
-                    if (baseMr.bounds.size.sqrMagnitude < 0.0001f) return;
+                    var canvasGo = new GameObject("S2SaveKibaGlowCanvas");
+                    var canvas = canvasGo.AddComponent<Canvas>();
+                    canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+                    canvas.sortingOrder = -5;
 
-                    _kibaGlowMat = CreateGlowMaterial(baseMr);
-                    if (_kibaGlowMat == null) return;
-
-                    var go = new GameObject("S2SaveKibaGlow");
-                    go.layer = baseGr.gameObject.layer;
-
-                    var mf = go.AddComponent<MeshFilter>();
-                    mf.sharedMesh = GetOrCreateUnitQuadMesh();
-
-                    var mr = go.AddComponent<MeshRenderer>();
-                    mr.sharedMaterial = _kibaGlowMat;
-                    mr.sortingLayerID = baseMr.sortingLayerID;
-                    mr.sortingOrder = baseMr.sortingOrder + 5;
-                    mr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
-                    mr.receiveShadows = false;
-
+                    _kibaOuterGlow = CreateGlowRawImage(canvasGo.transform, "OuterGlow");
+                    _kibaInnerGlow = CreateGlowRawImage(canvasGo.transform, "InnerGlow");
+                    _kibaGlowCanvasGo = canvasGo;
                     _kibaBaseGr = baseGr;
-                    _kibaGlowGo = go;
                     _vb10GlowStartTime = Time.unscaledTime;
 
                     Plugin.Log.LogInfo(
-                        $"[S2SaveKiba] Created vb10 golden glow on Kiba (bounds={baseMr.bounds.size}, center={baseMr.bounds.center}, layer={go.layer}, order={mr.sortingOrder}, shader={_kibaGlowMat.shader?.name}).");
+                        $"[S2SaveKiba] Created vb10 ScreenSpaceOverlay golden glow on Kiba (layer={baseGr.gameObject.layer}, bounds={baseGr._meshRenderer.bounds.size}).");
                 }
 
-                if (_kibaGlowGo != null && _kibaGlowMat != null && _kibaBaseGr != null && _kibaBaseGr._meshRenderer != null)
+                if (_kibaGlowCanvasGo != null && _kibaOuterGlow != null && _kibaInnerGlow != null && _kibaBaseGr != null && _kibaBaseGr._meshRenderer != null)
                 {
-                    var baseMr = _kibaBaseGr._meshRenderer;
-                    var bounds = baseMr.bounds;
-                    float refSize = Mathf.Max(bounds.size.x, bounds.size.y);
-                    if (refSize < 0.05f) refSize = 1.5f;
+                    var cam = FindCameraForLayer(_kibaBaseGr.gameObject.layer);
+                    if (cam == null) return;
+
+                    var bounds = _kibaBaseGr._meshRenderer.bounds;
+                    Vector3 screenCenter = cam.WorldToScreenPoint(bounds.center);
+                    Vector3 screenTop = cam.WorldToScreenPoint(new Vector3(bounds.center.x, bounds.max.y, bounds.center.z));
+                    Vector3 screenBottom = cam.WorldToScreenPoint(new Vector3(bounds.center.x, bounds.min.y, bounds.center.z));
+
+                    bool visible = _kibaBaseGr.gameObject.activeInHierarchy && screenCenter.z > 0f;
+                    _kibaOuterGlow.enabled = visible;
+                    _kibaInnerGlow.enabled = visible;
+                    if (!visible) return;
+
+                    float pixelHeight = Mathf.Abs(screenTop.y - screenBottom.y);
+                    if (pixelHeight < 16f) pixelHeight = Screen.height * 0.14f;
 
                     float elapsed = Time.unscaledTime - _vb10GlowStartTime;
                     float fadeIn = Mathf.Clamp01(elapsed / 1.5f);
-                    float pulse = 0.85f + 0.15f * Mathf.Sin(elapsed * 3.4f);
+                    float pulse = 0.86f + 0.14f * Mathf.Sin(elapsed * 3.4f);
 
-                    // Keep centered on Kiba's live world bounds, slightly in front along camera Z
-                    _kibaGlowGo.transform.position = new Vector3(bounds.center.x, bounds.center.y, bounds.center.z - 0.05f);
-                    float scale = refSize * 2.4f * (0.95f + 0.12f * pulse);
-                    _kibaGlowGo.transform.localScale = new Vector3(scale, scale, 1f);
+                    Vector2 pos = new Vector2(screenCenter.x, screenCenter.y);
+                    float outerSize = pixelHeight * 2.5f * (0.95f + 0.10f * pulse);
+                    float innerSize = pixelHeight * 1.35f * (0.94f + 0.12f * pulse);
 
-                    float strength = 0.90f * fadeIn * pulse;
-                    var col = new Color(1.0f * strength, 0.88f * strength, 0.42f * strength, strength);
-                    if (_kibaGlowMat.HasProperty("_Color")) _kibaGlowMat.SetColor("_Color", col);
-                    if (_kibaGlowMat.HasProperty("_BaseColor")) _kibaGlowMat.SetColor("_BaseColor", col);
-                    _kibaGlowMat.color = col;
+                    _kibaOuterGlow.rectTransform.anchoredPosition = pos;
+                    _kibaOuterGlow.rectTransform.sizeDelta = new Vector2(outerSize, outerSize);
+                    _kibaOuterGlow.color = new Color(1.0f, 0.86f, 0.38f, 0.62f * fadeIn * pulse);
+
+                    _kibaInnerGlow.rectTransform.anchoredPosition = pos;
+                    _kibaInnerGlow.rectTransform.sizeDelta = new Vector2(innerSize, innerSize);
+                    _kibaInnerGlow.color = new Color(1.0f, 0.97f, 0.78f, 0.48f * fadeIn * pulse);
                 }
             }
             catch (Exception ex)
