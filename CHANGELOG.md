@@ -4,9 +4,14 @@ All notable changes to PKCore (formerly PKextended) are documented in this file.
 
 ---
 
-## [Unreleased] (2026.11.27)
+## [2026.11.27]
 
-### Suikoden II Cook-Off Fixes (`[05 Game : Suikoden 2]`)
+### Suikoden II Cook-Off Fixes & Scoring Accuracy (`[05 Game : Suikoden 2]`)
+- **Cook-Off Scoring Engine Accuracy ([CookOffScoreEngine.cs](Patches/CookOffScoreEngine.cs), [S2CookOffScorePatch.cs](Patches/S2CookOffScorePatch.cs))**:
+  - Verified all 240 dishes × 12 tastes against native `rb_dat.hyoka_table` and fixed 2 matrix mismatches (`Sunomono` Chinese score `2` -> `1`; `Flaming Sea` full row `[3,2,5,3,3,3,3,2,3,5,1,3]`).
+  - Updated `GetJudgeTaste()` to read native `rb_dat.favorite[examIdx].table` first (matching `Overlay_rbattle.CalcPoints`), falling back to `CharacterTastes` only if unavailable.
+  - Added the native `0.5x` (`pts /= 2`) off-course penalty to `CalculateDishScore()` when evaluating fallback dishes outside the active course.
+  - Added `IsSpecialGamble` tracking for all 18 `food_kind_table == 4` gamble dishes, marking them with `!` in the recipe menu (e.g. `[14:Pepper!]`).
 - **Menu Board Cooldown Mode (`ReduceCookOffCooldown`)**: Converted `ReduceCookOffCooldown` in [ModConfiguration.cs](ModConfiguration.cs) from a boolean to `CookOffCooldownMode` (`Off`, `Instant`, `MenuBoard`), defaulting to `MenuBoard`.
   - In `MenuBoard` mode, interacting with the **"Today's Special"** menu board in Hai Yo's restaurant (`vk06_01`, text IDs `1664` / `1666` via [TextDatabasePatch.cs](Patches/TextDatabasePatch.cs)) primes the next cook-off match on demand (`ApplyCooldownReduction()`), instead of automatically priming on every room transition (`Instant`).
 - **Tetsu Bathhouse Flag Fix & Save Self-Healing ([S2CookOffLoopPatch.cs](Patches/S2CookOffLoopPatch.cs))**:
