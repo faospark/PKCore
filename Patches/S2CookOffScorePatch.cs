@@ -201,7 +201,7 @@ public static class S2CookOffScorePatch
         HighlightedDish = CookOffScoreEngine.FindDish(selectedRecipeNum, activeCourse, currentSpice);
         if (HighlightedDish != null)
         {
-            HighlightedScore = CookOffScoreEngine.CalculateDishScore(HighlightedDish, ActiveJudgeTastes, HighlightedJudgeScores);
+            HighlightedScore = CookOffScoreEngine.CalculateDishScore(HighlightedDish, ActiveJudgeTastes, HighlightedJudgeScores, activeCourse);
         }
         else
         {
@@ -341,6 +341,7 @@ public static class S2CookOffScorePatch
             int bestScore = -1;
             string bestSpice = "no spice";
             CookOffScoreEngine.Course dishCourse = activeCourse;
+            bool isGamble = false;
             int[] tempScores = new int[4];
 
             // 1. First priority: look for dishes matching the ACTIVE course being chosen
@@ -356,22 +357,25 @@ public static class S2CookOffScorePatch
                     bestScore = s;
                     bestSpice = dish.Spice;
                     dishCourse = dish.Course;
+                    isGamble = dish.IsSpecialGamble;
                 }
             }
 
             // 2. If this recipe has NO dishes for the active course, fall back to other courses
+            //    with the native 0.5x course-mismatch penalty applied
             if (!hasActiveCourseDish)
             {
                 foreach (var dish in CookOffScoreEngine.AllDishes)
                 {
                     if (dish.RecipeNumber != recipeNum) continue;
 
-                    int s = CookOffScoreEngine.CalculateDishScore(dish, ActiveJudgeTastes, tempScores);
+                    int s = CookOffScoreEngine.CalculateDishScore(dish, ActiveJudgeTastes, tempScores, activeCourse);
                     if (s > bestScore)
                     {
                         bestScore = s;
                         bestSpice = dish.Spice;
                         dishCourse = dish.Course;
+                        isGamble = dish.IsSpecialGamble;
                     }
                 }
             }
@@ -388,9 +392,11 @@ public static class S2CookOffScorePatch
                     _ => "Plain"
                 };
 
+                string gambleTag = isGamble ? "!" : "";
+
                 // Color code by active course (or the fallback course if off-course)
                 string courseColor = GetCourseColor(dishCourse);
-                string newText = $"{clean}  <color={courseColor}>[{bestScore}:{spiceAbbr}]</color>";
+                string newText = $"{clean}  <color={courseColor}>[{bestScore}:{spiceAbbr}{gambleTag}]</color>";
                 if (tmp.text != newText)
                 {
                     tmp.text = newText;

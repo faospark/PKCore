@@ -54,6 +54,7 @@ public static class CookOffScoreEngine
         public int RecipeNumber { get; set; } // 1..40
         public string Spice { get; set; } = "no spice";
         public byte[] Scores { get; set; } = Array.Empty<byte>(); // 12 elements
+        public bool IsSpecialGamble { get; set; }
     }
 
     public class DishRecommendation
@@ -219,10 +220,46 @@ public static class CookOffScoreEngine
         Appetizers.Add(d);
     }
 
+    /// <summary>
+    /// The 18 dishes with food_kind_table value 4 in r_dat.
+    /// In Overlay_rbattle.CalcPoints, serving 1 triggers a 5% chance of 100 pts,
+    /// serving 2 triggers 10% 100 pts or +/-40 RNG variance, and serving 3 halves all scores.
+    /// </summary>
+    private static readonly HashSet<(int RecipeNumber, string Spice)> SpecialGambleDishes = new()
+    {
+        (1, "Red Pepper"),   // Eggsplosive
+        (6, "Soy Sauce"),    // Dark Chowder
+        (6, "Red Pepper"),   // Gumbo
+        (8, "Red Pepper"),   // Mai Mai???
+        (13, "Salt"),        // Meringue Pie
+        (13, "Soy Sauce"),   // Kobold Pie
+        (15, "Red Pepper"),  // Firey Fritters
+        (17, "Salt"),        // Nanami Cake
+        (17, "Soy Sauce"),   // Black Cake
+        (18, "Soy Sauce"),   // Black Croquettes
+        (18, "Red Pepper"),  // Hot Croquettes
+        (20, "Mayonnaise"),  // Amazing Tempura
+        (23, "Soy Sauce"),   // Soy Rice Omelet
+        (31, "Salt"),        // Kobold Burger
+        (31, "Red Pepper"),  // Surprise Burger
+        (35, "Salt"),        // Kobold Course
+        (40, "Salt"),        // Salt House
+        (40, "Red Pepper"),  // Flaming Sea
+    };
+
     private static void AddMain(string name, string recipe, string spice, params byte[] scores)
     {
         int num = RecipeNumbers.TryGetValue(recipe, out int n) ? n : 0;
-        var d = new Dish { Name = name, Course = Course.Main, RecipeName = recipe, RecipeNumber = num, Spice = spice, Scores = scores };
+        var d = new Dish
+        {
+            Name = name,
+            Course = Course.Main,
+            RecipeName = recipe,
+            RecipeNumber = num,
+            Spice = spice,
+            Scores = scores,
+            IsSpecialGamble = SpecialGambleDishes.Contains((num, spice))
+        };
         AllDishes.Add(d);
         Mains.Add(d);
     }
@@ -255,7 +292,7 @@ public static class CookOffScoreEngine
         AddApp("Salad Combo", "Sashimi Platter", "Mayonnaise", 4,5,3,2,4,5,3,3,2,5,1,3);
         AddApp("Special Salad", "Chinese Banquet", "Mayonnaise", 3,4,2,2,3,5,3,4,3,5,1,3);
 
-        // ── Main Courses (66) ────────────────────────────────────────────────────────
+        // ── Main Courses (202) ───────────────────────────────────────────────────────
         AddMain("Rolled Omelet", "Rolled Omelet", "no spice", 2,2,2,2,2,2,2,2,3,5,2,3);
         AddMain("Large Fried Egg", "Rolled Omelet", "Salt", 3,2,4,3,3,3,3,2,2,5,1,1);
         AddMain("Egg Mayo Roll", "Rolled Omelet", "Mayonnaise", 2,1,2,3,2,1,2,2,3,5,1,5);
@@ -320,7 +357,7 @@ public static class CookOffScoreEngine
         AddMain("Steamed Bun", "Fritters", "Soy Sauce", 2,2,2,5,1,2,3,2,3,5,1,1);
         AddMain("Greasy Fritters", "Fritters", "Mayonnaise", 2,2,2,5,1,1,1,2,2,5,1,4);
         AddMain("Firey Fritters", "Fritters", "Red Pepper", 3,2,4,5,2,2,2,2,2,4,1,2);
-        AddMain("Sunomono", "Sunomono", "no spice", 1,1,2,1,2,2,4,1,2,5,2,3);
+        AddMain("Sunomono", "Sunomono", "no spice", 1,1,2,1,2,2,4,1,1,5,2,3);
         AddMain("Shrimp Sunomono", "Sunomono", "Sugar", 2,2,3,1,3,3,5,1,2,5,1,5);
         AddMain("Tippler's Sunomono", "Sunomono", "Salt", 2,2,4,1,4,3,5,1,1,5,1,3);
         AddMain("Gourmet Sunomono", "Sunomono", "Soy Sauce", 3,3,4,1,3,4,5,1,2,5,1,4);
@@ -457,7 +494,7 @@ public static class CookOffScoreEngine
         AddMain("Chinese Banquet", "Chinese Banquet", "no spice", 5,4,4,4,4,4,3,3,5,5,1,3);
         AddMain("Salt House", "Chinese Banquet", "Salt", 1,1,3,2,2,1,2,1,2,5,1,4);
         AddMain("Japanese Banquet", "Chinese Banquet", "Soy Sauce", 4,4,3,1,5,4,5,3,3,5,1,2);
-        AddMain("Flaming Sea", "Chinese Banquet", "Red Pepper", 3,2,5,2,2,1,2,1,2,5,1,3);
+        AddMain("Flaming Sea", "Chinese Banquet", "Red Pepper", 3,2,5,3,3,3,3,2,3,5,1,3);
 
         // ── Desserts (22) ────────────────────────────────────────────────────────────
         AddDess("Sweet Omelet", "Rolled Omelet", "Sugar", 2,4,1,2,2,2,2,4,2,5,1,2);
@@ -486,16 +523,21 @@ public static class CookOffScoreEngine
 
     /// <summary>
     /// Calculates the total score and individual breakdown for a given dish across 4 judges.
+    /// When activeCourse is specified and differs from dish.Course, applies the native 0.5x
+    /// course-mismatch penalty per judge from Overlay_rbattle.CalcPoints.
     /// </summary>
-    public static int CalculateDishScore(Dish dish, int[] judgeTastes, int[]? judgeScoresOut = null)
+    public static int CalculateDishScore(Dish dish, int[] judgeTastes, int[]? judgeScoresOut = null, Course? activeCourse = null)
     {
         if (dish == null || dish.Scores == null || judgeTastes == null) return 0;
+        bool offCourse = activeCourse.HasValue && dish.Course != activeCourse.Value;
         int total = 0;
         for (int i = 0; i < 4 && i < judgeTastes.Length; i++)
         {
             int t = judgeTastes[i];
             if (t < 0 || t >= 12) t = 0;
             int pts = dish.Scores[t];
+            if (offCourse)
+                pts /= 2;
             if (judgeScoresOut != null && i < judgeScoresOut.Length)
                 judgeScoresOut[i] = pts;
             total += pts;
@@ -542,12 +584,24 @@ public static class CookOffScoreEngine
     }
 
     /// <summary>
-    /// Resolves the taste category index (0..11) for a judge character ID.
-    /// Uses canon CharacterTastes first with name fuzzy matching, then native game table if available.
+    /// Resolves the taste category index (0..11) for a judge.
+    /// Uses native rb_dat.favorite[examIdx].table first (exact match to Overlay_rbattle.CalcPoints),
+    /// then falls back to canon CharacterTastes name matching if native table is unavailable.
     /// </summary>
     public static int GetJudgeTaste(byte charaId, string? fallbackName = null, byte examIdx = 0)
     {
-        // 1. Check fallbackName against canon CharacterTastes dictionary first
+        // 1. Native game favorite table indexed by examIdx (exact match to CalcPoints)
+        try
+        {
+            var favArray = GSD2::EventOverlayClass.rb_dat.favorite;
+            if (favArray != null && examIdx < favArray.Length && favArray[examIdx] != null)
+            {
+                return favArray[examIdx].table;
+            }
+        }
+        catch { }
+
+        // 2. Fallback: Check fallbackName against canon CharacterTastes dictionary
         if (!string.IsNullOrEmpty(fallbackName))
         {
             string trimmed = fallbackName.Trim();
@@ -566,20 +620,6 @@ public static class CookOffScoreEngine
                 }
             }
         }
-
-        // 2. Try native game favorite table by charaId or examIdx
-        try
-        {
-            var favArray = GSD2::EventOverlayClass.rb_dat.favorite;
-            if (favArray != null)
-            {
-                if (charaId < favArray.Length && favArray[charaId] != null)
-                    return favArray[charaId].table;
-                if (examIdx < favArray.Length && favArray[examIdx] != null)
-                    return favArray[examIdx].table;
-            }
-        }
-        catch { }
 
         return (int)Taste.Plain;
     }
