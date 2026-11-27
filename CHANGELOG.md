@@ -6,7 +6,12 @@ All notable changes to PKCore (formerly PKextended) are documented in this file.
 
 ## [2026.11.27]
 
-### Suikoden II Cook-Off Fixes & Scoring Accuracy (`[05 Game : Suikoden 2]`)
+### Suikoden II Side Quests, Story & Battle (`[05 Game : Suikoden 2]`, `[06 Battle & Combat]`)
+- **Save General Kiba & L'Renouille War Unit (S2)**: Added [S2SaveKibaPatch.cs](Patches/S2SaveKibaPatch.cs) (`EnableSaveKiba`, enabled by default) — when all 108 Stars of Destiny are recruited (`G2_SYS.Mem108Chk(1) >= 108`, Forgiver Sign unlocked), prevents Kiba's scripted death in Mercenary Fortress Ruins (`vb10` Sub 0 `Ev [17]`, NOPing `[0x54, 0x57, 0x21]` and guarding `G2_cha_flag(33, 87)`), restores him to Dunan Castle HQ (`vk07`, `vk06`, `vk13`), updates his epilogue card (`3001000213`) and post-Rockaxe dialogue (`1009010114`, `1011050014`), and deploys him as a standalone general unit in War Battle 16 (The Conquest of L'Renouille).
+- **Bright Shield Rune Enhancement (S2)**: Added [S2BrightShieldEnhancementPatch.cs](Patches/S2BrightShieldEnhancementPatch.cs) (`EnhanceBrightShieldRune`, enabled by default):
+  - **Great Blessing (Lv1)**: Also applies Clay Guardian (`MS_EARTH_PROTECT_FLG`, 1.5x DEF) to all healed allies.
+  - **Shining Light (Lv2)**: Adds `2x` the player's current recruit count directly to computed magic damage.
+  - **Battle Oath (Lv3)**: Adds an independent 50% chance per ally to apply Awakened (`SC_AWAKE`, 3 turns) alongside vanilla's 50% Anger (`SC_ANGRY`) roll, allowing both buffs to coexist.
 - **Cook-Off Scoring Engine Accuracy ([CookOffScoreEngine.cs](Patches/CookOffScoreEngine.cs), [S2CookOffScorePatch.cs](Patches/S2CookOffScorePatch.cs))**:
   - Verified all 240 dishes × 12 tastes against native `rb_dat.hyoka_table` and fixed 2 matrix mismatches (`Sunomono` Chinese score `2` -> `1`; `Flaming Sea` full row `[3,2,5,3,3,3,3,2,3,5,1,3]`).
   - Updated `GetJudgeTaste()` to read native `rb_dat.favorite[examIdx].table` first (matching `Overlay_rbattle.CalcPoints`), falling back to `CharacterTastes` only if unavailable.
@@ -19,6 +24,9 @@ All notable changes to PKCore (formerly PKextended) are documented in this file.
   - Added automatic self-healing in `CheckAndResetCookOffs()` to restore `event_flag[132]` bit `0x40` for saves that already completed Match 12 under the earlier build (when Tetsu is recruited, `event_flag[128] & 0x01` is set, and `event_flag[134] & 0x01` is clear).
 - **Epilogue Leona Tavern Crash Fix ([S2EpilogueLeonaPatch.cs](Patches/S2EpilogueLeonaPatch.cs))**:
   - Guarded `s2EpilogueLeona.ApplyForMap()` so flag spoofing (`event_flag[144]` bit `0x04`) only activates during the post-final-boss epilogue (`event_flag[143] & 0x01` set: Beast Rune defeated), preventing wrong `vk08` Map Init events and `MACHICON.EBGSet()` crashes during normal story scenes (such as solo Riou before L'Renouille).
+
+### Stability & Core Engine
+- **Submap Index Tracking**: Added `CurrentSubmapIndex` (`mno:`) parsing in `MACHICON_OnMapInitPatch` ([MapTrackingPatch.cs](Patches/MapTrackingPatch.cs)).
 
 ---
 
@@ -36,7 +44,6 @@ All notable changes to PKCore (formerly PKextended) are documented in this file.
   - Re-enables Dunan Castle minigames (such as Laundry & Gardens) during the epilogue (`EnableCastleMinigamesPostFinalBoss`).
 - **Repeatable Guardian Deity Statue Rewards**: Re-arms the Guardian Deity blessing reward whenever the statue design is rebuilt or altered at Jude's workshop (`EnableRepeatStatueRewards`) and keeps the assembled 3D statue model visible instead of reverting to plain stone (`AlwaysKeepStatueAssembled`).
 - **War Battle Formation Menu Sync**: Synchronized custom `S2WarAbilities.json` character stats and subunit bonuses (`bonusAttack`/`bonusDefense`) directly into Apple's Unit Formation & Team Change menu.
-- **Save General Kiba & L'Renouille War Unit (S2)**: Added [S2SaveKibaPatch.cs](Patches/S2SaveKibaPatch.cs) (`EnableSaveKiba`, enabled by default) — when all 108 Stars of Destiny are recruited (`G2_SYS.Mem108Chk(1) >= 108`, Forgiver Sign unlocked), prevents Kiba's scripted death in Mercenary Fortress Ruins (`vb10` Sub 0 `Ev [17]`, NOPing `[0x54, 0x57, 0x21]` and guarding `G2_cha_flag(33, 87)`), restores him to Dunan Castle HQ (`vk07`, `vk06`, `vk13`), updates his epilogue card (`3001000213`) and post-Rockaxe dialogue (`1009010114`, `1011050014`), and deploys him as a standalone general unit in War Battle 16 (The Conquest of L'Renouille).
 
 ### Battle & Combat (`[06 Battle & Combat]`)
 - **Battle Enemy HP Display & Typography (S1 & S2)**: Added live current/max enemy HP beneath enemy names and levels in the battle target selection window (`ShowEnemyHpInBattle`), and aligned S2 enemy name typography to native `25f` font sizing.
@@ -47,10 +54,6 @@ All notable changes to PKCore (formerly PKextended) are documented in this file.
   - Streamlined reusable command runes under `RemoveCommandRuneUseLimit` (Trick, Groundhog, Spider Slay, Angry Dragon) and `AlwaysAvailableAngryDragon`.
   - Refined `RemoveCommandRuneSelfUnbalance` into a language-independent boolean toggle covering all 8 authentic self-unbalancing physical command runes (Swallow, Fire Breath, Mayfly, White Tiger, Blue Drop, Twin Ring, Gozu, Trick) while preserving enemy and Unite attack unbalance.
 - **Character Range Overrides (S2)**: Expanded default Medium-range (`M`) roster to include **Freed Y** and **Chuchara** alongside Kasumi, Luc, Mazus, Viki, Gantetsu, Badeaux, and Sierra (`S2CharacterRangeOverrides`).
-- **Bright Shield Rune Enhancement (S2)**: Added [S2BrightShieldEnhancementPatch.cs](Patches/S2BrightShieldEnhancementPatch.cs) (`EnhanceBrightShieldRune`, enabled by default):
-  - **Great Blessing (Lv1)**: Also applies Clay Guardian (`MS_EARTH_PROTECT_FLG`, 1.5x DEF) to all healed allies.
-  - **Shining Light (Lv2)**: Adds `2x` the player's current recruit count directly to computed magic damage.
-  - **Battle Oath (Lv3)**: Adds an independent 50% chance per ally to apply Awakened (`SC_AWAKE`, 3 turns) alongside vanilla's 50% Anger (`SC_ANGRY`) roll, allowing both buffs to coexist.
 
 ### UI, Display & Performance
 - **Save Slot Party Portraits Overhaul & Stutter Elimination (S1 & S2)**:
@@ -64,7 +67,6 @@ All notable changes to PKCore (formerly PKextended) are documented in this file.
 
 ### Stability & Core Engine
 - **Soft Reset Battle Fix (S2)**: Fixed a `NullReferenceException` when soft-resetting during battle.
-- **Submap Index Tracking**: Added `CurrentSubmapIndex` (`mno:`) parsing in `MACHICON_OnMapInitPatch` ([MapTrackingPatch.cs](Patches/MapTrackingPatch.cs)).
 - **Multi-Tier Game Context Detection**: Upgraded `GameDetection` to a 4-tier zero-latency architecture (active scene match, `SceneManager.sceneLoaded` dispatch, native memory validation, and on-demand resolution) to eliminate startup and scene-transition race conditions.
 - **Log Spam Reduction**: Gated routine startup, battle, resolution, sound redirect, texture preload, and monitor logs behind `DetailedLogs` for clean default output.
 
