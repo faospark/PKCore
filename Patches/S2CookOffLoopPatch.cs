@@ -42,11 +42,11 @@ public static class S2CookOffLoopPatch
     private const byte FLAG_1185_BIT = 0x02; // Bit 1 of byte 148 (Challenger waiting in restaurant)
     private const byte STALE_CHALLENGER_BITS_148 = 0x0E; // Bits 1, 2, 3 (0x02=waiting, 0x04=M8/Lester intermediate, 0x08=M8/Lester intermediate)
 
-    private const int KITCHEN_TRIGGER_BYTE = 132;
-    private const byte FLAG_1062_BIT = 0x40; // Bit 6 of byte 132
-
     private const ushort SATURATED_TIMER_SECONDS = 7200; // 2 hours (bypasses all 30-60 min thresholds)
+    private const int MENU_BOARD_BODY_TEXT_ID = 1664; // "We are preparing the menu right now..."
+    private const int MENU_BOARD_TITLE_TEXT_ID = 1666; // "Today's Special"
     private static float _cooldownTimerThrottle = 0f;
+    private static float _lastMenuBoardTriggerTime = -10f;
 
     /// <summary>
     /// Vanilla Suikoden II chef table mapping match index (0..11) to native chef ID:
@@ -72,13 +72,14 @@ public static class S2CookOffLoopPatch
 
     /// <summary>
     /// Periodic tick called by PkCoreMainLoop.Update() to maintain cooldown saturation in GSD2.
+    /// Only runs automatically when ReduceCookOffCooldown is set to Instant.
     /// </summary>
     public static void Update()
     {
         if (!GameDetection.IsGSD2())
             return;
 
-        if (Plugin.Config?.ReduceCookOffCooldown?.Value != true)
+        if (Plugin.Config?.ReduceCookOffCooldown?.Value != CookOffCooldownMode.Instant)
             return;
 
         _cooldownTimerThrottle += Time.unscaledDeltaTime;
@@ -86,6 +87,34 @@ public static class S2CookOffLoopPatch
             return;
         _cooldownTimerThrottle = 0f;
 
+        ApplyCooldownReduction();
+    }
+
+    /// <summary>
+    /// Called when a system text entry is fetched. In MenuBoard mode, interacting with the
+    /// "Today's Special" stand in Hai Yo's restaurant (vk06_01) primes the next cook-off match.
+    /// </summary>
+    public static void OnSystemTextFetched(string id, int index)
+    {
+        if (!GameDetection.IsGSD2())
+            return;
+
+        if (Plugin.Config?.ReduceCookOffCooldown?.Value != CookOffCooldownMode.MenuBoard)
+            return;
+
+        if (index != MENU_BOARD_BODY_TEXT_ID && index != MENU_BOARD_TITLE_TEXT_ID)
+            return;
+
+        string currentMapId = MACHICON_OnMapInitPatch.CurrentMapId ?? "";
+        if (!currentMapId.StartsWith("vk06", StringComparison.OrdinalIgnoreCase))
+            return;
+
+        float now = Time.unscaledTime;
+        if (now - _lastMenuBoardTriggerTime < 1.0f)
+            return;
+        _lastMenuBoardTriggerTime = now;
+
+        Plugin.Log.LogInfo($"[Cook-Off Loop] Menu board interacted in {currentMapId} (text ID {index}); priming next cook-off match...");
         ApplyCooldownReduction();
     }
 
@@ -181,8 +210,11 @@ public static class S2CookOffLoopPatch
         if (!GameDetection.IsGSD2())
             return;
 
-        // Apply cooldown reduction on map transitions
-        ApplyCooldownReduction();
+        // Apply cooldown reduction on map transitions only in Instant mode
+        if (Plugin.Config?.ReduceCookOffCooldown?.Value == CookOffCooldownMode.Instant)
+        {
+            ApplyCooldownReduction();
+        }
 
         if (Plugin.Config?.LoopCookOffMatches?.Value != true)
             return;
@@ -196,6 +228,17 @@ public static class S2CookOffLoopPatch
             var gw = GSD2::OldSrcBase.game_work;
             if (gw?.event_flag == null || gw.event_flag.Length <= MATCHES_9_TO_12_QUEUE_BYTE)
                 return;
+
+            // Self-healing for saves affected by an earlier bug that cleared event_flag[132] bit 0x40 (Tetsu's bathhouse / story flag)
+            if (gw.event_flag.Length > 134 &&
+                GSD2::G2_SYS.G2_cha_flag(2, 90) != 0 && // Tetsu recruited
+                (gw.event_flag[128] & 0x01) != 0 &&     // Past mid-game bathhouse stage
+                (gw.event_flag[134] & 0x01) == 0 &&     // Final bathhouse stage not yet active
+                (gw.event_flag[132] & 0x40) == 0)
+            {
+                gw.event_flag[132] |= 0x40;
+                Plugin.Log.LogInfo("[Cook-Off Loop] Self-healing: Restored event_flag[132] bit 0x40 (Tetsu bathhouse / story progression flag).");
+            }
 
             // Check if Master Completion Gate (Flag 494) is set
             bool isCompletedGateActive = (gw.event_flag[MASTER_COMPLETION_BYTE] & FLAG_494_BIT) != 0;
@@ -222,11 +265,6 @@ public static class S2CookOffLoopPatch
                 if (gw.event_flag.Length > RESTAURANT_CHALLENGER_WAITING_BYTE)
                 {
                     gw.event_flag[RESTAURANT_CHALLENGER_WAITING_BYTE] = (byte)(gw.event_flag[RESTAURANT_CHALLENGER_WAITING_BYTE] & ~STALE_CHALLENGER_BITS_148);
-                }
-
-                if (gw.event_flag.Length > KITCHEN_TRIGGER_BYTE)
-                {
-                    gw.event_flag[KITCHEN_TRIGGER_BYTE] = (byte)(gw.event_flag[KITCHEN_TRIGGER_BYTE] & ~FLAG_1062_BIT);
                 }
 
                 Plugin.Log.LogInfo("[Cook-Off Loop] Successfully reset cook-off match progression back to Match 1 (Ky Yun). All recipes and seasonings preserved.");
@@ -279,7 +317,7 @@ public static class S2CookOffLoopPatch
         if (!GameDetection.IsGSD2())
             return;
 
-        if (Plugin.Config?.ReduceCookOffCooldown?.Value != true)
+        if (Plugin.Config?.ReduceCookOffCooldown?.Value == CookOffCooldownMode.Off)
             return;
 
         try

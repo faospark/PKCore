@@ -4,6 +4,19 @@ All notable changes to PKCore (formerly PKextended) are documented in this file.
 
 ---
 
+## [Unreleased] (2026.11.27)
+
+### Suikoden II Cook-Off Fixes (`[05 Game : Suikoden 2]`)
+- **Menu Board Cooldown Mode (`ReduceCookOffCooldown`)**: Converted `ReduceCookOffCooldown` in [ModConfiguration.cs](ModConfiguration.cs) from a boolean to `CookOffCooldownMode` (`Off`, `Instant`, `MenuBoard`), defaulting to `MenuBoard`.
+  - In `MenuBoard` mode, interacting with the **"Today's Special"** menu board in Hai Yo's restaurant (`vk06_01`, text IDs `1664` / `1666` via [TextDatabasePatch.cs](Patches/TextDatabasePatch.cs)) primes the next cook-off match on demand (`ApplyCooldownReduction()`), instead of automatically priming on every room transition (`Instant`).
+- **Tetsu Bathhouse Flag Fix & Save Self-Healing ([S2CookOffLoopPatch.cs](Patches/S2CookOffLoopPatch.cs))**:
+  - Removed the unintended clear of `event_flag[132]` bit `0x40` (`KITCHEN_TRIGGER_BYTE` / `FLAG_1062_BIT`) from `CheckAndResetCookOffs()` after defeating Jinkai (Match 12), which was deactivating Tetsu's hot bath in `vk06_00`.
+  - Added automatic self-healing in `CheckAndResetCookOffs()` to restore `event_flag[132]` bit `0x40` for saves that already completed Match 12 under the earlier build (when Tetsu is recruited, `event_flag[128] & 0x01` is set, and `event_flag[134] & 0x01` is clear).
+- **Epilogue Leona Tavern Crash Fix ([S2EpilogueLeonaPatch.cs](Patches/S2EpilogueLeonaPatch.cs))**:
+  - Guarded `s2EpilogueLeona.ApplyForMap()` so flag spoofing (`event_flag[144]` bit `0x04`) only activates during the post-final-boss epilogue (`event_flag[143] & 0x01` set: Beast Rune defeated), preventing wrong `vk08` Map Init events and `MACHICON.EBGSet()` crashes during normal story scenes (such as solo Riou before L'Renouille).
+
+---
+
 ## [2026.11.20]
 
 ### Suikoden II Side Quests, Replay & Post-Game (`[05 Game : Suikoden 2]`)

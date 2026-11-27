@@ -2,6 +2,13 @@ using BepInEx.Configuration;
 
 namespace PKCore;
 
+public enum CookOffCooldownMode
+{
+    Off,
+    Instant,
+    MenuBoard
+}
+
 public sealed class ModConfiguration
 {
     private ConfigFile _config;
@@ -50,7 +57,7 @@ public sealed class ModConfiguration
 
     // Suikoden 2 Cook-Off Settings
     public ConfigEntry<bool> LoopCookOffMatches { get; private set; }
-    public ConfigEntry<bool> ReduceCookOffCooldown { get; private set; }
+    public ConfigEntry<CookOffCooldownMode> ReduceCookOffCooldown { get; private set; }
     public ConfigEntry<bool> ShowCookOffScoreHelper { get; private set; }
 
     // Suikoden 2 Replay, Post-Game & Guardian Blessing (reabsorbed from PKReplayPlus)
@@ -361,8 +368,8 @@ public sealed class ModConfiguration
         ReduceCookOffCooldown = _config.Bind(
             "05 Game : Suikoden 2",
             "ReduceCookOffCooldown",
-            true,
-            "Removes the 30-60 minute active gameplay cooldown between cook-off matches, allowing consecutive battles with rival chefs to trigger immediately upon entering the restaurant or castle hall."
+            CookOffCooldownMode.MenuBoard,
+            "Controls how the 30-60 minute active gameplay cooldown between cook-off matches is bypassed. Off: vanilla cooldown. Instant: primes the next challenger automatically on room transitions. MenuBoard: primes the next challenger only when interacting with the 'Today's Special' menu board in Hai Yo's restaurant (vk06_01)."
         );
 
         ShowCookOffScoreHelper = _config.Bind(

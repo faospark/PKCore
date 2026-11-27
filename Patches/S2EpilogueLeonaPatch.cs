@@ -39,6 +39,16 @@ public static class s2EpilogueLeona
 
         if (isTavern && IsEnabled)
         {
+            // Only spoof during the post-final-boss epilogue (Flag 143 bit 0x01: Beast Rune defeated).
+            // Clearing Flag 144 bit 0x04 during normal story scenes (e.g. solo Riou before L'Renouille)
+            // triggers wrong vk08 Map Init events and crashes MACHICON.EBGSet().
+            byte cur143 = _isSpoofed ? _orig143 : gw.event_flag[FLAG_143];
+            if ((cur143 & 0x01) == 0)
+            {
+                if (_isSpoofed) RestoreFlags();
+                return;
+            }
+
             if (!_isSpoofed)
             {
                 _orig143 = gw.event_flag[FLAG_143];

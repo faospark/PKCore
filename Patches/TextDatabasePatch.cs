@@ -165,6 +165,11 @@ public class TextDatabasePatch
 
         LastTextId = $"{id}:{index}";
 
+        if (GameDetection.IsGSD2())
+        {
+            S2CookOffLoopPatch.OnSystemTextFetched(id, index);
+        }
+
         bool isDialogue = (id != null && (
             id.Equals("message", StringComparison.OrdinalIgnoreCase) ||
             id.Equals("add_message", StringComparison.OrdinalIgnoreCase) ||
@@ -267,6 +272,11 @@ public class TextDatabasePatch
         }
 
         LastTextId = $"{id}:{index}";
+
+        if (GameDetection.IsGSD2())
+        {
+            S2CookOffLoopPatch.OnSystemTextFetched(id, index);
+        }
 
         bool isDialogue = (id != null && (
             id.Equals("message", StringComparison.OrdinalIgnoreCase) ||
