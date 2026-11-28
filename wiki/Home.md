@@ -38,9 +38,10 @@
   * Compact dialog boxes and menus, classic PSX-style save screens with **party member portraits** so you can tell saves apart at a glance, colored Suikoden II intros/flashbacks, cleaner world maps (no distracting clouds or sunrays), custom Save Point crystal colors, and native **PlayStation, Xbox, Switch, or Custom** button prompts.
 * **⚔️ Better, Less Tedious Battles**:
   * See your party's **Current/Max HP** and **enemy levels & HP** right in battle, zoom the battle camera out for a wider view, and space out Suikoden II formations so back-row characters aren't hidden behind the front row.
-  * Let select short-range characters (such as Kasumi, Luc, Mazus, Viki, Sierra, Freed Y, and Chuchara) attack from the back row, keep your last manual commands during **Auto-Battle**, automatically heal/revive your party after fights, and remove frustrating 1-use limits and mandatory self-unbalance penalties on Command Runes.
-* **🔁 Replayable Quests, Cook-Off & Post-Game (Suikoden II)**:
-  * Keep playing **Hai Yo's Cook-Off** indefinitely without the 30–60 minute cooldown, with an optional on-screen **Score Helper** showing which dishes the current judges prefer.
+  * Let select short-range characters (such as Kasumi, Luc, Mazus, Viki, Sierra, Freed Y, and Chuchara) attack from the back row, keep your last manual commands during **Auto-Battle**, automatically heal/revive your party after fights, remove frustrating 1-use limits and mandatory self-unbalance penalties on Command Runes, and optionally enhance the **Bright Shield Rune** (Clay Guardian on Great Blessing, recruit-scaled Shining Light, and Awakened chance on Battle Oath).
+* **🔁 Replayable Quests, Story & Post-Game (Suikoden II)**:
+  * Keep playing **Hai Yo's Cook-Off** indefinitely with configurable cooldown bypass (`MenuBoard` via the "Today's Special" board or `Instant` on room entry) and an on-screen **Score Helper** (with `!` markers on special gamble dishes) showing which dishes the current judges prefer.
+  * **Save General Kiba** when all 108 Stars of Destiny are recruited (restoring him to Dunan Castle HQ, updating his epilogue card, and deploying him in the L'Renouille war battle).
   * Replay **Clive's Pursuit Quest** and the **L'Renouille Final Boss Gauntlet** (with per-boss toggles), keep **Leona** and **Dunan Castle minigames** usable during the epilogue, and earn repeatable **Guardian Deity** rewards while keeping the assembled statue visible.
 * **🎭 Extra Polish & Stability**:
   * **80+ additional NPC portraits** with expressions across both games, boosted **War Battles** synced into Apple's formation menu, custom War Room and bathhouse backgrounds, optional PSP-inspired launcher & gallery visuals, and a fix for the Suikoden II soft-reset battle crash.
@@ -183,11 +184,13 @@ All options for PKCore are configurable in `BepInEx/config/faospark.pkcore.cfg` 
 * `ColoredIntroAndFlashbacks` (`true`/`false`): Restores vibrant colors to S2 intro/flashback sequences.
 * `BetterLauncherBGM` (`true`/`false`): Replaces launcher ambient music with Suikoden 2's adventure start theme.
 * `EnableWarAbilityMod` (`true`/`false`): Tactical war battle ability customization via `S2WarAbilities.json` with Apple formation menu sync.
-* `LoopCookOffMatches`, `ReduceCookOffCooldown`, `ShowCookOffScoreHelper` (`true`/`false`): Infinite Cook-Off loop, cooldown bypass, and live `/20` scoring assistant (S2).
+* `LoopCookOffMatches` (`true`/`false`), `ReduceCookOffCooldown` (`Off`, `Instant`, `MenuBoard`), `ShowCookOffScoreHelper` (`true`/`false`): Infinite Cook-Off loop, cooldown bypass, and live `/20` scoring assistant (S2).
 * `LoopCliveQuest` (`true`/`false`): Automatically resets Clive's pursuit questline back to Lakewest after finishing Sajah Village (S2).
 * `LoopFinalBossGauntlet`, `ResetGauntletOnNextEntry` & `ReplayHighlandGuards` / `ReplayHanCunningham` / `ReplayLucia` / `ReplaySeedAndCulgan` / `ReplayBeastRune`: Configurable L'Renouille replay gauntlet (S2).
 * `EnableLeonaPostFinalBoss` & `EnableCastleMinigamesPostFinalBoss` (`true`/`false`): Restores Leona and Dunan Castle minigames during the post-final-boss epilogue (S2).
 * `EnableRepeatStatueRewards` & `AlwaysKeepStatueAssembled` (`true`/`false`): Repeatable Guardian Deity rewards and assembled 3D statue fix (S2).
+* `EnableSaveKiba` (`true`/`false`): Saves General Kiba at Mercenary Fortress Ruins when all 108 Stars are recruited, restoring him to Dunan Castle HQ and War Battle 16 (S2).
+* `EnableS2CustomObjectInsertion` (`true`/`false`): Enables custom graphical object insertion from `PKCore/Config/CustomObjectTexture.json` (S2).
 
 ### ⚔️ Battle & Combat (`[06 Battle & Combat]`)
 * `ShowBattleMaxHP`, `ShowEnemyLevelInBattle`, `ShowEnemyHpInBattle` (`true`/`false`): Enhanced battle HUD displaying party Current/Max HP plus enemy levels and Current/Max HP (S1 & S2).
@@ -197,6 +200,7 @@ All options for PKCore are configurable in `BepInEx/config/faospark.pkcore.cfg` 
 * `EnableBattlePositionAdjustments` & `S2BattlePositionPreset` (`default`, `wide`, `widest`): 6-character formation spacing adjustments (S2).
 * `RemoveCommandRuneUseLimit`, `AlwaysAvailableAngryDragon`, `RemoveCommandRuneSelfUnbalance` (`true`/`false`): Reusable 1-time Command Runes and removal of mandatory self-unbalance penalties (S2).
 * `EnableCharacterRangeOverrides` & `S2CharacterRangeOverrides`: Live-reloadable S/M/L character weapon range overrides (S2).
+* `EnhanceBrightShieldRune` (`true`/`false`): Enhances Great Blessing (+Clay Guardian), Shining Light (+2x recruit count damage), and Battle Oath (+50% Awakened chance) (S2).
 
 ---
 

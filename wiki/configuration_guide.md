@@ -77,8 +77,8 @@ This document outlines all available configuration options for **PKCore** locate
 | **ColoredIntroAndFlashbacks** | `bool` | `true` | Restores full color to Suikoden 2 intro and flashback scenes by disabling `CustomPostEffect` grayscale post-processing. |
 | **EnableWarAbilityMod** | `bool` | `true` | Enable tactical war battle ability and stat customization via `PKCore/Config/S2WarAbilities.json`, live synchronized into Apple's squad formation menu at Castle HQ. |
 | **LoopCookOffMatches** | `bool` | `true` | Automatically restart Hai Yo's cook-off battles from Match 1 (Chef Antonio) after defeating Chef Jinkai and viewing the garden celebration, retaining all learned recipes and seasonings. |
-| **ReduceCookOffCooldown** | `bool` | `true` | Bypasses the vanilla 30–60 minute active movement timer between cook-off challenges. |
-| **ShowCookOffScoreHelper** | `bool` | `true` | Displays real-time scoring predictions and optimal menu recommendations on screen during Suikoden 2 cook-off minigame battles. |
+| **ReduceCookOffCooldown** | `enum` | `MenuBoard` | Controls how the 30–60 minute active movement cooldown between cook-off challenges is bypassed: `Off` (vanilla cooldown), `Instant` (primes next challenger on room transitions), or `MenuBoard` (primes next challenger when interacting with the "Today's Special" menu board in Hai Yo's restaurant `vk06_01`). |
+| **ShowCookOffScoreHelper** | `bool` | `true` | Displays real-time scoring predictions and optimal menu recommendations on screen during Suikoden 2 cook-off minigame battles, marking special gamble dishes with `!`. |
 | **LoopCliveQuest** | `bool` | `true` | Automatically resets Clive's pursuit quest back to Lakewest upon entering Lakewest after completing the Sajah Village finale. |
 | **LoopFinalBossGauntlet** | `bool` | `true` | Automatically resets enabled L'Renouille encounters upon entering `vj01` after defeating the final boss. |
 | **ResetGauntletOnNextEntry** | `bool` | `false` | Forces a one-time reset of enabled L'Renouille encounters on next L'Renouille map entry (auto-resets to `false`). |
@@ -91,6 +91,8 @@ This document outlines all available configuration options for **PKCore** locate
 | **EnableCastleMinigamesPostFinalBoss** | `bool` | `true` | Restores Dunan Castle minigames (`vk18` Laundry & Gardens) during the post-final-boss epilogue. |
 | **EnableRepeatStatueRewards** | `bool` | `true` | Re-arms the Guardian Deity blessing reward whenever the statue design is rebuilt or altered at Jude's workshop. |
 | **AlwaysKeepStatueAssembled** | `bool` | `true` | Ensures the Guardian Deity statue maintains its assembled 3D model (`parts_no[3] = 1`). |
+| **EnableSaveKiba** | `bool` | `true` | Allows General Kiba to survive the Mercenary Fortress Ruins battle when all 108 Stars of Destiny are recruited (Forgiver Sign unlocked), restoring him to Dunan Castle HQ, updating his epilogue card, and deploying him as a standalone general unit in War Battle 16 (L'Renouille). |
+| **EnableS2CustomObjectInsertion** | `bool` | `false` | Enables Suikoden 2 custom graphical object insertion from `PKCore/Config/CustomObjectTexture.json`. |
 
 > [!NOTE]
 > Other Suikoden II gameplay systems are modularized into companion plugins:
@@ -124,6 +126,7 @@ This document outlines all available configuration options for **PKCore** locate
 | **RemoveCommandRuneSelfUnbalance** | `bool` | `true` | Removes the mandatory self-unbalance penalty on certain physical ability command runes (Swallow, Fire Breath, Mayfly, White Tiger, Blue Drop, Twin Ring, Gozu, Trick) while preserving enemy & Unite attack unbalance (S2). |
 | **EnableCharacterRangeOverrides** | `bool` | `true` | Enables custom character battle attack range overrides (S2). |
 | **S2CharacterRangeOverrides** | `string` | `Kasumi:M, ...` | Comma-separated `Character:Range` (`S`/`M`/`L`) overrides for Suikoden 2. Default: `Kasumi:M, Luc:M, Mazus:M, Viki:M, Gantetsu:M, Badeaux:M, Sierra:M, Freed Y:M, Chuchara:M`. Supports live hot-reloading. |
+| **EnhanceBrightShieldRune** | `bool` | `true` | Enhances the Suikoden 2 Bright Shield Rune: **Great Blessing** (Lv1) also applies Clay Guardian (`1.5x` DEF), **Shining Light** (Lv2) adds `2x` your current recruit count to magic damage, and **Battle Oath** (Lv3) adds an independent 50% chance to apply Awakened (`SC_AWAKE`) alongside Anger. |
 
 ---
 
