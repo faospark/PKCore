@@ -19,12 +19,27 @@ namespace PKCore.Patches
     {
         private static Dictionary<UISaveLoadSlot, GameObject> slotPortraitContainers = new Dictionary<UISaveLoadSlot, GameObject>();
         private static bool _monitorRegistered = false;
+        private static bool _legacyPngCleaned = false;
 
         // Optimized static portrait cache keyed by "{game}_{charId}" to ensure 0ms lookup after initial load
+        private struct PendingPortraitRequest
+        {
+            public string CacheKey;
+            public int CharId;
+            public int S1FaceId;
+            public bool IsGSD1;
+            public string ThumbBasePath;
+        }
+
         private static Dictionary<string, Sprite> portraitCache = new Dictionary<string, Sprite>(StringComparer.OrdinalIgnoreCase);
         private static HashSet<string> pendingLoadIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        private static Dictionary<string, List<Image>> pendingTargetImages = new Dictionary<string, List<Image>>(StringComparer.OrdinalIgnoreCase);
+        private static Queue<PendingPortraitRequest> asyncQueue = new Queue<PendingPortraitRequest>();
+        private static bool _asyncInFlight = false;
+        private static float _asyncInFlightTimer = 0f;
         private static HashSet<string> missingPortraitCache = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         private static List<UnityEngine.Object> gcRoots = new List<UnityEngine.Object>();
+        private static Ws_face_c _s1FaceLoader = null;
 
         /// <summary>
         /// Clears all portrait and container caches so portraits are guaranteed to reload freshly
@@ -33,9 +48,14 @@ namespace PKCore.Patches
         {
             portraitCache.Clear();
             pendingLoadIds.Clear();
+            pendingTargetImages.Clear();
+            asyncQueue.Clear();
+            _asyncInFlight = false;
+            _asyncInFlightTimer = 0f;
             missingPortraitCache.Clear();
             slotPortraitContainers.Clear();
             gcRoots.Clear();
+            _s1FaceLoader = null;
         }
 
         /// <summary>
@@ -59,8 +79,13 @@ namespace PKCore.Patches
             }
 
             pendingLoadIds.Clear();
+            pendingTargetImages.Clear();
+            asyncQueue.Clear();
+            _asyncInFlight = false;
+            _asyncInFlightTimer = 0f;
             missingPortraitCache.Clear();
             slotPortraitContainers.Clear();
+            _s1FaceLoader = null;
         }
 
         private static bool IsSpriteValid(Sprite sprite)
@@ -92,6 +117,7 @@ namespace PKCore.Patches
             if (__instance == null || !Plugin.Config.ShowSaveSlotPartyPortraits.Value)
                 return;
 
+            CleanupLegacyPngThumbnails();
             CleanupInvalidCache();
             AttachMonitor(__instance.gameObject);
         }
@@ -106,6 +132,7 @@ namespace PKCore.Patches
             if (__instance == null || !Plugin.Config.ShowSaveSlotPartyPortraits.Value)
                 return;
 
+            CleanupLegacyPngThumbnails();
             CleanupInvalidCache();
             AttachMonitor(__instance.gameObject);
         }
@@ -163,6 +190,8 @@ namespace PKCore.Patches
 
             private void Update()
             {
+                ProcessNextAsyncPortrait(this);
+
                 _timer += Time.deltaTime;
                 if (_timer >= UPDATE_INTERVAL)
                 {
@@ -640,10 +669,103 @@ namespace PKCore.Patches
             return new Rect(posX, posY, cropSize, cropSize);
         }
 
-        private static byte[] CreateThumbnailPngBytes(Texture2D sourceTex, Rect cropRect, int targetSize = 64)
+        /// <summary>
+        /// Self-cleaning routine that removes legacy .png thumbnail files from s1savethumb/s2savethumb caches.
+        /// </summary>
+        public static void CleanupLegacyPngThumbnails()
+        {
+            if (_legacyPngCleaned)
+                return;
+            _legacyPngCleaned = true;
+
+            int deletedCount = 0;
+            string[] cacheFolders = { "s1savethumb", "s2savethumb" };
+            foreach (string folder in cacheFolders)
+            {
+                try
+                {
+                    string thumbDir = Path.Combine(BepInEx.Paths.GameRootPath, "PKCore", "Cache", folder);
+                    if (!Directory.Exists(thumbDir))
+                        continue;
+
+                    string[] pngFiles = Directory.GetFiles(thumbDir, "thumb_*.png", SearchOption.TopDirectoryOnly);
+                    foreach (string pngFile in pngFiles)
+                    {
+                        try
+                        {
+                            File.Delete(pngFile);
+                            deletedCount++;
+                        }
+                        catch { }
+                    }
+
+                    // Also remove any previously generated BC1 (DXT1) DDS thumbnails so they regenerate as BC3 (DXT5)
+                    string[] ddsFiles = Directory.GetFiles(thumbDir, "thumb_*.dds", SearchOption.TopDirectoryOnly);
+                    foreach (string ddsFile in ddsFiles)
+                    {
+                        try
+                        {
+                            using (FileStream fs = File.OpenRead(ddsFile))
+                            {
+                                if (fs.Length >= 88)
+                                {
+                                    fs.Seek(84, SeekOrigin.Begin);
+                                    byte[] fourCc = new byte[4];
+                                    if (fs.Read(fourCc, 0, 4) == 4 && BitConverter.ToUInt32(fourCc, 0) == 0x31545844u)
+                                    {
+                                        fs.Close();
+                                        File.Delete(ddsFile);
+                                        deletedCount++;
+                                    }
+                                }
+                            }
+                        }
+                        catch { }
+                    }
+                }
+                catch { }
+            }
+
+            if (deletedCount > 0)
+            {
+                Plugin.Log.LogInfo($"[SaveSlotPortrait] Cleaned up {deletedCount} legacy PNG thumbnail(s) from cache.");
+            }
+        }
+
+        private static byte[] EncodeTextureToDdsBc3Bytes(Texture2D tex)
+        {
+            if (tex == null || tex.Pointer == IntPtr.Zero) return null;
+
+            tex.Compress(false);
+            byte[] rawDxt5 = tex.GetRawTextureData();
+            if (rawDxt5 == null || rawDxt5.Length == 0) return null;
+
+            const int headerSize = 128;
+            byte[] ddsBytes = new byte[headerSize + rawDxt5.Length];
+
+            // Standard 128-byte DDS header for DXT5 (BC3)
+            Buffer.BlockCopy(BitConverter.GetBytes(0x20534444u), 0, ddsBytes, 0, 4);   // "DDS "
+            Buffer.BlockCopy(BitConverter.GetBytes(124u), 0, ddsBytes, 4, 4);          // dwSize
+            Buffer.BlockCopy(BitConverter.GetBytes(0x00081007u), 0, ddsBytes, 8, 4);   // dwFlags (CAPS|HEIGHT|WIDTH|PIXELFORMAT|LINEARSIZE)
+            Buffer.BlockCopy(BitConverter.GetBytes((uint)tex.height), 0, ddsBytes, 12, 4);
+            Buffer.BlockCopy(BitConverter.GetBytes((uint)tex.width), 0, ddsBytes, 16, 4);
+            uint linearSize = (uint)(((tex.width + 3) / 4) * ((tex.height + 3) / 4) * 16);
+            Buffer.BlockCopy(BitConverter.GetBytes(linearSize), 0, ddsBytes, 20, 4);   // dwPitchOrLinearSize
+            Buffer.BlockCopy(BitConverter.GetBytes(1u), 0, ddsBytes, 28, 4);           // dwMipMapCount
+            Buffer.BlockCopy(BitConverter.GetBytes(32u), 0, ddsBytes, 76, 4);          // ddspf.dwSize
+            Buffer.BlockCopy(BitConverter.GetBytes(0x4u), 0, ddsBytes, 80, 4);         // ddspf.dwFlags (DDPF_FOURCC)
+            Buffer.BlockCopy(BitConverter.GetBytes(0x35545844u), 0, ddsBytes, 84, 4);  // ddspf.dwFourCC ("DXT5")
+            Buffer.BlockCopy(BitConverter.GetBytes(0x1000u), 0, ddsBytes, 108, 4);     // dwCaps (DDSCAPS_TEXTURE)
+
+            Buffer.BlockCopy(rawDxt5, 0, ddsBytes, headerSize, rawDxt5.Length);
+            return ddsBytes;
+        }
+
+        private static byte[] CreateThumbnailDdsBc3Bytes(Texture2D sourceTex, Rect cropRect, int targetSize = 64)
         {
             if (sourceTex == null || sourceTex.Pointer == IntPtr.Zero) return null;
 
+            targetSize = (targetSize + 3) & ~3; // Ensure multiple of 4 for BC3
             int cropX = Mathf.Clamp((int)cropRect.x, 0, sourceTex.width - 1);
             int cropY = Mathf.Clamp((int)cropRect.y, 0, sourceTex.height - 1);
             int cropW = Mathf.Clamp((int)cropRect.width, 1, sourceTex.width - cropX);
@@ -685,9 +807,9 @@ namespace PKCore.Patches
 
                     thumb.SetPixels(scaled);
                     thumb.Apply(false, false);
-                    byte[] png = ImageConversion.EncodeToPNG(thumb);
+                    byte[] dds = EncodeTextureToDdsBc3Bytes(thumb);
                     UnityEngine.Object.Destroy(thumb);
-                    return png;
+                    return dds;
                 }
             }
             catch
@@ -714,7 +836,7 @@ namespace PKCore.Patches
                 readTex.ReadPixels(new Rect(0, 0, targetSize, targetSize), 0, 0);
                 readTex.Apply(false, false);
 
-                return ImageConversion.EncodeToPNG(readTex);
+                return EncodeTextureToDdsBc3Bytes(readTex);
             }
             catch (Exception ex)
             {
@@ -740,11 +862,18 @@ namespace PKCore.Patches
                 if (!Directory.Exists(dir))
                     Directory.CreateDirectory(dir);
 
-                string pngPath = thumbBasePath + ".png";
-                byte[] pngBytes = CreateThumbnailPngBytes(sourceTex, cropRect, targetSize);
-                if (pngBytes != null && pngBytes.Length > 0)
+                string ddsPath = thumbBasePath + ".dds";
+                byte[] ddsBytes = CreateThumbnailDdsBc3Bytes(sourceTex, cropRect, targetSize);
+                if (ddsBytes != null && ddsBytes.Length > 0)
                 {
-                    File.WriteAllBytes(pngPath, pngBytes);
+                    File.WriteAllBytes(ddsPath, ddsBytes);
+
+                    string legacyPngPath = thumbBasePath + ".png";
+                    if (File.Exists(legacyPngPath))
+                    {
+                        try { File.Delete(legacyPngPath); } catch { }
+                    }
+
                     return true;
                 }
             }
@@ -782,16 +911,16 @@ namespace PKCore.Patches
 
             // 2. Resolve Portrait ID for this character
             string portraitId = null;
+            int s1FaceId = -1;
             if (isGSD1)
             {
-                int faceId = -1;
                 try
                 {
-                    faceId = Ws_face_c.CharacterIDConvertToFaceIDStatic((ushort)charId);
+                    s1FaceId = Ws_face_c.CharacterIDConvertToFaceIDStatic((ushort)charId);
                 }
                 catch { }
 
-                portraitId = faceId >= 0 ? $"fp_gsd1_{faceId:D3}" : $"fp_gsd1_{charId:D3}";
+                portraitId = s1FaceId >= 0 ? $"fp_gsd1_{s1FaceId:D3}" : $"fp_gsd1_{charId:D3}";
             }
             else
             {
@@ -869,66 +998,164 @@ namespace PKCore.Patches
                 catch { }
             }
 
-            // 6. Priority 3: Fallback to Async Native Loader (GSD2)
-            if (isGSD2 && runner != null && !pendingLoadIds.Contains(cacheKey))
+            // 6. Priority 3: Enqueue for throttled 1-per-frame Async Native Loader (GSD1 & GSD2)
+            if ((isGSD1 || isGSD2) && runner != null)
             {
-                pendingLoadIds.Add(cacheKey);
-                try
+                if (isGSD1 && s1FaceId < 0)
                 {
-                    Action<Sprite> callback = (Sprite loadedSprite) =>
-                    {
-                        pendingLoadIds.Remove(cacheKey);
-                        if (IsSpriteValid(loadedSprite))
-                        {
-                            Rect crop = CalculateFaceCropRect(loadedSprite);
-                            SaveThumbnail(loadedSprite.texture, crop, thumbBasePath);
-
-                            Sprite generatedThumb = LoadThumbnailSprite(thumbBasePath);
-                            Sprite finalSprite = IsSpriteValid(generatedThumb) ? generatedThumb : loadedSprite;
-
-                            finalSprite.hideFlags = HideFlags.DontUnloadUnusedAsset;
-                            UnityEngine.Object.DontDestroyOnLoad(finalSprite);
-                            gcRoots.Add(finalSprite);
-                            portraitCache[cacheKey] = finalSprite;
-
-                            if (targetImage != null && targetImage.Pointer != IntPtr.Zero)
-                            {
-                                targetImage.sprite = finalSprite;
-                                targetImage.preserveAspect = true;
-                                targetImage.color = Color.white;
-                                if (!targetImage.gameObject.activeSelf)
-                                    targetImage.gameObject.SetActive(true);
-                            }
-                        }
-                        else
-                        {
-                            missingPortraitCache.Add(cacheKey);
-                        }
-                    };
-
-                    var coroutine = ImageLoader.LoadAsyncImage(charId, callback);
-                    if (coroutine != null)
-                    {
-                        runner.StartCoroutine(coroutine);
-                    }
-                    else
-                    {
-                        missingPortraitCache.Add(cacheKey);
-                    }
-                }
-                catch
-                {
-                    pendingLoadIds.Remove(cacheKey);
                     missingPortraitCache.Add(cacheKey);
+                    return null;
+                }
+
+                if (targetImage != null && targetImage.Pointer != IntPtr.Zero)
+                {
+                    if (!pendingTargetImages.TryGetValue(cacheKey, out var imgList))
+                    {
+                        imgList = new List<Image>();
+                        pendingTargetImages[cacheKey] = imgList;
+                    }
+                    imgList.Add(targetImage);
+                }
+
+                if (!pendingLoadIds.Contains(cacheKey))
+                {
+                    pendingLoadIds.Add(cacheKey);
+                    asyncQueue.Enqueue(new PendingPortraitRequest
+                    {
+                        CacheKey = cacheKey,
+                        CharId = charId,
+                        S1FaceId = s1FaceId,
+                        IsGSD1 = isGSD1,
+                        ThumbBasePath = thumbBasePath
+                    });
                 }
             }
-
-            if (!isGSD2 || (runner == null && !pendingLoadIds.Contains(cacheKey)))
+            else if (runner == null && !pendingLoadIds.Contains(cacheKey))
             {
                 missingPortraitCache.Add(cacheKey);
             }
 
             return null;
+        }
+
+        private static void ProcessNextAsyncPortrait(MonoBehaviour runner)
+        {
+            if (runner == null || runner.Pointer == IntPtr.Zero)
+                return;
+
+            if (_asyncInFlight)
+            {
+                _asyncInFlightTimer += Time.deltaTime;
+                if (_asyncInFlightTimer < 5.0f)
+                    return;
+
+                // Safety timeout if a native coroutine never invoked its callback
+                _asyncInFlight = false;
+                _asyncInFlightTimer = 0f;
+            }
+
+            if (asyncQueue.Count == 0)
+                return;
+
+            PendingPortraitRequest req = asyncQueue.Dequeue();
+            if (portraitCache.TryGetValue(req.CacheKey, out Sprite cached) && IsSpriteValid(cached))
+            {
+                pendingLoadIds.Remove(req.CacheKey);
+                if (pendingTargetImages.TryGetValue(req.CacheKey, out var cachedWaiters))
+                {
+                    pendingTargetImages.Remove(req.CacheKey);
+                    ApplySpriteToTargets(cachedWaiters, cached);
+                }
+                return;
+            }
+
+            _asyncInFlight = true;
+            _asyncInFlightTimer = 0f;
+
+            try
+            {
+                Action<Sprite> callback = (Sprite loadedSprite) =>
+                {
+                    _asyncInFlight = false;
+                    _asyncInFlightTimer = 0f;
+                    pendingLoadIds.Remove(req.CacheKey);
+                    pendingTargetImages.TryGetValue(req.CacheKey, out var waitingImages);
+                    pendingTargetImages.Remove(req.CacheKey);
+
+                    if (IsSpriteValid(loadedSprite))
+                    {
+                        Rect crop = CalculateFaceCropRect(loadedSprite);
+                        SaveThumbnail(loadedSprite.texture, crop, req.ThumbBasePath);
+
+                        Sprite generatedThumb = LoadThumbnailSprite(req.ThumbBasePath);
+                        Sprite finalSprite = IsSpriteValid(generatedThumb) ? generatedThumb : loadedSprite;
+
+                        finalSprite.hideFlags = HideFlags.DontUnloadUnusedAsset;
+                        UnityEngine.Object.DontDestroyOnLoad(finalSprite);
+                        gcRoots.Add(finalSprite);
+                        portraitCache[req.CacheKey] = finalSprite;
+
+                        ApplySpriteToTargets(waitingImages, finalSprite);
+                    }
+                    else
+                    {
+                        missingPortraitCache.Add(req.CacheKey);
+                    }
+                };
+
+                Il2CppSystem.Collections.IEnumerator coroutine = null;
+                if (req.IsGSD1)
+                {
+                    if (_s1FaceLoader == null || _s1FaceLoader.Pointer == IntPtr.Zero)
+                    {
+                        _s1FaceLoader = Ws_face_c.CreateInstance(runner.transform);
+                    }
+                    if (_s1FaceLoader != null && _s1FaceLoader.Pointer != IntPtr.Zero)
+                    {
+                        coroutine = _s1FaceLoader.GetFaceSprite((short)req.S1FaceId, callback);
+                    }
+                }
+                else
+                {
+                    coroutine = ImageLoader.LoadAsyncImage(req.CharId, callback);
+                }
+
+                if (coroutine != null)
+                {
+                    runner.StartCoroutine(coroutine);
+                }
+                else
+                {
+                    _asyncInFlight = false;
+                    pendingLoadIds.Remove(req.CacheKey);
+                    pendingTargetImages.Remove(req.CacheKey);
+                    missingPortraitCache.Add(req.CacheKey);
+                }
+            }
+            catch
+            {
+                _asyncInFlight = false;
+                pendingLoadIds.Remove(req.CacheKey);
+                pendingTargetImages.Remove(req.CacheKey);
+                missingPortraitCache.Add(req.CacheKey);
+            }
+        }
+
+        private static void ApplySpriteToTargets(List<Image> targets, Sprite sprite)
+        {
+            if (targets == null || !IsSpriteValid(sprite)) return;
+
+            foreach (var img in targets)
+            {
+                if (img != null && img.Pointer != IntPtr.Zero)
+                {
+                    img.sprite = sprite;
+                    img.preserveAspect = true;
+                    img.color = Color.white;
+                    if (!img.gameObject.activeSelf)
+                        img.gameObject.SetActive(true);
+                }
+            }
         }
 
         /// <summary>

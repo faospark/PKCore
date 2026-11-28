@@ -74,6 +74,7 @@ public sealed class ModConfiguration
     public ConfigEntry<bool> EnableRepeatStatueRewards { get; private set; }
     public ConfigEntry<bool> AlwaysKeepStatueAssembled { get; private set; }
     public ConfigEntry<bool> EnableSaveKiba { get; private set; }
+    public ConfigEntry<bool> EnableRockaxeDungeonEscapeTalisman { get; private set; }
     public ConfigEntry<bool> EnableS2CustomObjectInsertion { get; private set; }
 
     // Battle HUD, QoL & Balance (reabsorbed from PKBattlePatch)
@@ -469,6 +470,13 @@ public sealed class ModConfiguration
             "EnableSaveKiba",
             true,
             "Allows General Kiba to survive the Mercenary Fortress battle in Suikoden 2 when all 108 Stars of Destiny are recruited (Forgiver Sign unlocked), restoring him to Dunan Castle HQ, updating his epilogue card, and deploying him as a standalone general unit in the Conquest of L'Renouille war battle."
+        );
+
+        EnableRockaxeDungeonEscapeTalisman = _config.Bind(
+            "05 Game : Suikoden 2",
+            "EnableRockaxeDungeonEscapeTalisman",
+            true,
+            "Allows using the Escape Talisman inside the Rockaxe Castle dungeon (vi06) once Rockaxe has been liberated (event_flag[20] bit 0x01)."
         );
 
         EnableS2CustomObjectInsertion = _config.Bind(

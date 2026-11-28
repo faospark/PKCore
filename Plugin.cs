@@ -535,6 +535,15 @@ public class Plugin : BasePlugin
             S2SaveKibaPatch.Initialize(harmony);
         }
 
+        if (Config.EnableRockaxeDungeonEscapeTalisman.Value)
+        {
+            Log.LogInfo("Patching S2RockaxeEscapeTalismanPatch...");
+            harmony.PatchAll(typeof(Patches.S2RockaxeEscapeOnMapInitPrefixPatch));
+            harmony.PatchAll(typeof(Patches.S2RockaxeEscapeChkPostfixPatch));
+            harmony.PatchAll(typeof(Patches.S2RockaxeEscapeGoPrefixPatch));
+            harmony.PatchAll(typeof(Patches.S2RockaxeEscapeSaveMenuInitPrefixPatch));
+        }
+
         if (Config.PSPLauncher.Value)
             Log.LogInfo("Patching PSPLauncherPatch...");
         if (Config.EnhancedGallery.Value)
