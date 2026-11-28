@@ -970,35 +970,7 @@ namespace PKCore.Patches
                 }
             }
 
-            // 5. Priority 2: Synchronous Native Face Sprite (GSD2)
-            if (isGSD2)
-            {
-                try
-                {
-                    Sprite nativeSprite = ImageLoader.LoadImage(charId);
-                    if (IsSpriteValid(nativeSprite))
-                    {
-                        Rect crop = CalculateFaceCropRect(nativeSprite);
-                        SaveThumbnail(nativeSprite.texture, crop, thumbBasePath);
-
-                        Sprite generatedThumb = LoadThumbnailSprite(thumbBasePath);
-                        if (IsSpriteValid(generatedThumb))
-                        {
-                            portraitCache[cacheKey] = generatedThumb;
-                            return generatedThumb;
-                        }
-
-                        nativeSprite.hideFlags = HideFlags.DontUnloadUnusedAsset;
-                        UnityEngine.Object.DontDestroyOnLoad(nativeSprite);
-                        gcRoots.Add(nativeSprite);
-                        portraitCache[cacheKey] = nativeSprite;
-                        return nativeSprite;
-                    }
-                }
-                catch { }
-            }
-
-            // 6. Priority 3: Enqueue for throttled 1-per-frame Async Native Loader (GSD1 & GSD2)
+            // 5. Priority 2: Enqueue for throttled 1-per-frame Native Loader (GSD1 & GSD2)
             if ((isGSD1 || isGSD2) && runner != null)
             {
                 if (isGSD1 && s1FaceId < 0)
@@ -1117,6 +1089,12 @@ namespace PKCore.Patches
                 }
                 else
                 {
+                    Sprite syncSprite = ImageLoader.LoadImage(req.CharId);
+                    if (IsSpriteValid(syncSprite))
+                    {
+                        callback(syncSprite);
+                        return;
+                    }
                     coroutine = ImageLoader.LoadAsyncImage(req.CharId, callback);
                 }
 
